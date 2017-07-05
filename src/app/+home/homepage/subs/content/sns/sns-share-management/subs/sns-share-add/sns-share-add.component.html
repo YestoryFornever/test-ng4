@@ -1,0 +1,80 @@
+	<div class="header clearfix">
+		<span class="head icon">|</span><span class="head" >增加动态</span>
+		<div class="btnHeader head">
+			<button class="btn btn-primary" (click)="add.show() ">发布动态</button>
+			<button class="btn btn-primary" (click)="abandon.show()">放弃编辑</button>
+		</div>
+	</div>
+
+	<div class="newsMsg">
+		<div class="acont">
+			<h5><b>*</b>资讯标题</h5>
+			<input style="width:100%" type="text" name="title">
+	    </div>
+		<div class="acont">
+			<h5><b>*</b>资讯正文</h5>
+			<textarea class="contentText all"></textarea>
+		</div>
+		<div class="acont harf">
+			<h5><b>*</b>资讯来源</h5>
+			<input type="text" name="title">
+		</div>
+		<div class="acont harf">
+		 	<h5><b>*</b>资讯来源链接</h5>
+			<input type="text" name="title">
+	 	</div>
+	    
+		<div class="acont harf">
+			<h5><b>*</b>资讯分类</h5>
+			<select style="width: 150px" value='请选择' class="selection"><option>全部</option><option>负面</option></select>
+		</div>
+		<div class="acont harf">
+			<h5><b>*</b>资讯作者</h5>
+			<input type="text" name="title">
+		</div>
+		<div class="acont harf">
+			<h5><b>*</b>资讯源时间</h5>
+			<input class="selection" type="date" name="title">
+		</div>
+	</div>
+
+
+	<!--发布资讯-->
+<div bsModal #add="bs-modal" class="modal fade modelPon" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content noproblem">
+            <div class="modal-header ">
+                <button type="button" class="close" aria-label="Close" (click)="add.hide()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">发布资讯</h4>
+            </div>
+            <div class="modal-body contentxinxi">
+                <div class="pp clearfix">发布成功！</div>
+                <div class="btnstyle">
+                    <button type="button" class="btn btn-default btnhoverlan" (click)="add.hide()" routerLink='../sns-share-list'  routerLinkActive="active">确定</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 放弃 -->
+<div bsModal #abandon="bs-modal" class="modal fade modelPon" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content noproblem">
+            <div class="modal-header ">
+                <button type="button" class="close" aria-label="Close" (click)="abandon.hide()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">放弃修改</h4>
+            </div>
+            <div class="modal-body contentxinxi">
+                <div class="pp clearfix">是否放弃修改？</div>
+                <div class="btnstyle">
+                    <button type="button" class="btn btn-default btnhoverlan" routerLink='../sns-share-list'  routerLinkActive="active">放弃</button>
+                     <button type="button" class="btn btn-primary btnhoverju" (click)="abandon.hide()">取消</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

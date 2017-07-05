@@ -1,0 +1,181 @@
+*{margin:0;padding:0;}
+*,*:focus {
+	outline: none;
+}
+html,body{height:100%;}
+body {
+	position:fixed;
+	top:0;
+	bottom:0;
+	left:0;
+	right:0;
+	/*background: #c30e2e;#0147A7*/
+	color: #333;
+	margin:0;
+	padding:0;
+	font-family:"Microsoft Yahei";
+	font-size:14px;
+}
+textarea{
+	outline:none;resize:none;
+}
+ul{
+	list-style: none;
+	font-size:0;
+	margin:0;
+	padding:0;
+}
+ul{
+	font-size:14px;
+}
+::selection {
+	background: #ffaf3a;
+	color: #fff;
+}
+::-moz-selection {
+	background: #ffaf3a;
+	color: #fff;
+}
+::-webkit-selection {
+	background: #ffaf3a;
+	color: #fff;
+}
+a,a:active,a:hover{
+	color:#337ab7;
+	text-decoration: none;
+	cursor: pointer;
+}
+#loading{
+	width: 86px;
+	position: absolute;
+	top: 50%;
+	margin-top: -43px;
+	left: 50%;
+	margin-left: -43px;
+}
+#loading i.fa-spinner{
+	-webkit-animation: fa-spin 1.2s infinite linear;
+	animation: fa-spin 1.2s infinite linear;
+}
+/* bootstrap patch */
+.btn-mint{
+	color: #000;
+	background-color: #fff;
+	border-color: #d6d6d6;
+}
+.btn-mint.active{
+	color: green;
+	background-color: #d3fdd4;
+	border-color: #94e596;
+}
+.label-info {
+	color: green;
+	background-color: #d3fdd4;
+	border:1px solid #94e596;
+}
+/*issue:froala rich-editor scroll*/
+.fr-element.fr-view p{margin:0;}
+
+.ng-valid[required], .ng-valid.required  {
+	border-left: 5px solid #42A948; /* green */
+}
+
+.ng-invalid:not(form)  {
+	border-left: 5px solid #a94442; /* red */
+}
+
+.fr-toolbar.fr-ltr.fr-desktop.fr-inline{
+	z-index:1050;
+}
+.fr-popup.fr-desktop.fr-inline.fr-ltr.fr-active{
+	z-index:1050!important;
+}
+hr {
+	-moz-border-bottom-colors: none;
+	-moz-border-image: none;
+	-moz-border-left-colors: none;
+	-moz-border-right-colors: none;
+	-moz-border-top-colors: none;
+	border-color: #EEEEEE;
+	border-style: solid none;
+	border-width: 1px 0;
+	margin: 18px 0;
+}
+/*nav-map*/
+span#bench{background:url("../images/icon_topbar_01.png") no-repeat;}
+span#content-manage{background:url("../images/icon_topbar_02.png") no-repeat;}
+span#authority-manage{background:url("../images/icon_topbar_03.png") no-repeat;}
+span#system-manage{background:url("../images/icon_topbar_04.png") no-repeat;}
+span#business-manage{background:url("../images/icon_topbar_04.png") no-repeat;}
+/*dy-nav*/
+a#user-manage{background:url(../images/icon_leftbar_01_normal.png) no-repeat;}
+a#user-list{background:url(../images/icon_leftbar_02_normal.png) no-repeat;}
+a#user-edit{background:url(../images/icon_leftbar_03_normal.png) no-repeat;}
+a#user-approve{background:url(../images/icon_leftbar_04_normal.png) no-repeat;}
+a#user-manage:hover,a#user-manage.active{background:url(../images/icon_leftbar_01_over.png) no-repeat;}
+a#user-list:hover,a#user-list.active{background:url(../images/icon_leftbar_02_over.png) no-repeat;}
+a#user-edit:hover,a#user-edit.active{background:url(../images/icon_leftbar_03_over.png) no-repeat;}
+a#user-approve:hover,a#user-approve.active{background:url(../images/icon_leftbar_04_over.png) no-repeat;}
+/*上传组件*/
+div.file-upload-thumbnail{
+	background:#ddd url("../images/icon_headimage.png") center center no-repeat;
+}
+
+/* Specify styling for tooltip contents */
+.tooltip.customClass .tooltip-inner {
+	color: #fff;
+	background-color: #293038;
+	-webkit-box-shadow: 0 0 20px rgba(0,0,0, 0.75);
+	-moz-box-shadow: 0 0 20px rgba(0,0,0, 0.75);
+	box-shadow: 0 0 20px rgba(0,0,0, 0.75);
+}
+/* Hide arrow */
+.tooltip.customClass .tooltip-arrow {
+	/*display: none;*/
+	border-top-color: #293038;
+}
+/*input 插件  设置大小  */
+.ui-datepicker{
+	width: 21em;
+}
+/* 日历差件的宽度 */
+#aaa .ui-inputtext{
+	width: 100px;
+	height:30px;
+	/* background: red */
+}
+
+/*名片*/
+
+// .cardBox{
+// 	width: 240px ;
+// 	height: 280px ;
+// 	/*background-color: #baf*/
+// }
+// .card{
+// 	width: 240px;
+// 	height: 150px;
+// 	/*background-color: #555*/
+// }
+// .imgCard{
+	
+// 	width: 240px;
+// 	height: 150px
+// }
+// .userTitle{
+// 	width: 240px;
+// 	height: 35px;
+// 	/*background-color: #acf*/
+// 	font-size: 18px;
+// 	line-height: 35px
+
+// }
+// .userInfo{
+// 	width: 240px;
+// 	height: 25px;
+// 	font-size: 14px;
+// 	line-height: 25px;
+// 	white-space:nowrap; 
+// 	overflow:hidden; 
+// 	text-overflow:ellipsis;
+// }

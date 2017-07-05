@@ -1,0 +1,84 @@
+<div class="mian">
+	<div class="header clearfix">
+		<span class="head icon">|</span><span class="head" >用户组列表</span>
+		<div class="btnHeader head">
+			<button class="btn btn-primary" (click)="addGpshow(addGp)">添加用户组</button>
+		</div>
+	</div>
+</div>
+
+<!-- table -->
+<div class="tableList "  >
+	<table class="table table-bordered table-hover " >
+		<thead >
+			<tr>
+				<td class="info shortTxt">用户组名称</td>
+				<td class="info shortTxt">父级用户组</td>
+				<td class="info middleTxt">所含管理员</td>
+				<td class="info middleTxt">操作</td>
+			</tr>
+		</thead>
+		<tbody  *ngFor="let userMsg of GroupList" >
+			<tr>
+				<td>{{userMsg.groupName }}</td>
+				<td>{{userMsg.parentName }}</td>
+				<td>{{userMsg.loginName }}</td>
+				<td><a (click)="updateGroup(updateGp,userMsg)">修改</a></td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+
+
+<!-- 新增群组 -->
+<div bsModal #addGp="bs-modal" class="modal fade modelPon" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" aria-label="Close" (click)="addGp.hide()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">新增群组服务</h4>
+            </div>
+            <div class="modal-body contentxinxi">
+                <div class="pp"><b style="color:red;float:left;line-height: 32px">*</b><span>用户组名称：</span><input [(ngModel)]="addGroup.groupName" (keyup)="changeName()" type="text" name=""><a *ngIf='!NameSer' (click)="duplicateName()">查询</a><span style="color: green;width:40px;float: right;margin-right: 40px " *ngIf="!NameRep&&NameSer">可用</span><span style="color:red;width:60px ;float: right;margin-right: 40px  "  *ngIf="NameRep&&NameSer">不可用</span></div>
+                <div class="pp"><b style="color:red;float:left;line-height: 32px">*</b><span>父级用户组：</span><select (change)="getFa()" class="selection" [(ngModel)]="addGroup.parentId" >
+				<option *ngFor="let fa of fatherData" [value]="fa.parentId" >{{fa.parentName}}</option>
+				</select></div>
+
+               <div class="pp"><b style="color:red;float:left;line-height: 32px">*</b><span>所含管理员：</span><select  [(ngModel)]="addGroup.empId">
+               <option *ngFor="let crm of AvailableUser" [value]="crm.empId">
+                   {{crm.loginName}}
+               </option></select></div>
+                <div class="btnstyle">
+                    <button type="button" class="btn btn-default btnhoverlan" (click)="addCustomerGroup(addGp)" [disabled]="!(!NameRep&&NameSer)">保存</button>
+                    <button type="button" class="btn btn-primary btnhoverju" (click)="addGp.hide()">取消</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 修改群组 -->
+<div bsModal #updateGp="bs-modal" class="modal fade modelPon" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" aria-label="Close" (click)="updateGp.hide()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">修改群组服务</h4>
+            </div>
+            <div class="modal-body contentxinxi">
+                <div class="pp"><b style="color:red;float:left;line-height: 32px">*</b><span>用户组名称：</span><input [(ngModel)]="nowGpInfo.groupName" (keyup)="changeName()" type="text" name=""><a *ngIf='!NameSer' (click)="duplicateNameSer()">查询</a><span style="color: green;width:40px;float: right;margin-right: 40px " *ngIf="!NameRep&&NameSer">可用</span><span style="color:red;width:60px ;float: right;margin-right: 40px  "  *ngIf="NameRep&&NameSer">不可用</span></div>
+                <div class="pp"><span>父级用户组：</span><input [(ngModel)]="nowGpInfo.parentName" disabled="disabled" type="text" name=""></div>
+               <div class="pp"><b style="color:red;float:left;line-height: 32px">*</b><span>所含管理员：</span><select [(ngModel)]="nowGpInfo.empId"> <option *ngFor="let crm of otherAvailableUser" [value]="crm.empId">
+                   {{crm.loginName}}
+               </option></select></div>
+                <div class="btnstyle">
+                    <button type="button" class="btn btn-default btnhoverlan" (click)="editGroup(updateGp)" [disabled]="!(!NameRep&&NameSer)">保存</button>
+                    <button type="button" class="btn btn-primary btnhoverju" (click)="updateGp.hide()">取消</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

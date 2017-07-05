@@ -1,0 +1,44 @@
+<div class="chatWindow" [style.zIndex]="zIndex">
+<div class="box box-warning direct-chat direct-chat-warning">
+    <div class="box-header with-border">
+        <h3 class="box-title">{{user.userId}}</h3>
+        <!--上面操作栏-->
+        <div class="box-tools pull-right">
+            <button type="button" class="btn btn-box-tool">
+                <i class="fa fa-minus"></i>
+            </button>
+            <button type="button" class="btn btn-box-tool" (click)="remove()">
+                <i class="fa fa-times"></i>
+            </button>
+        </div>
+    </div>
+    <div class="box-body">
+        <div class="direct-chat-messages" #msgListBox>
+            <div class="direct-chat-msg" *ngFor="let item of this.msgList" [ngClass]="{right: item.formId == userStatusService.customsImId}">
+                <div class="direct-chat-info clearfix">
+                    <span class="direct-chat-name">{{item.formId}}</span>
+                    <span class="direct-chat-timestamp">{{item.createTime}}</span>
+                </div>
+                <img class="direct-chat-img" [src]="item.formId == userStatusService.customsImId?'https://ss2.baidu.com/6ONYsjip0QIZ8tyhnq/it/u=3601710005,2478109961&fm=58':user.iconUrl"
+                     alt="message user image">
+                <div class="direct-chat-text">
+                    {{item.content}}&nbsp;
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="box-footer">
+        <form action="#" method="post">
+            <p>
+                <textarea name="message" placeholder="请输入发送内容" class="form-control" [(ngModel)]="sendText">
+                </textarea>
+            </p>
+            <div class="pull-right">
+                <button type="submit" class="btn btn-warning btn-flat"
+                        (click)="sendMsg(sendText); sendText = ''">发送
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+</div>

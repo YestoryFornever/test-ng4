@@ -1,0 +1,118 @@
+<div class="header clearfix">
+		<span class="head icon">|</span><span class="head" >用户金币详情</span>
+	<div class="btnHeader head">
+        <label type="button" class="btn btn-primary" (click)="exportExcelList()">导出</label>
+    </div>
+</div>
+
+
+<div class="screen .clearfix">
+		<div class="condition container-fluid">
+			<span>注册手机号</span><input req [(ngModel)]="default.phone" class="form-control">
+		</div>
+
+		<div class="condition container-fluid">
+			<span>选择日期</span>
+			<p-calendar [(ngModel)]="startDate" [maxDate]="endDate"   [locale]="en" [showTime]="false"></p-calendar>
+			<!-- <input class="selection"  type="date" [(ngModel)]="startDate"> -->
+			&nbsp;到&nbsp;
+			<p-calendar [(ngModel)]="endDate" [minDate]="startDate"   [locale]="en" [showTime]="fasle"></p-calendar>
+			<!-- <input class="selection" type="date" [(ngModel)]="endDate"> -->
+		</div>
+		<div class="condition container-fluid">
+			<span >排序内容</span><select  [(ngModel)]="default.orderBy" class="selection" value='updateTime'><option value='updateTime'>最后记录时间</option><option value='coinRemain'>金币余额</option><option value='income'>金币收入</option><option value='expenditure'>金币支出</option><option value='sysSend'>系统发放</option><option value='rechange'>用户充值</option><option value='sysBack'>系统扣除</option><option value='consume'>用户消费</option><option value='insideTransfer'>内部流转</option><option value='deductCoin'>运营扣除</option>
+			</select>
+		</div>
+		<div class="condition container-fluid">
+			<span >排序方式</span><select  [(ngModel)]="default.sortType" class="selection" value='DESC'><option value='ASC'>升序</option><option value='DESC'>降序</option></select>
+		</div>
+		<button class="condition btn btn-primary sub" (click)='changeFirstPage()'>查询</button>
+</div>
+<div class="tableList " style="overflow: inherit">		
+	<table class="table table-bordered table-hover " >
+		<thead >
+			<tr>
+				<!-- <td class="info longTxt">操作</td> -->
+				<td class="info middleTxt" > 注册手机号</td>
+				<td class="info ">用户姓名</td>
+				<td class="info">机构简称</td>
+				<td class="info">金币余额
+					<!-- <div class="orderClass">
+						<i #od1 class="fa fa-chevron-up ordered" aria-hidden="true" (click)="orderClick('coinRemain','ASE',od1)"></i>
+						<i #od2 class="fa fa-chevron-down ordered" aria-hidden="true" (click)="orderClick('coinRemain','DESC',od2)"></i>
+					</div> -->
+				</td>
+				<td class="info ">金币收入
+				
+				</td>
+				<td class="info ">金币支出
+					
+				</td>
+				<td class="info ">系统发放
+					
+				</td>
+				<td class="info ">用户充值
+					
+				</td>
+				<td class="info ">系统扣除
+					
+				</td>
+				<td class="info ">运营扣除
+					
+				</td>
+				<td class="info ">用户消费
+					
+				</td>
+				<td class="info ">内部流转</td>
+				<td class="info middleTxt">最后记录时间</td>
+			</tr>
+		</thead>
+		<tbody  id="list" *ngFor="let user of commentList">
+			<tr #userList class="Userlist" >
+				<td>{{user.phone}}</td>
+				 <td class="Card" id="card" (mouseenter)="getUserInfo(user.userId)" placement="right" style="overflow: inherit"><div [tooltip]="popTemplate" placement="right" style="width: 100%;height: 100%">{{user.userName}}</div></td>
+				<td>{{user.organizationName}}</td>
+				<td>{{user.coinRemain| numAddComma}}</td>
+				<td>{{user.income| numAddComma}}</td>
+				<td>{{user.expenditure| numAddComma}}</td>
+				<td>{{user.sysSend| numAddComma}}</td>
+				<td>{{user.rechange| numAddComma}}</td>
+				<td>{{user.sysBack| numAddComma}}</td>
+				<td>{{user.deductCoin| numAddComma}}</td>
+				<td>{{user.consume| numAddComma}}</td>
+				<td>{{user.insideTransfer| numAddComma}}</td>
+				<td>{{user.updateTime}}</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+<!-- pagination -->
+<div class="row pagerow">
+	<div class="pageshowleft">每页显示
+		<select #selectPage name="" id="msgNum" (change)="sizeData(selectPage.value,userList)" [(ngModel)]="itemsPerPage">
+			<option #optionPage  *ngFor="let msgNumber of msgNumbers" value={{msgNumber.Number}}>{{msgNumber.Number}}</option>
+		</select>
+		条数据
+	</div>
+	<div class="pageshowmodle">
+		<span>{{currentPage}} / {{totalPages}}</span>页
+		<span>{{totalItems}}条数据</span>
+	</div>
+
+	<div class="pagefen">
+		<pagination  [firstText]="firstText" [lastText]="lastText" [previousText]="previousText" [nextText]="nextText" [maxSize]="maxSize" [totalItems]="totalItems" [itemsPerPage]="itemsPerPage" [(ngModel)]="currentPage" [boundaryLinks]="true" (pageChanged)='pageChanged($event,allcheck)' (numPages)='pageNumChange($event)' class="pagination-sm"></pagination>
+	</div>
+</div>
+<ng-template #popTemplate>
+     <div class='cardBox'>
+	    <div class="card"><img class="imgCard" [src]="userInfod.businessCardUrl"></div>
+	    <div>
+	        <div class="userTitle">{{userInfod.userName}} {{userInfod.loginName}}</div>
+	        <div>
+	            <div class="userInfo">机构： {{userInfod.organizationFullName}}</div>
+	            <div class="userInfo">部门： {{userInfod.department}}</div>
+	            <div class="userInfo">职位： {{userInfod.position}}</div>
+	        </div>
+	    </div>
+	</div>
+</ng-template>

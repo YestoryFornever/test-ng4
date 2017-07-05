@@ -1,0 +1,37 @@
+.clearfix {
+	clear:both;
+	/*overflow: auto;*/
+	zoom: 1;
+}
+.btn{
+	border-radius: 0;
+	padding:5px 16px;
+}
+.btn-primary:hover{
+	background-color: #fb6300;
+	color: #fff;
+	border-color:#fb6300;
+}
+.btn-default:hover{
+	background-color: #337ab7;
+	color:#fff;
+	border-color:#2e6da4;
+}
+
+.header .mar_l10{
+	margin-left: 10px;
+}
+.header .icon{
+	font-size: 16px;
+	color:#f44336;
+}
+.header .head{
+	float: left;
+}
+.header .btnHeader{
+	height: 32px;
+	margin-left: 50px;
+}
+.header .btnHeader .btn{
+	margin-right: 10px;
+}

@@ -1,0 +1,4 @@
+<div class="btn-group btnborder">
+	<label class="btn btn-mint" btnRadio='0'  [(ngModel)]="allChecked" (click)="clickAll()">{{allName}}</label>
+	<label class="btn btn-mint" btnCheckbox  *ngFor=" let item of btnsPattern" [(ngModel)]="item['check']" (ngModelChange)="clickOther(item['check'])">{{item.name}}</label>
+</div>

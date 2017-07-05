@@ -1,0 +1,246 @@
+<div class="header clearfix">
+	<span class="head icon">|</span><span class="head">礼品管理</span>
+	<div class="btnHeader head">
+		<button class="btn btn-primary" (click)="onShow(addGoods,input)">添加礼品</button>
+	</div>
+</div>
+<!-- 标题行 -->
+<div class="row rowtop2">
+	<div>
+		<div class="condition">
+			<span>礼品归属</span>
+			<!-- 复选 -->
+			<!-- <div class="btn-group btnborder">
+							<button class="btn btn-mint "  [(ngModel)]="checkUseredTypeAll" btnRadio="checked" (click)="checkUseredAll()" >全部</button>
+							 <button class="btn btn-mint "
+							 [(ngModel)]="checkUseredTypeAll" btnRadio="noCheck" style="display:none">其他</button>
+							<button class="btn btn-mint" [(ngModel)]="checkUseredType.a101"
+							 btnCheckbox   (click)="checkUseredSingle()" #shangCheng>商城</button>
+							<button class="btn btn-mint" [(ngModel)]="checkUseredType.b102"
+							 btnCheckbox  (click)="checkUseredSingle()" #liaoTian>聊天对话</button>
+						</div> -->
+			<!-- 单选 -->
+			<div class="btn-group btnborder">
+				<button class="btn btn-mint" [(ngModel)]="default.usedType" (click)="defaultFn()" btnRadio="">全部</button>
+				<button class="btn btn-mint" [(ngModel)]="default.usedType" (click)="defaultFn()" btnRadio="101">商城</button>
+				<button class="btn btn-mint" [(ngModel)]="default.usedType" (click)="defaultFn()" btnRadio="102">聊天对话</button>
+				<button class="btn btn-mint" [(ngModel)]="default.usedType" (click)="defaultFn()" btnRadio='103'>加好友</button>
+			</div>
+		</div>
+		<div class="condition">
+			<span>礼品属性</span>
+			<!-- 复选 -->
+			<!-- <div class="btn-group btnborder">
+							<button class="btn btn-mint "  [(ngModel)]="checkGoodsTypeAll" btnRadio="checked" (click)="checkGoodsAll()" >全部</button>
+							 <button class="btn btn-mint "
+							 [(ngModel)]="checkGoodsTypeAll" btnRadio="noCheck" style="display:none">其他</button>
+
+							<button class="btn btn-mint"  [(ngModel)]="checkGoodsType.a101"
+							 btnCheckbox (click)="checkGoodsSingle()" #shiTi>实体</button>
+							<button class="btn btn-mint"  [(ngModel)]="checkGoodsType.b102"
+							 btnCheckbox (click)="checkGoodsSingle()"   #xuNi>虚拟</button>
+							 <button class="btn btn-mint"  [(ngModel)]="checkGoodsType.c103"
+							 btnCheckbox (click)="checkGoodsSingle()" #biaoqing >表情</button>
+						</div> -->
+			<!-- 单选 -->
+			<div class="btn-group btnborder">
+				<button class="btn btn-mint" [(ngModel)]="default.goodsType" btnRadio="">全部</button>
+				<button class="btn btn-mint" [(ngModel)]="default.goodsType" [attr.disabled]='( default.usedType =="102" || default.usedType =="103" )? true : null ' btnRadio='101'>实体</button>
+				<button class="btn btn-mint" [(ngModel)]="default.goodsType" [attr.disabled]='( default.usedType =="102" || default.usedType =="103" )? true : null ' btnRadio='102'>虚拟</button>
+				<button class="btn btn-mint" [(ngModel)]="default.goodsType" [attr.disabled]=' default.usedType =="101" ? true : null ' btnRadio='103'>表情</button>
+				<button class="btn btn-mint" [(ngModel)]="default.goodsType"[attr.disabled]='( default.usedType =="102" || default.usedType =="103" )? true : null '  btnRadio='104'>游戏币</button>
+			</div>
+		</div>
+		<div class="condition">
+			<span>状态</span>
+			<div class="btn-group btnborder">
+				<label class="btn btn-mint " [(ngModel)]="default.isEnabled" btnRadio="">全部</label>
+				<label class="btn btn-mint" [(ngModel)]="default.isEnabled" btnRadio="1">正常</label>
+				<label class="btn btn-mint" [(ngModel)]="default.isEnabled" btnRadio="0">已删除</label>
+			</div>
+		</div>
+	</div>
+	<button class="condition btn btn-primary " (click)="onSubmit()">查询</button>
+</div>
+<!-- table-list -->
+<div class=" clearfix wrap">
+	<div class="tableList ">
+		<table class="table table-bordered table-hover ">
+			<thead>
+				<tr>
+					<td class="info">操作</td>
+					<td class="info" (click)="searchgoodslist('name')">礼品名称</td>
+					<!-- (click)="getOrd('name')" -->
+					<td class="info">礼品图片</td>
+					<td class="info">礼品描述</td>
+					<td class="info">礼品价格</td>
+					<td class="info">礼品归属</td>
+					<td class="info ">礼品属性</td>
+					<td class="info" (click)="searchgoodslist('count')">已发数量</td>
+					<!-- (click)="getOrd('count')" -->
+					<td class="info">添加用户</td>
+					<td class="info"  (click)="searchgoodslist('createTime')"></td>
+					<!--(click)="getOrd('createTime')"-->
+					<td class="info">状态</td>
+				</tr>
+			</thead>
+			<tbody #XXX id="list">
+				<tr #userList class="Userlist" *ngFor="let list of goodsLists">
+					<td class="table-hover"><a *ngIf="list.isEnabled=='正常'" (click)="getGoodsId(goodsDown,list.goodsId)">删除</a><a *ngIf="list.isEnabled=='已删除'" style="color:#ccc">删除</a></td>
+					<td class="table-hover">{{list.name}}</td>
+					<td class="table-hover">
+						<a class="hoverDisplay">查看
+						   <!--  <div>
+								<img src="{{list.imageUrl}}" *ngIf="list.imageUrl==true" alt="">
+							</div> -->
+							<div>
+								<img [src]=list.imageUrl *ngIf="list.imageUrl" alt="">
+							</div>
+						</a>
+					</td>
+					<td class="table-hover">{{list.description}}</td>
+					<td class="table-hover ">{{list.priceCoin}}</td>
+					<td class="table-hover">{{list.usedType }}</td>
+					<td class="table-hover">{{list.goodsType}}</td>
+					<td class="table-hover shortTxt">{{list.count}}</td>
+					<td class="table-hover">{{list.createUserName}}</td>
+					<td class="table-hover">{{list.createTime}}</td>
+					<td class="table-hover">{{list.isEnabled}}</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+<!--分页!-->
+<div class="row pagerow">
+	<div class="pageshowleft">每页显示
+		<select #selectPage name="" id="msgNum" (change)="sizeData(selectPage.value,userList)">
+			<option #optionPage *ngFor="let msgNumber of msgNumbers" value={{msgNumber.Number}}>{{msgNumber.Number}}</option>
+		</select>
+		条数据
+	</div>
+	<div class="pageshowmodle">
+		<span>{{currentPage}} / {{totalPages}}</span>页
+		<span>{{totalItems}}条数据</span>
+	</div>
+	<div class="pagefen">
+		<pagination [firstText]="firstText" [lastText]="lastText" [previousText]="previousText" [nextText]="nextText" [maxSize]="maxSize" [totalItems]="totalItems" [itemsPerPage]="itemsPerPage" [(ngModel)]="currentPage" [boundaryLinks]="true" (pageChanged)='pageChanged($event,allcheck)' (numPages)='pageNumChange($event)' class="pagination-sm"></pagination>
+	</div>
+</div>
+<!-- 添加商品弹窗 -->
+<div bsModal #addGoods="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" (click)="addGoods.hide()" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<h4 class="modal-title">添加礼品</h4>
+			</div>
+			<div class="modal-body ">
+				<form class="form-horizontal" role="form">
+					<div id="gift_info_left" class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+						<div class="form-group">
+							<label for="name" class="col-lg-3 col-md-3 col-sm-3 col-xs-3 control-label"><span class="red">*</span>礼品名称</label>
+							<div class="col-lg-9 col-md-9 col-sm-9 col-xs-9">
+								<input type="text" req [(ngModel)]="goodsInfo.name" class="form-control" name="name" placeholder="请输入礼品名称">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="description" class="col-lg-3 col-md-3 col-sm-3 col-xs-3 control-label">礼品描述</label>
+							<div class="col-lg-9 col-md-9 col-sm-9 col-xs-9">
+								<textarea [(ngModel)]="goodsInfo.description" name="description" class="form-control" placeholder="请输入商品描述"></textarea>
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="priceCoin" class="col-lg-3 col-md-3 col-sm-3 col-xs-3 control-label"><span class="red">*</span>礼品价格</label>
+							<div class="col-lg-9 col-md-9 col-sm-9 col-xs-9">
+								<input type="number" [disabled]="isDIsable" [(ngModel)]="goodsInfo.priceCoin" req min="0" name="priceCoin" class="form-control" placeholder="请输入价格">
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-lg-3 col-md-3 col-sm-3 col-xs-3 control-label"><span class="red">*</span>礼品归属</label>
+							<div class="col-lg-9 col-md-9 col-sm-9 col-xs-9">
+								<div class="btn-group btnborder" #used>
+									<button for="usedType" (click)=' myFn("1")' class="btn btn-mint " name="usedType" [(ngModel)]=" goodsInfo.usedType" btnRadio="101" #useA>商城</button>
+									<button class="btn btn-mint" name="usedType" [(ngModel)]=" goodsInfo.usedType" btnRadio="102" (click)=' myFn("2")' #useB>聊天对话</button>
+									<button class="btn btn-mint" name="usedType" [(ngModel)]="goodsInfo.usedType" btnRadio="103" (click)=' myFn("2")'>加好友</button>
+								</div>
+							</div>
+						</div>
+						<div class=" form-group">
+							<label class="col-lg-3 col-md-3 col-sm-3 col-xs-3 control-label"><span class="red">*</span>礼品属性</label>
+							<div class="col-lg-9 col-md-9 col-sm-9 col-xs-9">
+								<div class="btn-group btnborder" #goods (click)="isGaming()">
+									<button class="btn btn-mint " name="goodsType" [attr.disabled]='( goodsInfo.usedType =="102" || goodsInfo.usedType =="103" )? true : null ' [(ngModel)]="goodsInfo.goodsType" btnRadio="101">实体 </button>
+									<button [attr.disabled]='( goodsInfo.usedType =="102" || goodsInfo.usedType =="103" )? true : null ' class="btn btn-mint" name="goodsType" [(ngModel)]=" goodsInfo.goodsType" btnRadio="102" #goodsB>虚拟</button>
+									<button [attr.disabled]=' goodsInfo.usedType =="101" ? true : null ' class="btn btn-mint" name="goodsType" [(ngModel)]="goodsInfo.goodsType" btnRadio="103" #goodsC>表情</button>
+									<button [attr.disabled]='( goodsInfo.usedType =="102" || goodsInfo.usedType =="103" )? true : null ' class="btn btn-mint" name="goodsType" [(ngModel)]="goodsInfo.goodsType" btnRadio="104" #goodsC>游戏币</button>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div id="gift_info_right" class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+						<div class="form-group">
+							<label for="LOGO" class="col-lg-3 col-md-3 col-sm-3 col-xs-3 control-label"><span class="red">*</span>礼品图片</label>
+							<input type="file" name="LOGO" id="LOGO" (change)="fileChange(input,thumbnail,$event)" #input />
+							<!-- multiple -->
+							<div id="thumbnail" class="file-upload-thumbnail" #thumbnail>
+								<img [src]="PictureShow" *ngIf="PictureShow" #img>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+						<button type="button" class="btn btn-primary pull-right btn-space marL20" (click)="onSave(goodsPicture,addGoods)">保存</button>
+						<button type="button" class="btn btn-default pull-right btn-space" (click)="cancelLogo(addGoods)">取消</button>
+					</div>
+					<div style="clear:both;"></div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- 下架 弹窗 -->
+<div bsModal #goodsDown="bs-modal" class="modal fade modelPon" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-sm ">
+		<div class="modal-content ">
+			<div class="modal-header ">
+				<button type="button" class="close" aria-label="Close" (click)="goodsDown.hide()">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<h4 class="modal-title">删除</h4>
+			</div>
+			<div class="modal-body  ">
+				<div class="cont ">
+					确认要删除该礼品？？？
+				</div>
+				<div class="btnstyle">
+					<button type="button" class="btn btn-default btnhoverlan" (click)="goodsDown.hide()">取消</button>
+					<button type="button" class="btn btn-primary btnhoverju" (click)="goodsIdDown(goodsDown)">确认</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- 提示框 -->
+<div bsModal #saveSuccess="bs-modal" class="modal fade modelPon" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-sm ">
+		<div class="modal-content ">
+			<div class="modal-header ">
+				<button type="button" class="close" aria-label="Close" (click)="saveSuccess.hide()">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<h4 class="modal-title">下架</h4>
+			</div>
+			<div class="modal-body  ">
+				<div class="cont ">
+					确认要下架该商品？？？
+				</div>
+				<div class="btnstyle">
+					<button type="button" class="btn btn-default btnhoverlan" (click)="saveSuccess.hide()">取消</button>
+					<button type="button" class="btn btn-primary btnhoverju" (click)="saveSuccess(goodsDown)">确认</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

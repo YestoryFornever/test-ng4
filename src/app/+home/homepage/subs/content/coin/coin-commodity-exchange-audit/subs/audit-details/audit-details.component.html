@@ -1,0 +1,272 @@
+<div class="header clearfix">
+    <span class="head icon">|</span><span class="head">兑换订单详情-<i style="color :red; font-style:normal;">{{info.status}}</i>	</span>
+    <div class="btnHeader head">
+        <button class=" btn btn-primary sub" *ngIf="info.status=='等待审核'" (click)="showBox(pass)">通过申请</button>
+        <button class=" btn btn-primary sub" *ngIf="info.status=='等待发货'" (click)="sureBoxShow(sureSendBox)">确认发货</button>
+        <button class=" btn btn-primary sub" *ngIf="(info.status=='等待审核' || info.status=='等待发货' )" (click)="unPassAlert(unPass)">拒绝申请</button>
+        <button class=" btn btn-primary sub" *ngIf="info.status=='已发货'" (click)="sureBoxShow(changeInfo)">更改订单信息</button>
+        <button class=" btn btn-primary sub" *ngIf="info.status=='已发货'" (click)="sureComplateBox(complate)">确认完成</button>
+    </div>
+</div>
+<div class="screen .clearfix">
+    <h5 class="screenTop">订单详情</h5>
+    <div class="detailLeft">
+        <table border="0" cellspacing="0" cellpadding="0" style="width: 100%;">
+            <tr height="50">
+                <td align="right" width="100">订单号&nbsp;</td>
+                <td>&nbsp;{{info.orderNumber }}</td>
+            </tr>
+            <tr height="50">
+                <td align="right">订单状态&nbsp;</td>
+                <td>&nbsp;<span class="waitCheckTab" style="color :red; ">{{info.status}}</span></td>
+            </tr>
+            <tr height="50">
+                <td align="right">备注&nbsp;</td>
+                <td>&nbsp;{{info.remarks }}</td>
+            </tr>
+            <tr height="50">
+                <td align="right">商品名称&nbsp;</td>
+                <td>&nbsp;{{info.goodsName}}</td>
+            </tr>
+            <tr height="50">
+                <td align="right">商品价格&nbsp;</td>
+                <td>&nbsp;{{info.totalCoin}}</td>
+            </tr>
+            <!-- 需求变更  -->
+            <tr height="50">
+                <td align="right"><span class="red"> * </span>收货人&nbsp;</td>
+                <td>&nbsp;
+                    <input class="selection" [disabled]=" (info.status=='拒绝申请' || info.status=='已完成')" type="text" [(ngModel)]=" info.receiptName" />
+                </td>
+            </tr>
+            <tr height="50" *ngIf=" info.goodsType=='实体'">
+                <td align="right"><span class="red"> * </span>收货地址&nbsp;</td>
+                <td>&nbsp;
+                    <textarea name="" rows="5" cols="35" [disabled]="(info.status=='拒绝申请' || info.status=='已完成')" [(ngModel)]="info.receiptAddress "></textarea>
+                </td>
+            </tr>
+            <tr height="50">
+                <td align="right"><span class="red"> * </span>手机号&nbsp;</td>
+                <td>&nbsp;
+                    <input class="selection" type="text" [disabled]=" (info.status=='拒绝申请' || info.status=='已完成')" [(ngModel)]=" info.receiptPhone  " />
+                </td>
+            </tr>
+            <tr height="50">
+                <td align="right"> </td>
+                <td></td>
+            </tr>
+            <tr height="50" *ngIf="( info.goodsType=='实体' && ( info.status=='已发货' || info.status=='等待发货' || info.status=='已完成') )">
+                <td align="right"><span class="red"> * </span>物流商&nbsp;</td>
+                <td>&nbsp;
+                    <select class="selection" [disabled]=" (info.status=='拒绝申请' || info.status=='已完成')" [(ngModel)]=" info.logisticName">
+                        <!-- <option value="">请选择物流商</option> -->
+                        <option *ngFor="let list of KuaiDis" [value]="list.businName">{{list.businName}}</option>
+                    </select>
+                </td>
+            </tr>
+            <tr height="50" *ngIf="( info.goodsType=='实体' && ( info.status=='已发货' || info.status=='等待发货' || info.status=='已完成') )">
+                <td align="right"><span class="red"> * </span>运单号&nbsp;</td>
+                <td>&nbsp;
+                    <input class="selectionLong" type="text" [disabled]=" (info.status=='拒绝申请' || info.status=='已完成')" [(ngModel)]="info.logisticCode" placeholder="请输入运单号" />
+                    <label class="btn btn-primary" *ngIf="(info.status=='已发货' || info.status=='已完成')" (click)='showTable(wuLiuShang,$event)'>查看物流信息</label>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div class="detailRight">
+        <table border="0" cellspacing="0" cellpadding="0" style="width: 100%;">
+            <tr height="50">
+                <td align="right">注册手机号&nbsp;</td>
+                <td>&nbsp;{{info.phone}}</td>
+            </tr>
+            <tr height="50">
+                <td align="right" width="100">姓名&nbsp;</td>
+                <td>&nbsp;{{info.userName}}
+                    <button class="btn2" (click)="toCoinDetail(info.phone)">查看金币记录</button>
+                </td>
+            </tr>
+            <tr height="50">
+                <td align="right" width="100">机构简称&nbsp;</td>
+                <td>&nbsp;{{info.organizationFullName}}</td>
+            </tr>
+            <tr height="50">
+                <td align="right" width="100">部门&nbsp;</td>
+                <td>&nbsp;{{info.department }}</td>
+            </tr>
+            <tr height="50">
+                <td align="right" width="100">职位&nbsp;</td>
+                <td>&nbsp;{{info.position }}</td>
+            </tr>
+            <tr height="50">
+                <td align="right" width="100">联系电话&nbsp;</td>
+                <td>&nbsp;{{info.contactPhone }}</td>
+            </tr>
+            <tr height="50">
+                <td align="right" width="100">工作电话&nbsp;</td>
+                <td>&nbsp;{{info.workPhone }}</td>
+            </tr>
+            <tr height="50">
+                <td align="right" width="100">公司邮箱&nbsp;</td>
+                <td>&nbsp;{{info.companyMail }}</td>
+            </tr>
+            <tr height="50">
+                <td align="right" width="100">工作地址&nbsp;</td>
+                <td>&nbsp;{{info.workAddress }}</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<!-- 物流商 -->
+<div class="tableList " [hidden]="true" #wuLiuShang name='wuLiuShang'>
+    <table class="table table-bordered table-hover ">
+        <thead>
+            <tr>
+                <td class="info longTxt">物流详情(当前物流商：{{info.logisticName}}，当前运单号：{{info.logisticCode}})</td>
+            </tr>
+        </thead>
+        <tbody *ngFor="let list of companyList ">
+            <tr>
+                <td><span style="width:20%;display: inline-block;">{{list.acceptTime }} </span><span style="width:80%;display: inline-block;"> <p>{{list.acceptStation }}</p></span></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<!-- list -->
+<div class="tableList " >
+    <table class="table table-bordered table-hover ">
+        <thead>
+            <tr>
+                <td class="info longTxt">操作用户</td>
+                <td class="info longTxt">操作时间</td>
+                <td class="info longTxt">操作</td>
+            </tr>
+        </thead>
+        <tbody *ngFor="let list of logList">
+            <tr>
+                <td>{{list.operateName }}</td>
+                <td>{{list.operateTime }}</td>
+                <td>{{list.operate }}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<!-- 通过申请弹窗 -->
+<div bsModal #pass="bs-modal" class="modal fade modelPon" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-ms myModal">
+        <div class="modal-content ">
+            <div class="modal-header myTitle">
+                <button type="button" class="close" aria-label="Close" (click)="pass.hide()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title ">通过申请</h4>
+            </div>
+            <div class="modal-body  ">
+                <div class="cont ">
+                    <h4> 是否确认将本订单通过审核</h4>
+                </div>
+                <div style="clear:both"></div>
+                <div class="btnstyle myBtnStyle">
+                    <button type="button" class="btn btn-pass btnhoverlan " (click)="pass.hide()">取消</button>
+                    <button type="button" class="btn btn-primary btnhoverju " (click)="passRequest(pass)">确认</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 拒绝申请弹窗 -->
+<div bsModal #unPass="bs-modal" class="modal fade " tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-ms   unPassModal">
+        <div class="modal-content ">
+            <div class="modal-header myTitle">
+                <button type="button" class="close" (click)="unPass.hide()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">拒绝申请</h4>
+            </div>
+            <div class="modal-body unPassBody">
+                <!-- <div class="col-xs-12"> -->
+                    <span class="col-xs-3 myPadding"><i class="red"> * </i>拒绝理由</span>
+                    <span class="col-xs-9 myPadding" style="text-align: left;color: #ccc;">拒绝理由会发送给用户</span>
+                    <div class="form-inline col-xs-9 pull-right">
+                        <textarea class="pp unPassTex form-control" [(ngModel)]="unPassInfo.reason" req placeholder="请输入拒绝理由"></textarea>
+                    </div>
+                <!-- </div> -->
+                <div style="clear:both"></div>
+                <div class="btnstyle">
+                    <button type="button" class="btn btn-primary btnhoverju pull-right" (click)="unPassRequest(unPass)">提交</button>
+                    <button type="button" class="btn btn-default btnhoverlan marR pull-right" (click)="cancle(unPass)">取消</button>
+                    <div style="clear:both"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 确认发货 -->
+<div bsModal #sureSendBox="bs-modal" class="modal fade modelPon" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-ms myModal">
+        <div class="modal-content ">
+            <div class="modal-header myTitle">
+                <button type="button" class="close" aria-label="Close" (click)="sureSendBox.hide()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title ">确认发货</h4>
+            </div>
+            <div class="modal-body  ">
+                <div class="cont ">
+                    <h4> 是否确认发货</h4>
+                </div>
+                <div style="clear:both"></div>
+                <div class="btnstyle myBtnStyle">
+                    <button type="button" class="btn btn-pass btnhoverlan " (click)="sureSendBox.hide()">取消</button>
+                    <button type="button" class="btn btn-primary btnhoverju " (click)="sureSend(sureSendBox)">确认</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 更改信息 -->
+<div bsModal #changeInfo="bs-modal" class="modal fade modelPon" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-ms myModal">
+        <div class="modal-content ">
+            <div class="modal-header myTitle">
+                <button type="button" class="close" aria-label="Close" (click)="changeInfo.hide()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title ">更新订单信息</h4>
+            </div>
+            <div class="modal-body  ">
+                <div class="cont ">
+                    <h4> 是否更新订单信息</h4>
+                </div>
+                <div style="clear:both"></div>
+                <div class="btnstyle myBtnStyle">
+                    <button type="button" class="btn btn-pass btnhoverlan " (click)="changeInfo.hide()">取消</button>
+                    <button type="button" class="btn btn-primary btnhoverju " (click)="changSendInfo(changeInfo)">确认</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 确认完成 -->
+<div bsModal #complate="bs-modal" class="modal fade modelPon" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-ms myModal">
+        <div class="modal-content ">
+            <div class="modal-header myTitle">
+                <button type="button" class="close" aria-label="Close" (click)="complate.hide()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title ">确认完成</h4>
+            </div>
+            <div class="modal-body  ">
+                <div class="cont ">
+                    <h4> 是否确认完成</h4>
+                </div>
+                <div style="clear:both"></div>
+                <div class="btnstyle myBtnStyle">
+                    <button type="button" class="btn btn-pass btnhoverlan " (click)="complate.hide()">取消</button>
+                    <button type="button" class="btn btn-primary btnhoverju " (click)="sureComplate(complate)">确认</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

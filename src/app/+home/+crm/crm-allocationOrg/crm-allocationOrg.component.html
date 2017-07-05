@@ -1,0 +1,392 @@
+<div class="header box">
+	<span class="head icon">|</span>
+	<span class="head">分配机构</span>
+	<div class="btnHeader head">
+		<button class="btn btn-default" (click)="turnToList()">返回</button>
+		<button class="btn btn-primary" (click)="delMores(delMore)">移除选中</button>
+		<button class="btn btn-primary" (click)="deleteAlls(delAll)">移除所有</button>
+		<button class="btn btn-primary" (click)="addMores(addMore)">添加选中</button>
+		<button class="btn btn-primary" (click)="addAlls(addAll)">添加所有</button>
+		<button class="btn btn-primary" (click)="moveShow(move)">转移选中</button>
+		<button class="btn btn-primary" (click)="moveAlls(moveAll)">转移所有</button>
+		<button class="btn btn-primary" (click)="orgLvShow(orgLv)">关注度</button>
+       
+	</div>
+     <div class="red" style="width: 200px;float: right;margin-top: 20px">{{userName}}  共计 5 家机构</div>
+</div>
+<main>
+	<div class="condition-container box" style="min-width:580px;">
+		<div class="condition">
+			<label for="fullname" class="text-right">机构全称</label>
+			<div class="condition-input">
+				<input  type="text" class="form-control" #company name="company" autocomplete="off"
+								[(ngModel)]="default.company"
+								(typeaheadOnSelect)="orgsOnSelect($event)"
+								[typeaheadOptionField]="'organizationFullName'"
+								[typeahead]="fullnameTypeAhead.source"
+								[typeaheadOptionsLimit]="10"
+								[typeaheadWaitMs]="200" 
+								(blur)="blurCompany(company,$event)"
+								(change)="changeCompany(company,$event)">
+			</div>
+		</div>
+		<div class="condition" >
+			<label for="fullname" class="text-right">分配状态</label>
+			<div class="condition-input">
+				<select class="form-control" [(ngModel)]="default.allotState">
+					<option value="2">全部</option>
+					<option value="1">已分配</option>
+					<option value="0">未分配</option>
+				</select>
+			</div>
+		</div>
+		<div class="condition">
+			<label for="fullname" class="text-right">机构分类</label>
+			<div class="condition-input">
+	           		<select name=""  class="form-control twoContact" [(ngModel)]="orgCondition.c1" (change)="getOrgCate2($event)">
+						<option value="" selected>全部</option>
+						<option value="{{org1.organizationCategoryId}}" *ngFor="let org1 of orgCate1">{{org1.categoryName}}</option>
+					</select>
+					<select [disabled]="!orgCate2" name=""  class="form-control twoContact" [(ngModel)]="orgCondition.c2">
+						<option value="" selected>全部</option>
+						<option value="{{org2.organizationCategoryId}}" *ngFor="let org2 of orgCate2">{{org2.categoryName}}</option>
+					</select>
+			</div>
+		</div>
+		<div class="condition">
+			<label for="fullname" class="text-right">所在地</label>
+			<div class="condition-input">
+				 <SELECT class="form-control twoContact"  name="sheng" id="to_cn" #city (change)="set_city(city)" > 
+						<option value=''>请选择</option> 
+						<option *ngFor="let item of provList" [value]="item.name">{{item.name}}</option>
+						
+					</SELECT>
+					<select id="city"  name="shi" class="form-control twoContact" (change)="con_city()"> 
+						<option value=''>请选择</option> 
+					</select> 
+			</div>
+		</div>
+		<div class="condition">
+			<label for="fullname" class="text-right">关注度</label>
+			<div class="condition-input">
+				<select class="form-control" [(ngModel)]="default.conType">
+					<option value="4">全部</option>
+					<option value="1">重要</option>
+					<option value="2">一般</option>
+					<option value="3">无关</option>
+				</select>
+			</div>
+		</div>
+		<div class="btns">
+            <div class="condition-btn">
+                <button class="btn btn-primary sub" (click)="turnFirst()">查询</button>    
+            </div>
+        </div>
+        <div style="clear:both;"></div>
+	</div>
+<div class="tableList box">		
+	<table class="table table-bordered table-hover " >
+		<thead >
+			<tr class="ltr">
+				<td style="width: 50px"><input [(ngModel)]="allchecked"  #allcheck type="checkbox" name="allCheck"  (change)="checkAll(allcheck)"></td>
+				<td class="table-hover" >操作</td>
+				<td class="table-hover" >分配状态
+					<div class="order"><button class="fa fa-chevron-up" aria-hidden="true" (click)="Order('source','asc')"></button><button class="fa fa-chevron-down"  aria-hidden="true" (click)="Order('source','desc')"></button></div>	
+				<td class="table-hover" >机构全称</td>
+				<td class="table-hover" >机构简称
+					<div class="order"><button class="fa fa-chevron-up" aria-hidden="true" (click)="Order('op_uid','asc')"></button><button class="fa fa-chevron-down"  aria-hidden="true" (click)="Order('op_uid','desc')"></button></div>
+				</td>
+				<td class="table-hover" >机构分类1
+					<div class="order"><button class="fa fa-chevron-up" aria-hidden="true" (click)="Order('op_uid','asc')"></button><button class="fa fa-chevron-down"  aria-hidden="true" (click)="Order('op_uid','desc')"></button></div>	
+				</td>
+				<td class="table-hover" >机构分类2	
+					<div class="order"><button class="fa fa-chevron-up" aria-hidden="true" (click)="Order('release_time','asc')"></button><button class="fa fa-chevron-down"  aria-hidden="true" (click)="Order('release_time','desc')"></button></div>
+				</td>
+				<td class="table-hover" >机构所在地
+					<div class="order"><button class="fa fa-chevron-up" aria-hidden="true" (click)="Order('like_cnt','asc')"></button><button class="fa fa-chevron-down"  aria-hidden="true" (click)="Order('like_cnt','desc')"></button></div>	
+				</td>
+				<td class="table-hover" >关注度	
+					<div class="order"><button class="fa fa-chevron-up" aria-hidden="true" (click)="Order('view_num','asc')"></button><button class="fa fa-chevron-down"  aria-hidden="true" (click)="Order('view_num','desc')"></button></div>
+				</td>
+				<td class="table-hover" style="width: 112px">备注</td>
+			</tr>
+		</thead>
+		<tbody id="list" >
+			<tr *ngFor="let item of orgList">
+				<td><input  type="checkbox" #listState name="user" (click)="typingInfo()" ></td>
+				<td><a  (click)="addShow(add,item)" *ngIf="item.allotState==0">添加</a> <a *ngIf="item.allotState==1" (click)="delShow(del,item)">移除</a></td>
+                <td>{{item.allotState+''|orgAllocationType}}</td>
+                <td>{{item.organiationFullName}}</td>
+                <td>{{item.organizationShortName}}</td>
+                <td>{{item.firstCategoryName }}</td>
+                <td>{{item.secondCategoryName}}</td>
+                <td style="text-align: center">{{item.province}}--{{item.city }}</td>
+                <td>{{item.conType+''|conType}}</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+
+<page [(pageObj)]="pageParams" (fnParent)="initAllotOrgPage()"></page>
+</main>
+<!-- 移除机构 -->
+<div bsModal #del="bs-modal" class="modal fade modelPon" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content clearfix" >
+            <div class="modal-header">
+                <button type="button" class="close" aria-label="Close" (click)="del.hide()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">移除机构</h4>
+            </div>
+            <div class="modal-body contentxinxi">
+                 <div class="condition" style="height: 70px">
+                    <label for="fullname" class="text-right">转移信息</label>
+                    <div class="condition-input">
+                       <span>将【{{userName}}】所辖机构【{{Info.orgName}}】移除吗？</span>
+                    </div>
+                </div>
+            </div>
+             <div class="right-fluid">
+                <button  type="button" class="btn btn-primary" (click)="removeOrgList(del)">确定</button><button  type="button" class="btn btn-default" (click)="del.hide()">取消</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 添加机构 -->
+<div bsModal #add="bs-modal" class="modal fade modelPon" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content clearfix" >
+            <div class="modal-header">
+                <button type="button" class="close" aria-label="Close" (click)="add.hide()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">添加机构</h4>
+            </div>
+            <div class="modal-body contentxinxi">
+                 <div class="condition" style="height: 70px">
+                    <label for="fullname" class="text-right">转移信息</label>
+                    <div class="condition-input">
+                       <span>将【{{Info.orgName}}】加入【{{userName}}】管辖吗</span>
+                    </div>
+                </div>
+            </div>
+             <div class="right-fluid">
+                <button  type="button" class="btn btn-primary" (click)="addAllot(add)">确定</button><button  type="button" class="btn btn-default" (click)="add.hide()">取消</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 移除多个机构 -->
+<div bsModal #delMore="bs-modal" class="modal fade modelPon" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content clearfix" >
+            <div class="modal-header">
+                <button type="button" class="close" aria-label="Close" (click)="delMore.hide()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">移除机构</h4>
+            </div>
+            <div class="modal-body contentxinxi">
+                 <div class="condition" style="height: 70px">
+                    <label for="fullname" class="text-right" style="vertical-align:top">移除信息</label>
+                    <div class="condition-input">
+                       <span style="width:255px">将【{{userName}}】所辖{{approveY.length}}个已分配机构移除吗？</span>
+                    </div>
+                </div>
+            </div>
+             <div class="right-fluid">
+                <button  type="button" class="btn btn-primary" (click)="removeOrgList(delMore)">确定</button>
+                <button  type="button" class="btn btn-default" (click)="delMore.hide()">取消</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 添加所有机构 -->
+<div bsModal #addAll="bs-modal" class="modal fade modelPon" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content clearfix" >
+            <div class="modal-header">
+                <button type="button" class="close" aria-label="Close" (click)="addAll.hide()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">添加机构</h4>
+            </div>
+            <div class="modal-body contentxinxi">
+                 <div class="condition" style="height: 70px">
+                    <label for="fullname" class="text-right" style="vertical-align:top">添加信息</label>
+                    <div class="condition-input">
+                       <span style="width: 250px;">将查询到的所有未分配机构加入【{{userName}}】管辖吗</span>
+                    </div>
+                </div>
+            </div>
+             <div class="right-fluid">
+                <button  type="button" class="btn btn-primary" (click)="addAllot(addAll)">确定</button>
+                <button  type="button" class="btn btn-default" (click)="addAll.hide()">取消</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 移除所有机构 -->
+<div bsModal #delAll="bs-modal" class="modal fade modelPon" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content clearfix" >
+            <div class="modal-header">
+                <button type="button" class="close" aria-label="Close" (click)="delAll.hide()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">添加机构</h4>
+            </div>
+            <div class="modal-body contentxinxi">
+                 <div class="condition" style="height: 70px">
+                    <label for="fullname" class="text-right" style="vertical-align:top">移除信息</label>
+                    <div class="condition-input">
+                       <span style="width: 250px;">将查询到的所有已经分配机构移出【{{userName}}】管辖吗？</span>
+                    </div>
+                </div>
+            </div>
+             <div class="right-fluid">
+                <button  type="button" class="btn btn-primary" (click)="removeOrgList(delAll)">确定</button>
+                <button  type="button" class="btn btn-default" (click)="delAll.hide()">取消</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 添加多个机构 -->
+<div bsModal #addMore="bs-modal" class="modal fade modelPon" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content clearfix" >
+            <div class="modal-header">
+                <button type="button" class="close" aria-label="Close" (click)="addMore.hide()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">添加机构</h4>
+            </div>
+            <div class="modal-body contentxinxi">
+                 <div class="condition" style="height: 70px">
+                    <label for="fullname" class="text-right" style="vertical-align:top">添加信息</label>
+                    <div class="condition-input">
+                       <span style="width: 250px;">将{{approveY.length}}个未分配机构加入【{{userName}}】管辖吗</span>
+                    </div>
+                </div>
+            </div>
+             <div class="right-fluid">
+                <button  type="button" class="btn btn-primary" (click)="addAllot(addMore)">确定</button>
+                <button  type="button" class="btn btn-default" (click)="addMore.hide()">取消</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 转移选中机构 -->
+<div bsModal #move="bs-modal" class="modal fade modelPon" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content clearfix" >
+            <div class="modal-header">
+                <button type="button" class="close" aria-label="Close" (click)="move.hide()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">机构转移</h4>
+            </div>
+            <div class="modal-body contentxinxi">
+                 <div class="condition" style="height: 70px">
+                    <label for="fullname" class="text-right">转移信息</label>
+                    <div class="condition-input">
+                       <span style="vertical-align: middle;width:250px">将【{{userName}}】所辖机构转移至其他客户经理，共计【{{approveY.length}}】个</span>
+                    </div>
+                </div>
+                <div class="condition">
+                    <label for="fullname" class="text-right"><b class="red">*</b>转移至</label>
+                    <div class="condition-input">
+                        <select name=""   class="form-control" [(ngModel)]="moveCon.recieveId">
+                            <option *ngFor="let item of receiverList" [value]="item.receiveId">{{item.userName}}</option>
+                        </select> 
+                    </div>
+                </div>
+            </div>
+             <div class="right-fluid">
+                <button  type="button" class="btn btn-primary" (click)="transferOrg(move)">确定</button>
+                <button  type="button" class="btn btn-default" (click)="move.hide()">取消</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 转移所有机构 -->
+<div bsModal #moveAll="bs-modal" class="modal fade modelPon" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content clearfix" >
+            <div class="modal-header">
+                <button type="button" class="close" aria-label="Close" (click)="move.hide()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">机构转移</h4>
+            </div>
+            <div class="modal-body contentxinxi">
+                 <div class="condition" style="height: 70px">
+                    <label for="fullname" class="text-right">转移信息</label>
+                    <div class="condition-input">
+                       <span style="vertical-align: middle;width:250px">将查询到的【{{userName}}】所辖机构转移至其他客户经理</span>
+                    </div>
+                </div>
+                <div class="condition">
+                    <label for="fullname" class="text-right"><b class="red">*</b>转移至</label>
+                    <div class="condition-input">
+                        <select name=""   class="form-control" [(ngModel)]="moveCon.recieveId">
+                            <option *ngFor="let item of receiverList" [value]="item.receiveId">{{item.userName}}</option>
+                        </select> 
+                    </div>
+                </div>
+            </div>
+             <div class="right-fluid">
+                <button  type="button" class="btn btn-primary" (click)="transferOrg(move)">确定</button>
+                <button  type="button" class="btn btn-default" (click)="move.hide()">取消</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 机构关注度设置 -->
+<div bsModal #orgLv="bs-modal" class="modal fade modelPon" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content clearfix" >
+            <div class="modal-header">
+                <button type="button" class="close" aria-label="Close" (click)="orgLv.hide()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">机构关注度设置</h4>
+            </div>
+            <div class="modal-body contentxinxi">
+                 <div class="">
+                    <label for="fullname" class="text-right" style="padding-left: 40px;">已选机构</label>
+                    <div class="condition-input">
+                       <table class="table table-bordered table-hover tb" style="">
+                           <thead>
+                               <tr>
+                                    <td></td>
+                                    <td style="width:200px;">机构</td> 
+                               </tr>    
+                           </thead>
+                           <tbody *ngFor="let item of orgLvList;let i = index ">
+                               <tr>
+                               <td><i class="fa fa-trash" aria-hidden="true" (click)="delOrg(i)"></i></td>
+                                   <td>{{item.organizationShortName}}</td>
+                               </tr>
+                           </tbody>
+                       </table>
+                    </div>
+                </div>
+                <div class="condition">
+                    <label  style="width:85px" for="fullname" class="text-right"><b class="red">*</b>关注度</label>
+                   <div class="condition-input">
+                  <label class="btn btn-mint form-control" [(ngModel)]="orgLvCon.conType" btnRadio='1'>重要</label><label class="btn btn-mint form-control" [(ngModel)]="orgLvCon.conType" btnRadio='2'>一般</label><label class="btn btn-mint form-control" [(ngModel)]="orgLvCon.conType" btnRadio='3'>无关</label>
+            </div>
+                </div>
+            </div>
+             <div class="right-fluid">
+                <button  type="button" class="btn btn-primary" (click)="orgConcern(orgLv)">确定</button>
+                <button  type="button" class="btn btn-default" (click)="orgLv.hide()">取消</button>
+            </div>
+        </div>
+    </div>
+</div>

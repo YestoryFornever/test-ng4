@@ -1,0 +1,80 @@
+article{
+	width:auto;
+	margin-left:435px;
+	margin-right:210px;
+}
+article header#articleHeader{
+	height: 40px;
+	line-height: 40px;
+	border:1px solid #ddd;
+	padding:0 16px;
+	background-color:#f5f5f5;
+	border-bottom:0;
+}
+#articleHeader span{
+	display:inline-block;
+	vertical-align: middle;
+}
+#articleHeader span.article-header-title{
+	max-width:380px;
+	word-break:keep-all;
+	white-space:nowrap;
+	overflow:hidden;
+	text-overflow:ellipsis;
+}
+#contentTitle{
+	line-height: inherit;
+	border:none;
+	background: transparent;
+}
+article #froalaEditor{
+	border:1px solid #ddd;
+	height:200px;
+	overflow-y:auto;
+	width:100%;
+}
+article div.articleBtns{
+	margin-top:4px;
+	height:40px;
+}
+article .btns-left{
+	float:left;
+}
+article .btns-right{
+	float:right;
+}
+
+#praises{
+	display: inline-block;
+}
+#praise{}
+article li.commit{
+	padding:10px;
+	background-color:#f5f5f5;
+	margin-top:4px;
+}
+article li.tip{
+	padding:10px;
+	background-color:#f5f5f5;
+	text-align:center;
+}
+.commit .commit-content{
+	
+}
+.commit-content .commit-nm{
+	color:#367ec1;
+}
+.commit .commit-operate{
+	height:30px;
+	line-height:30px;
+	text-align:center;
+	position:relative;
+}
+.commit-operate .btns{
+	position: absolute;
+	right: 0;
+	bottom: 0;
+}
+.btns i.fa{
+	margin-left:6px;
+}

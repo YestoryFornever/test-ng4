@@ -1,0 +1,37 @@
+<div class="header clearfix">
+	<span class="head icon">|</span><span class="head" ><span *ngIf="state==14">通知栏消息</span><span *ngIf="state==15">系统消息</span><span *ngIf="state==17">短信</span>详情</span>
+	<div class="btnHeader head">
+		<button class="btn btn-primary" (click)="sendTo()">返回</button>
+	</div>
+</div>
+<div class="content">
+	<div class="newsTxt">
+		<div class="newsHeader">消息内容</div>
+		<div class="newsSurvey clearfix">
+			<div class="K-V clearfix">
+				<span class="newsKey">统计</span>
+				<div>
+					<div class="sqr" style="background-color:  #178ecb"><div class="sqTit">目标用户数</div><div class="sqNum">{{detialData.targetMebNum}}</div></div>
+					<div class="sqr" style="background-color:  #6eb991"><div class="sqTit">送达用户数</div><div class="sqNum">{{detialData.sendMebNum }}</div></div>
+					<div  class="sqr" *ngIf="0" style="background-color:  #dad389"><div class="sqTit" >点击用户数</div><div class="sqNum">{{detialData.clickMebNum}}</div></div>
+				</div>
+			</div>
+			<div class="K-V clearfix">
+				<span class="newsKey">发送对象</span><span class="sed">{{detialData.targetGroUser }}</span>
+			</div>
+			<div class="K-V clearfix">
+				<span class="newsKey">发送时间</span><span class="sed">{{detialData.sendTime  }}</span>
+			</div>
+			<div class="K-V clearfix">
+				<span class="newsKey">消息内容</span>
+				<span class="newsVal">
+					<img *ngIf="state==15" [src]="detialData.pictureUrl"><div class="conTit">{{detialData.pshETitle }}</div>
+					<div style="height:80px;overflow-y: scroll">{{detialData.pshCntnt }}</div>
+				</span>
+			</div>
+			<div class="K-V clearfix" *ngIf="state!=17">
+				<span class="newsKey">消息跳转</span><span  class="sed" *ngIf="!detialData.h5Url&&state==15">无</span><span  class="sed" *ngIf="!detialData.h5Url&&state==14">打开APP</span><span class="sed" *ngIf="detialData.h5Url">H5</span>&nbsp;&nbsp;|&nbsp;&nbsp;<span><a [href]="detialData.h5Url " target="_blank">{{detialData.h5Url }}</a></span>
+			</div>
+		</div>
+	</div>
+</div>

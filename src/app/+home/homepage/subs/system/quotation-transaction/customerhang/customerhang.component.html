@@ -1,0 +1,265 @@
+	     <div class="header_one" >
+				<div id="one">
+					<p><span>报价数量</span></p>
+					<p><span style="color:#0033FF">134笔</span></p>
+				</div>
+				<div id="one">
+					<p><span>报价金额</span></p>
+					<p><span style="color:#FF0000;">134亿</span></p>
+				</div>
+				<div id="one">
+					<p><span>报价人数</span></p>
+					<p><span style="color:#FF9900;">120人</span></p>
+				</div>
+	    </div>
+	    <div class="clearfix"></div>
+		<div class="add_bond">
+			<button  (click)="newBond.show()">新增报价</button>
+			<span><input type="checkbox" >只看我的报价</span>
+			<span><input type="checkbox">只看有效报价</span>
+		</div>
+	<div class="clearfix"></div>
+	<div class=" tableList  "   style="margin:0px 14px 3px 10px;" >
+			    <table class="table table-bordered table-hover ">
+			        <thead>
+							<tr>
+											<th class="infos" >序号</th>
+											<th class="infos longText_two" >操作</th>
+											<th class="infos" >方向</th>
+											<th class="infos" >债券代码</th>
+											<th class="infos" >债券简称</th>
+											<th class="infos" >数量(万)</th>
+											<th class="infos" >收益率(%)</th>
+											<th class="infos" >净价(元)</th>
+											<th class="infos" >备注</th>
+											<th class="infos" >匿名</th>
+											<th class="infos" >是否挂牌</th>
+											<th class="infos" >挂牌人</th>
+											<th class="infos longText" >状态</th>
+											<th class="infos" >机构</th>
+											<th class="infos" >用户</th>
+											
+										</tr>
+			        </thead>
+			        <tbody  #XXX id="list"      >
+			           					<tr>
+											<td>1</td>
+											<td>
+												<a href="javascript:void(0)" (click)="editBond.show()">修改 </a>
+												&nbsp;<a href="javascript:void(0)"class="list-exe">  成交</a>
+												&nbsp;<a href="javascript:void(0)"class="list-exe">  撤销</a>
+											</td>
+											<td></td>
+											
+											<td></td>
+											<td></td>
+											<td></td>
+											<td></td>
+											<td></td>
+											<td></td>
+											<td><input type="checkbox"></td>
+											<td><input type="checkbox"></td>
+											<td>张一</td>
+											<td>
+												<span>有效</span>
+												&nbsp;<span>撤销</span>
+												&nbsp;<span>成交</span>
+											</td>
+											<td>工商银行</td>
+											<td>张三</td>
+											
+										</tr> 
+										<tr>
+											<td>2</td>
+											<td>
+												<a href="javascript:void(0)" (click)="editBond.show()">修改 </a>
+												&nbsp;<a href="javascript:void(0)"class="list-exe">  成交</a>
+												&nbsp;<a href="javascript:void(0)"class="list-exe">  撤销</a>
+												&nbsp;<a href="javascript:void(0)"class="list-exe">  挂牌</a>
+											</td>
+											<td></td>
+											<td></td>
+											<td></td>
+											<td></td>
+											<td></td>
+											<td></td>
+											<td></td>
+											<td><input type="checkbox"></td>
+											<td><input type="checkbox"></td>
+											<td>张一</td>
+											<td>
+												&nbsp;<span>有效</span>
+												&nbsp;<span>撤销</span>
+												&nbsp;<span>成交</span>
+											</td>
+											<td>工商银行</td>
+											<td>张三</td>
+											
+										</tr> 
+										
+			                
+			        </tbody>
+			    </table>
+			</div>
+
+	<div class="clearfix"></div>
+		<!-- 分页 -->
+<div class="row pagerow">
+        <div class="pageshowleft">每页显示
+            <select #selectPage name="" id="msgNum" (change)="sizeData(selectPage.value,userList)" [(ngModel)]="itemsPerPage">
+                <option #optionPage  *ngFor="let msgNumber of msgNumbers" value={{msgNumber.Number}}>{{msgNumber.Number}}</option>
+            </select>
+            条数据
+        </div>
+        <div class="pageshowmodle">
+            <span>{{currentPage}} / {{totalPages}}</span>页
+            <span>{{totals}}条数据</span>
+        </div>
+
+        <div class="pagefen">
+            <pagination  [firstText]="firstText" [lastText]="lastText" [previousText]="previousText" [nextText]="nextText" [maxSize]="maxSize" [totalItems]="totals" [itemsPerPage]="itemsPerPage" [(ngModel)]="currentPage" [boundaryLinks]="true" (pageChanged)='pageChanged($event)' (numPages)='pageNumChange($event)' class="pagination-sm"></pagination>
+        </div>
+    </div>
+
+<!-- 新增弹窗 -->
+	<div bsModal #newBond="bs-modal" class="modal fade modelPon" tabindex="-1" role="dialog" aria-
+		     labelledby="mySmallModalLabel" aria-hidden="true">
+		    <div class="modal-dialog modal-sm">
+		        <div class="modal-content modal-service  modal_hight">
+		            <div class="modal-header">
+		                <button type="button" class="close" aria-label="Close" (click)
+		                        ="newBond.hide()">
+		                    <span aria-hidden="true">&times;</span>
+		                </button>
+		                <h4 class="modal-title ">选择用户</h4>
+		            </div>
+
+		            <div class="modal-body contentxinxi  ">
+		            	<div class="modal_main">
+						       <p><i>*</i>&nbsp;<label for="">注册手机</label><input type="text" style="width:250px;
+					height:35px;margin-left:30px;"></p>
+						       <p>&nbsp;&nbsp;<label for="">用户信息</label><span style="padding-left:30px;">张三 中国工商银行 金融同业部 交易员</span></p>
+							       <div class="modal_text">
+								       	<div class="modal_left">
+								       		<label for="">报价信息</label>
+								       	</div>
+								       	<div class="modal-right">
+								       	<ul>
+									       	 <li><i>*</i>&nbsp;<label for="">债券代码</label><input type="text"></li>
+									       	 <li><i>*</i>&nbsp;<label for="">债券简称</label><input type="text"></li>
+									       	 <li><i>*</i>&nbsp;<label for="">方向</label>
+									       	 <!-- </label><input type="text">  -->
+									       	 <div class="btn-group btnborder " style="margin-left:44px;" >
+														<label class="btn btn-mint btnB10"  btnRadio=""  >卖出</label>
+					                    				<label class="btn btn-mint btnB10"   btnRadio="" >买入</label>
+									       	 </div>
+									       	 </li>
+									       	 <li><i>*</i>&nbsp;<label for="">数量</label><input type="text" style="margin-left:47px;"><span>万</span></li>
+									       	 <li><i>*</i>&nbsp;<label for="">收益率</label><input type="text"  style="margin-left:33px;"><span>%</span></li>
+									       	 <li><i>*</i>&nbsp;<label for="">净价</label><input type="text"  style="margin-left:46px;"><span>元</span></li>
+										   	 <li><i>*</i>&nbsp;<label for="">是否匿名</label>
+											   	  <div class="btn-group btnborder "  style="margin-left:14px;">
+															<label class="btn btn-mint btnB10"  btnRadio=""  >是</label>
+						                    				<label class="btn btn-mint btnB10"   btnRadio="" >否</label>
+										       	 </div>
+										   	 </li>
+										   	 <li><i>*</i>&nbsp;<label for="">是否挂牌</label>
+												 <div class="btn-group btnborder "  style="margin-left:14px;">
+														<label class="btn btn-mint btnB10"  btnRadio=""  >是</label>
+					                    				<label class="btn btn-mint btnB10"   btnRadio="" >否</label>
+									       	 	</div>
+										   	 </li>
+										 </ul>
+													<div class="pp content-descript">
+									                    <div class="pp_left">备注</div>
+									                    <div class="pp_right">
+															<textarea  class="txtarea" style="height:100px;width: 320px;"
+									                                   placeholder="提示文本" ></textarea>
+									                    </div>
+									                 </div>
+								       	</div>
+
+							       </div>
+		    		 </div>
+		               
+		        </div>
+
+			            <div class="btnstyle btn-bom">
+			                <button type="button" class="btn btn-default btnhoverlan" (click)
+			                        ="newBond.hide()">取消</button>
+			                <button type="button" class="btn btn-primary btnhoverju" (click)="copyPermi(userCopy)">复制</button>
+			            </div>
+		        </div>
+		    </div>
+		</div>
+		 <!-- 修改弹窗 -->
+		<div bsModal #editBond="bs-modal" class="modal fade modelPon" tabindex="-1" role="dialog" aria-
+		     labelledby="mySmallModalLabel" aria-hidden="true">
+		    <div class="modal-dialog modal-sm">
+		        <div class="modal-content modal-service  modal_hight">
+		            <div class="modal-header">
+		                <button type="button" class="close" aria-label="Close" (click)
+		                        ="editBond.hide()">
+		                    <span aria-hidden="true">&times;</span>
+		                </button>
+		                <h4 class="modal-title ">选择用户</h4>
+		            </div>
+
+		            <div class="modal-body contentxinxi  ">
+		            	<div class="modal_main">
+						       <p><i>*</i>&nbsp;<label for="">注册手机</label><input type="text" style="width:250px;
+					height:35px;margin-left:30px;"></p>
+						       <p>&nbsp;&nbsp;<label for="">用户信息</label><span style="padding-left:30px;">张三 中国工商银行 金融同业部 交易员</span></p>
+							       <div class="modal_text">
+								       	<div class="modal_left">
+								       		<label for="">报价信息</label>
+								       	</div>
+								       	<div class="modal-right">
+								       	<ul>
+									       	 <li><i>*</i>&nbsp;<label for="">债券代码</label><input type="text"></li>
+									       	 <li><i>*</i>&nbsp;<label for="">债券简称</label><input type="text"></li>
+									       	 <li><i>*</i>&nbsp;<label for="">方向</label>
+									       	 <!-- </label><input type="text">  -->
+									       	 <div class="btn-group btnborder " style="margin-left:44px;" >
+														<label class="btn btn-mint btnB10"  btnRadio=""  >卖出</label>
+					                    				<label class="btn btn-mint btnB10"   btnRadio="" >买入</label>
+									       	 </div>
+									       	 </li>
+									       	 <li><i>*</i>&nbsp;<label for="">数量</label><input type="text" style="margin-left:47px;"><span>万</span></li>
+									       	 <li><i>*</i>&nbsp;<label for="">收益率</label><input type="text"  style="margin-left:33px;"><span>%</span></li>
+									       	 <li><i>*</i>&nbsp;<label for="">净价</label><input type="text"  style="margin-left:46px;"><span>元</span></li>
+										   	 <li><i>*</i>&nbsp;<label for="">是否匿名</label>
+											   	  <div class="btn-group btnborder "  style="margin-left:14px;">
+															<label class="btn btn-mint btnB10"  btnRadio=""  >是</label>
+						                    				<label class="btn btn-mint btnB10"   btnRadio="" >否</label>
+										       	 </div>
+										   	 </li>
+										   	 <li><i>*</i>&nbsp;<label for="">是否挂牌</label>
+												 <div class="btn-group btnborder "  style="margin-left:14px;">
+														<label class="btn btn-mint btnB10"  btnRadio=""  >是</label>
+					                    				<label class="btn btn-mint btnB10"   btnRadio="" >否</label>
+									       	 	</div>
+										   	 </li>
+										 </ul>
+													<div class="pp content-descript">
+									                    <div class="pp_left">备注</div>
+									                    <div class="pp_right">
+															<textarea  class="txtarea" style="height:100px;width: 320px;"
+									                                   placeholder="提示文本" ></textarea>
+									                    </div>
+									                 </div>
+								       	</div>
+
+							       </div>
+		    		 </div>
+		               
+		        </div>
+
+			            <div class="btnstyle btn-bom">
+			                <button type="button" class="btn btn-default btnhoverlan" (click)
+			                        ="editBond.hide()">取消</button>
+			                <button type="button" class="btn btn-primary btnhoverju" (click)="copyPermi(userCopy)">保存</button>
+			            </div>
+		        </div>
+		    </div>
+		</div>

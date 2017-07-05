@@ -1,0 +1,116 @@
+<div class="header clearfix">
+	<span class="head icon">|</span><span class="head" >VIP服务</span>
+	<div class="btnHeader head">
+		<button class="btn btn-primary" (click)="addVIP.show()">新增</button>
+		<!-- <button class="btn btn-primary" >删除</button> -->
+    </div>
+</div>
+
+<div class="screen .clearfix">
+	<div class="condition container-fluid">
+		<span>服务名称：</span><input req maxlength="11" type="text" name="phoneNum"  class="form-control"  placeholder="全部" [(ngModel)]="default.serviceName">
+	</div>
+	<div class="condition container-fluid">
+		<span>服务类型：	</span><select [(ngModel)]="default.serviceType"  class="selection">
+			<option *ngFor="let type of sertype"  [value]="type.codedataId">{{type.codedataName}}</option>
+			</select>
+	</div>
+	<button class="condition btn btn-primary sub" (click)="turnFirst()">查询</button>
+</div>
+
+
+<div class="tableList " >
+	<table class="table table-bordered table-hover " >
+		<thead >
+			<tr>
+				<td class="info middleTxt">操作</td>
+				<td class="info middleTxt">名称</td>
+				<td class="info" >服务类型</td>
+				<td class="info" >服务状态</td>
+				<td class="info longTxt">创建日期</td>
+			</tr>
+		</thead>
+		<tbody  id="list"  *ngFor="let gp of vipList">
+			<tr #userList class="Userlist">
+				<td ><a (click)="addTo(gp.serviceId,gp.serviceName)">查看包含组</a> / <a (click)="changeGp(updateVIP,gp)">修改</a> / <a (click)="deleteVipShow(delete,gp)">删除</a></td>
+				<td>{{gp.serviceName}}</td>
+				<td>{{gp.serviceTypeName}}</td>
+				<td>{{gp.statusName}}</td>
+				<td>{{format(gp.createTime)}}</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+
+<!--新增VIP服务 -->
+<div bsModal #addVIP="bs-modal" class="modal fade modelPon" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" aria-label="Close" (click)="addVIP.hide()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">新增VIP服务</h4>
+            </div>
+            <div class="modal-body contentxinxi">
+                <div class="pp"><span>服务名称：</span><input type="text" [(ngModel)]="addVip.serviceName" name=""></div>
+                <div class="pp"><span>服务类型：</span><select [(ngModel)]="addVip.serviceType"  class="selection">
+				<option *ngFor="let type of sertype"  [value]="type.codedataId">{{type.codedataName}}</option>
+				</select></div>
+
+               <div class="pp"><span>服务状态：</span><select [(ngModel)]="addVip.status"><option [value]="item.codedataId" *ngFor="let item of serStatue">{{item.codedataName}}</option></select></div>
+                <div class="btnstyle">
+                    <button type="button" class="btn btn-default btnhoverlan" (click)="saveVipService(addVIP)">保存</button>
+                    <button type="button" class="btn btn-primary btnhoverju" (click)="addVIP.hide()">取消</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--修改VIP服务 -->
+<div bsModal #updateVIP="bs-modal" class="modal fade modelPon" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content" >
+            <div class="modal-header">
+                <button type="button" class="close" aria-label="Close" (click)="updateVIP.hide()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">修改VIP服务</h4>
+            </div>
+            <div class="modal-body contentxinxi">
+                <div class="pp"><span>服务名称：</span><input [(ngModel)]="changeVip.serviceName" type="text" name=""></div>
+               <div class="pp"><span>服务类型：</span><select [(ngModel)]="changeVip.serviceType"  class="selection">
+				<option *ngFor="let type of sertype"  [value]="type.codedataId">{{type.codedataName}}</option>
+				</select></div>
+
+               <div class="pp"><span>服务状态：</span><select [(ngModel)]="changeVip.status"><option *ngFor="let type of serStatue"  [value]="type.codedataId">{{type.codedataName}}</option></select></div>
+                <div class="btnstyle">
+                    <button type="button" class="btn btn-default btnhoverlan" (click)="saveChange(updateVIP)">保存</button>
+                    <button type="button" class="btn btn-primary btnhoverju" (click)="updateVIP.hide()">取消</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 删除用户组 --> 
+<div bsModal #delete="bs-modal" class="modal fade modelPon" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content" style="height: 170px;width: 300px">
+            <div class="modal-header">
+                <button type="button" class="close" aria-label="Close" (click)="delete.hide()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">删除服务</h4>
+            </div>
+            <div class="modal-body contentxinxi">
+                
+                <div style="font-size: 20px">是否删除此服务？</div>
+                <div class="btnstyle">
+                    <button type="button" class="btn btn-default btnhoverlan"(click)="deleteVip(delete)">确定</button>
+                    <button type="button" class="btn btn-primary btnhoverju" (click)="delete.hide()">取消</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

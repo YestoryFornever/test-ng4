@@ -1,0 +1,112 @@
+<!-- 顶部 -->
+    <div class="header1 clearfix">
+        <span class="head icon">|</span><span class="head head1 con1" 
+        (click)="Changecon1()">报价总览
+        </span>
+        <span class="head icon">|</span><span class="head head1 con2" 
+        (click)="Changecon2()">报价-成交趋势
+        </span>  
+        <span class="head icon">|</span><span class="head head1 con3" 
+        (click)="Changecon3()">维度占比
+        </span>   
+    </div>	
+<!--内容-->
+<div class="content1">
+	<div class="text">
+		<span class="info f1" (click)="Change1()">最近一周</span>
+		<span class="info1 f2" (click)="Change2()">最近一月</span>
+		<span class="info1 f3" (click)="Change3()">最近三月</span>
+		<span class="info1 f4" (click)="Change4()">最近一年</span>
+	</div>
+	<div class="header">
+			<div class="one">
+				<p><span>报价笔数</span></p>
+				<p><span style="color:#0033FF">{{default3.ListSize}}笔</span></p>
+			</div>
+			<div class="one">
+				<p><span>报价数量</span></p>
+				<p><span style="color:#FF0000;">{{default3.Num}}亿</span></p>
+			</div>
+			<div class="one">
+				<p><span>报价人数</span></p>
+				<p><span style="color:#FF9900;">{{default3.bondPeople}}人</span></p>
+			</div>
+	</div>
+	<br>
+	<div class="header">
+			<div class="one">
+				<p><span>成交笔数</span></p>
+				<p><span style="color:#0033FF">{{default3.bondDealSize}}笔</span></p>
+			</div>
+			<div class="one">
+				<p><span>成交数量</span></p>
+				<p><span style="color:#FF0000;">{{default3.bondDealNum}}亿</span></p>
+			</div>
+			<div class="one">
+				<p><span>成交人数</span></p>
+				<p><span style="color:#FF9900;">{{default3.bondDealPeople}}人</span></p>
+			</div>
+	</div>
+	<br>
+	<div class="header">
+			<div class="one">
+				<p><span>今日新增报价笔数</span></p>
+				<p><span style="color:#0033FF">{{default3.bondSize}}笔</span></p>
+			</div>
+			<div class="one">
+				<p><span>今日报价数量</span></p>
+				<p><span style="color:#FF0000;">{{default3.bondTdNum}}亿</span></p>
+			</div>
+			<div class="one">
+				<p><span>今日报价人数</span></p>
+				<p><span style="color:#FF9900;">{{default3.bondTdPeople}}人</span></p>
+			</div>
+	</div>
+</div>
+<div class="content2">
+	<div class="screen .clearfix">
+		<div class="condition container-fluid">
+			<span>统计日期</span>
+			<p-calendar [(ngModel)]="starttime"  [locale]="date" [showTime]="false"></p-calendar>&nbsp;——&nbsp;<p-calendar [(ngModel)]="endtime" [locale]="date" [showTime]="false"></p-calendar>
+		    <!--	<span>统计日期</span><input [(ngModel)]="myStartTime"  class="selection"  type="date">&nbsp;——&nbsp;<input [(ngModel)]="myEndTime" class="selection" type="date"> -->
+		</div> 
+		<div class="condition container-fluid">
+			<span >统计维度</span><select  [(ngModel)]="default6.timeRang" class="selection"><option [value]="-1">日</option><option [value]="1">周</option><option [value]="2">月</option><option [value]="3">季度</option>
+			<option [value]="4">年</option></select>
+		</div>
+		<button class="condition btn btn-primary sub" (click)="query()">查询</button>
+		<div style="clear: both;"></div>
+	</div>
+	<div id="charts" [(ng2-echarts)]="chartData" style="height: 300px; width: 100%"></div>
+	<div id="chart1" [(ng2-echarts)]="chartData1" style="height: 300px; width:100%"></div>
+	<div id="chart2" [(ng2-echarts)]="chartData2" style="height: 300px; width:100%"></div>
+	<div style="clear: both;"></div>	
+</div>
+<div class="content3">
+	<div class="screen .clearfix marg">
+		<div class="condition container-fluid">
+			<span>统计日期</span>
+			<p-calendar [(ngModel)]="myStartTime"   [locale]="date" [showTime]="false"></p-calendar>&nbsp;——&nbsp;<p-calendar [(ngModel)]="myEndTime" [locale]="date" [showTime]="false"></p-calendar>
+		</div>
+		<button class="condition btn btn-primary sub" (click)="query1()">查询</button>
+	</div>
+		<div class="left1">笔数</div>
+		<div class="right1">数量</div>
+	<div id="radius1" [(ng2-echarts)]="radius1" style="height: 400px; width: 48%">
+	</div>
+	<div id="radius2" [(ng2-echarts)]="radius2" style="height: 400px; width: 48%">
+	</div>
+	<div id="radius3" [(ng2-echarts)]="radius3" style="height: 400px; width: 48%">
+	</div>
+	<div id="radius4" [(ng2-echarts)]="radius4" style="height: 400px; width: 48%">
+	</div>
+	<div id="radius5" [(ng2-echarts)]="radius5" style="height: 400px; width: 48%">
+	</div>
+	<div id="radius6" [(ng2-echarts)]="radius6" style="height: 400px; width: 48%">
+	</div>	
+	<div id="radius7" [(ng2-echarts)]="radius7" style="height: 400px; width: 48%">
+	</div>
+	<div id="radius8" [(ng2-echarts)]="radius8" style="height: 400px; width: 48%">
+	</div>
+	<div style="clear: both;"></div>	
+</div>

@@ -1,0 +1,134 @@
+<div class="header clearfix">
+    <span class="head icon">|</span><span class="head">金币收支明细列表</span>
+    <!-- <div class="btnHeader head">
+        <button class=" btn btn-primary sub" (click)="toDetial()">金币发放</button>
+    </div> -->
+    <div class="btnHeader head">
+        <label type="button" class="btn btn-primary" (click)="exportExcelList()">导出</label>
+    </div>
+</div>
+<div class="row rowtop2">
+    <div>
+        
+        <div class="btn-group btnborder " style="display: block;">
+            <div style="float:left; padding: 5px 16px;">金币收支分类</div>
+            
+            <div class="col-xs-11">
+                <div>
+                    <span style="float:left; padding: 5px 16px;">系统发放</span>
+                    <label class="btn btn-mint btnB10" [(ngModel)]="checkModel.b102 " btnCheckbox >实名认证奖励</label>
+                    <label class="btn btn-mint btnB10" [(ngModel)]="checkModel.a101 " btnCheckbox >登录奖励</label>
+                    <label class="btn btn-mint btnB10" [(ngModel)]="checkModel.e105 " btnCheckbox >发布动态奖励</label>
+                    <label class="btn btn-mint btnB10" [(ngModel)]="checkModel.p116 " btnCheckbox >对外分享资讯奖励</label>
+                    <label class="btn btn-mint btnB10" [(ngModel)]="checkModel.f106 " btnCheckbox >债券报价奖励</label>
+                    <label class="btn btn-mint btnB10" [(ngModel)]="checkModel.g107 " btnCheckbox >用户反馈奖励</label>
+                    <label class="btn btn-mint btnB10" [(ngModel)]="checkModel.c103 " btnCheckbox >推荐用户奖励</label>
+                    <label class="btn btn-mint btnB10" [(ngModel)]="checkModel.h108 " btnCheckbox >人工发放</label>
+                     <label class="btn btn-mint btnB10" [(ngModel)]="checkModel.x124 " btnCheckbox >发布资金报价奖励</label>
+                </div>
+               <div style="clear: both;"></div>
+                <div>
+                    <span style="float:left; padding: 5px 16px;">用户充值</span>
+                    <label class="btn btn-mint btnB10" [(ngModel)]="checkModel.i109 " btnCheckbox >用户充值</label>
+                </div>
+                <div style="clear: both;"></div>
+                <div>
+                    <span style="float:left; padding: 5px 16px;">系统扣除</span>
+                    <label class="btn btn-mint btnB10" [(ngModel)]="checkModel.t120 " btnCheckbox >实名认证奖励扣除</label>
+                    <label class="btn btn-mint btnB10" [(ngModel)]="checkModel.u121 " btnCheckbox >推荐用户奖励扣除</label>
+                     <label class="btn btn-mint btnB10" [(ngModel)]="checkModel.v122 " btnCheckbox >债券报价奖励扣除</label>
+                    <label class="btn btn-mint btnB10" [(ngModel)]="checkModel.w123 " btnCheckbox >发布动态奖励扣除</label>
+                    <label class="btn btn-mint btnB10" [(ngModel)]="checkModel.y125 " btnCheckbox >发布资金报价奖励扣除</label>
+                     <label class="btn btn-mint btnB10" [(ngModel)]="checkModel.z126 " btnCheckbox >手工扣除金币</label>
+                </div>
+                <div style="clear: both;"></div>
+                <div>
+                    <span style="float:left; padding: 5px 16px;">用户消费</span>
+                    <label class="btn btn-mint btnB10" [(ngModel)]="checkModel.j110 " btnCheckbox >兑换商城商品</label>
+                    <label class="btn btn-mint btnB10" [(ngModel)]="checkModel.m113 " btnCheckbox >兑换商城商品被拒绝</label>
+                    <label class="btn btn-mint btnB10" [(ngModel)]="checkModel.o115 " btnCheckbox >抵用发票邮费</label>
+                    <label class="btn btn-mint btnB10" [(ngModel)]="checkModel.q117 " btnCheckbox >发票申请被拒绝</label>
+                </div>
+                <div style="clear: both;"></div>
+                <div>
+                    <span style="float:left; padding: 5px 16px;">内部流转</span>
+                    <label class="btn btn-mint btnB10" [(ngModel)]="checkModel.n114 " btnCheckbox >发出好友见面礼</label>
+                    <label class="btn btn-mint btnB10" [(ngModel)]="checkModel.s119 " btnCheckbox >好友见面礼退回</label>
+                    <label class="btn btn-mint btnB10" [(ngModel)]="checkModel.r118 " btnCheckbox >收到好友见面礼</label>
+                    <label class="btn btn-mint btnB10" [(ngModel)]="checkModel.k111 " btnCheckbox >发出消息礼物</label>
+                    <label class="btn btn-mint btnB10" [(ngModel)]="checkModel.l112 " btnCheckbox >收到消息礼物</label>
+                </div>
+                <div style="clear: both;"></div>
+            </div>
+        </div>
+    </div>
+    <div class="condition">
+        <span>注册手机号</span>
+        <input class="selection form-control" req placeholder="请输入注册手机号" [(ngModel)]="default.phone" type="text" />
+    </div>
+    <div class="condition ">
+        <span>时间范围</span>
+        <p-calendar [monthNavigator]="true" [yearNavigator]="true" [locale]= 'mon'  [(ngModel)]='myStartTime' yearRange="2000:2050" placeholder="请选择时间"></p-calendar>&nbsp;到&nbsp;
+        <p-calendar [monthNavigator]="true" [yearNavigator]="true" [locale]= 'mon'  [(ngModel)]='myEndTime' yearRange="2000:2050" placeholder="请选择时间"></p-calendar>
+    </div>
+    <button class="condition btn btn-primary sub" (click)="onSubmit()">查询</button>
+</div>
+<!-- list -->
+<div class="tableList clearfix">
+    <h5 class="screenTop">当前筛选下，金币统计: <span *ngIf="( sumCoinLists.totalCoin >0 )">+</span>{{sumCoinLists.totalCoin  | numAddComma2}}，金币收入统计:  <span *ngIf="( sumCoinLists.totalIncome >0 )">+</span>{{sumCoinLists.totalIncome  | numAddComma2}}，金币支出统计:  {{sumCoinLists.totalExpenditure  | numAddComma2}}</h5>
+    <table class="table table-bordered table-hover ">
+        <thead>
+            <tr>
+                <td class="info longTxt">注册手机号<div  class="order"><button (click)="Order('ASC','phone')" class="fa fa-chevron-up" aria-hidden="true"></button><button (click)="Order('DESC','phone')" class="fa fa-chevron-down"  aria-hidden="true"></button></div></td>
+                <td class="info longTxt">操作用户姓名<div  class="order"><button (click)="Order('ASC','userName')" class="fa fa-chevron-up" aria-hidden="true"></button><button (click)="Order('DESC','userName')" class="fa fa-chevron-down"  aria-hidden="true"></button></div></td>
+                <td class="info longTxt">时间<div class="order"><button (click)="Order('ASC','time')" class="fa fa-chevron-up" aria-hidden="true"></button><button (click)="Order('DESC','time')" class="fa fa-chevron-down"  aria-hidden="true"></button></div></td>
+                <td class="info longTxt">收支类型<div  class="order"><button (click)="Order('ASC','detailType')" class="fa fa-chevron-up" aria-hidden="true"></button><button (click)="Order('DESC','detailType')" class="fa fa-chevron-down"  aria-hidden="true"></button></div></td>
+                <td class="info longTxt">收支详情</td>
+                <td class="info longTxt">金币数</td>
+            </tr>
+        </thead>
+        <tbody *ngFor="let list of goldDetailLists">
+            <tr>
+                <td>{{list.phone}}</td>
+                <td class="Card" (mouseenter)="getUserInfo(list.userId)"><div [tooltip]="popTemplate" style="width: 100%;height: 100%">{{list.userName}}</div></td>
+               
+                <td>{{list.time}}</td>
+                <td>{{list.detailType}}</td>
+                <td>{{list.detailInfo }}</td>
+                <td><span *ngIf=" ( list.totalCoin > 0) ">+</span>{{list.totalCoin  | numAddComma2}}</td>
+            </tr>
+        </tbody>
+        <!--<tbody #XXX id="list" *ngFor="let userMsg of userMsge">
+                
+            </tbody>-->
+    </table>
+</div>
+<!-- 分页 -->
+<div class="row pagerow">
+    <div class="pageshowleft">每页显示
+        <select #selectPage name="" id="msgNum" (change)="sizeData(selectPage.value,userList)">
+            <option #optionPage *ngFor="let msgNumber of msgNumbers" value={{msgNumber.Number}}>{{msgNumber.Number}}</option>
+        </select>
+        条数据
+    </div>
+    <div class="pageshowmodle">
+        <span>{{currentPage}} / {{totalPages}}</span>页
+        <span>{{totalItems}}条数据</span>
+    </div>
+    <div class="pagefen">
+        <pagination [firstText]="firstText" [lastText]="lastText" [previousText]="previousText" [nextText]="nextText" [maxSize]="maxSize" [totalItems]="totalItems" [itemsPerPage]="itemsPerPage" [(ngModel)]="currentPage" [boundaryLinks]="true" (pageChanged)='pageChanged($event,allcheck)' (numPages)='pageNumChange($event)' class="pagination-sm"></pagination>
+    </div>
+</div>
+<ng-template #popTemplate>
+     <div class='cardBox'>
+    <div class="card"><img class="imgCard" [src]="userInfo.businessCardUrl"></div>
+    <div>
+        <div class="userTitle">{{userInfo.userName}} {{userInfo.loginName}}</div>
+        <div>
+            <div class="userInfo">机构： {{userInfo.organizationFullName}}</div>
+            <div class="userInfo">部门： {{userInfo.department}}</div>
+            <div class="userInfo">职位： {{userInfo.position}}</div>
+        </div>
+    </div>
+</div>
+ </ng-template>

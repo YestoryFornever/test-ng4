@@ -1,0 +1,170 @@
+<div class="header box">
+	<span class="head icon">|</span>
+	<span class="head">机构列表</span>
+	<div class="btnHeader head">
+		<button class="btn btn-primary">添加</button>
+		<button class="btn btn-primary">导入交易中心成员</button>
+		<button class="btn btn-primary">同步发债机构</button>
+	</div>
+</div>
+<main>
+	<div class="condition-container box" style="min-width:580px;">
+		<div class="condition">
+			<label for="fullname" class="text-right">机构全称</label>
+			<div class="condition-input">
+				<input  type="text" class="form-control" #orgFullName name="orgFullName" autocomplete="off" placeholder="机构关键字" style="width:300px" 
+					[(ngModel)]="ObjUserOrgListCon.orgFullName"
+					(typeaheadOnSelect)="orgsOnSelect($event)"
+					[typeaheadOptionField]="'organizationShortName'"
+					[typeahead]="fullnameTypeAhead.source"
+					[typeaheadOptionsLimit]="10"
+					[typeaheadWaitMs]="200" 
+					(change)="changeCompany(company,$event)">
+			</div>
+		</div>
+		<div class="condition" >
+			<label for="fullname" class="text-right">机构状态</label>
+			<div class="condition-input">
+				<select class="form-control" name='state'  [(ngModel)]="ObjUserOrgListCon.orgState">
+					<option value="">全部</option>
+					<option  [value]='item.sid' *ngFor="let item of OrgStateList">{{item.sname}}</option>
+				</select>
+			</div>
+		</div>
+		<div class="condition" >
+			<label for="fullname" class="text-right">所在区域</label>
+			<div class="condition-input">
+				<select class="form-control harf_select" name='provice' [(ngModel)]="provice" (change)="proviceChange()">
+					<option value="">请选择</option>
+					<option   *ngFor="let item of proviceList" [value]="item.pid">{{item.pname}}</option>
+				</select>
+				<select class="form-control harf_select" name='City'  [(ngModel)]="city" [disabled]="CityList.length<1">
+					<option value="">请选择</option>
+					<option   *ngFor="let item of CityList" [value]="item.cid">{{item.cname}}</option>
+				</select>
+			</div>
+		</div>
+		<div class="condition">
+			<label for="fullname" class="text-right">机构身份</label>
+			<div class="condition-input ">
+				<label class="btn btn-mint form-control" style="line-height: 20px;" [(ngModel)]="orgType" *ngFor="let item of orgIdefty" name='Idefty' [btnRadio]='item.id' [ngModel]="ObjUserOrgListCon">{{item.name}}</label>
+			</div>
+		</div>
+		<div class="condition" >
+			<label for="fullname" class="text-right">机构分类</label>
+			<div class="condition-input">
+				<select class="form-control harf_select" name='class1' (change)="changeOrgClass1()"  [(ngModel)]="ObjUserOrgListCon.orgClass1" >
+					<option value="">全部</option>
+					<option   *ngFor="let item of OrgCategory1List" [value]='item.cid'>{{item.cname}}</option>
+				</select>
+				<select class="form-control harf_select" name='class2'  [(ngModel)]="ObjUserOrgListCon.orgClass2" [disabled]='OrgCategory2List.length<1'>
+					<option value="">请选择</option>
+					<option   *ngFor="let item of OrgCategory2List" [value]='item.cid'>{{item.cname}}</option>
+				</select>
+			</div>
+		</div>
+		<div class="btns">
+            <div class="condition-btn">
+                <button class="btn btn-primary sub" (click)="turnFirst()">查询</button>    
+            </div>
+        </div>
+        <div style="clear:both;"></div>
+	</div>
+<!-- lists -->
+<div class="tableList box">
+<div>
+	
+</div>
+    <table class="table table-bordered table-hover ">
+        <thead>
+            <tr>
+                <td class="table-hover">更新日期 
+                <div class="order"><button (click)="Order('ASC','createTime')" class="fa fa-chevron-up" aria-hidden="true"></button><button (click)="Order('DESC','createTime')" class="fa fa-chevron-down"  aria-hidden="true"></button></div></td>
+                <td class="table-hover">状态 
+                <div class="order"><button (click)="Order('ASC','createTime')" class="fa fa-chevron-up" aria-hidden="true"></button><button (click)="Order('DESC','createTime')" class="fa fa-chevron-down"  aria-hidden="true"></button></div></td>
+                <td class="table-hover tenWord">机构全称</td>
+                <td class="table-hover" style="width:120px">操作</td>
+                <td class="table-hover">机构简称
+                    <div class="order"><button (click)="Order('ASC','coinSendType')" class="fa fa-chevron-up" aria-hidden="true"></button><button (click)="Order('DESC','coinSendType')" class="fa fa-chevron-down"  aria-hidden="true"></button></div>
+                </td>
+                <td class="table-hover" style="min-width:125px">金融机构                    
+                    <div class="order"><button (click)="Order('ASC','coinNumber')" class="fa fa-chevron-up" aria-hidden="true"></button><button (click)="Order('DESC','coinNumber')" class="fa fa-chevron-down"  aria-hidden="true"></button></div>
+                </td>
+                <td class="table-hover">机构分类1</td>
+                <td class="table-hover">机构分类2</td>
+                <td class="table-hovet">省份
+                    <div class="order"><button (click)="Order('ASC','createTime')" class="fa fa-chevron-up" aria-hidden="true"></button><button (click)="Order('DESC','createTime')" class="fa fa-chevron-down"  aria-hidden="true"></button></div>
+                </td>
+                 <td class="table-hovet">地区 
+                    <div class="order"><button (click)="Order('ASC','createTime')" class="fa fa-chevron-up" aria-hidden="true"></button><button (click)="Order('DESC','createTime')" class="fa fa-chevron-down"  aria-hidden="true"></button></div>
+                </td>
+                <td class="table-hover tenWord">机构地址</td>
+                 <td class="table-hovet">企业性质 
+                    <div class="order"><button (click)="Order('ASC','createTime')" class="fa fa-chevron-up" aria-hidden="true"></button><button (click)="Order('DESC','createTime')" class="fa fa-chevron-down"  aria-hidden="true"></button></div>
+                </td>
+                 <td class="table-hover">创建日期</td>
+                <!-- <td class="info longTxt">通知标题</td> -->
+               
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let organization of organizationList">   
+               <td>{{organization.updateTime}}</td>
+               <td>{{organization.state}}</td>
+               <td><a  (click)='turnToDetial(organization.organizationId)'><div class="isEllipsis tenWord">{{organization.organizationFullName}}</div></a></td>
+               <td>  <i  class="fa fa-pencil-square-o" (click)="upDateOrtgNameShow(upDateOrtgName,organization)"></i>
+               		 <bSwitch style='background-color: #fff' switch-size="mini" (onChangeState)="onChange($event,position)"
+	                 switch-on-color="success"
+         			 switch-off-color="offColor"> 
+				     </bSwitch>
+				     <i class="fa fa-trash" aria-hidden="true"></i>
+				</td>
+				<td>{{organization.organizationShortName}} </td>
+				<td>{{organization.ifFinancialInstitution}} </td>
+				<td>{{organization.organizationCategoryId1}} </td>
+				<td>{{organization.organizationCategoryId2}} </td>
+				<td>{{organization.privance}} </td>
+				<td>{{organization.city}} </td>
+				<td>{{organization.detailedAddress}} </td>
+				<td>{{organization.enterprisenature}} </td>
+				<td>{{organization.createTime}} </td>
+            </tr>
+        </tbody>
+    </table>
+    <province-city (provinceOut)="getPro($event)"></province-city>
+</div>
+    <!-- 分页 -->
+    <page [(pageObj)]="pageParams" (fnParent)="getDetailList()"></page>
+</main>
+
+<!-- 修改机构名 -->
+<div bsModal #upDateOrtgName="bs-modal" class="modal fade modelPon" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" aria-label="Close" (click)="upDateOrtgName.hide()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">修改机构名</h4>
+            </div>
+            <div class="modal-body contentxinxi">
+               	<div class="deg_content">
+               		<div class="col-md-12 row">
+               			<label class="col-md-4">机构全称（旧名）</label>
+               			<label class="col-md-8">{{oldOrganizationFullName}}</label>
+               		</div>
+               		<div class="col-md-12 row">
+               			<label class="col-md-4">机构全称（新名）</label>
+               			<p-dropdown  (onChange)="changeOrganizationFullName()"  [tooltip]="selectedCity" class="col-md-8" [style]="{'width':'100%'}" editable="editable"  [(options)]="orgs" [(ngModel)]="upDateOrtgNameCon.organizationFullName"></p-dropdown>
+               			<div class="red" *ngIf="nameReplay">机构名称已存在,请修改</div>
+               		</div>
+               	</div>
+                <div class="btnstyle">
+                    <button type="button" class="btn  btn-primary  btnhoverlan" [disabled]="nameReplay">保存</button>
+                    <button type="button" class="btn  btn-default btnhoverju" (click)="upDateOrtgName.hide()">取消</button>
+                </div>
+                <div style="clear: both"></div>
+            </div>
+        </div>
+    </div>
+</div>

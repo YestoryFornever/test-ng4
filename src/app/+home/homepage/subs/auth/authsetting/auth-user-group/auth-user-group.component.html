@@ -1,0 +1,55 @@
+<div class="header">
+	<span class="head icon">|</span><span class="head" >添加分组</span>
+	<div class="btnHeader head">
+		<button class="btn btn-primary">修改</button>
+		<button class="btn btn-default">删除</button>
+	</div>
+</div>
+<div class="coat">
+	<div class="tableList" [ngStyle]="{'height': height }">
+		<table #role_table class="table table-bordered table-hover ">
+			<thead>
+				<tr>
+					<th class="info">序号</th>
+					<th class="info">分组名称</th>
+					<th class="info">分组描述</th>
+					<th class="info">角色列表</th>
+					<th class="info">状态</th>
+					<th class="info">操作</th>
+				</tr>
+			</thead>
+			<tbody id="list" *ngFor="let group of groups">
+				<tr #userList class="Userlist">
+					<td class="table-hover">{{group.code}}</td>
+					<td class="table-hover">{{group.name}}</td>
+					<td class="table-hover">{{group.description}}</td>
+					<td class="table-hover">{{group.role}}</td>
+					<td class="table-hover">{{group.state}}</td>
+					<td class="table-hover tableexe">
+						<a href="javascript:void(0)" (click)="group_approve.show()" class="list-exe">查看授权</a>
+						<a href="javascript:void(0)" (click)="group_edit.show()" class="list-exe">成员维护</a>
+						<a href="javascript:void(0)" class="list-exe">复制分组</a>
+						<a href="javascript:void(0)" class="list-exe">分配角色</a>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+<!-- 分页 -->
+<div class="row pagerow">
+	<div class="pageshowleft">每页显示
+		<select #selectPage name="" id="msgNum" (change)="sizeData(selectPage.value,userList)" class="form-control">
+			<option #optionPage  *ngFor="let msgNumber of msgNumbers" value={{msgNumber.Number}}>{{msgNumber.Number}}</option>
+		</select>
+		条数据
+	</div>
+	<div class="pageshowmodle">
+		<span>{{currentPage}}/{{totalPages}}</span>页
+		<span>{{totalItems}}条数据</span>
+	</div>
+
+	<div class="pagefen">
+		<pagination [firstText]="firstText" [lastText]="lastText" [previousText]="previousText" [nextText]="nextText" [maxSize]="maxSize" [totalItems]="totalItems" [itemsPerPage]="itemsPerPage" [(ngModel)]="currentPage" [boundaryLinks]="true" (pageChanged)='pageChanged($event,allcheck)' (numPages)='pageNumChange($event)' class="pagination-sm"></pagination>
+	</div>
+</div>

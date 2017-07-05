@@ -1,0 +1,95 @@
+<div class="header clearfix">
+	<span class="head icon">|</span><span class="head" >债券分销列表</span>
+</div>
+<div class="mianCont">
+	<!-- section   1	 -->
+	<div class="clearfix">
+		<div class="condition container-fluid hei32" style="position: relative;overflow:visible">
+			<span>债券简称</span>
+			<input type="tel"
+				[(ngModel)]="default.value"
+				req placeholder="债券简称"
+				class="form-control"/>
+		</div>
+		<div class="condition container-fluid">
+			<span>债券期限</span>
+			<div class="btn-group btnborder">
+				<label class="btn btn-mint" btnRadio='0'  [(ngModel)]="all_issueTerm" (click)="clickAll_issueTerm()">全部</label>
+				<label class="btn btn-mint" btnCheckbox  *ngFor="let item of issueTerm,let i=index "   [(ngModel)]="issueTermList[i]['check']" (click)="clickOther_issueTerm()">{{item.name}}</label>
+			</div>
+		</div>
+		<div class="condition container-fluid">
+			<span>债券类型</span>
+			<div class="btn-group btnborder">
+				<label class="btn btn-mint" btnRadio='0'  [(ngModel)]="all_creditType" (click)="clickAll_creditType()">全部</label>
+				<label class="btn btn-mint" btnCheckbox  *ngFor="let item of creditType,let i=index "   [(ngModel)]="creditTypeList[i]['check']" (click)="clickOther_creditType()">{{item.name}}</label>
+			</div>
+		</div>
+		<div class="condition container-fluid">
+			<span>主体评级</span>
+			<div class="btn-group btnborder">
+				<label class="btn btn-mint" btnRadio='0'  [(ngModel)]="all_currIssuerCredit" (click)="clickAll_currIssuerCredit()">全部</label>
+				<label class="btn btn-mint" btnCheckbox  *ngFor="let item of currIssuerCredit,let i=index "   [(ngModel)]="currIssuerCreditList[i]['check']" (click)="clickOther_currIssuerCredit()">{{item.name}}</label>
+			</div>
+		</div>
+		<div class="condition container-fluid">
+			<span>发行状态</span>
+			<div class="btn-group btnborder">
+				<label class="btn btn-mint"  *ngFor="let item of enqrTpList,let i=index " btnRadio='{{item.id}}'   [(ngModel)]="default.enqrTp"  >{{item.name}}</label>
+			</div>
+		</div>
+		<div class="condition container-fluid">
+			<button type="button" class="btn btn-primary" (click)="turnFirst()" >查询</button>
+		</div>
+	</div>
+	<div class="tableList " style="overflow-x:scroll">
+		<table class="table table-bordered table-hover " style="min-width: 1600px">
+			<thead >
+				<tr>
+					<th class="info" >债券简称</th>
+					<th class="info ">发行日</th>
+					<th class="info">截标时间</th>
+					<th class="info ">申购利率</th>
+					<th class="info">发行量(亿)</th>
+					<th class="info" >主承销商</th>
+					<th class="info" >期限</th>
+					<th class="info" >企业类型</th>
+					<th class="info" >主/债评级</th>
+				</tr>
+			</thead>
+			<tbody *ngFor="let item of queryBondList">
+				<tr (dblclick)='toDetail(item)'>
+					<td>{{item.bondNm}}</td>
+					<td>{{item.issuDt}}</td>
+					<td>{{item.clsbidTm}}</td>
+					<td>
+						<span *ngIf="!item.two_line">{{item.sbrbIntrtLwrLmt}}-{{item.sbrbIntrtUpLm}}</span>
+						<span *ngIf="item.two_line">--</span>
+					</td>
+					<td>{{item.issuNum}}</td>
+					<td>{{item.primUdwr}}</td>
+					<td>{{item.trmText}}</td>
+					<td>{{item.entpTp | entpTp}}</td>
+					<td>{{item.sbjRtg}}/{{item.dbtItmRtg}}</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+<!-- 分页 -->
+<div class="row pagerow" >
+	<div class="pageshowleft">每页显示
+		<select #selectPage name="" id="msgNum" (change)="sizeData(selectPage.value,userList)">
+			<option #optionPage  *ngFor="let msgNumber of msgNumbers" value={{msgNumber.Number}}>{{msgNumber.Number}}</option>
+		</select>
+		&nbsp;&nbsp;条数据
+	</div>
+	<div class="pageshowmodle">
+		<span>{{currentPage}} / {{totalPages}}&nbsp;&nbsp;页</span>
+		<span>{{totalItems}}&nbsp;&nbsp;条数据</span>
+	</div>
+
+	<div class="pagefen">
+		<pagination  [firstText]="firstText" [lastText]="lastText" [previousText]="previousText" [nextText]="nextText" [maxSize]="maxSize" [totalItems]="totalItems" [itemsPerPage]="itemsPerPage" [(ngModel)]="currentPage" [boundaryLinks]="true" (pageChanged)='pageChanged($event)' (numPages)='pageNumChange($event)' class="pagination-sm"></pagination>
+	</div>
+</div>

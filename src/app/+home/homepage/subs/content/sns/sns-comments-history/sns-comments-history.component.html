@@ -1,0 +1,155 @@
+	<div class="header clearfix">
+		<span class="head icon">|</span><span class="head" >评论列表</span>
+		<div class="btnHeader head">
+			<!-- <button class="btn btn-primary">删除</button> -->
+		</div>
+	</div>
+
+	<div class="screen .clearfix">
+		<div class="condition container-fluid">
+			<span>发布时间</span><input [(ngModel)]="default.time_begin" class="selection"  type="date">&nbsp;到&nbsp;<input [(ngModel)]="default.time_end" class="selection" type="date">
+		</div>
+		<div class="condition container-fluid">
+			<span>姓名</span><input req [(ngModel)]="default.auth" [typeahead]="companys"  placeholder="全部" class="form-control" (typeaheadOnSelect)="typeaheadOnSelect($event)">
+		</div>
+		<div class="condition container-fluid">
+			<span>评论来源</span><select  class="selection"  [(ngModel)]="srouce" value='2'><option value='0'>全部</option><option value='1'>资讯</option><option value='2'>动态</option><option value='3'>评论</option><option value='4'>问题</option><option value='5'>回答</option></select>
+		</div>
+		<div class="condition container-fluid">
+			<span >是否被举报</span><select  [(ngModel)]="tip" class="selection" value='2'><option value='2'>全部</option><option value='1'>是</option><option value='0'>否</option></select>
+		</div>
+		<div class="condition container-fluid">
+			<span style="width: 100px">是否含敏感词</span><select value='2'  class="selection" [(ngModel)]="special" ><option value='2'>全部</option><option value='1'>是</option><option value='0'>否</option></select>
+		</div>
+		<div class="condition container-fluid">
+			<span style="width: 100px">是否被删除</span><select value='2' [(ngModel)]="del"   class="selection"><option value='2'>全部</option><option value='1'>是</option><option value='0'>否</option></select>
+		</div>
+		<div class="condition container-fluid">
+			<span>排序方式</span><select [(ngModel)]="default.orderby"  class="selection"><option value="create_time desc" selected = "selected">发布时间倒序</option>
+			<option  value="like_cnt desc">点赞量倒序</option>
+			</select>
+		</div>
+		<button class="condition btn btn-primary sub" (click)="changeFirstPage()">查询</button>
+	</div>
+
+	<!-- list -->
+	<div class="tableList " >
+		<div class = "loading" [ngClass]="setLoadClasses()" [ngStyle]="{'height': height }">
+			<div class="loader">
+				<div class="loader-inner">
+					<div class="loader-line-wrap">
+						<div class="loader-line"></div>
+					</div>
+					<div class="loader-line-wrap">
+						<div class="loader-line"></div>
+					</div>
+					<div class="loader-line-wrap">
+						<div class="loader-line"></div>
+					</div>
+					<div class="loader-line-wrap">
+						<div class="loader-line"></div>
+					</div>
+					<div class="loader-line-wrap">
+						<div class="loader-line"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<table class="table table-bordered table-hover " [ngClass]="setListClasses()">
+			<thead >
+				<tr>
+					<td class="info middleTxt">操作</td>
+					<td class="info "> 评论正文</td>
+					<td class="info middleTxt">评论时间</td>
+					<td class="info middleTxt">注册手机号</td>
+					<td class="info shortTxt">姓名</td>
+					<td class="info shortTxt">点赞量</td>
+					<td class="info " style="width:100px">评论来源</td>
+					<td class="info shortTxt">被举报</td>
+					<td class="info shortTxt">敏感词</td>
+					<td class="info shortTxt">已删除</td>
+				</tr>
+			</thead>
+			<tbody #XXX id="list" *ngFor="let comment of commentList">
+				<tr #userList   [ngStyle]="{'background-color': color }" class="Userlist">
+					<td class="table-hover" style="text-align: center"><span  class="verify" *ngIf="comment.is_del!=1" (click)="deletedCom(deleted,comment)" >删除</span>&nbsp;&nbsp;<span class="verify" *ngIf="comment.is_tip==1||comment.special_word!= ''"
+					(click)="noprob(noProblem,comment)" 
+					>无问题</span></td>
+				<!-- 	<td class="table-hover"><div class="td shareContent" 
+					 [tooltipHtml]="comment.content">{{comment.content}} </div></td> -->
+					 <td class="table-hover"><div class="td shareContent">{{comment.content}} </div></td>
+					<td class="table-hover middleTxt">{{comment.time}}</td>
+					<td class="table-hover">{{comment.user_phone}}</td>
+					<td class="table-hover">{{comment.user_name}}</td>
+					<td class="table-hover">{{comment.like_cnt}}</td>
+					<td class="table-hover"><!-- {{comment.sendDate}} -->{{comment.source}}</td>
+					<td class="table-hover " ><span *ngIf="comment.is_tip==1">√</span></td>
+					<td class="table-hover" ><span *ngIf="comment.special_word!= '' ">√</span></td>
+					<td class="table-hover " ><span *ngIf="comment.is_del==1">√</span></td>
+					
+				</tr>
+			</tbody>
+		</table>
+	</div>
+
+
+	<!-- 分页 -->
+	<div class="row pagerow" [ngClass]="setListClasses()">
+		<div class="pageshowleft">每页显示
+			<select #selectPage name="" id="msgNum" (change)="sizeData(selectPage.value,userList)">
+				<option #optionPage  *ngFor="let msgNumber of msgNumbers" value={{msgNumber.Number}}>{{msgNumber.Number}}</option>
+			</select>
+			条数据
+		</div>
+		<div class="pageshowmodle">
+			<span>{{currentPage}} / {{totalPages}}</span>页
+			<span>{{totalItems}}条数据</span>
+		</div>
+
+		<div class="pagefen">
+			<pagination  [firstText]="firstText" [lastText]="lastText" [previousText]="previousText" [nextText]="nextText" [maxSize]="maxSize" [totalItems]="totalItems" [itemsPerPage]="itemsPerPage" [(ngModel)]="currentPage" [boundaryLinks]="true" (pageChanged)='pageChanged($event,allcheck)' (numPages)='pageNumChange($event)' class="pagination-sm"></pagination>
+		</div>
+	</div>
+
+
+	<!--删除弹窗-->
+<div bsModal #deleted="bs-modal" class="modal fade modelPon" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-sm">
+		<div class="modal-content delete">
+			<div class="modal-header ">
+				<button type="button" class="close" aria-label="Close" (click)="deleted.hide()">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<h4 class="modal-title">删除评论</h4>
+			</div>
+			<div class="modal-body contentxinxi">
+				<div class="pp clearfix"><div class="win_head">处理理由</div><span>{{is_tip}}</span><span>{{is_special}}</span></div>
+				<div class="pp clearfix"><div class="win_head" >备注</div><textarea class="visState" [(ngModel)]="deleteMsg.del_note"></textarea></div>
+				<div class="btnstyle">
+					<button type="button" class="btn btn-default btnhoverlan" (click)="deleted.hide()">取消</button>
+					<button type="button" class="btn btn-primary btnhoverju" (click)="deletedInfo(deleted)">提交</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- 无问题 -->
+<div bsModal #noProblem="bs-modal" class="modal fade modelPon" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content noproblem">
+            <div class="modal-header ">
+                <button type="button" class="close" aria-label="Close" (click)="noProblem.hide()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">评论判定为无问题</h4>
+            </div>
+            <div class="modal-body contentxinxi" style="height:200px">
+                <div class="pp clearfix"><div class="win_head" style="width:40px">备注</div><textarea [(ngModel)]="nopro.note" class="visState" ></textarea></div>
+                <div class="btnstyle">
+                    <button type="button" class="btn btn-default btnhoverlan" (click)="noProblem.hide()">取消</button>
+                    <button type="button" class="btn btn-primary btnhoverju" (click)="setTip(noProblem)">提交</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

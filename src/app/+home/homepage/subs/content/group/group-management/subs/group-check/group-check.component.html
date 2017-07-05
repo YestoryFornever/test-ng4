@@ -1,0 +1,108 @@
+<!--查看群 page-->
+
+<div class="row col-xs-12 col-md-12" style="padding-left:30px;">
+    <div class="row rowtop">
+        <div class="before"><span class="icon">|</span>查看群</div>
+        <button type="button" class="btn btn-primary btn1 btnhoverju" (click)="dissolve()">解散群</button>
+        <button type="button" class="btn btn-primary btn1 btnhoverju" (click)="freeregroup()">冻结群</button>
+        <button type="button" class="btn btn-primary btn1 btnhoverju" (click)="memberFun()">编辑群成员</button>
+        <button type="button" class="btn btn-primary btn1 btnhoverju" (click)="msssageFun()" *ngIf="groupMessage.groupTp=='官方群'">编辑群信息</button>
+    </div>
+    <div class="qunCon">
+        <dl class="fistdl">
+            <dt><img src="{{groupMessage.groupheadAdr}}"/></dt>
+            <dd>
+                <p>群名：{{groupMessage.groupGrpNm}}</p>
+                <p>是否官方群：{{groupMessage.groupTp}}</p>
+            </dd>
+        </dl>
+        <dl>
+            <dd>
+                <p>群人数：{{groupMessage.groupaStaffTotNum}}</p>
+                <p>群状态：{{groupMessage.eStatus}}</p> 
+                
+            </dd>
+        </dl>
+        <dl>
+            <dd>
+                <p>建群日期：{{groupMessage.createTime}}</p>
+                <p>群主：{{groupMessage.usrNm}}</p>
+            </dd>
+        </dl>
+
+    </div>
+    <div class="sorting" style="clear: both">
+        <table class="table sortTable">
+            <tr>
+                <td> 
+                    <input type="button" class="btn btn-primary btn1 btnhoverju" value="默认排序" (click)="defaultSort(fro)"/>  
+                </td>
+                <td> 
+                    <span>{{groupMessage.groupaStaffTotNum}}/{{groupMessage.groupMgtStaffNum}}人</span>
+                    <div class="peoplenum">根据加入时间排序
+                       <div class="topArrow" (click)="defaultTimeAsc(fro)"></div>
+                       <div class="bottomArrow" (click)="defaultTimeDesc(fro)"></div> 
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" #fro (change)="frozenUser(fro)">
+                            是否冻结
+                        </label>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div class="searchsection" >
+        <div class="border">
+            <table class="table table-hover tablestyle">
+                <thead >
+                <tr class="active">
+                    <td>顺序</td>
+                    <td>用户姓名</td>
+                    <td>用户角色</td>
+                    <td>用户注册手机号</td>
+                    <td>注册日期</td>
+                    <td>机构</td>
+                    <td>用户状态</td>
+                </tr>
+                </thead>
+                <tbody  #XXX id="list" >
+                <tr #userList  [ngStyle]="{'background-color': color }" class="Userlist" *ngFor="let list of groupMemberList;let i=index;">
+                    <td class="table-hover">{{i+1}}</td>
+                    <td class="table-hover"><a routerLink='../../../user-edit/{{list.userId}}' routerLinkActive="active">{{list.userName}}</a></td>
+                    <td class="table-hover">{{list.usrAhr}}</td>
+                    <td class="table-hover">{{list.loginName}}</td>
+                    <td class="table-hover">{{list.createTime}}</td>
+                    <td class="table-hover">{{list.organizationShortName}}</td>
+                    <td class="table-hover">{{list.usrEStatus}}</td>
+                </tr>
+
+                </tbody>
+            </table>            
+        </div>
+        <div class="row pagerow">
+            <div class="pageshowleft">每页显示
+                <select #selectPage name="" id="msgNum" (change)="sizeData(selectPage.value,userList)" [(ngModel)]="itemsPerPage">
+                    <option #optionPage  *ngFor="let msgNumber of msgNumbers" value={{msgNumber.Number}}>{{msgNumber.Number}}</option>
+                </select>
+                条数据
+            </div>
+            <div class="pageshowmodle">
+                <span>{{currentPage}} / {{totalPages}}</span>页
+                <span>{{totals}}条数据</span>
+            </div>
+
+            <div class="pagefen">
+                <pagination  [firstText]="firstText" [lastText]="lastText" [previousText]="previousText" [nextText]="nextText" [maxSize]="maxSize" [totalItems]="totals" [itemsPerPage]="itemsPerPage" [(ngModel)]="currentPage" [boundaryLinks]="true" (pageChanged)='pageChanged($event)' (numPages)='pageNumChange($event)' class="pagination-sm"></pagination>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+

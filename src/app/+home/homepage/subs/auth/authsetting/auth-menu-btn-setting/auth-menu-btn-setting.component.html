@@ -1,0 +1,318 @@
+<div class="header">
+	<span class="head icon">|</span><span class="head" >页面功能设置</span>
+	<div class="btnHeader head">
+		<button class="btn btn-primary">保存设置</button>
+	</div>
+</div>
+<!-- <div class="coat">
+	<div class="screen">
+		<div class="condition container-fluid">
+			<span>机构全称</span>
+			<input [(ngModel)]="organizationFullName"
+				[typeahead]="dataSource"
+				(typeaheadLoading)="changeTypeaheadLoading($event)"
+				(typeaheadNoResults)="changeTypeaheadNoResults($event)"
+				(typeaheadOnSelect)="typeaheadOnSelect($event)"
+				[typeaheadOptionsLimit]="7"
+				[typeaheadOptionField]="'fullname'"
+				class="form-control">
+			<div *ngIf="typeaheadLoading===true">
+				<i class="glyphicon glyphicon-refresh ng-hide" style=""></i>
+			</div>
+			<div *ngIf="typeaheadNoResults===true" class="" style="">
+				<i class="glyphicon glyphicon-remove"></i> 无结果
+			</div>
+		</div>
+		<div class="condition container-fluid">
+			<span>机构简称</span><input type="text" class="form-control" [(ngModel)]="organizationAbbreviation">
+		</div>
+		<div class="condition container-fluid">
+			<span>分类</span><select class="form-control" [(ngModel)]="organizationC1"></select><select class="form-control" [(ngModel)]="organizationC2"></select>
+		</div>
+		<button class="condition btn btn-primary sub" (click)="getOrganizations()">查询</button>
+		<button type="button" class="condition btn btn-default cols_setting pull-right" (click)="cols_setting.show()">
+			<i class="fa fa-cog fa-lg"></i>
+		</button>
+		<div style="clear:both"></div>
+	</div>
+</div>
+<div class="coat">
+	<div class="tableList" [ngStyle]="{'height': height }">
+		<table #organization_table class="table table-bordered table-hover ">
+			<thead>
+				<tr>
+					<th *ngIf="listItem.fullname" class="info" style="min-width:200px;">机构全称</th>
+					<th *ngIf="listItem.abbreviation" class="info">机构简称</th>
+					<th *ngIf="listItem.logo" class="info">LOGO</th>
+					<th *ngIf="listItem.category" class="info">分类1</th>
+					<th *ngIf="listItem.category" class="info">分类2</th>
+					<th *ngIf="listItem.address" class="info">所在地</th>
+					<th *ngIf="listItem.address_detail" class="info">详细地址</th>
+					<th *ngIf="listItem.address_code" class="info">邮政编码</th>
+					<th *ngIf="listItem.phone" class="info">总机</th>
+					<th *ngIf="listItem.isFinancial" class="info">是否金融机构</th>
+					<th *ngIf="listItem.backup" class="info">备注</th>
+					<th *ngIf="listItem.subsNum" class="info">下属部门数</th>
+					<th *ngIf="listItem.population" class="info">机构总人数</th>
+					<th *ngIf="listItem.source" class="info">机构来源</th>
+					<th *ngIf="listItem.approveState" class="info">认证状态</th>
+					<th class="info">操作</th>
+				</tr>
+			</thead>
+			<tbody id="list" *ngFor="let organization of organizations">
+				<tr #userList class="Userlist">
+					<td *ngIf="listItem.fullname" class="table-hover">{{organization.fullname}}</td>
+					<td *ngIf="listItem.abbreviation" class="table-hover">{{organization.abbreviation}}</td>
+					<td *ngIf="listItem.logo" class="table-hover">{{organization.logo}}</td>
+					<td *ngIf="listItem.category" class="table-hover">{{organization.c1}}</td>
+					<td *ngIf="listItem.category" class="table-hover">{{organization.c2}}</td>
+					<td *ngIf="listItem.address" class="table-hover">{{organization.address}}</td>
+					<td *ngIf="listItem.address_detail" class="table-hover">{{organization.address_detail}}</td>
+					<td *ngIf="listItem.address_code" class="table-hover">{{organization.address_code}}</td>
+					<td *ngIf="listItem.phone" class="table-hover">{{organization.phone}}</td>
+					<td *ngIf="listItem.isFinancial" class="table-hover">{{organization.isFinancial}}</td>
+					<td *ngIf="listItem.backup" class="table-hover">{{organization.backup}}</td>
+					<td *ngIf="listItem.subsNum" class="table-hover">{{organization.subsNum}}</td>
+					<td *ngIf="listItem.population" class="table-hover">{{organization.population}}</td>
+					<td *ngIf="listItem.source" class="table-hover">{{organization.source}}</td>
+					<td *ngIf="listItem.approveState" class="table-hover">{{organization.approveState}}</td>
+					<td class="table-hover tableexe">
+						<a href="javascript:void(0)" (click)="organization_approve.show()" class="list-exe">审核</a>
+						<a href="javascript:void(0)" (click)="organization_edit.show()" class="list-exe">修改</a>
+						<a href="javascript:void(0)" (click)="organization_detail.show()" class="list-exe">部门详情</a>
+						<a href="javascript:void(0)" class="list-exe">查看用户列表</a>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+分页
+<div class="row pagerow">
+	<div class="pageshowleft">每页显示
+		<select #selectPage name="" id="msgNum" (change)="sizeData(selectPage.value,userList)" class="form-control">
+			<option #optionPage  *ngFor="let msgNumber of msgNumbers" value={{msgNumber.Number}}>{{msgNumber.Number}}</option>
+		</select>
+		条数据
+	</div>
+	<div class="pageshowmodle">
+		<span>{{currentPage}}/{{totalPages}}</span>页
+		<span>{{totalItems}}条数据</span>
+	</div>
+
+	<div class="pagefen">
+		<pagination [firstText]="firstText" [lastText]="lastText" [previousText]="previousText" [nextText]="nextText" [maxSize]="maxSize" [totalItems]="totalItems" [itemsPerPage]="itemsPerPage" [(ngModel)]="currentPage" [boundaryLinks]="true" (pageChanged)='pageChanged($event,allcheck)' (numPages)='pageNumChange($event)' class="pagination-sm"></pagination>
+	</div>
+</div>
+<button type="button" class="btn btn-info" (click)="setPage(3)">Set current page to: 3</button>
+
+<div bsModal #organization_approve="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" (click)="organization_approve.hide()" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<h4 class="modal-title">审核机构</h4>
+			</div>
+			<div class="modal-body">
+				<form class="form-horizontal" role="form" #organizations_edit_form="ngForm">
+					<div id="organizations_info_left" class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+						<div class="form-group">
+							<label for="fullname" class="col-lg-3 col-md-3 col-sm-3 col-xs-3 control-label">机构全称</label>
+							<div class="col-lg-9 col-md-9 col-sm-9 col-xs-9">
+								<input type="text" class="form-control" id="fullname" name="fullname">
+							</div>
+						</div>
+					</div>
+					<div  class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+						<button type="button" class="btn btn-primary pull-right btn-space" (click)="addOrganization()">保存</button>
+						<button type="button" class="btn btn-default pull-right btn-space" (click)="organization_approve.hide()">取消</button>
+					</div>
+					<div style="clear:both;"></div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+<div bsModal #organization_edit="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" (click)="organization_edit.hide()" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<h4 class="modal-title">添加/修改机构</h4>
+			</div>
+			<div class="modal-body">
+				<form class="form-horizontal" role="form" #organization_edit_form="ngForm">
+					<div id="organizations_info_left" class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+						<div class="form-group">
+							<label for="fullname" class="col-lg-3 col-md-3 col-sm-3 col-xs-3 control-label">机构全称</label>
+							<div class="col-lg-9 col-md-9 col-sm-9 col-xs-9">
+								<input type="text" class="form-control" id="fullname" name="fullname">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="abbreviation" class="col-lg-3 col-md-3 col-sm-3 col-xs-3 control-label">机构简称</label>
+							<div class="col-lg-9 col-md-9 col-sm-9 col-xs-9">
+								<input type="text" class="form-control" id="abbreviation" name="abbreviation">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="c1" class="col-lg-3 col-md-3 col-sm-3 col-xs-3 control-label">分类</label>
+							<div class="col-lg-9 col-md-9 col-sm-9 col-xs-9">
+								<div class="row">
+									<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+										<select type="text" class="form-control" id="c1" name="c1"></select>
+									</div>
+									<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+										<select type="text" class="form-control" id="c2" name="c2"></select>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="address" class="col-lg-3 col-md-3 col-sm-3 col-xs-3 control-label">所在地</label>
+							<div class="col-lg-9 col-md-9 col-sm-9 col-xs-9">
+								<input type="text" class="form-control" id="address" name="address">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="address_detail" class="col-lg-3 col-md-3 col-sm-3 col-xs-3 control-label">详细地址</label>
+							<div class="col-lg-9 col-md-9 col-sm-9 col-xs-9">
+								<input type="text" class="form-control" id="address_detail" name="address_detail">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="address_code" class="col-lg-3 col-md-3 col-sm-3 col-xs-3 control-label">邮政编码</label>
+							<div class="col-lg-9 col-md-9 col-sm-9 col-xs-9">
+								<input type="text" class="form-control" id="address_code" name="address_code">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="phone" class="col-lg-3 col-md-3 col-sm-3 col-xs-3 control-label">总机</label>
+							<div class="col-lg-9 col-md-9 col-sm-9 col-xs-9">
+								<input type="text" class="form-control" id="phone" name="phone" required minlength="11" maxlength="11" >
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="isFinancial" class="col-lg-3 col-md-3 col-sm-3 col-xs-3 control-label">是否金融机构</label>
+							<div class="col-lg-9 col-md-9 col-sm-9 col-xs-9">
+								<div class="btn-group">
+									<label name="visitState" class="btn btn-mint" [(ngModel)]="isFinancial" btnRadio="true">是</label>
+									<label name="visitState" class="btn btn-mint" [(ngModel)]="isFinancial" btnRadio="false">否</label>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div id="organizations_info_right" class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+						<div class="form-group">
+							<label for="LOGO" class="col-lg-3 col-md-3 col-sm-3 col-xs-3 control-label">LOGO</label>
+							<div class="col-lg-9 col-md-9 col-sm-9 col-xs-9">
+								<input type="file">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="backup" class="col-lg-3 col-md-3 col-sm-3 col-xs-3 control-label">备注</label>
+							<div class="col-lg-9 col-md-9 col-sm-9 col-xs-9">
+								<textarea class="form-control" id="backup" name="backup"></textarea>
+							</div>
+						</div>
+					</div>
+					<div  class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+						<button type="button" class="btn btn-primary pull-right btn-space" (click)="addOrganization()">保存</button>
+						<button type="button" class="btn btn-default pull-right btn-space" (click)="organization_edit.hide()">取消</button>
+					</div>
+					<div style="clear:both;"></div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+<div bsModal #organization_detail="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" (click)="organization_detail.hide()" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<h4 class="modal-title">部门详情</h4>
+			</div>
+			<div class="modal-body">
+				<table style="width:100%;">
+					<thead>
+						<tr>
+							<th>部门名</th>
+							<th>部门总人数</th>
+							<th>操作</th>
+						</tr>						
+					</thead>
+					<tbody>
+						<tr>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
+<div bsModal #cols_setting="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" (click)="cols_setting.hide()" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<h4 class="modal-title">列标题设置</h4>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div  class="col-lg-1 col-md-1 col-sm-1 col-xs-1 text-right">
+						<button *ngIf="colsSettingAll" type="button" class="btn btn-primary btn-space" (click)="cols_settingTrue()">全选</button>
+						<button *ngIf="!colsSettingAll" type="button" class="btn btn-primary btn-space" (click)="cols_settingFalse()">取消全选</button>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 text-right"><input [(ngModel)]="listItem.fullname" type="checkbox" checked disabled></div>
+					<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 text-left">机构全称</div>
+					<div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 text-right"><input [(ngModel)]="listItem.abbreviation" type="checkbox" checked disabled></div>
+					<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 text-left">机构简称</div> 
+					<div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 text-right"><input [(ngModel)]="listItem.category" type="checkbox" checked disabled></div>
+					<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 text-left">分类</div> 
+					<div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 text-right"><input [(ngModel)]="listItem.approveState" type="checkbox" checked disabled></div>
+					<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 text-left">认证状态</div>
+				</div>
+				<div class="row">
+					<div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 text-right"><input [(ngModel)]="listItem.logo" type="checkbox" checked></div>
+					<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 text-left">LOGO</div>
+			 		<div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 text-right"><input [(ngModel)]="listItem.address" type="checkbox" checked></div>
+			 		<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 text-left">所在地</div>
+			 		<div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 text-right"><input [(ngModel)]="listItem.address_detail" type="checkbox" checked></div>
+			 		<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 text-left">详细地址</div> 
+			 		<div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 text-right"><input [(ngModel)]="listItem.address_code" type="checkbox" checked></div>
+			 		<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 text-left">邮政编码</div>
+				</div>
+				<div class="row"> 
+			 		<div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 text-right"><input [(ngModel)]="listItem.phone" type="checkbox" checked></div>
+			 		<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 text-left">总机</div>
+					<div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 text-right"><input [(ngModel)]="listItem.isFinancial" type="checkbox" checked></div>
+					<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 text-left">是否金融机构</div>
+					<div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 text-right"><input [(ngModel)]="listItem.backup" type="checkbox" checked></div>
+					<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 text-left">备注</div> 
+					<div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 text-right"><input [(ngModel)]="listItem.subsNum" type="checkbox" checked></div>
+					<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 text-left">下属部门数</div>
+				</div>
+				<div class="row">
+					<div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 text-right"><input [(ngModel)]="listItem.population" type="checkbox" checked></div>
+					<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 text-left">机构总人数</div>
+					<div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 text-right"><input [(ngModel)]="listItem.source" type="checkbox" checked></div>
+					<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 text-left">机构来源</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div> -->

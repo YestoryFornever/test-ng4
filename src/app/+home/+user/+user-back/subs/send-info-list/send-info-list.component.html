@@ -1,0 +1,145 @@
+<div class="header clearfix">
+	<span class="head icon">|</span><span class="head" >发送消息列表</span>
+	<div class="btnHeader head">
+        <button class="btn btn-primary" (click)="sendTo()">发送消息</button>
+    </div>
+</div>
+<!-- <div>{{listState}}</div> -->
+<div class="newsMsgOther">
+	<div (click)="$event.preventDefault()">
+		<tabset [justified]="false">
+			<tab (select)="get($event)" [disabled]="disabled" heading="通知栏消息">
+				<div class="tableList "   [ngStyle]="{'height': height }">
+				<div *ngIf="infoList.length==0" class="noneData">暂无数据</div>
+				<table class="table table-bordered table-hover "  *ngIf="infoList.length>0">
+					<thead>
+						<tr>
+							<td class="info middleTxt">发送时间</td>
+							<td class="info">创建用户</td>
+							<td class="info middleTxt">标题</td>
+							<td class="info">发送状态</td>
+							<td class="info ">目标用户</td>
+							<td class="info ">送达用户</td>
+							<!-- <td class="info ">点击用户</td> -->
+							<td class="info" >操作</td>	
+						</tr>
+					</thead>
+					<tbody *ngFor="let item of infoList">
+						<tr>
+						<!-- infoList -->
+							<td class="table-hover">{{item.sendTime}}</td>
+							<td class="table-hover">{{item.crtPsnNm}}</td>
+							<td class="table-hover ">{{item.pshETitle}}</td>
+							<td class="table-hover">{{item.pshStatus}}</td>
+							<td class="table-hover">{{item.targetMebNum }}</td>
+							<td class="table-hover">{{item.sendMebNum}}</td>
+							<!-- <td class="table-hover">{{item.clickMebNum}}</td> -->
+							<td class="table-hover"><a (click)="turnTo(item.msgPshid)">详情</a></td>	
+						</tr>
+					</tbody>
+				</table>
+				<!-- <div *ngIf="ListFriend.length==0">暂无数据</div> -->
+					<!-- <table class="table table-bordered table-hover " *ngIf="ListFriend.length>0">
+						<thead >
+							<tr>
+								<td class="info">姓名</td>
+								<td class="info ">公司</td>	
+								<td class="info">部门</td>
+								<td class="info ">职位</td>	
+								<td class="info ">联系电话</td>						
+							</tr>
+						</thead>
+
+						<tbody *ngFor="let userMsg of ListFriend">
+							<tr class="Userlist" >
+								<td class="table-hover">{{userMsg.userName}}</td>
+								<td class="table-hover">{{userMsg.organizationFullName}}</td>
+								<td class="table-hover">{{userMsg.department}}</td>
+								<td class="table-hover">{{userMsg.position}}</td>
+								<td class="table-hover">{{userMsg.contactPhone}}</td>
+							</tr>
+						</tbody>
+					</table> -->
+				</div>
+			</tab>
+			<tab (select)="get($event)" [disabled]="disabled" heading="系统消息">
+				<div class="tableList "   [ngStyle]="{'height': height }">
+				<div *ngIf="infoList.length==0" class="noneData">暂无数据</div>
+					<table class="table table-bordered table-hover " *ngIf="infoList.length>0">
+						<thead >
+							<tr>
+								<td class="info middleTxt">发送时间</td>
+								<td class="info">创建用户</td>
+								<td class="info middleTxt">标题</td>
+								<td class="info">跳转类型</td>
+								<td class="info ">目标用户数</td>
+								<td class="info ">发送用户数</td>
+								<td class="info ">已读用户数</td>
+								<td class="info" >操作</td>					
+							</tr>
+						</thead>
+						<tbody   *ngFor="let item of tipList">
+							<tr class="Userlist">
+								<td class="table-hover">{{item.sendTime}}</td>
+								<td class="table-hover">{{item.crtPsnNm}}</td>
+								<td class="table-hover">{{item.pshETitle}}</td>
+								<td class="table-hover"><span *ngIf="!item.h5Url">无</span><span *ngIf="item.h5Url">H5</span></td>
+								<td class="table-hover">{{item.targetMebNum }}</td>
+								<td class="table-hover">{{item.sendMebNum}}</td>
+								<td class="table-hover">{{item.clickMebNum}}</td>
+								<td class="table-hover"><a (click)="turnTo(item.msgPshid)">详情</a></td>	
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</tab>
+			<tab (select)="get($event)" [disabled]="disabled" heading="短信">
+				
+				<div class="tableList "   [ngStyle]="{'height': height }">
+					<div *ngIf="infoList.length==0" class="noneData">暂无数据</div>
+					<table class="table table-bordered table-hover " *ngIf="infoList.length>0">
+						<thead >
+							<tr>
+								<td class="info middleTxt">发送时间</td>
+								<td class="info">创建用户</td>
+								<td class="info middleTxt">短信正文</td>
+								<td class="info">发送状态</td>
+								<td class="info ">目标用户数</td>
+								<td class="info ">发送成功用户数</td>
+								<td class="info" >操作</td>				
+							</tr>
+						</thead>
+						<tbody   *ngFor="let item of shortmsgList">
+							<tr class="Userlist">
+								<td class="table-hover">{{item.sendTime}}</td>
+								<td class="table-hover">{{item.crtPsnNm}}</td>
+								<td class="table-hover">{{item.pshCntnt}}</td>
+								<td class="table-hover">{{item.pshStatus}}</td>
+								<td class="table-hover">{{item.targetMebNum }}</td>
+								<td class="table-hover">{{item.sendMebNum}}</td>
+								<td class="table-hover"><a (click)="turnTo(item.msgPshid,listState)">详情</a></td>	
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</tab>
+		</tabset>
+	</div>
+</div>
+<!-- 分页 -->
+	<div class="row pagerow" >
+		<div class="pageshowleft">每页显示
+			<select #selectPage name="" id="msgNum" (change)="sizeData(selectPage.value,userList)">
+				<option #optionPage  *ngFor="let msgNumber of msgNumbers" value={{msgNumber.Number}}>{{msgNumber.Number}}</option>
+			</select>
+			条数据
+		</div>
+		<div class="pageshowmodle">
+			<span>{{currentPage}} / {{totalPages}}</span>页
+			<span>{{totalItems}}条数据</span>
+		</div>
+
+		<div class="pagefen">
+			<pagination  [firstText]="firstText" [lastText]="lastText" [previousText]="previousText" [nextText]="nextText" [maxSize]="maxSize" [totalItems]="totalItems" [itemsPerPage]="itemsPerPage" [(ngModel)]="currentPage" [boundaryLinks]="true" (pageChanged)='pageChanged($event)' (numPages)='pageNumChange($event)' class="pagination-sm"></pagination>
+		</div>
+	</div>

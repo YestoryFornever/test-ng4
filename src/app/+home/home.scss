@@ -1,0 +1,24 @@
+.control-sidebar{
+  width: 300px;
+  right: -300px;
+}
+.control-sidebar-open {
+  right: 0;
+}
+.nowrap {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: block;
+}
+
+.moreNowrap {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
+}
+
+.box #chat-box .selectTr {
+  background: red;
+}

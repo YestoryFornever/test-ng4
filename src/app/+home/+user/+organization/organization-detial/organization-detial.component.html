@@ -1,0 +1,578 @@
+<div class="header box">
+	<span class="head icon">|</span>
+	<span class="head">机构详情</span>
+	<div class="btnHeader head">
+		<button class="btn btn-primary" (click)="turnTo()">返回</button>
+	</div>
+</div>
+<main>
+	<div class="row">
+<!-- 目标用户机构信息 -->
+		<div class="col-md-8">
+			<div class="col-md-12">
+		        <div class="box box-widget">
+	            	<div class="box-header with-border">
+	              		<div class="user-block">
+							<span class="username">目标用户机构信息</span>
+	             		</div>
+	             		<div class="box-tools">
+	             	 		<button type="button" class="btn btn-primary" (click)="upDateOrtgName.show()">修改机构全称</button>
+	                 		<button type="button" class="btn btn-box-tool" (click)="upDateUserOrtg.show()" data-toggle="tooltip" title="目标用户机构信息编辑">
+	                 		 <i class="fa fa-pencil-square-o"></i></button>
+	                		 <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+	               			 </button>
+	             		</div>
+	            	</div>
+	            	<div class="box-body row">
+						<div class="col-md-7 info">
+							<label class="col-md-4 r_title">机构全称</label>
+							<span class="col-md-8">中国农业银行股份有限公司</span>
+						</div>
+						<div class="col-md-4 info">
+							<label class="col-md-6 r_title">机构状态</label>
+							<span class="col-md-6 green_gary">有效</span>
+						</div>
+						<div class="col-md-7 info">
+							<label class="col-md-4 r_title">机构简称</label>
+							<span class="col-md-8">中国农行</span>
+						</div>
+						<div class="col-md-7 info">
+							<label class="col-md-4 r_title">机构分类</label>
+							<span class="col-md-8">银行 - 股份制银行</span>
+						</div>
+						<div class="col-md-7 info">
+							<label class="col-md-4 r_title">所在区域</label>
+							<span class="col-md-8">黑龙江省 - 哈尔滨市</span>
+						</div>
+						<div class="  col-md-12 info">
+							<label class="col-md-2 r_title">机构身份</label>
+							<div class="condition-input col-md-10"><label class="btn btn-mint form-control" *ngFor="let item of orgIdefty" [(ngModel)]="default" [btnRadio]='item.id'>{{item.name}}</label></div>
+						</div>
+						<div class="  col-md-12 info">
+							<label class="col-md-2 r_title">业务标签</label>
+							<div class="condition-input col-md-10"><label class="btn btn-mint form-control" *ngFor="let item of busniessTip" [(ngModel)]="default" [btnRadio]='item.id'>{{item.name}}</label></div>
+						</div>
+		            </div>
+		        </div>
+		    </div>		
+		<!-- 机构资质 -->
+		    <div class="col-md-12">
+	        	<div class="box box-widget">
+	            	<div class="box-header with-border">
+	              		<div class="user-block">
+							<span class="username">机构资质（承分销）信息</span>
+	             		</div>
+	             		<div class="box-tools">
+	                 		<button type="button" class="btn btn-box-tool" container='body' tooltip="编辑机构资质" (click)="upDateAptitudeOrg.show()">
+	                 		 <i class="fa fa-pencil-square-o"></i></button>
+	                		 <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+	               			 </button>
+	             		</div>
+	            	</div>
+	            	<div class="box-body row">
+						<div class="col-md-3 info">
+							<label class="col-md-6 r_title">短融</label>
+							<span class="col-md-6">在团</span>
+						</div>
+						<div class="col-md-3 info">
+							<label class="col-md-6 r_title">超短融</label>
+							<span class="col-md-6">在团</span>
+						</div>
+						<div class="col-md-3 info">
+							<label class="col-md-6 r_title">公司债</label>
+							<span class="col-md-6">无</span>
+						</div>
+						<div class="col-md-3 info">
+							<label class="col-md-6 r_title">国债</label>
+							<span class="col-md-6">主承</span>
+						</div>
+						<div class="col-md-3 info">
+							<label class="col-md-6 r_title">中票</label>
+							<span class="col-md-6">主承</span>
+						</div>
+						<div class="col-md-3 info">
+							<label class="col-md-6 r_title">PPN</label>
+							<span class="col-md-6">在团</span>
+						</div>
+						<div class="col-md-3 info">
+							<label class="col-md-6 r_title">非公开</label>
+							<span class="col-md-6">无</span>
+						</div>
+						<div class="col-md-3 info">
+							<label class="col-md-6 r_title">国开政策性金融债</label>
+							<span class="col-md-6">在团</span>
+						</div>
+	            	</div>
+	         	</div>
+	        </div>
+		
+		<!-- 机构基本信息 -->
+			<div class="col-md-12" style="overflow: hidden">
+	        	<div class="box box-widget">
+	            	<div class="box-header with-border">
+	              		<div class="user-block">
+							<span class="username">机构基本信息</span>
+	             		</div>
+	             		<div class="box-tools">
+	                 		<button type="button" class="btn btn-box-tool" data-toggle="tooltip" title="编辑机构基本信息" (click)="upDateOrtgInfo.show()">
+	                 		 <i class="fa fa-pencil-square-o"></i></button>
+	                		 <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+	               			 </button>
+	             		</div>
+	            	</div>
+	            	<div class="box-body row">
+						<div class="col-md-7 info">
+							<label class="col-md-4 r_title">企业性质</label>
+							<span class="col-md-8">央企</span>
+						</div>
+							<div class="col-md-5 info" style="height: 25px">
+							<label class="col-md-4 r_title ">Logo</label>
+							<div class="col-md-8 logo"><img src="../../../../../public/images/showCard.jpg"></div>
+						</div>
+						<div class="col-md-7 info">
+							<label class="col-md-4 r_title">国标分类</label>
+							<span class="col-md-8">租赁和商务服务业 - 租赁业</span>
+						</div>
+						<div class="col-md-7 info">
+							<label class="col-md-4 r_title">邮政编码</label>
+							<span class="col-md-8">100086</span>
+						</div>
+						<div class="col-md-7 info">
+							<label class="col-md-4 r_title">总机</label>
+							<span class="col-md-8">010-62879990</span>
+						</div>
+						<div class="col-md-12 info">
+							<label class="col-md-2 r_title">机构地址</label>
+							<span class="col-md-10">天津自贸试验区（东疆保税港区）亚洲路6975号金融贸易中心南区1栋1门5019室-11</span>
+						</div>
+						<div class="grayLine col-md-12">
+	            		<div class="ftit">天眼查企业信息</div>
+	            		<button type="button" class="btn btn-primary">立即更新</button>
+	            	</div>
+	            	</div>
+	            
+	            	<div class="box-body row">
+						<div class="col-md-6 info">
+							<label class="col-md-4 r_title">工商注册号</label>
+							<span class="col-md-8">120116000194545</span>
+						</div>
+						<div class="col-md-6 info">
+							<label class="col-md-4 r_title">股东数量</label>
+							<span class="col-md-8">12</span>
+						</div>
+						<div class="col-md-6 info">
+							<label class="col-md-4 r_title">注册资金</label>
+							<span class="col-md-8">4500 万元</span>
+						</div>
+						<div class="col-md-6 info">
+							<label class="col-md-4 r_title">债券数量</label>
+							<span class="col-md-8">-</span>
+						</div>
+						<div class="col-md-6 info">
+							<label class="col-md-4 r_title">机构类型</label>
+							<span class="col-md-8">股份有限公司分公司(非上市、外商投资企业投资)</span>
+						</div>
+						<div class="col-md-6 info">
+							<label class="col-md-4 r_title">行业</label>
+							<span class="col-md-8">软件和信息技术服务业</span>
+						</div>
+						<div class="col-md-6 info">
+							<label class="col-md-4 r_title">网站地址</label>
+							<span class="col-md-8">http://www.alphabond.com</span>
+						</div>
+						<div class="col-md-6 info">
+							<label class="col-md-4 r_title">工商类型</label>
+							<span class="col-md-8">-</span>
+						</div>
+						<div class="col-md-12 info">
+							<label class="col-md-2 r_title">登记机关</label>
+							<span class="col-md-10">天津市自由贸易试验区市场和质量监督管理局</span>
+						</div>
+						<div class="col-md-12 info">
+							<label class="col-md-2 r_title">注册地址</label>
+							<span class="col-md-10">天津自贸试验区（东疆保税港区）亚洲路6975号金融贸易中心南区1栋1门5019室-11</span>
+						</div>
+						<div class="col-md-12 info">
+							<label class="col-md-2 r_title">经营范围</label>
+							<span class="col-md-10">计算机软硬件及网络技术、电子信息及信息处理技术、系统集成、通信技术的开发、转让、咨询服务；计算机设备、办公用品的批发兼零售；租赁业务；货物及技术的进出口业务（限从事国家法律法规允许经营的进出口业务）；计算机网络工程；网络设备安装、调试。（依法须经批准的项目，经相关部门批准后方可开展经营活动）</span>
+						</div>
+	            	</div>
+	         	</div>
+	        </div>
+		<!-- 外汇交易中心成员机构信息 -->
+	        <div class="col-md-12">
+	        	<div class="box box-widget">
+	            	<div class="box-header with-border">
+	              		<div class="user-block">
+							<span class="username">外汇交易中心成员机构信息</span>
+	             		</div>
+	             		<div class="box-tools">
+	                		 <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+	               			 </button>
+	             		</div>
+	            	</div>
+	            	<div class="box-body row">
+						<div class="col-md-6 info">
+							<label class="col-md-4 r_title">英文全称</label>
+							<span class="col-md-8">Agricultural Bank of China</span>
+						</div>
+						<div class="col-md-6 info">
+							<label class="col-md-4 r_title">机构代码</label>
+							<span class="col-md-8">012000983801</span>
+						</div>
+						<div class="col-md-6 info">
+							<label class="col-md-4 r_title">英文简称</label>
+							<span class="col-md-8">ABC</span>
+						</div>
+						<div class="col-md-6 info">
+							<label class="col-md-4 r_title">中文简称</label>
+							<span class="col-md-8">中国农行</span>
+						</div>
+						<div class="col-md-6 info">
+							<label class="col-md-4 r_title">名称</label>
+							<span class="col-md-8">中国农业银行股份有限公司</span>
+						</div>
+						<div class="col-md-12 info">
+							<label class="col-md-2 r_title">备注</label>
+							<span class="col-md-10">计算机软硬件及网络技术、电子信息及信息处理技术、系统集成、通信技术的开发、转让、咨询服务；计算机设备、办公用品的批发兼零售；租赁业务；货物及技术的进出口业务（限从事国家法律法规允许经营的进出口业务）；计算机网络工程；网络设备安装、调试。（依法须经批准的项目，经相关部门批准后方可开展经营活动）</span>
+						</div>
+	            	</div>
+	         	</div>
+		    </div>
+		</div>
+		<div class="col-md-4">
+			<!-- 部门信息 -->
+	        <div class="col-md-12">
+	        	<div class="box box-widget">
+	            	<div class="box-header with-border">
+	              		<div class="user-block">
+							<span class="username">部门信息</span>
+	             		</div>
+	             		<div class="box-tools">
+	                		 <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+	               			 </button>
+	             		</div>
+	            	</div>
+	            	<div class="box-body row">
+						<!-- <div id="charts" [(ng2-echarts)]="chartData" style="height: 500px; width: 80%"></div> -->
+	            	</div>
+	         	</div>
+	        </div>
+		        <!-- 机构变更历史 -->
+	        <div class="col-md-12">
+	        	<div class="box box-widget">
+	            	<div class="box-header with-border">
+	              		<div class="user-block">
+							<span class="username">机构变更历史</span>
+	             		</div>
+	             		<div class="box-tools">
+	                		 <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+	               			 </button>
+	             		</div>
+	            	</div>
+	            	<div class="box-body row">
+						<div class="col-md-12">
+						    <table class="table table-bordered table-hover ">
+						        <thead>
+						            <tr style="background-color: #e7edeb;font-weight: 600">
+						                 <td class="table-hover">变更前</td>
+						                 <td class="table-hover">变更后</td>
+						                 <td class="table-hover" style="width: 100px">变更时间</td>
+						                <!-- <td class="info longTxt">通知标题</td> -->
+						            </tr>
+						        </thead>
+						        <tbody>
+						            <tr >   
+										<td>农行北京 </td>
+										<td>农行北京分行 </td>
+										<td>2017-06-01 </td>
+						            </tr>
+						             <tr >   
+										<td>中国工商银行有限公司 </td>
+										<td>中国工商银行股份有限公司 </td>
+										<td>2015-08-09 </td>
+						            </tr>
+						        </tbody>
+						    </table>
+						</div>
+	            	</div>
+	         	</div>
+	        </div>
+		</div>
+    </div>
+</main>
+
+
+<!-- 修改机构名 -->
+<div bsModal #upDateOrtgName="bs-modal" class="modal fade modelPon" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" aria-label="Close" (click)="upDateOrtgName.hide()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">修改机构名</h4>
+            </div>
+            <div class="modal-body contentxinxi">
+               	<div class="deg_content">
+               		<div class="col-md-12 row">
+               			<label class="col-md-4">机构全称（旧名）</label>
+               			<label class="col-md-8">中国农业银行股份有限公司</label>
+               		</div>
+               		<div class="col-md-12 row">
+               			<label class="col-md-4">机构全称（新名）</label>
+               			<p-dropdown  [tooltip]="selectedCity" class="col-md-8" [style]="{'width':'200px'}" editable="editable"  [options]="orgs" [(ngModel)]="selectedCity"></p-dropdown>
+               		</div>
+               	</div>
+                <div class="btnstyle">
+                    <button type="button" class="btn  btn-primary  btnhoverlan" >保存</button>
+                    <button type="button" class="btn  btn-default btnhoverju" (click)="upDateOrtgName.hide()">取消</button>
+                </div>
+                <div style="clear: both"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 修改机构主体信息 -->
+<div bsModal #upDateOrtgInfo="bs-modal" class="modal fade modelPon" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" aria-label="Close" (click)="upDateOrtgInfo.hide()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">修改机构主体信息</h4>
+            </div>
+            <div class="modal-body">
+           		<div class="col-md-12 row Con">
+           			<label class="col-md-2">机构全称</label>
+           			<label class="col-md-10">中国农业银行股份有限公司</label>
+           		</div>
+           		<div class="col-md-12 row Con">
+           			<label class="col-md-2">国标分类</label>
+           			<div class="col-md-6">
+           				<select  style="width: 100%;">
+           					<option>维度</option>
+           				</select>
+           			</div>
+           			<div class="col-md-4">
+           				<select style="width: 100%;" >
+           					<option>维度</option>
+           				</select>
+           			</div>
+           		</div>
+           		<div class="col-md-12 row">
+               		<div style="width: 60%;float: left ">
+               			<div class="col-md-12 row Con">
+
+               				<label class="col-md-4">企业性质</label>
+               				<div class="col-md-5">
+               					<select   style="margin-left: -10px">
+               						<option>维度</option>
+               					</select>
+               				</div>
+               				<i  class="fa fa-question-circle" tooltip="自动同步处理异常发债机构，成功则删除异常记录。"  placement="right"></i>
+               			</div>
+               			<div class="col-md-12 row Con">
+               				<label class="col-md-4">邮政编码</label>
+               				<div class="col-md-7">
+               					<input  style="margin-left: -10px" type="" name="">
+               				</div>
+           				</div>
+           				<div class="col-md-12 row Con">
+               				<label class="col-md-4">总机</label>
+               				<div class="col-md-7">
+               					<input   style="margin-left: -10px" type="" name="">
+               				</div>
+           				</div>
+               		</div>
+               		<div style="width: 40%;float: left">
+               			<label class="col-md-3" style="padding: 0;font-weight:600">LOGO</label>
+               			<div  class="col-md-9">
+							<alphain-file-upload id="card_thumbnail" [attr_width]="'175px'" [attr_height]="'140px'" (fileData)="info_card_data($event)" (fileUrl)="info_card_url($event)" [resetTrigger]="resetTrigger" [thumbnail_url]="user.info_card_url"></alphain-file-upload>
+							<input type="text" name="name_card_url" class="form-control" [(ngModel)]="user.info_card_url"  style="display:none;overflow:hidden">
+							<div *ngIf="formErrors.info_card_url" class="alert alert-danger">
+								{{ formErrors.info_card_url }}
+							</div>
+						</div>
+               		</div>
+               		<div class="col-md-12 row Con">
+           				<label class="col-md-2">机构地址</label>
+           				<div class="col-md-10">	
+           					<input  style="margin-left:3px">
+           				</div>
+           			</div>
+               	</div>
+                <div class="btnstyle">
+                    <button type="button" class="btn  btn-primary  btnhoverlan" >保存</button>
+                    <button type="button" class="btn  btn-default btnhoverju" (click)="upDateOrtgInfo.hide()">取消</button>
+                </div>
+                <div style="clear: both"></div>
+           	</div>
+        </div>
+    </div>
+</div>
+
+<!-- 修改目标用户机构信息 -->
+<div bsModal #upDateUserOrtg="bs-modal" class="modal fade modelPon" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" aria-label="Close" (click)="upDateUserOrtg.hide()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">修改目标用户机构信息</h4>
+            </div>
+            <div class="modal-body">
+           		<div class="col-md-12 row Con">
+           			<label class="col-md-2"><b class="fff">*</b> 机构全称</label>
+           			<label class="col-md-10">中国农业银行股份有限公司</label>
+           		</div>
+           		<div class="col-md-12 row Con">
+           			<label class="col-md-2"><b class="red">*</b> 机构简称</label>
+           			<div class="col-md-10" >
+           				<input type="" name="">
+           			</div>
+           		</div>
+           		<div class="col-md-12 row Con">
+           			<label class="col-md-2"><b class="red">*</b>机构分类</label>
+           			<div class="col-md-6" >
+           				<select >
+           					<option>维度</option>
+           				</select>
+           			</div>
+           			<div class="col-md-4">
+           				<select>
+           					<option>维度</option>
+           				</select>
+           			</div>
+           		</div>
+           		<div class="col-md-12 row Con">
+           			<label class="col-md-2"><b class="red">*</b>所在地</label>
+           			<div class="col-md-6">
+           				<select >
+           					<option>维度</option>
+           				</select>
+           			</div>
+           			<div class="col-md-4">
+           				<select>
+           					<option>维度</option>
+           				</select>
+           			</div>
+           		</div>
+           		<div class="col-md-12 row Con" style="height: auto">
+           			<label class="col-md-2"><b class="fff">*</b>业务标签</label>
+           			<div class="col-md-10" >
+           				<div class="col-md-5 b_tips">
+           					<p-toggleButton styleClass="widthed" [(ngModel)]="checked1" offLabel='开展线下业务' onLabel=" 不开展线下业务" offIcon="fa fa-check" onIcon="fa fa-times"></p-toggleButton>
+           				</div>
+           				<div class="col-md-5 b_tips">
+           					<p-toggleButton styleClass="widthed" [(ngModel)]="checked2" offLabel='是金融机构' onLabel="不是金融机构"  offIcon="fa fa-check" onIcon="fa fa-times"></p-toggleButton>
+           				</div>
+           				<div class="col-md-5 b_tips">
+           					<p-toggleButton styleClass="widthed" [(ngModel)]="checked3" offLabel='中债数据授权' onLabel="中债数据未授权"  offIcon="fa fa-check" onIcon="fa fa-times"></p-toggleButton>
+           				</div>
+           				<div class="col-md-5 b_tips">
+           					<p-toggleButton styleClass="widthed" [(ngModel)]="checked4" offLabel='是法人机构' onLabel="不是法人机构"  offIcon="fa fa-check" onIcon="fa fa-times"></p-toggleButton>
+           				</div>
+           				 <div style="clear: both"></div>
+           			</div>
+           		</div>
+                <div class="btnstyle">
+                    <button type="button" class="btn  btn-primary  btnhoverlan" >保存</button>
+                    <button type="button" class="btn  btn-default btnhoverju" (click)="upDateUserOrtg.hide()">取消</button>
+                </div>
+           		 <div style="clear: both"></div>
+           	</div>
+        </div>
+    </div>
+</div>
+
+<!-- 修改机构承分销资质 -->
+<div bsModal #upDateAptitudeOrg="bs-modal" class="modal fade modelPon" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" aria-label="Close" (click)="upDateAptitudeOrg.hide()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">修改机构承分销资质</h4>
+            </div>
+            <div class="modal-body">
+           		<div class="col-md-12 row Con">
+           			<label class="col-md-2"><b class="fff">*</b> 机构全称</label>
+           			<label class="col-md-10">中国农业银行股份有限公司</label>
+           		</div>
+           		<div class="col-md-6 row Con">
+           			<label class="col-md-4">短融</label>
+           			<div class="col-md-8" >
+           				<select>
+           					<option></option>
+           				</select>
+           			</div>
+           		</div>
+           		<div class="col-md-6 row Con">
+           			<label class="col-md-4">超短融</label>
+           			<div class="col-md-8" >
+           				<select>
+           					<option></option>
+           				</select>
+           			</div>
+           		</div>
+           		<div class="col-md-6 row Con">
+           			<label class="col-md-4">中票</label>
+           			<div class="col-md-8" >
+           				<select>
+           					<option></option>
+           				</select>
+           			</div>
+           		</div>
+           		<div class="col-md-6 row Con">
+           			<label class="col-md-4">PPN</label>
+           			<div class="col-md-8" >
+           				<select>
+           					<option></option>
+           				</select>
+           			</div>
+           		</div>
+           		<div class="col-md-6 row Con">
+           			<label class="col-md-4">公司债</label>
+           			<div class="col-md-8" >
+           				<select>
+           					<option></option>
+           				</select>
+           			</div>
+           		</div>
+           		<div class="col-md-6 row Con">
+           			<label class="col-md-4">国债</label>
+           			<div class="col-md-8" >
+           				<select>
+           					<option></option>
+           				</select>
+           			</div>
+           		</div>
+           		<div class="col-md-6 row Con">
+           			<label class="col-md-4">非公开</label>
+           			<div class="col-md-8" >
+           				<select>
+           					<option></option>
+           				</select>
+           			</div>
+           		</div>
+           		<div class="col-md-6 row Con">
+           			<label class="col-md-4">国开政策性金融债</label>
+           			<div class="col-md-8" >
+           				<select>
+           					<option></option>
+           				</select>
+           			</div>
+           		</div>
+                <div class="btnstyle">
+                    <button type="button" class="btn  btn-primary  btnhoverlan" >保存</button>
+                    <button type="button" class="btn  btn-default btnhoverju" (click)="upDateAptitudeOrg.hide()">取消</button>
+                </div>
+           		 <div style="clear: both"></div>
+           	</div>
+        </div>
+    </div>
+</div>

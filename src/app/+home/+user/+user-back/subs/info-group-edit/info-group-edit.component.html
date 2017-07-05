@@ -1,0 +1,102 @@
+<div class="header clearfix">
+	<span class="head icon">|</span><span class="head" >用户分组</span>
+	<div class="btnHeader head">
+		<button class="btn btn-primary" (click)="addOrUpUserGroup()">保存分组</button>
+		<button class="btn btn-primary" (click)="turnTo()">返回</button>
+	</div>
+</div>
+<div class="content">
+	<div class="newsTxt">
+		<div class="newsHeader">基本信息</div>
+		<div class="newsSurvey clearfix">
+			<div class="K-V clearfix">
+				<span class="newsKey"><b style="color: red">*</b>分组名称</span>
+				<input [(ngModel)]="groupCon.scmNm" type="text" name="" style="width: 500px;height: 32px;">
+			</div>
+		</div>
+	</div>
+	<div class="newsTxt">
+		<div class="newsHeader">用户属性</div>
+		<div class="newsSurvey clearfix">
+			<div class="K-V clearfix">
+				<span class="newsKey"><b style="color: red">*</b>认证状态</span>
+				 <div class="btn-group btnborder">
+                    <label class="btn btn-mint"  btnRadio="1"  [(ngModel)]="appType">全部</label>
+                    <label class="btn btn-mint"  btnRadio="2"  [(ngModel)]="appType" >部分</label>
+                </div>
+                <div style="margin:10px 0 10px 110px" *ngIf="appType==2">
+	                 <div class="btn-group btnborder">
+	                    <label class="btn btn-mint"  btnCheckbox [(ngModel)]="approve.unApproved">未认证</label>
+	                    <label class="btn btn-mint"  btnCheckbox [(ngModel)]="approve.waitApproved" >待认证</label>
+	                     <label class="btn btn-mint"  btnCheckbox [(ngModel)]="approve.approvedSuc" >已认证</label>
+	                      <label class="btn btn-mint"  btnCheckbox [(ngModel)]="approve.approvedFal" >认证失败</label>
+	                </div>
+                </div>
+			</div>
+			<!-- btnCheckbox -->
+			<div class="K-V clearfix">
+				<span class="newsKey"><b style="color: red">*</b>机构分类</span>
+				 <div class="btn-group btnborder" >
+                    <label class="btn btn-mint"  btnRadio="1"  [(ngModel)]="orgType">全部</label>
+                    <label class="btn btn-mint"  btnRadio="2"  [(ngModel)]="orgType" (click)="test(orgTypelist)">部分</label>
+                </div>
+                <div style="margin:10px 0 10px 110px" *ngIf="orgType==2">
+                <div class="btn-group btnborder">
+                    <label class="btn btn-mint"  btnCheckbox *ngFor="let org of orgTypelist,let i = index" [(ngModel)]="orgMod[i].check" (click)="test(orgMod)">{{org.categoryName}}</label>
+                
+                </div>
+                </div>
+               
+			</div>
+			<div class="K-V clearfix">
+				<span class="newsKey"><b style="color: red">*</b>机构位置</span>
+				 <div class="btn-group btnborder">
+                    <label class="btn btn-mint"  btnRadio="1"  [(ngModel)]="orgPosition">全部</label>
+                    <label class="btn btn-mint"  btnRadio="2"  [(ngModel)]="orgPosition" >部分</label>
+                </div>
+			</div>
+			 <div style="margin:10px 0 10px 110px" *ngIf="orgPosition==2">
+				<div class="btn-group btnborder" style="margin: 10px">
+                    <label class="btn btn-mint"  btnCheckbox *ngFor="let city of cityList,let i = index" [(ngModel)]="cityMod[i].check" (click)="test(cityList[i])">{{city.name}}</label>
+                </div>
+            </div>
+		</div>
+	</div>
+	<div class="newsTxt" *ngIf="0">
+		<div class="newsHeader">用户行为</div>
+		<div class="newsSurvey clearfix">
+			<div class="K-V clearfix">
+				<span class="newsKey"><b style="color: red;">*</b>活跃用户</span>
+				 <div class="btn-group btnborder">
+                    <label class="btn btn-mint"  btnRadio="1"  [(ngModel)]="actUser">全部</label>
+                    <label class="btn btn-mint"  btnRadio="2"  [(ngModel)]="actUser" >部分</label>
+                </div>
+                <div style="margin:10px 0 10px 110px" *ngIf="actUser==2">
+                	<select style="height: 32px;">
+					<option>最近N天内活跃用户</option>
+					<option>最近N天内非活跃用户</option>
+					<option>在某天活跃用户</option>
+					</select>
+					<input type="number" name="" style="width: 80px;height: 32px;text-align:center">天
+                </div>
+				
+			</div>
+			<div class="K-V clearfix">
+				<span class="newsKey"><b style="color: red;">*</b>新增用户</span>
+				 <div class="btn-group btnborder">
+                    <label class="btn btn-mint"  btnRadio="1"  [(ngModel)]="newUser">全部</label>
+                    <label class="btn btn-mint"  btnRadio="2"  [(ngModel)]="newUser" >部分</label>
+                </div>
+                <div style="margin:10px 0 10px 110px" *ngIf="newUser==2">
+                	<select style="height: 32px;">
+					<option>最近N天内新增用户</option>
+					<option>最近N天前新增用户</option>
+					<option>在某天新增用户</option>
+					</select>
+					<input type="number" name="" style="width: 80px;height: 32px;text-align:center">天
+                </div>
+				
+			</div>
+		</div>
+	</div>
+</div>

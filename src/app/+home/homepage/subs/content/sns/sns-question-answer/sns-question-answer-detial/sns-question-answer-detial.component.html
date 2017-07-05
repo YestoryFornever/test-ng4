@@ -1,0 +1,226 @@
+<div class="header clearfix">
+    <span class="head icon">|</span><span class="head">问答详情</span>
+    <div class="btnHeader head">
+        <a [routerLink]="['../../sns-question-answer-list']" class="btn btn-primary">返回</a>
+        <button [disabled]="operateUserId == -1" (click)="showNewAnswerDialog()" class="btn btn-primary">回答</button>
+    </div>
+</div>
+<div class="clearfix">
+    <div class="ui-g">
+        <div class="ui-g-12">
+            <p-panel *ngFor="let item of questionDetail">
+                <p-header>
+                    <span class="ui-panel-title">问答详情</span>
+                    <span class="pull-right text-danger">【被举报：{{item.tip_cnt}}】</span>
+                </p-header>
+                <content>
+                    <h3>{{item.title}}</h3>
+                    <div [innerHtml]="item.content">
+                    </div>
+                </content>
+                <footer>
+                    <div class="text-right">
+                        <p class="text-right">来源: {{item.source}} <span class="gap"></span> 提问者: {{item.user_name}}
+                            <span class="gap"></span> {{item.create_time}}</p>
+                        <button class="btn btn-default" (click)="showDialog()" [disabled]="operateUserId == -1">编辑
+                        </button>
+                        <a class="btn btn-default" (click)="deleteQuestionFun()">删除</a>
+                    </div>
+                </footer>
+            </p-panel>
+        </div>
+    </div>
+    <div class="ui-g">
+        <div class="ui-g-6">
+            <p-panel>
+                <p-header>
+                    <span class="ui-panel-title">回答列表</span>
+                </p-header>
+                <content>
+                    <div *ngFor="let item of answerList; let i = index"
+                         (click)="answerListClick(item.content, i, item.answ_id)">
+                        <div class="panel panel-default" [ngClass]="{cssClicked: clicked==i}">
+                            <div class="panel-body" style="overflow: hidden">
+                                <div>
+                                    <p class="text-primary">{{item.user_name}}</p>
+                                    <div>
+                                        <p [innerHtml]="item.content"></p>
+                                    </div>
+                                </div>
+                                <div>
+                                    <span>{{item.create_time}}</span>
+                                    <span class="text-danger">【举报：{{item.tip_cnt}}】</span>
+                                    <span class="pull-right">
+                                    <span>点赞({{item.like_cnt}}) </span>
+                                    <span>评论({{item.comm_cnt}}) </span>
+                                    <a class="btn btn-default" (click)="deleteAnswerFun(item.answ_id)">删除</a>
+                                </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-primary">{{message}}</p>
+                    <p><a (click)="loadMoreFun()" *ngIf="(totalResult - (currentPage * 10)) > 0">加载更多</a></p>
+                    <p class="text-primary">{{msg}}</p>
+                </content>
+            </p-panel>
+        </div>
+        <div class="ui-g-6">
+            <p-panel>
+                <p-header>
+                    <span class="ui-panel-title">回答正文</span>
+                </p-header>
+                <content>
+                    <div [innerHtml]="answerContent">
+                    </div>
+                    <div>
+                        <div class="conatainText">
+
+                        </div>
+                        <!--*ngIf="answerContent!=''"-->
+                        <p class="likes">
+                            <button class="btn btn-default" (click)="deleteAnswerFun(answerId)" [disabled]="answerContent==''">删除</button>
+                            <span style="position: relative; top: 1px;">
+                                <p-splitButton icon="fa-thumbs-up" [model]="items"  [disabled]="answerContent==''"></p-splitButton>
+                            </span>
+                            <button [disabled]="operateUserId == -1 || answerContent==''" class="btn btn-default" (click)="showEditDialog()">
+                                编辑回答
+                            </button>
+                            <!--<a class="pull-right btn btn-default">保存</a>-->
+                        </p>
+                        <div class="panel panel-default" *ngFor="let item of commonList">
+                            <div class="panel-body">
+                                <div>
+                                    <p *ngIf="item.reply_uid == undefined">
+                                        <span class="text-primary">{{item.user_name}}：</span>{{item.content}}
+                                    </p>
+                                    <div *ngIf="item.reply_uid != undefined">
+                                        <p>
+                                            <span class="text-primary">{{item.user_name}}</span>
+                                            回复
+                                            <span class="text-primary">{{item.reply_uname}}: </span>
+                                            {{item.content}}
+                                        </p>
+                                    </div>
+                                    <div>
+                                        <span>{{item.time}}</span>
+                                        <span class="pull-right">
+                                            <a class="btn btn-default" (click)="deleteCommonFun(item.cid)">删除</a>
+                                            <a class="btn btn-default" (click)="showCommonInputFun(item.cid)">回复</a>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <p></p>
+                    </div>
+                </content>
+            </p-panel>
+        </div>
+    </div>
+</div>
+
+<!--编辑框-->
+<p-dialog header='问答： 提问' [(visible)]="display" width="800">
+    <content>
+        <form #editQuestionForm="ngForm" name="editQuestionForm">
+            <div class="ui-g">
+                <div class="ui-g-2">
+                    问题标题：
+                </div>
+                <div class="ui-g-10">
+                    <input type="text" class="form-control" [(ngModel)]="eTitle" name="title" width="100%" required
+                           placeholder="问题必须以问号结束"/>
+                </div>
+            </div>
+            <div class="ui-g">
+                <div class="ui-g-2">
+                    问题描述：
+                </div>
+                <div class="ui-g-10">
+                    <!--这里获取到了数据，然后定义了变了进行了赋值操作，如果不适用*ngIf延时加载就会报错，eContent是自定义变了，通过接口获取值以后复制给他的-->
+                    <div *ngIf="display" [froalaEditor]="option" [(froalaModel)]="eContent"
+                         style="height: 250px; overflow: auto"></div>
+                </div>
+            </div>
+            <p></p>
+            <p class="text-right">
+                <span class="text-danger">{{editQuestionMsg}}</span>
+                <button class="btn btn-primary" (click)="hideDialog()">取消</button>
+                <button class="btn btn-primary" (click)="editQuestionFun()" [disabled]="!editQuestionForm.form.valid || !btnDis">
+                    确定
+                </button>
+            </p>
+        </form>
+    </content>
+</p-dialog>
+
+<p-dialog header='问答： 回答' [(visible)]="answerState" width="800">
+    <content>
+        <div class="ui-g">
+            <div class="ui-g-2">
+                回答内容：
+            </div>
+            <div class="ui-g-10">
+                <!--这里获取到了数据，然后定义了变了进行了赋值操作，如果不适用*ngIf延时加载就会报错，eContent是自定义变了，通过接口获取值以后复制给他的-->
+                <div *ngIf="answerState" [froalaEditor]="option" [(froalaModel)]="answerContent"
+                     style="height: 250px; overflow: auto"></div>
+            </div>
+        </div>
+        <p></p>
+        <p class="text-right">
+            <span class="text-danger">{{editAnswerMsg}}</span>
+            <button class="btn btn-primary" (click)="hideEditDialog()">取消</button>
+            <button class="btn btn-primary" (click)="editAnswerFun()">确定</button>
+        </p>
+    </content>
+</p-dialog>
+
+<!--添加回答-->
+<p-dialog header='问答： 回答' [(visible)]="newAnswerState" width="800">
+    <content>
+        <div class="ui-g">
+            <div class="ui-g-2">
+                回答内容：
+            </div>
+            <div class="ui-g-10">
+                <!--这里获取到了数据，然后定义了变了进行了赋值操作，如果不适用*ngIf延时加载就会报错，eContent是自定义变了，通过接口获取值以后复制给他的-->
+                <div *ngIf="newAnswerState" [froalaEditor]="option" [(froalaModel)]="newAnswerContent"
+                     style="height: 250px; overflow: auto"></div>
+            </div>
+        </div>
+        <p></p>
+        <p class="text-right">
+            <span class="text-danger">{{addAnswerMsg}}</span>
+            <button class="btn btn-primary" (click)="hideNewAnswerDialog()">取消</button>
+            <button class="btn btn-primary" (click)="addAnswerFun()">确定</button>
+        </p>
+    </content>
+</p-dialog>
+
+<!--回复评论-->
+<p-dialog header='回复评论' [(visible)]="commonDialog" width="800">
+    <content>
+        <form #sendCommonForm="ngForm" name="sendCommon">
+            <div class="ui-g">
+                <div class="ui-g-2">
+                    评论内容：
+                </div>
+                <div class="ui-g-10">
+                    <!--这里获取到了数据，然后定义了变了进行了赋值操作，如果不适用*ngIf延时加载就会报错，eContent是自定义变了，通过接口获取值以后复制给他的-->
+                    <div *ngIf="commonDialog">
+                    <textarea class="form-control" [(ngModel)]="commonContent" required name="commonContent">
+
+                    </textarea>
+                    </div>
+                </div>
+            </div>
+            <p></p>
+            <p class="text-right">
+                <button class="btn btn-primary" (click)="hideCommonInputFun()">取消</button>
+                <button class="btn btn-primary" (click)="sendCommonFun()" [disabled]="!sendCommonForm.form.valid">确定
+                </button>
+            </p>
+        </form>
+    </content>
+</p-dialog>

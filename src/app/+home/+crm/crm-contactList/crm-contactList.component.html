@@ -1,0 +1,116 @@
+<div class="header box">
+	<span class="head icon">|</span>
+	<span class="head">联系人列表</span>
+	<div class="btnHeader head">
+		<button class="btn btn-primary" (click)="turnToDetial()">添加联系人</button>
+		<button class="btn btn-primary" (click)="add.show()">设置关注度</button>
+	</div>
+</div>
+<main>
+	<div class="condition-container box" style="min-width:580px;">
+		<div class="condition">
+			<label for="fullname" class="text-right">机构全称</label>
+			<div class="condition-input">
+				<input  type="text" class="form-control" #company name="company" autocomplete="off" placeholder="机构关键字" 
+					[(ngModel)]="default.company"
+					(typeaheadOnSelect)="orgsOnSelect($event)"
+					[typeaheadOptionField]="'organizationShortName'"
+					[typeahead]="fullnameTypeAhead.source"
+					[typeaheadOptionsLimit]="10"
+					[typeaheadWaitMs]="200" 
+					(blur)="blurCompany(company,$event)"
+					(change)="changeCompany(company,$event)">
+			</div>
+		</div>
+		<div class="condition">
+			<label for="fullname" class="text-right">部门</label>
+			<div class="condition-input">
+				<input type="text" class="form-control" id="department" name="department" 
+					[(ngModel)]="default.department"
+					(typeaheadOnSelect)="depsOnSelect($event)"
+					[typeaheadOptionField]="'departmentName'"
+					[typeahead]="deps"
+					[typeaheadOptionsLimit]="10"
+					[typeaheadWaitMs]="200">
+				<input type="text" name="departmentId" style="display: none" [hidden]="'true'" [(ngModel)]="default.departmentId">
+			</div>
+		</div>
+		<div class="condition">
+			<label for="fullname" class="text-right">联系人</label>
+			<div class="condition-input">
+				<input  type="text" class="form-control" #company name="company" autocomplete="off" placeholder="关键字">
+			</div>
+		</div>
+		<div class="condition">
+			<label for="fullname" class="text-right">客户经理</label>
+			<div class="condition-input">
+				<select class="form-control">
+					<option value="">全部</option>
+					<option value="">重要</option>
+					<option value="">一般</option>
+					<option value="">无关</option>
+				</select>
+			</div>
+		</div>
+		<div class="condition">
+			<label for="fullname" class="text-right" style="margin-bottom: -7px;">联系人分级</label>
+			<div class="condition-input">
+				<p-multiSelect [filter]="false" styleClass="selectMore"  maxSelectedLabels=4 [options]="contactLv" [(ngModel)]="selectedcontactLv" [defaultLabel]='choose'></p-multiSelect>
+			</div>
+		</div>
+		<div class="btns">
+            <div class="condition-btn">
+                <button class="btn btn-primary sub" (click)="turnFirst()">查询</button>
+            </div>
+        </div>
+		<div style="clear: both;"></div>
+	</div>
+
+	<!-- lists -->
+<div class="tableList box">
+    <table class="table table-bordered table-hover ">
+        <thead>
+            <tr>
+                <td class="table-hover middle-list">操作</td>
+                <td class="table-hover">客户经理</td>
+                <td class="table-hover">机构全称</td>
+                <td class="table-hover">联系人</td>
+                <td class="table-hover">部门</td>
+                <td class="table-hover">职位</td>
+                <td class="table-hover">办公地址</td>
+                <td class="table-hover">联系电话</td>
+                <td class="table-hover">工作电话1</td>
+                <td class="table-hover">工作电话2</td>
+                <td class="table-hover">邮箱地址</td>
+                <td class="table-hover">关注度</td>
+                <td class="table-hover">备注</td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let position of contactList">      
+                <td>
+	                <i class="fa fa-pencil-square-o" (click)="turnToDetial(position.contactId)"></i>
+	                <bSwitch style='background-color: #fff' switch-size="mini" (onChangeState)="onChange($event)"
+	                 switch-on-color="success"
+         			 switch-off-color="offColor">   
+				  </bSwitch>
+				</td>
+                <td>{{position.contactName}}</td>
+                <td>{{position.orgName}}</td>
+                <td>{{position.contactName}}</td>
+                <td>{{position.deptName}}</td>
+                <td>{{position.position}}</td>
+                <td>{{position.workAddress}}</td>
+                <td>{{position.contactPhone}}</td>
+                <td>{{position.workPhone}}</td>
+                <td>{{position.workPhone}}</td>
+                <td>{{position.companyMail}}</td>
+                <td>{{position.contactName}}</td>
+                <td>{{position.contactName}}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+    <!-- 分页 -->
+    <page [(pageObj)]="pageParams" (fnParent)="queryContactList()"></page>
+</main>

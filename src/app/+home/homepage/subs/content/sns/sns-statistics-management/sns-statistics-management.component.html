@@ -1,0 +1,29 @@
+<div class="header clearfix">
+		<span class="head icon">|</span><span class="head" >数据统计</span>
+</div>
+<div class="screen .clearfix">
+		<div class="condition container-fluid">
+			<span>起始时间</span>
+			<p-calendar [(ngModel)]="starttime"   [locale]="en" [showTime]="false"></p-calendar>
+		</div>
+		<div class="condition container-fluid">
+			<span>渠道</span><select [(ngModel)]="default.source"  class="selection"><option value="" selected = "selected">全部</option><option  value="1">APP</option>
+			<option  value="2">官网</option>
+			<!-- <option  value="2">负面</option>
+			<option  value="3">负面</option>
+			<option  value="4">负面</option> -->
+			</select>
+		</div>
+		<div class="condition container-fluid">
+			<span>方式</span><select [(ngModel)]="default.count_type"  class="selection"><option  value="1">按日</option>
+			<option  value="2">按月</option>
+			</select>
+		</div>
+		<button class="condition btn btn-primary sub"  (click)="getDate()">查询</button>
+</div>
+<!-- <input type=""  [(ngModel)]="default.show_count" name="">
+<input type=""  [(ngModel)]="default.cur_page" name="">
+<input type=""  [(ngModel)]="default.count_type" name=""> -->
+
+
+<div id="charts" [(ng2-echarts)]="chartData" style="height: 500px; width: 80%"></div>

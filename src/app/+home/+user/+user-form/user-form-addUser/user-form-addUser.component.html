@@ -1,0 +1,119 @@
+<div class="header clearfix">
+	<span class="head icon">|</span><span class="head" >用户组添加用户</span>
+	<div class="btnHeader head">
+		<button class="btn btn-primary" (click)="AddGp(continue)">添加进组</button>
+        <button class="btn btn-primary" (click)="returnTo()">返回</button>
+    </div>
+</div>
+<div style="margin:10px 15px 0 15px">当前用户组： {{Name}}</div>
+	<div class="screen .clearfix">
+			<div class="condition container-fluid">
+				<span>注册手机号:</span><input req maxlength="11" type="text" name="phoneNum" [(ngModel)]="default.loginName"  class="form-control"  placeholder="全部">
+			</div>
+			<div class="condition container-fluid">
+				<span>姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名：	</span><input #userName req  placeholder="全部"  [(ngModel)]="default.userName" class="form-control">
+			</div>
+			<div class="condition container-fluid">
+				<span>机构简称：	</span><input #cm req placeholder="全部" class="form-control kuan" 
+	                    [(ngModel)]="default.organizationName" 
+	                    [typeahead]="companylist" 
+	                    (typeaheadOnSelect)="typeaheadOnCompanys($event)" 
+	                    [typeaheadOptionField]="'organizationShortName'"             
+	                    [ngModelOptions]="{standalone: true}" 
+	                    (blur)="blurCompany(cm)">
+	                    <input type="text"  name="companyId" class="hide" [(ngModel)]="default.organizationId" [ngModelOptions]="{standalone: true}">
+			</div>
+			<div class="condition container-fluid">
+				<span>部&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;门：	</span><input #dpt req  placeholder="全部" class="form-control kuan"  
+	                    [(ngModel)]="default.departmentName" 
+	                    [typeahead]="partlist"  
+	                    (typeaheadOnSelect)="typeaheadOnDepartments($event)" 
+	                    [typeaheadOptionField]="'departmentName'"
+	                    [ngModelOptions]="{standalone: true}"
+	                     (blur)="blurDepartment(dpt)">
+	                    <input type="text"  name="companyId" class="hide" [(ngModel)]="default.departmentId" [ngModelOptions]="{standalone: true}">
+			</div>
+			<button class="condition btn btn-primary sub" (click)="turnFirst()">查询</button>
+		</div>
+<div class="tableList " >		
+	<table class="table table-bordered table-hover " >
+		<thead >
+			<tr>
+				<!-- <td class="info longTxt">操作</td> -->
+				<td class="info middleTxt" ><input #allcheck type="checkbox" name="allCheck"  (change)="checkAll(allcheck)"> 注册手机号</td>
+				<td class="info ">用户姓名 </td>
+				<td class="info">机构简称</td>
+				<td class="info">部门</td>
+				<td class="info ">用户来源</td>
+				<td class="info ">用户状态</td>
+			</tr>
+		</thead>
+		<tbody  id="list" *ngFor="let user of userLists">
+			<tr #userList class="Userlist" >
+				<td><input  type="checkbox" #listState name="user" (change)="changeState(listState,userList)" >{{user.loginName}}</td>
+				<td>{{user.userName}}</td>
+				<td>{{user.organizationFullName}}</td>
+				<td>{{user.department}}</td>
+				<td>{{user.userSource}}</td>
+				<td>{{user.userStateName}}</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+<!-- pagination -->
+<div class="row pagerow">
+	<div class="pageshowleft">每页显示
+		<select #selectPage name="" id="msgNum" (change)="sizeData(selectPage.value,userList)" [(ngModel)]="itemsPerPage">
+			<option #optionPage  *ngFor="let msgNumber of msgNumbers" value={{msgNumber.Number}}>{{msgNumber.Number}}</option>
+		</select>
+		条数据
+	</div>
+	<div class="pageshowmodle">
+		<span>{{currentPage}} / {{totalPages}}</span>页
+		<span>{{totalItems}}条数据</span>
+	</div>
+
+	<div class="pagefen">
+		<pagination  [firstText]="firstText" [lastText]="lastText" [previousText]="previousText" [nextText]="nextText" [maxSize]="maxSize" [totalItems]="totalItems" [itemsPerPage]="itemsPerPage" [(ngModel)]="currentPage" [boundaryLinks]="true" (pageChanged)='pageChanged($event,allcheck)' (numPages)='pageNumChange($event)' class="pagination-sm"></pagination>
+	</div>
+</div>
+<!--添加提示 -->
+<div bsModal #hint="bs-modal" class="modal fade modelPon" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" aria-label="Close" (click)="hint.hide()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">添加进组</h4>
+            </div>
+            <div class="modal-body contentxinxi">
+                <div class="pp">是否将选中的XX个用户加入组中?</div>
+                <div class="btnstyle">
+                    <button type="button" class="btn btn-default btnhoverlan" (click)="continue.show()" (click)="hint.hide()">确定</button>
+                    <button type="button" class="btn btn-primary btnhoverju" (click)="hint.hide()">取消</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--添加提示 -->
+<div bsModal #continue="bs-modal" class="modal fade modelPon" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" aria-label="Close" (click)="continue.hide()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">添加进组</h4>
+            </div>
+            <div class="modal-body contentxinxi">
+                <div class="pp">是否添加选中的{{checkGroup.length}}个用户进组？</div>
+                <div class="btnstyle">
+                    <button type="button" class="btn btn-default btnhoverlan"  (click)="addGroupUser(continue)">确定</button>
+                    <button type="button" class="btn btn-primary btnhoverju"  (click)="continue.hide()">取消</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

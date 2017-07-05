@@ -1,0 +1,188 @@
+<div class="header">
+	<span class="head icon">|</span>
+	<span class="head">系统>综合管理>导出管理</span>
+	<!--<div class="btnHeader head">
+		<button class="btn btn-primary" (click)="fn(xxx)">data-export</button>
+	</div>-->
+</div>
+<main>
+	<!--用户-->
+	<section class="area">
+		<fieldset>
+			<legend>用户</legend>
+			<h5>用户数据合并后，筛选过滤符合条件的各类型用户数据，并实现导出至Excel文件。</h5>
+			<div class="export-template">
+				<span>选择模板</span>
+				<select class="form-control input-dom">
+					<option value="全部注册用户">全部注册用户</option>
+					<option value="全部同业宝用户">全部同业宝用户</option>
+					<option value="全部联系人">全部联系人</option>
+					<option value="自定义条件">自定义条件</option>
+				</select>
+				<a [href]="userDownLoad">
+					<i class="fa fa-download fa-lg" aria-hidden="true"></i>
+				</a>
+			</div>
+			<div class="export-conditions" *ngIf="true">
+				<div style="min-width:580px;">
+					<div class="condition">
+						<label class="text-right">注册时间</label>
+						<div class="condition-input">
+							<p-calendar [(ngModel)]="userCondition.startTime" 
+							[maxDate]="userCondition.endTime"
+							[locale]="calenderLocale"></p-calendar>
+							&nbsp;to&nbsp;
+							<p-calendar [(ngModel)]="userCondition.endTime"  
+							[minDate]="userCondition.startTime"
+							[locale]="calenderLocale"></p-calendar>
+						</div>
+					</div>
+					<div class="condition">
+						<label class="text-right">用户状态</label>
+						<div class="condition-input">
+							<input type="text" class="form-control" [(ngModel)]="xxx">
+						</div>
+					</div>
+					<div class="condition">
+						<label class="text-right">用户来源</label>
+						<div class="condition-input">
+							<input type="text" class="form-control" [(ngModel)]="xxx">
+						</div>
+					</div>
+					<div class="condition">
+						<label class="text-right">邮箱认证状态</label>
+						<div class="condition-input">
+							<input type="text" class="form-control" [(ngModel)]="xxx">
+						</div>
+					</div>
+					<div class="condition">
+						<label class="text-right">实名认证状态</label>
+						<div class="condition-input">
+							<input type="text" class="form-control" [(ngModel)]="xxx">
+						</div>
+					</div>
+					<div class="condition">
+						<label class="text-right">用户分类</label>
+						<div class="condition-input">
+							<input type="text" class="form-control" [(ngModel)]="xxx">
+						</div>
+					</div>
+					<div class="condition">
+						<label class="text-right">交易员认证</label>
+						<div class="condition-input">
+							<input type="text" class="form-control" [(ngModel)]="xxx">
+						</div>
+					</div>
+					<div style="clear:both;"></div>
+				</div>
+			</div>
+		</fieldset>
+	</section>
+	<!--机构-->
+	<section class="area">
+		<fieldset>
+			<legend>机构</legend>
+			<h5>机构数据导出。筛选过滤符合条件的机构数据，并实现导出至Excel文件。</h5>
+			<div class="export-template">
+				<span>选择模板</span>
+				<select class="form-control input-dom">
+					<option value="全部目标用户机构">全部目标用户机构</option>
+					<option value="自定义条件">自定义条件</option>
+					<option value="全部机构">全部机构</option>
+				</select>
+				<a [href]="orgDownLoad">
+					<i class="fa fa-download fa-lg" aria-hidden="true"></i>
+				</a>
+			</div>
+			<div class="export-conditions" *ngIf="true">
+				<div style="min-width:580px;">
+					<div class="condition">
+						<label class="text-right">创建时间</label>
+						<div class="condition-input">
+							<p-calendar [(ngModel)]="orgCondition.startTime" 
+							[maxDate]="orgCondition.endTime"
+							[locale]="calenderLocale"></p-calendar>
+							&nbsp;to&nbsp;
+							<p-calendar [(ngModel)]="orgCondition.endTime"  
+							[minDate]="orgCondition.startTime"
+							[locale]="calenderLocale"></p-calendar>
+						</div>
+					</div>
+					<div class="condition">
+						<label class="text-right">机构状态</label>
+						<div class="condition-input">
+							<input type="text" class="form-control" [(ngModel)]="xxx">
+						</div>
+					</div>
+					<div class="condition">
+						<label class="text-right">机构分类</label>
+						<div class="condition-input">
+							<select class="form-control" [(ngModel)]="orgCondition.forSelect" (ngModelChange)="fn($event)">
+								<option value="" selected></option>
+								<option value="{{item.id}}" *ngFor="let item of forSelects">{{item.name}}</option>
+							</select>
+						</div>
+					</div>
+					<div class="condition">
+						<label class="text-right">所在区域</label>
+						<div class="condition-input">
+							<select class="form-control" [(ngModel)]="orgCondition.forSelect" (ngModelChange)="fn($event)">
+								<option value="" selected></option>
+								<option value="{{item.id}}" *ngFor="let item of forSelects">{{item.name}}</option>
+							</select>
+						</div>
+					</div>
+					<div class="condition">
+						<label class="text-right">机构身份</label>
+						<div class="condition-input">
+							<input type="text" class="form-control" [(ngModel)]="xxx">
+						</div>
+					</div>
+					<div style="clear:both;"></div>
+				</div>
+			</div>
+		</fieldset>
+	</section>
+	<!--CRM-->
+	<section class="area">
+		<fieldset>
+			<legend>CRM</legend>
+			<h5>CRM业务数据导出，主要包括行动记录等。</h5>
+			<div class="export-template">
+				<span>选择模板</span>
+				<select class="form-control input-dom">
+					<option value="最近7天行动记录">最近7天行动记录</option>
+					<option value="最近30天行动记录">最近30天行动记录</option>
+					<option value="自定义条件">自定义条件</option>
+					<option value="全部行动记录">全部行动记录</option>
+				</select>
+				<a [href]="crmDownLoad">
+					<i class="fa fa-download fa-lg" aria-hidden="true"></i>
+				</a>
+			</div>
+			<div class="export-conditions" *ngIf="true">
+				<div style="min-width:580px;">
+					<div class="condition">
+						<label class="text-right">时间</label>
+						<div class="condition-input">
+							<p-calendar [(ngModel)]="crmCondition.startTime" 
+							[maxDate]="crmCondition.endTime"
+							[locale]="calenderLocale"></p-calendar>
+							&nbsp;to&nbsp;
+							<p-calendar [(ngModel)]="crmCondition.endTime"  
+							[minDate]="crmCondition.startTime"
+							[locale]="calenderLocale"></p-calendar>
+						</div>
+					</div>
+					<div class="condition">
+						<label class="text-right">行动类型</label>
+						<div class="condition-input">
+							<input type="text" class="form-control" [(ngModel)]="xxx">
+						</div>
+					</div>
+					<div style="clear:both;"></div>
+				</div>
+			</div>
+		</fieldset>
+	</section>
+</main>

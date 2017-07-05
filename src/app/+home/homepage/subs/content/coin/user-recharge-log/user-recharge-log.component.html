@@ -1,0 +1,112 @@
+<!-- 头部 -->
+<div class="header clearfix">
+    <span class="head icon">|</span><span class="head">用户充值列表</span>
+    <div class="btnHeader head">
+        <label type="button" class="btn btn-primary" (click)="exportExcelList()">导出</label>
+    </div>
+</div>
+<!-- 查询 -->
+<div class="row rowtop2">
+    <div class="condition ">
+        <span style="padding: 5px 16px;">渠道</span>
+        <div class="btn-group btnborder">
+            <label class="btn btn-mint" [(ngModel)]='default.payType' btnRadio="">全部</label>
+            <label class="btn btn-mint" [(ngModel)]='default.payType' btnRadio="100">微信</label>
+            <label class="btn btn-mint" [(ngModel)]='default.payType' btnRadio="101">支付宝</label>
+        </div>
+    </div>
+    <div class="condition ">
+        <span style="padding: 5px 16px;">状态</span>
+        <div class="btn-group btnborder">
+            <label class="btn btn-mint" [(ngModel)]='default.status' btnRadio="">全部</label>
+            <label class="btn btn-mint" [(ngModel)]='default.status' btnRadio="103">充值成功</label>
+            <label class="btn btn-mint" [(ngModel)]='default.status' btnRadio="105">充值失败</label>
+            <label class="btn btn-mint" [(ngModel)]='default.status' btnRadio="100">充值中</label>
+        </div>
+    </div>
+    <div class="condition ">
+        <span style="padding: 5px 16px;">订单号</span>
+        <input [(ngModel)]='default.orderNo' type="text" req placeholder="订单号" class="form-control">
+    </div>
+    <div class="condition ">
+        <span style="padding: 5px 16px;">支付订单号</span>
+        <input [(ngModel)]='default.tradeNo' type="text" req placeholder="支付订单号" class="form-control">
+    </div>
+    <div class="condition ">
+        <span style="padding: 5px 16px;">注册手机号</span>
+        <input [(ngModel)]='default.phone' req type="text" placeholder="注册手机号" class="form-control">
+    </div>
+    <div class="condition ">
+        <span style="padding: 5px 16px;">充值时间</span>
+        <p-calendar [monthNavigator]="true" [yearNavigator]="true" [locale]= 'mon'  [(ngModel)]='startTime' yearRange="2000:2050" placeholder="请选择时间"></p-calendar>&nbsp;到&nbsp;
+        <p-calendar [monthNavigator]="true" [yearNavigator]="true" [locale]= 'mon' (onBlur)='aa(aaaa)' [(ngModel)]='endTime' yearRange="2000:2050" placeholder="请选择时间" #aaaa></p-calendar>
+    </div>
+    <div class="condition ">
+        <button class=" btn btn-primary sub" (click)="turnFirst()">查询</button>
+    </div>
+</div>
+<!-- 表格 -->
+<div class="wrap clearfix">
+    <div class="tableList ">
+        <h5 class="screenTop">当前筛选下，合计充值成功:&nbsp;&nbsp;{{infoList.amount}}&nbsp;人次， 充值成功金币:&nbsp;&nbsp;{{infoList.totalCoin}}&nbsp;，共成功支付:&nbsp;&nbsp;{{infoList.totalCash}}&nbsp;元</h5>
+        <table class="table table-bordered table-hover ">
+            <thead>
+                <tr>
+                    <td class="info ">充值时间</td>
+                    <td class="info ">订单号</td>
+                    <td class="info ">注册手机号</td>
+                    <td class="info shortTxt">用户姓名</td>
+                    <td class="info ">机构简称</td>
+                    <td class="info shortTxt">充值金币</td>
+                    <td class="info shortTxt">充值金额</td>
+                    <td class="info shortTxt">渠道</td>
+                    <td class="info longTxt">支付订单号</td>
+                    <td class="info">状态</td>
+                </tr>
+            </thead>
+            <tbody *ngFor=" let list of userRechargeList" >
+                <tr>
+                    <td class="table-hover">{{list.rechargeTime}}</td>
+                    <td class="table-hover ">{{list.orderNo }}</td>
+                    <td class="table-hover">{{list.phone}}</td>
+                    <td class="Card" id="card" (mouseenter)="getUserInfo(list.userId)" placement="right"><div [tooltip]="popTemplate" placement="right" style="width: 100%;height: 100%">{{list.userName}}</div></td>
+                    <td class="table-hover">{{list.organizationName}}</td>
+                    <td class="table-hover">{{list.coinAmount}}</td>
+                    <td class="table-hover">{{list.tradeFee}}</td>
+                    <td class="table-hover">{{list.payType}}</td>
+                    <td class="table-hover">{{list.tradeNo}}</td>
+                    <td class="table-hover">{{list.status}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<!-- 分页 -->
+<div class="row pagerow">
+    <div class="pageshowleft">每页显示
+        <select #selectPage name="" id="msgNum" (change)="sizeData(selectPage.value)">
+            <option #optionPage *ngFor="let msgNumber of msgNumbers" value={{msgNumber.Number}}>{{msgNumber.Number}}</option>
+        </select>
+        条数据
+    </div>
+    <div class="pageshowmodle">
+        <span>{{currentPage}} / {{totalPages}}</span>页
+        <span>{{totalItems}}条数据</span>
+    </div>
+    <div class="pagefen">
+        <pagination [firstText]="firstText" [lastText]="lastText" [previousText]="previousText" [nextText]="nextText" [maxSize]="maxSize" [totalItems]="totalItems" [itemsPerPage]="itemsPerPage" [(ngModel)]="currentPage" [boundaryLinks]="true" (pageChanged)='pageChanged($event)' (numPages)='pageNumChange($event)' class="pagination-sm"></pagination>
+    </div>
+</div>
+<ng-template #popTemplate>
+     <div class='cardBox'>
+        <div class="card"><img class="imgCard" [src]="userInfod.businessCardUrl"></div>
+        <div>
+            <div class="userTitle">{{userInfod.userName}} {{userInfod.loginName}}</div>
+            <div>
+                <div class="userInfo">机构： {{userInfod.organizationFullName}}</div>
+                <div class="userInfo">部门： {{userInfod.department}}</div>
+                <div class="userInfo">职位： {{userInfod.position}}</div>
+            </div>
+        </div>
+    </div>
+</ng-template>

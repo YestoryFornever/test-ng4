@@ -1,0 +1,79 @@
+	<div class="header clearfix">
+		<span class="head icon">|</span><span class="head" >资讯别名详情</span>
+		<div class="btnHeader head">
+			<button class="btn btn-primary" (click)="AddName(addName)">新增别名</button>
+			<button class="btn btn-primary" (click)="toBack()">返回</button>
+		</div>
+	</div>
+	<div style="margin: 16px  0 0 16px">
+		<span style="font-weight: 600">当前资讯来源正确名：</span><span>{{sourceName}}</span>
+	</div>
+	
+	<div class="tableList ">
+		<table class="table table-bordered table-hover ">
+			<thead >
+				<tr>
+					<td class="info">别名</td>
+					<td class="info">操作</td>
+				</tr>
+			</thead>
+			<tbody *ngFor="let source of sources">
+				<tr class="table-hover">
+					<td class="table-hover">{{source.l_name}}</td>
+					<td class="table-hover"><a (click)="deleteNameSave(source.l_id)">删除</a></td>
+				</tr>	
+			</tbody>
+		</table>
+	</div>
+
+
+	<!-- pagination -->
+	<div class="row pagerow">
+		<div class="pageshowleft">每页显示
+			<select #selectPage name="" id="msgNum" (change)="sizeData(selectPage.value,userList)" [(ngModel)]="itemsPerPage">
+				<option #optionPage  *ngFor="let msgNumber of msgNumbers" value={{msgNumber.Number}}>{{msgNumber.Number}}</option>
+			</select>
+			条数据
+		</div>
+		<div class="pageshowmodle">
+			<span>{{currentPage}} / {{totalPages}}</span>页
+			<span>{{totalItems}}条数据</span>
+		</div>
+
+		<div class="pagefen">
+			<pagination  [firstText]="firstText" [lastText]="lastText" [previousText]="previousText" [nextText]="nextText" [maxSize]="maxSize" [totalItems]="totalItems" [itemsPerPage]="itemsPerPage" [(ngModel)]="currentPage" [boundaryLinks]="true" (pageChanged)='pageChanged($event,allcheck)' (numPages)='pageNumChange($event,allcheck)' class="pagination-sm"></pagination>
+		</div>
+	</div>
+
+
+<!--新增别名弹窗 -->
+<div bsModal #addName="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="addName.hide()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">新增别名</h4>
+	</div>
+		<div class="modal-body">
+			<form class="form-horizontal" raole="form" #editgroupmessage="ngForm">
+				<div class="col-xs-6 col-md-6" style="margin-top:10px;height:auto;">
+					<fieldset class="form-group">
+						<div class="lab">
+							<span style="font-weight: 600">当前资讯来源正确名</span><span style="text-align: left">{{sourceName}}</span>
+						</div>
+						<div class="lab">
+							<span style="font-weight: 600"><b>*</b>别名</span><input type="text" name="otherName" [(ngModel)]="addNameObj.l_name" >
+						</div>
+						<div class="btnstyle">
+	                    	<button type="button" class="btn btn-default btnhoverlan" (click) = "addNameSave(addName)">保存</button>
+	                   		<button type="button" class="btn btn-primary btnhoverju" (click)="winHide(addName)">取消</button>
+               			</div>
+					</fieldset>
+				</div>
+			</form>
+		</div>
+	</div>
+  </div>
+</div>

@@ -1,0 +1,190 @@
+<div class="header clearfix">
+	<span class="head icon">|</span><span class="head" >查看机构</span>
+	<div class="condition container-fluid">
+		<button type="button" class="btn btn-primary" (click)="turnTo()" >返回</button>
+	</div>
+</div>
+<div style="margin-left: 16px">
+	<h3>{{orgName}}</h3>
+</div>
+<div class="bord clearfix">
+	<span>静态角色：</span>
+	<span *ngIf="instRl==1">主承</span><span *ngIf="instRl==2">联承</span><span *ngIf="instRl==3">在团</span><span *ngIf="instRl==4">不在团</span>
+	<button style="float: right" type="button" class="btn btn-primary"  (click)="change(select)" ><span *ngIf="!isChange">编辑</span><span *ngIf="isChange">保存</span></button>
+	<select #select [(ngModel)]="instRlCh"  *ngIf="isChange">
+		<option value="1">主承</option>	
+		<option value="2">联承</option>	
+		<option value="3">在团</option>	
+		<option value="4">不在团</option>	
+		<!-- <option value="5">投资</option>	 -->
+	</select>
+</div>
+<div class="tableList " >	
+<div style="color: #777">单击团队行可查看详情</div>	
+	<table class="table table-bordered table-hover " >
+		<thead >
+			<tr>
+				<td class="info middleTxt">团队名</td>
+				<td class="info ">团队静态角色</td>
+				<td class="info">人数</td>
+				<td class="info middleTxt">编辑时间</td>
+				<td class="info">团队上报人</td>
+			</tr>
+		</thead>
+		<tbody  id="list" *ngFor="let item of groupList;let k =index"  >
+			<tr #tr class="gpTr" style="cursor: pointer" (click)="chooseOne(item.teamId,$event,tr,k)">
+				<td >{{item.teamNm}}</td>
+				<td ><span *ngIf="item.teamQualf==1">主承</span><span *ngIf="item.teamQualf==2">在团</span>
+				<span *ngIf="item.teamQualf==3">不在团</span>
+				<span *ngIf="item.teamQualf==4">投资</span></td>
+				<td >{{item.teamNum}}</td>
+				<td >{{item.udtTm}}</td>
+				<td >{{item.teamPnpNm}}</td>
+			</tr>
+		</tbody>
+	</table>
+
+</div>
+<div class="header clearfix">
+	<span class="head icon">|</span><span class="head" >团队信息</span>
+	<div class="condition container-fluid">
+		<button type="button" class="btn btn-primary" (click)="creatGp()" >创建团队</button>
+	</div>
+</div>
+<div class="clearfix" style="margin:16px">
+<span>当前人数：</span><span>{{gpNum}}人</span>
+</div>
+<div style="width: 520px">
+<div class="bord clearfix">
+	<span>团队名称：</span>
+	<span>{{saveCon.teamNm}}</span>
+	<input style="float:right" placeholder="不超过50字" maxlength=50 type="text"  [(ngModel)]="teamNmCh" [tooltip]="teamNmCh" *ngIf="toChange"/>
+</div>
+<div class="bord clearfix">
+	<span>角色：</span>
+	
+	<span *ngIf="saveCon.teamQualf==1">主承</span><span *ngIf="saveCon.teamQualf==2">在团</span><span *ngIf="saveCon.teamQualf==3">不在团</span><span *ngIf="saveCon.teamQualf==4">投资</span>
+	<select #select [(ngModel)]="teamQualfCh"  *ngIf="toChange">
+		<option value="1">主承</option>	
+		<option value="2">在团</option>	
+		<option value="3">不在团</option>	
+		<option value="4">投资</option>	
+	</select>
+</div>
+<button style="float: right" type="button" class="btn btn-primary"  (click)="change2(select)" ><span *ngIf="!toChange">编辑</span><span *ngIf="toChange">保存</span></button>
+</div>
+
+<div class="header clearfix" *ngIf="!isCreat">
+	<span class="head icon">|</span><span class="head" >团队成员列表</span>
+	<div class="condition container-fluid">
+		<button type="button" class="btn btn-primary" (click)="addGpNum(userVe)">添加团队成员</button>
+	</div>
+</div>
+<div class="header clearfix" *ngIf="isCreat">
+	<span class="head icon">|</span><span class="head" >请创建完团队再添加成员</span>
+</div>
+
+<div class="tableList " style="max-width: 600px" *ngIf="!isCreat">		
+	<table class="table table-bordered table-hover " >
+		<thead >
+			<tr>
+				<td class="info middleTxt">操作</td>
+				<td class="info ">用户姓名</td>
+				<td class="info">所属部门</td>
+			</tr>
+		</thead>
+		<tbody  id="list" *ngFor="let item of gpNumberList">
+			<tr >
+				<td class="table-hover"><a (click)="deleteNum(item.teamId,item.aStaffsId,delete,item.aStaffsNm)">移出团队</a></td>
+				<td class="table-hover">{{item.aStaffsNm}}</td>		
+				<td class="table-hover">{{item.department}}</td>	
+			</tr>
+		</tbody>
+	</table>
+</div>
+
+<!-- 新增弹窗 -->
+
+<div bsModal #userVe="bs-modal" class="modal fade modelPon" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content" style="width: 500px;">
+            <div class="modal-header">
+                <button type="button" class="close" aria-label="Close" (click)="userVe.hide()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">选择用户</h4>
+            </div>
+            <div class="modal-body contentxinxi">
+               	<div class="tableList " style="max-width: 600px;max-height: 450px;overflow-y:scroll" >	
+               	<div>有{{orgNumList.length}}位{{orgName}}的联系人</div>	
+					<table class="table table-bordered table-hover " *ngIf="orgNumList.length!=0" >
+						<thead >
+							<tr>
+								<td class="info " style="width: 70px"><input #allcheck type="checkbox" name="allCheck"  (change)="checkAll(allcheck)"></td>
+								<td  class="info " style="width: 50px">#</td>
+								<td class="info ">用户姓名</td>
+								<td class="info">所属部门</td>
+								<td class="info">所属团队</td>
+							</tr>
+						</thead>
+						<tbody  id="list" *ngFor="let item of orgNumList,let i =index">
+							<tr >
+								<td class="info middleTxt"><input  type="checkbox" #listState name="user" ></td>
+								<td class="table-hover">{{i+1}}</td>
+								<td class="table-hover">{{item.userName}}</td>		
+								<td class="table-hover">{{item.department}}</td>	
+								<td class="table-hover">{{item.teamNm}}</td>	
+							</tr>
+						</tbody>
+					</table>
+				</div>
+                <div class="btnstyle" style="margin-left: 325px">
+                    <button type="button" class="btn btn-default btnhoverlan" [disabled]="orgNumList.length==0" (click)="approve(node,userVe)">添加</button>
+                    <button type="button" class="btn btn-primary btnhoverju" (click)="userVe.hide()">取消</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 提示弹窗 -->
+<div bsModal #node="bs-modal" class="modal fade modelPon" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content" style="width: 300px;">
+            <div class="modal-header">
+                <button type="button" class="close" aria-label="Close" (click)="node.hide()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">提示</h4>
+            </div>
+            <div class="modal-body contentxinxi">
+              <h5>您选择的用户中<b>{{approveNot}}</b>已经在其他团队，继续添加将更改他们的团队，确认添加吗？</h5>
+                <div class="btnstyle" style="margin-left: 120px;">
+                    <button type="button" class="btn btn-default btnhoverlan" (click)="addNumber(userVe,node)">添加</button>
+                    <button type="button" class="btn btn-primary btnhoverju" (click)="node.hide()">再想想</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 提示弹窗 -->
+<div bsModal #delete="bs-modal" class="modal fade modelPon" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content" style="width: 300px;">
+            <div class="modal-header">
+                <button type="button" class="close" aria-label="Close" (click)="delete.hide()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">提示</h4>
+            </div>
+            <div class="modal-body contentxinxi">
+              <h4>确认移除<b>{{deleteName}}</b>吗？</h4>
+                <div class="btnstyle" style="margin-left: 130px;">
+                    <button type="button" class="btn btn-default btnhoverlan" (click)="deleteTeamAStaffs(delete)">移除</button>
+                    <button type="button" class="btn btn-primary btnhoverju" (click)="delete.hide()">取消</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,52 @@
+<p></p>
+<div class="header" style="height: 30px">
+    <a [routerLink]="['../contacts-list']">返回</a>
+    <label>同业宝客服管理</label>
+</div>
+<div class="bar">
+    <p-dataTable [value]="users">
+        <p-column field="id" header="序号">
+            <template let-col let-row="rowData" let-rowIndex="rowIndex" pTemplate="body">
+                <!--<input *ngIf="row.customsid != undefined" pInputText name="id" [(ngModel)]="row.customsid" (keyup)="editInfo(row)"/>-->
+                {{rowIndex + 1}}
+            </template>
+        </p-column>
+        <p-column field="name" header="客服昵称">
+            <template let-col let-row="rowData" pTemplate="body">
+                <input pInputText name="name" [(ngModel)]="row.customsname" (keyup)="editInfo(row)"/>
+            </template>
+        </p-column>
+        <p-column field="qq" header="联系QQ号">
+            <template let-col let-row="rowData" pTemplate="body">
+                <input pInputText name="qq" [(ngModel)]="row.customsqq" (keyup)="editInfo(row)"/>
+            </template>
+        </p-column>
+        <p-column field="state" header="当前状态">
+            <template let-col let-row="rowData" pTemplate="body">
+                {{row.customsEStatus | statePipe}}
+            </template>
+        </p-column>
+        <p-column filed="operate" header="操作">
+            <template let-col let-row="rowData" pTemplate="body">
+                <a *ngIf="row.customsEStatus == '1'" (click)="noUse(row)">置为无效</a>
+                <a *ngIf="row.customsEStatus == '0'" (click)="use(row)">置为有效</a>
+                <a *ngIf="row.customsid != undefined && row.editTag == true" (click)="editBtn(row)">确定修改</a>
+                <a *ngIf="row.customsid == undefined" (click)="addBtn(row)">确定新增</a>
+                <a (click)="deleteBtn(row);">删除</a>
+            </template>
+        </p-column>
+    </p-dataTable>
+    <button class="btn btn-primary btn1" (click)="addUser()">新增同业宝客服</button>
+
+    <!--<pagination-->
+            <!--[totalItems]="totalItems"-->
+            <!--[(ngModel)]="currentPage"-->
+            <!--[maxSize]="10"-->
+            <!--class="pagination-sm"-->
+            <!--[boundaryLinks]="true"-->
+            <!--[rotate]="false"-->
+            <!--(numPages)="numPages = $event"-->
+            <!--(pageChanged)="pageChanged($event)"-->
+    <!--&gt;-->
+    <!--</pagination>-->
+</div>

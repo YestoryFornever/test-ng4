@@ -1,0 +1,65 @@
+<div class="header clearfix">
+	<span class="head icon">|</span><span class="head" >定时消息列表</span>
+</div>
+<div class="screen .clearfix">
+		<div class="condition container-fluid">
+			<span>预计时间</span>
+			<p-calendar [(ngModel)]="startDate" [maxDate]="endDate"    [locale]="en" [showTime]="false"></p-calendar>
+			<!-- <input class="selection"  type="date" [(ngModel)]="startDate"> -->
+			&nbsp;到&nbsp;
+			<p-calendar [(ngModel)]="endDate"  [minDate]="startDate"  [locale]="en" [showTime]="false"></p-calendar>
+			<!-- <input class="selection" type="date" [(ngModel)]="endDate"> -->
+		</div>
+		<div class="condition container-fluid">
+			<span>类型</span>
+			<div class="btn-group btnborder">
+                <label style="margin: 0" class="btn btn-mint"  btnCheckbox [(ngModel)]="type.all" (click)="clickAll()">全部</label>
+                <label style="margin: 0" class="btn btn-mint"  btnCheckbox [(ngModel)]="type.inf" (click)="clickOther()">通知栏消息</label>
+                <label style="margin: 0" class="btn btn-mint"  btnCheckbox [(ngModel)]="type.sys" (click)="clickOther()">系统消息</label>
+                <label style="margin: 0" class="btn btn-mint"  btnCheckbox [(ngModel)]="type.stMsg" (click)="clickOther()">短信</label>
+	        </div>
+		</div>
+		<button type="button" class="btn btn-primary" (click)="turnFirst()" >查询</button>
+</div>
+<div class="tableList " >		
+	<table class="table table-bordered table-hover " >
+		<thead >
+			<tr>
+				<td class="info middleTxt">预计时间</td>
+				<td class="info">创建用户</td>
+				<td class="info middleTxt">类型</td>
+				<td class="info">内容</td>
+				<td class="info" >操作</td>	
+			</tr>
+		</thead>
+		<tbody  id="list" *ngFor="let item of infoList">
+			<tr #userList class="Userlist" >
+				<td class="table-hover">{{item.sendTime}}</td>
+				<td class="table-hover">{{item.crtPsnNm}}</td>
+				<td class="table-hover"><span *ngIf="item.pshTpid==14">通知栏消息</span><span *ngIf="item.pshTpid==15">系统消息</span><span *ngIf="item.pshTpid==17">短信</span></td>
+				<td class="table-hover">{{item.pshCntnt}}</td>
+				<td class="table-hover"><a (click)="turnTo(item.msgPshid,item.pshTpid)">详情</a></td>	
+			</tr>
+		</tbody>
+	</table>
+</div>
+<!-- 分页 -->
+	<div class="row pagerow" >
+		<div class="pageshowleft">每页显示
+			<select #selectPage name="" id="msgNum" (change)="sizeData(selectPage.value,userList)">
+				<option #optionPage  *ngFor="let msgNumber of msgNumbers" value={{msgNumber.Number}}>{{msgNumber.Number}}</option>
+			</select>
+			条数据
+		</div>
+		<div class="pageshowmodle">
+			<span>{{currentPage}} / {{totalPages}}</span>页
+			<span>{{totalItems}}条数据</span>
+		</div>
+
+		<div class="pagefen">
+			<pagination  [firstText]="firstText" [lastText]="lastText" [previousText]="previousText" [nextText]="nextText" [maxSize]="maxSize" [totalItems]="totalItems" [itemsPerPage]="itemsPerPage" [(ngModel)]="currentPage" [boundaryLinks]="true" (pageChanged)='pageChanged($event)' (numPages)='pageNumChange($event)' class="pagination-sm"></pagination>
+		</div>
+	</div>
+
+
+

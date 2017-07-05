@@ -1,0 +1,113 @@
+<div class="header clearfix">
+	<span class="head icon">|</span><span class="head" >用户关系</span>
+	<div class="btnHeader head">
+        <button class="btn btn-primary" (click)="returnTo()">返回</button>
+    </div>
+</div>
+<div style="padding: 16px;border-bottom:1px solid #ddd">当前用户：<span>{{Name}}</span></div>
+<div class="newsMsgOther">
+	<div (click)="$event.preventDefault()">
+		<tabset [justified]="false">
+			<tab (select)="get($event)" heading="好友">
+				<div class="tableList "   [ngStyle]="{'height': height }">
+				<div *ngIf="ListFriend.length==0">该用户未添加好友</div>
+					<table class="table table-bordered table-hover " *ngIf="ListFriend.length>0">
+						<thead >
+							<tr>
+								<td class="info">姓名</td>
+								<td class="info ">公司</td>	
+								<td class="info">部门</td>
+								<td class="info ">职位</td>	
+								<!-- <td class="info">注册手机</td> -->
+								<td class="info ">联系电话</td>						
+							</tr>
+						</thead>
+
+						<tbody *ngFor="let userMsg of ListFriend">
+							<tr class="Userlist" >
+								<td class="table-hover">{{userMsg.userName}}</td>
+								<td class="table-hover">{{userMsg.organizationFullName}}</td>
+								<td class="table-hover">{{userMsg.department}}</td>
+								<td class="table-hover">{{userMsg.position}}</td>
+								<!-- <td class="table-hover">{{userMsg.loginName}}</td> -->
+								<td class="table-hover">{{userMsg.contactPhone}}</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</tab>
+			<tab (select)="get($event)" heading="关注">
+				<div class="tableList "   [ngStyle]="{'height': height }">
+				<div *ngIf="ListNotice.length==0">该用户未添加关注</div>
+					<table class="table table-bordered table-hover " *ngIf="ListNotice.length>0">
+						<thead >
+							<tr>
+								<td class="info">姓名</td>
+								<td class="info ">公司</td>	
+								<td class="info">部门</td>
+								<td class="info ">职位</td>	
+								<!-- <td class="info">注册手机</td> -->
+								<td class="info ">联系电话</td>					
+							</tr>
+						</thead>
+						<tbody   *ngFor="let userMsg of ListNotice">
+							<tr class="Userlist">
+								<td class="table-hover">{{userMsg.userName}}</td>
+								<td class="table-hover">{{userMsg.organizationFullName}}</td>
+								<td class="table-hover">{{userMsg.department}}</td>
+								<td class="table-hover">{{userMsg.position}}</td>
+								<!-- <td class="table-hover">{{userMsg.loginName}}</td> -->
+								<td class="table-hover">{{userMsg.contactPhone}}</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</tab>
+			<tab (select)="get($event)" heading="黑名单">
+				
+				<div class="tableList "   [ngStyle]="{'height': height }">
+					<div *ngIf="ListBlack.length==0">该用户黑名单为空</div>
+					<table class="table table-bordered table-hover " *ngIf="ListBlack.length>0">
+						<thead >
+							<tr>
+								<td class="info">姓名</td>
+								<td class="info ">公司</td>	
+								<td class="info">部门</td>
+								<td class="info ">职位</td>	
+								<!-- <td class="info">注册手机</td> -->
+								<td class="info ">联系电话</td>			
+							</tr>
+						</thead>
+						<tbody   *ngFor="let userMsg of ListBlack">
+							<tr class="Userlist">
+								<td class="table-hover">{{userMsg.userName}}</td>
+								<td class="table-hover">{{userMsg.organizationFullName}}</td>
+								<td class="table-hover">{{userMsg.department}}</td>
+								<td class="table-hover">{{userMsg.position}}</td>
+								<!-- <td class="table-hover">{{userMsg.loginName}}</td> -->
+								<td class="table-hover">{{userMsg.contactPhone}}</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</tab>
+		</tabset>
+	</div>
+</div>
+<!-- 分页 -->
+	<div class="row pagerow" >
+		<div class="pageshowleft">每页显示
+			<select #selectPage name="" id="msgNum" (change)="sizeData(selectPage.value,userList)">
+				<option #optionPage  *ngFor="let msgNumber of msgNumbers" value={{msgNumber.Number}}>{{msgNumber.Number}}</option>
+			</select>
+			条数据
+		</div>
+		<div class="pageshowmodle">
+			<span>{{currentPage}} / {{totalPages}}</span>页
+			<span>{{totalItems}}条数据</span>
+		</div>
+
+		<div class="pagefen">
+			<pagination  [firstText]="firstText" [lastText]="lastText" [previousText]="previousText" [nextText]="nextText" [maxSize]="maxSize" [totalItems]="totalItems" [itemsPerPage]="itemsPerPage" [(ngModel)]="currentPage" [boundaryLinks]="true" (pageChanged)='pageChanged($event)' (numPages)='pageNumChange($event)' class="pagination-sm"></pagination>
+		</div>
+	</div>

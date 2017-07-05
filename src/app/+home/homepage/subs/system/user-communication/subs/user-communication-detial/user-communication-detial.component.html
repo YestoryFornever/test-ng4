@@ -1,0 +1,66 @@
+
+<div class="header clearfix">
+	<span class="head icon">|</span><span class="head" >IM 消息详情</span>
+	<div class="btnHeader head">
+        <button class="btn btn-primary" *ngIf="ID1" (click)="returnTo()">返回</button>
+        <button class="btn btn-primary" *ngIf="!ID1" (click)="turnTo()">按条件查询</button>
+         <!-- <button class="btn btn-primary" (click)="turnFirst()">刷新</button> -->
+    </div>
+</div>
+<div *ngIf="!ID1"  style="padding: 16px;border-bottom:1px solid #ddd">全部消息：</div>
+<div *ngIf="ID1" style="padding: 16px;border-bottom:1px solid #ddd">当前用户：<span>{{Name1}},id:{{ID1}}</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;相关用户：<span>{{Name2}},id:{{ID2}}</span></div>
+<div class="screen .clearfix">
+		<div class="condition container-fluid">
+			<span>选择日期</span>
+			<p-calendar [(ngModel)]="startDate"   [locale]="en" [showTime]="true" dateFormat="yy-mm-dd "></p-calendar>
+			<!-- <input class="selection"  type="date" [(ngModel)]="startDate"> -->
+			&nbsp;到&nbsp;
+			<p-calendar  [(ngModel)]="endDate" [minDate]="startDate"   [locale]="en" [showTime]="true" dateFormat="yy-mm-dd"></p-calendar>
+			<!-- <input class="selection" type="date" [(ngModel)]="endDate"> -->
+		</div>
+		<button class="condition btn btn-primary sub" (click)='turnFirst()'>查询</button>
+</div>
+
+<div class="tableList " >		
+	<table class="table table-bordered table-hover " >
+		<thead >
+			<tr>
+				<td class=" info longTxt">消息ID</td>
+				<td class=" info " >发送用户</td>
+				<td class=" info ">接受用户</td>
+				<td class=" info middleTxt">发送时间</td>
+				<td class=" info ">消息类型</td>
+				<td class=" info ">描述</td>
+				<td class=" info longTxt">消息内容</td>
+			</tr>
+		</thead>
+		<tbody  id="list" *ngFor="let user of userLists">
+			<tr #userList class="Userlist" >
+				<td>{{user.msgId}}</td>
+				<td>{{user.userFromNm}}</td>
+				<td>{{user.userToNm}}</td>
+				<td>{{user.createTime}}</td>
+				<td>{{user.chatType}}</td>
+				<td>{{user.direction}}</td>
+				<td>{{user.msg}}</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+<!-- 分页 -->
+	<div class="row pagerow" >
+		<div class="pageshowleft">每页显示
+			<select #selectPage name="" id="msgNum" (change)="sizeData(selectPage.value,userList)">
+				<option #optionPage  *ngFor="let msgNumber of msgNumbers" value={{msgNumber.Number}}>{{msgNumber.Number}}</option>
+			</select>
+			条数据
+		</div>
+		<div class="pageshowmodle">
+			<span>{{currentPage}} / {{totalPages}}</span>页
+			<span>{{totalItems}}条数据</span>
+		</div>
+
+		<div class="pagefen">
+			<pagination  [firstText]="firstText" [lastText]="lastText" [previousText]="previousText" [nextText]="nextText" [maxSize]="maxSize" [totalItems]="totalItems" [itemsPerPage]="itemsPerPage" [(ngModel)]="currentPage" [boundaryLinks]="true" (pageChanged)='pageChanged($event)' (numPages)='pageNumChange($event)' class="pagination-sm"></pagination>
+		</div>
+	</div>

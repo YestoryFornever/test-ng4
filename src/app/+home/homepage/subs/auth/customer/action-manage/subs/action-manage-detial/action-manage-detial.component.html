@@ -1,0 +1,84 @@
+<div class="mian">
+	<div class="header clearfix">
+		<span class="head icon">|</span><span class="head" >行动详情</span>
+		<div class="btnHeader head">
+			<button class="btn btn-primary" (click)="toChange()">返回</button>
+		</div>
+	</div>
+</div>
+<div class="row">
+<div  class='tabs col-md-8'>
+	<tabset [justified]="false">
+		<tab (select)="get($event)" heading="行动记录">
+			<table class="table table-bordered table-hover " >
+				<thead >
+					<tr>
+						<td class="info ">创建时间</td>
+						<td class="info ">内容</td>	
+					</tr>
+				</thead>
+				<tbody>
+					<tr *ngFor="let act of actDealList">
+						<td>{{act.createTime}}</td>
+						<td ><div [tooltip]="act.recordText" >{{act.recordText}}</div></td>
+					</tr>
+				</tbody>
+			</table>
+		</tab>
+		<tab (select)="get($event)" heading="业务需求">
+			<table class="table table-bordered table-hover " >
+				<thead >
+					<tr>
+						<td class="info ">创建时间</td>
+						<td class="info">内容</td>	
+					</tr>
+				</thead>
+				<tbody *ngFor="let act of actDealList">
+					<tr>
+						<td>{{act.createTime}}</td>
+						<td ><div [tooltip]="act.recordText">{{act.recordText}}</div></td>
+					</tr>
+				</tbody>
+			</table>
+		</tab>
+		<tab (select)="get($event)" heading="产品需求">
+			<table class="table table-bordered table-hover " >
+				<thead >
+					<tr >
+						<td class="info ">创建时间</td>
+						<td class="info">内容</td>	
+					</tr>
+				</thead>
+				<tbody *ngFor="let act of actDealList">
+					<tr>
+						<td>{{act.createTime}}</td>
+						<td ><div [tooltip]="act.recordText">{{act.recordText}}</div></td>
+					</tr>
+				</tbody>
+			</table>
+		</tab>
+		<tab (select)="get($event)" heading="图片记录">
+			<img *ngIf="picList.imgPath1" class="imgAction" [src]='picList.imgPath1'>
+			<img *ngIf="picList.imgPath2" class="imgAction" [src]='picList.imgPath2'>
+			<img *ngIf="picList.imgPath3" class="imgAction" [src]='picList.imgPath3'>
+			<img *ngIf="picList.imgPath4" class="imgAction" [src]='picList.imgPath4'>
+		</tab>
+	</tabset>	
+</div>
+<div class="baseMsg  col-md-4">
+	<div class="newsMsg">
+			<div class="newsHeader box">基本信息</div><br>
+			<div class="newsSurvey row">
+				<div class="K-V"><span class="newsKey">CRM用户账号</span><span class="newsVal">{{actionDetial.loginName}}</span></div>
+				<div class="K-V"><span class="newsKey">CRM用户姓名</span><span class="newsVal">{{actionDetial.userName}}</span></div>
+				<div class="K-V"><span class="newsKey">随访者</span><span class="newsVal">{{actionDetial.followPersons}}</span></div><br>
+				<div class="K-V"><span class="newsKey">接待机构</span><span class="newsVal">{{actionDetial.organizationFullName}}</span></div>
+				<div class="K-V"><span class="newsKey">接待部门</span><span class="newsVal">{{actionDetial.deptName}}</span></div>
+				<div class="K-V"><span class="newsKey">接待人</span><span class="newsVal">{{actionDetial.receiver}}</span></div><br>
+				<div class="K-V"><span class="newsKey">行动类型</span><span class="newsVal"><span *ngIf="actionDetial.actionType==1" >上门拜访</span><span *ngIf="actionDetial.actionType==2"  >电话回访</span><span *ngIf="actionDetial.actionType==3"  >集体培训</span></span></div>
+				<div class="K-V"><span class="newsKey">行动时间</span><span class="newsVal">{{actionDetial.startTime}}-{{actionDetial.endTime}}</span></div>
+				<div style="clear:both"></div>
+			</div>
+	</div>
+</div>
+</div>

@@ -1,0 +1,161 @@
+<div class="mian">
+	<div class="header clearfix">
+		<span class="head icon">|</span><span class="head" >联系人列表</span>
+	</div>
+</div>
+
+<!-- section -->
+	<div class="screen .clearfix">
+		<div class="condition container-fluid">
+			<span>用户姓名：	</span><input #userName req [(ngModel)]="default.contactName"  placeholder="全部"  class="form-control">
+		</div>
+		<div class="condition container-fluid">
+			<span>机构全称	</span><input #cm req placeholder="全部" class="form-control kuan" 
+                    [(ngModel)]="organizationName" 
+                    [typeahead]="companylist" 
+                    (typeaheadOnSelect)="typeaheadOnCompanys($event)" 
+                    [typeaheadOptionField]="'organizationFullName'"          
+                    [ngModelOptions]="{standalone: true}"
+                      (blur)="blurCompanyOrg(cm)" >
+                    <input type="text"  name="companyId" class="hide" [(ngModel)]="default.organizationId" [ngModelOptions]="{standalone: true}">
+		</div>
+		<div class="condition container-fluid">
+			<span>部&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;门：	</span><input #dpt req  placeholder="全部" class="form-control kuan"  
+                    [(ngModel)]="departmentName" 
+                    [typeahead]="partlist"  
+                    (typeaheadOnSelect)="typeaheadOnDepartments($event)" 
+                    [typeaheadOptionField]="'departmentName'"
+                    [ngModelOptions]="{standalone: true}"
+                     (blur)="blurCompanyDpt(dpt)">
+                    <input type="text"  name="departmentId" class="hide" [(ngModel)]="default.departmentId" [ngModelOptions]="{standalone: true}">
+		</div>
+		<div class="condition container-fluid">
+			<span>CRM用户：	</span><input #ct req  placeholder="全部" class="form-control kuan"  
+                    [(ngModel)]="customerName" 
+                    [typeahead]="employList"  
+                    (typeaheadOnSelect)="typeaheadOnCustomer($event)" 
+                    [typeaheadOptionField]="'empName'"
+                    [ngModelOptions]="{standalone: true}"
+                      (blur)="blurCompanyCt(ct)">
+                    <input type="text"  name="departmentId" class="hide" [(ngModel)]="default.departmentId" [ngModelOptions]="{standalone: true}">
+		</div>
+		<button class="condition btn btn-primary sub"(click)="turnFirst()">查询</button>
+	</div>
+
+	<!-- table -->
+	<div class="tableList "  >
+		<!-- <div class = "loading" [ngClass]="setLoadClasses()" [ngStyle]="{'height': height }">
+		 <div class="loader">
+			<div class="loader-inner">
+				<div class="loader-line-wrap">
+					<div class="loader-line"></div>
+				</div>
+				<div class="loader-line-wrap">
+					<div class="loader-line"></div>
+				</div>
+				<div class="loader-line-wrap">
+					<div class="loader-line"></div>
+				</div>
+				<div class="loader-line-wrap">
+					<div class="loader-line"></div>
+				</div>
+				<div class="loader-line-wrap">
+					<div class="loader-line"></div>
+				</div>
+			</div>
+		 </div>
+		</div> -->
+		<table class="table table-bordered table-hover " >
+
+			<thead >
+				<tr>
+					<td class="info shortTxt">操作</td>
+					<td class="info shortTxt">姓名</td>
+					<td class="info middleTxt">机构全称</td>
+					<td class="info shortTxt">部门</td>
+					<td class="info middleTxt">职位</td>
+					<td class="info middleTxt">联系电话</td>
+					<td class="info middleTxt">工作电话1</td>
+					<td class="info middleTxt">工作电话2</td>
+					<td class="info middleTxt">公司邮箱</td>
+					<td class="info middleTxt">工作地址</td>
+					<td class="info middleTxt">CRM用户备注</td>
+					<td class="info middleTxt">CRM用户账号</td>
+					<td class="info middleTxt">CRM用户姓名</td>
+					<!-- <td class="info middleTxt" >审核日期</td> -->
+					
+				</tr>
+			</thead>
+			<!-- <tbody>
+				<tr>
+					<td><a (click)="toChange('001')">修改</a>/<a>删除</a></td>
+					<td>魏宏伟</td>
+					<td>亚联创新集团</td>
+					<td>亚联之星</td>
+					<td>web</td>
+					<td>15321309897</td>
+					<td>15321389978</td>
+					<td>ctursy@163.com</td>
+					<td>数码大厦</td>
+					<td>魏宏伟</td>
+					<td>魏宏伟</td>
+					<td>魏宏伟</td>
+				</tr>
+			</tbody> -->
+			<tbody  id="list" *ngFor="let contact of contactList"  >
+				<tr #userList   [ngStyle]="{'background-color': color }" class="Userlist">
+					<td><a (click)="toChange(contact.contactId)">修改</a>/<a (click)="deleted(del,contact.contactId)">删除</a></td>
+					<td class="table-hover">{{contact.contactName}}</td>
+					<td class="table-hover">{{contact.orgName}}</td>
+					<td class="table-hover">{{contact.deptName}}</td>
+					<td class="table-hover">{{contact.position}}</td> 
+					<td class="table-hover" >{{contact.contactPhone}}</td> 
+					<td class="table-hover">{{contact.workPhone}}</td> 
+					<td class="table-hover" >{{contact.workPhone2}}</td> 		
+					<td class="table-hover">{{contact.companyMail}}</td> 
+					<td class="table-hover" >{{contact.workAddress}}</td> 		
+					<td class="table-hover">{{contact.comments}}</td> 
+					<td class="table-hover" >{{contact.loginName}}</td> 
+					<td class="table-hover" >{{contact.userName}}</td> 				
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<!-- pagination -->
+	<div class="row pagerow">
+		<div class="pageshowleft">每页显示
+			<select #selectPage name="" id="msgNum" (change)="sizeData(selectPage.value,userList)" [(ngModel)]="itemsPerPage">
+				<option #optionPage  *ngFor="let msgNumber of msgNumbers" value={{msgNumber.Number}}>{{msgNumber.Number}}</option>
+			</select>
+			条数据
+		</div>
+		<div class="pageshowmodle">
+			<span>{{currentPage}} / {{totalPages}}</span>页
+			<span>{{totalItems}}条数据</span>
+		</div>
+
+		<div class="pagefen">
+			<pagination  [firstText]="firstText" [lastText]="lastText" [previousText]="previousText" [nextText]="nextText" [maxSize]="maxSize" [totalItems]="totalItems" [itemsPerPage]="itemsPerPage" [(ngModel)]="currentPage" [boundaryLinks]="true" (pageChanged)='pageChanged($event,allcheck)' (numPages)='pageNumChange($event,allcheck)' class="pagination-sm"></pagination>
+		</div>
+	</div>
+
+<!-- 删除 -->
+	<div bsModal #del="bs-modal" class="modal fade modelPon" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+	    <div class="modal-dialog modal-sm">
+	        <div class="modal-content noproblem">
+	            <div class="modal-header ">
+	                <button type="button" class="close" aria-label="Close" (click)="del.hide()">
+	                    <span aria-hidden="true">&times;</span>
+	                </button>
+	                <h4 class="modal-title">删除联系人</h4>
+	            </div>
+	            <div class="modal-body contentxinxi">
+	                <div class="pp clearfix">是否删除联系人？</div>
+	                <div class="btnstyle">
+	                    <button type="button" class="btn btn-default btnhoverlan" (click)="delCont(del)">删除</button>
+	                     <button type="button" class="btn btn-primary btnhoverju" (click)="del.hide()">取消</button>
+	                </div>
+	            </div>
+	        </div>
+	    </div>
+	</div>

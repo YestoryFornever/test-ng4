@@ -1,0 +1,119 @@
+<div class="header">
+	<span class="head icon">|</span>
+	<span class="head">客服>消息查询</span>
+	<div class="btnHeader head">
+		<a [href]="excelExport">
+			<button class="btn btn-primary">导出</button>
+		</a>
+	</div>
+</div>
+<main>
+	<div class="condition-container">
+		<div class="btns">
+			<div class="condition-btn">
+				<button class="btn btn-primary sub" (click)="getList()">查询</button>
+			</div>
+		</div>
+		<div class="conditions" style="min-width:580px;">
+			<div class="condition">
+				<label for="fullname" class="text-right">机构全称</label>
+				<div class="condition-input">
+					<input type="text" class="form-control" name="abbreviationEP" autocomplete="off"
+						[(ngModel)]="condition.orgNm"
+						[typeahead]="orgNmTypeAhead.source" 
+						[typeaheadOptionsLimit]="orgNmTypeAhead.limit"
+						(typeaheadOnSelect)="orgNmTypeAhead.select($event)"
+						(typeaheadLoading)="orgNmTypeAhead.loading($event)"
+						(typeaheadNoResults)="orgNmTypeAhead.noresult($event)"
+						(typeaheadOnBlur)="blurOrgNm($event)"
+						[typeaheadWaitMs]="300"/>
+					<div *ngIf="orgNmTypeAhead.isloading===true">
+						<i class="glyphicon glyphicon-refresh ng-hide"></i>
+					</div>
+					<div *ngIf="orgNmTypeAhead.hasNoResult===true" class="">
+						<i class="glyphicon glyphicon-remove"></i> 无结果
+					</div>
+				</div>
+			</div>
+			<div class="condition">
+				<label for="fullname" class="text-right">用户姓名</label>
+				<div class="condition-input">
+					<input type="text" class="form-control" [(ngModel)]="condition.username">
+				</div>
+			</div>
+			<div class="condition">
+				<label for="fullname" class="text-right">客服姓名</label>
+				<div class="condition-input">
+					<select class="form-control" [(ngModel)]="condition.customImId">
+						<option value="" selected>无</option>
+						<option value="{{cstrnm.customImId}}" *ngFor="let cstrnm of cstrNms">{{cstrnm.customName}}</option>
+					</select>
+				</div>
+			</div>
+			<div class="condition">
+				<label for="fullname" class="text-right">聊天时间</label>
+				<div class="condition-input">
+					<p-calendar [(ngModel)]="condition.startTime" 
+					[maxDate]="condition.endTime"
+					[locale]="calenderLocale"></p-calendar>
+					&nbsp;到&nbsp;
+					<p-calendar [(ngModel)]="condition.endTime"  
+					[minDate]="condition.startTime"
+					[locale]="calenderLocale"></p-calendar>
+				</div>
+			</div>
+			<div class="condition">
+				<label for="fullname" class="text-right">聊天内容</label>
+				<div class="condition-input">
+					<input type="text" class="form-control" [(ngModel)]="condition.msg">
+				</div>
+			</div>
+			<div style="clear:both;"></div>
+		</div>
+	</div>
+	<div class="table-list">
+		<table class="table table-bordered table-hover">
+			<thead>
+				<tr>
+					<th>客服姓名
+						<div class="order">
+							<button class="fa fa-chevron-up" aria-hidden="true" (click)="Order('customName','ASC')"></button>
+							<button class="fa fa-chevron-down"  aria-hidden="true" (click)="Order('customName','DESC')"></button>
+						</div>
+					</th>
+					<th>用户姓名
+						<div class="order">
+							<button class="fa fa-chevron-up" aria-hidden="true" (click)="Order('userName','ASC')"></button>
+							<button class="fa fa-chevron-down"  aria-hidden="true" (click)="Order('userName','DESC')"></button>
+						</div>
+					</th>
+					<th>机构全称</th>
+					<th>所属部门</th>
+					<th style="width:400px;">聊天内容</th>
+					<th>聊天时间
+						<div class="order">
+							<button class="fa fa-chevron-up" aria-hidden="true" (click)="Order('cTime','ASC')"></button>
+							<button class="fa fa-chevron-down"  aria-hidden="true" (click)="Order('cTime','DESC')"></button>
+						</div>
+					</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr *ngFor="let item of list">
+					<td class="table-hover">{{item.customName}}</td>
+					<td class="table-hover">{{item.userName}}</td>
+					<td class="table-hover">{{item.orgName}}</td>
+					<td class="table-hover">{{item.department}}</td>
+					<td class="table-hover">
+						<div class="for-tip customClass" style="width:400px;" container="body" [tooltip]="item.msg" placement="bottom">
+							{{item.msg}}
+						</div>
+					</td>
+					<td class="table-hover">{{item.cTime}}</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<!-- 分页 -->
+	<page [(pageObj)]="pageParams" (fnParent)="getList()"></page>
+</main>

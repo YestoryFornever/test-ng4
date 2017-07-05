@@ -1,0 +1,48 @@
+<div class="header clearfix">
+	<span class="head icon">|</span><span class="head" >编辑要闻资讯</span>
+	<div class="condition container-fluid">
+		<button type="button" class="btn btn-primary" [disabled]="sweepDetial.release_state=='已发送'"  (click)="sweepEdit(1)">保存并发送</button>
+	</div>
+	<div class="condition container-fluid">
+		<button type="button" class="btn btn-primary" (click)="sweepEdit()">保存</button>
+	</div>
+
+	<div class="condition container-fluid">
+		<button type="button" class="btn btn-primary" (click)="giveUp.show()">放弃编辑</button>
+	</div>
+</div>
+
+<div class="contents">
+	
+
+<div class="K-V" >
+	<span class="newsKey"><b style="color: red">*</b>资讯标题:</span>
+	<input maxlength="200" [(ngModel)]="sweepDetial.e_title" type="" name="" style="width: 95%;height: 32px;border-radius: 5px;border:1px #bbb solid">
+</div>	
+<div class="K-V" >
+	<span class="newsKey"><b style="color: red">*</b>资讯摘要:</span>
+	<textarea maxlength="255" [(ngModel)]="sweepDetial.e_note"  style="width: 95%;height: 200px;border-radius: 5px;border:1px #bbb solid"></textarea>
+</div>	
+
+</div>
+
+<!-- 放弃编辑-->
+<div bsModal #giveUp="bs-modal" class="modal fade modelPon" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content clearfix" >
+            <div class="modal-header">
+                <button type="button" class="close" aria-label="Close" (click)="giveUp.hide()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">放弃编辑</h4>
+            </div>
+            <div class="modal-body contentxinxi">
+            	你确定放弃编辑吗？
+            </div>
+             <div class="condition container-fluid" style="padding-left: 400px">
+				<button style="margin-top:-40px" type="button" class="btn btn-primary" (click)="ListTo()">确认</button>
+				<button style="margin-top:-40px" type="button" class="btn btn-primary" (click)="giveUp.hide()">取消</button>
+			</div>
+        </div>
+    </div>
+</div>

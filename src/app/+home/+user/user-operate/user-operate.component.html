@@ -1,0 +1,173 @@
+<div class="header clearfix">
+    <span class="head icon">|</span><span class="head">运营号管理 ></span>
+    <div class="btnHeader head">
+        <button class="btn btn-primary" (click)='to_add()'>添加</button>
+        <button class="btn btn-primary" (click)='md_modal.show();get_modal_left()'>分配账号</button>
+        <button class="btn btn-default btn2 btnhoverlan" (click)="excle.show()">导入</button>
+        <button class="btn btn-primary disabled" >重置昵称</button>
+    </div>
+</div>
+<div class="screen clearfix width_100">
+    <div class="condition container-fluid">
+        <span>账号名称</span>
+        <input type="text" class="form-control" [(ngModel)]="conditions.userName" placeholder="账号名称或昵称">
+    </div>
+    <div class="condition container-fluid form-inline">
+        <span>账号类型</span>
+        <select class="form-control" [(ngModel)]="conditions.userType">
+            <option *ngFor="let item of conditions.userType_data" [ngValue]='item.id'>{{item.name}}</option>
+        </select>
+    </div>
+    <div class="condition container-fluid form-inline">
+        <span>管理员</span>
+        <select class="form-control" [(ngModel)]="conditions.securityUserid">
+            <option value="">全部</option>
+        	<option *ngFor="let item of conditions.manager_data" [ngValue]='item.userId'>{{item.userName}}</option>
+        </select>
+    </div>
+    <div class="condition container-fluid form-inline">
+        <span>状态</span>
+        <select class="form-control" [(ngModel)]="conditions.state">
+        	<option *ngFor="let item of conditions.state_data" [ngValue]='item.id'>{{item.name}}</option>
+        </select>
+    </div>
+    <button class="condition btn btn-primary sub" (click)='queryOperateAccountList()'>查询</button>
+</div>
+<div class="tableList ">
+    <table class="table table-bordered table-hover ">
+        <thead>
+            <tr>
+                <td class="info my_short checked">
+                    <input type="checkbox" (change)='all_check(all_checked)' #all_checked>
+                </td>
+                <td class="info my_short">操作</td>
+                <td class="info my_short">状态</td>
+                <td class="info">注册手机号</td>
+                <td class="info">账号名称</td>
+                <td class="info">账号昵称</td>
+                <td class="info">账号类型</td>
+                <td class="info">管理员账号</td>
+                <td class="info">动态数量</td>
+                <td class="info">回复数量</td>
+                <td class="info">评论数量</td>
+                <td class="info middleTxt">更新日期</td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let item of table_list" [ngClass]='{"color333" :(item.state==3 || item.state==2) }'>
+                <td class="checked">
+                    <input type="checkbox" *ngIf="(item.userType && item.userType!=2)" [(ngModel)]="item.checked" >
+                </td>
+                <td class="handle">
+                    <i class="fa fa-pencil-square-o" title="修改" (click)='to_add(item)'></i>
+                    <i class="fa" [ngClass]='{"fa-toggle-on" : (item.state==1) ,"fa-toggle-off disabled" : (item.state==3 || item.state==2)}' (click)='change_modal_show(alert, item)' title="改变状态"></i>
+                </td>
+                <td>{{item.stateName}}</td>
+                <td>{{item.loginName}}</td>
+                <td>{{item.userName}}</td>
+                <td>{{item.nickName}}</td>
+                <td>{{item.userTypeName}}</td>
+                <td>
+                    <span [tooltip]="item.securityUserid">{{item.securityUserid}}</span>
+                </td>
+                <td>{{item.dynamicNum}}</td>
+                <td>{{item.replyNum}}</td>
+                <td>{{item.commentNum}}</td>
+                <td>{{item.updateTime}}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<page [(pageObj)]="pageParams" (fnParent)="queryOperateAccountList()"></page>
+<!-- 改状态的弹窗 -->
+<div class="modal fade" bsModal #alert="bs-modal"  role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xs">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title pull-left">是否更改状态</h4>
+                <button type="button" class="close pull-right" aria-label="Close" (click)="alert.hide()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+            </div>
+            <div class="modal-footer" style="border:none;text-align: center;">
+                <button class="btn btn-default" (click)='alert.hide()'>取消</button>
+                <button class="btn btn-primary" (click)='handle_sure(alert)' >确定</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 分配运营号 -->
+<div class="modal fade" bsModal #md_modal="bs-modal"  role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title pull-left">分配运营号</h5>
+                <button type="button" class="close pull-right" aria-label="Close" (click)="md_modal.hide()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="col-xs-6">
+                    <h5>待分配运营号：{{nick_num}}{{ i}}个</h5>
+                    <table class="table table-bordered table-hover ">
+                        <thead>
+                            <tr>
+                                <td class="info">运营号名称</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of modal_left_list;let i = index;">
+                                <td *ngIf="item.nickName">{{item.nickName}}</td>
+                                <td *ngIf="!item.nickName">{{item.userName}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-xs-6">
+                    <h5>分配给运营人员：</h5>
+                    <table class="table table-bordered table-hover ">
+                        <thead>
+                            <tr>
+                                <td class="info">账号名称</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of conditions.manager_data"  [ngClass]='{"tr_checked" :(tr_checked==item.userId)}' (click)='tr_checked = item.userId'>
+                                <td>{{item.userName}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div style="clear: both;"></div>
+            </div>
+            <div class="modal-footer" >
+                <button class="btn btn-default" (click)='md_modal.hide()'>取消</button>
+                <button class="btn btn-primary" (click)='modal_request(md_modal)'>保存</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--弹框 上传表格-->
+<div bsModal #excle="bs-modal" class="modal fade modelPon" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content" style="height:150px">
+            <div class="modal-header">
+                <button type="button" class="close" (click)="excle.hide()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">上传Excel</h4>
+            </div>
+            <div class="modal-body">
+                
+                <input type="file" accept=".csv, application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"  class="form-control-file filescss" id="file_input" #file_ipt (change)="fileChange(file_ipt,$event)" />
+                <div style="text-align: center; font-size: 12px;color: #5f5f5f;"><i class="fa fa-exclamation-triangle" style="color:red" aria-hidden="true"></i>非运营人员慎用此功能!</div>
+                    <div class="btnstyle">
+                        <button type="button" class="btn btn-default btnhoverlan" (click)="excle.hide()" aria-label="Close">取消</button>
+                        <button type="submit" class="btn btn-primary btnhoverju" (click)="uploadExecl(excle,file_ipt)" [disabled]="isUpLoading">确定</button>
+                </div>     
+            </div>
+        </div>
+    </div>
+</div>

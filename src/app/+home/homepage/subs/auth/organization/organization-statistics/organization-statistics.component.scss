@@ -1,0 +1,195 @@
+.clearfix {
+  clear:both;
+  overflow: auto;
+  zoom: 1;
+}
+.btn{
+	border-radius: 3px;
+	padding:5px 16px;
+    float:left!important;
+    width:100px;
+}
+.btn-primary:hover{
+	background-color: #fb6300;
+	color: #fff;
+	border-color:#fb6300;
+}
+.btn-default:hover{
+	background-color: #337ab7;
+	color:#fff;
+	border-color:#2e6da4;
+}
+
+.verval{
+	width: 220px;
+}
+.hide{
+	display: none;
+}
+/*.show{
+	display: block;
+}*/
+/*button:focus{
+	background-color: #fff;
+}*/
+/*.btn:hover{
+	background-color: orange;
+	color: #fff;
+}*/
+/*header*/
+.header{
+	overflow: hidden;
+	height: 60px;
+	border-bottom:solid 1px #e1e7eb;
+	padding-left: 6px; 
+}
+.header span{
+	font:600 14px "微软雅黑";
+	color: #333;
+	line-height: 60px;
+	margin-left: 10px;
+}
+.header .icon{
+	font-size: 16px;
+	color:#f44336;
+}
+.header .head{
+	float: left;
+}
+.header .btnHeader{
+	height: 32px;
+	margin-left: 50px;
+	margin-top: 14px;
+}
+.header .btnHeader .btn{
+	margin-right: 10px;
+}
+.left{
+    float:left;
+    width:100px;
+    font-size:16px;
+    font-family:"微软雅黑";
+    height:35px;
+    text-align:center;
+    line-height:35px;
+    background-color:#337ab7;
+    color:#fff;
+    border-right:none;
+    border:1px solid #999;
+    cursor:pointer;
+    border-radius: 3px 0 0 3px;
+}
+.right{
+    float:left;
+    width:100px;
+    font-size:16px;
+    font-family:"微软雅黑";
+    height:35px;
+    text-align:center;
+    line-height:35px;
+    background-color:#fff;
+    color:#337ab7;
+    border:1px solid #999;
+    cursor:pointer;
+    border-radius:0 3px 3px 0;
+}
+.bt{
+    float: left;
+}
+.scr{
+    margin: 14px 0 0 12px;
+    padding:16px 0 0 0; 
+}
+.tableList1{
+    width: 100%;
+    overflow-x: scroll;
+    padding:16px;
+}
+.table{
+    width:auto;
+}
+table{
+    table-layout:fixed
+}
+
+td{
+    height: 38px;
+    white-space:nowrap;
+    text-overflow:ellipsis;
+    overflow: hidden;
+    background: #fff;
+    text-align:center;
+}
+.table tr{
+    height: 32px;
+    line-height: 32px;
+
+}
+.table tr:active{
+    color: blue;
+    background: #bfa;
+}
+.middleTxt{
+    width: 200px;
+}
+.longTxt{
+    width: 150px;
+}
+.shortTxt{
+    width: 100px;
+}
+.coat{
+    margin-top:0px;
+}
+.screen1{
+    width:auto;
+}
+.div.condition-btn1{
+    margin-top:14px;
+    height:36px;
+    line-height:36px;
+    float: left;
+}
+div.conditions1{
+    margin-right:100px;
+    float: left;
+}
+div.condition1{
+    float:left;
+    margin:0px auto auto 10px;
+    height:36px;
+    line-height:36px;
+}
+div.condition1 label{
+    width:86px;
+    vertical-align:top;
+}
+div.condition1 div.condition-input{
+    display:inline-block;
+}
+div.condition-input>*{
+    display:inline-block;
+    width:initial;
+}
+.coat1{
+    display:none;
+}
+.radio{
+    display:inline-block;
+    border:none;
+    height:13px;
+    width:13px;
+    line-height:36px;
+    outline:medium;
+    float:left;
+    margin-left:30px;
+    margin-bottom:3px;
+}
+.txt{
+    float:left;
+    width:auto;
+    margin-top:2px;
+}
+.leftfirst{
+    margin-right:10px;
+}

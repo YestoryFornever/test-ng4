@@ -1,0 +1,108 @@
+<main class="user-subscribe-detail">
+	<switch-btns class="switch-btns" [cptType]="'subscribe'" [xxx]="'7'"></switch-btns>
+	<div class="clearfix user-info">
+		<span class="tit">{{userInfo.organizationFullName}}</span>
+		<span>{{userInfo.userName}}</span>
+		<span>{{userInfo.contactPhone}}</span>
+		<span class="label label-info label-as-badge" style="padding:6px 8px;font-size:14px;font-weight:normal;">
+			{{routeParams.roleId|roleId}}
+		</span>
+	</div>
+	<bond-info class="bond-info" [issuId]="routeParams.issuId" [offering]="'false'"></bond-info>
+	<first-bid-info class="first-bid-info" [issuId]="routeParams.issuId" [dstrBondId]="routeParams.dstrBondId"></first-bid-info>
+
+	<div class="clearfix subscribe">
+		<span class="tit">客户申购</span>
+		<span >客户申购总量：{{customsbrbSmy.custSbrbTnum}} 亿</span>
+		<span >客户申购利率区间：{{customsbrbSmy.sbrbIntrtLwrLmt}}-{{customsbrbSmy.sbrbIntrtUpLm}}</span>
+		<a href="{{downloadDstrCustom}}"><button class="btn btn-primary pull-right">导出为excel</button></a>
+	</div>
+	<div class="tableList">
+		<table class="table table-bordered table-hover ">
+			<thead >
+				<tr>
+					<th class="info" style="width:200px;">机构</th>
+					<th class="info">申购人</th>
+					<th class="info">身份</th>
+					<th class="info">利率(%)</th><!-- 发送 -->
+					<th class="info" style="width:140px;">认购量（亿）</th>
+					<th class="info">联系人</th>
+					<th class="info">申购状态</th>
+					<th class="info">申购渠道</th>
+					<th class="info">申购时间</th>
+					<th class="info">备注</th>
+					<th class="info">中标状态</th>
+					<th class="info" style="width:140px;">中标量（亿）</th>
+					<th class="info" style="width:140px;">票面利率（%）</th>
+				</tr>
+			</thead>
+			<tbody *ngFor="let item of customlist">
+				<tr>
+					<td>
+						<div [tooltip]="item.rcptyInstNm">{{item.sndrInstNm}}</div>
+					</td>
+					<td>{{item.sndrUserNm}}</td>
+					<td>{{item.sndrUserRl}}</td>
+					<td>{{item.sbrbIntrt}}</td>
+					<td>{{item.sbrbNum}}</td>
+					<td>{{item.rcptyUserNm}}</td>
+					<td>{{item.sbrbEStatus}}</td>
+					<td>{{item.sbrbChnl}}</td>
+					<td>{{item.createTime}}</td>
+					<td>{{item.rmrk}}</td>
+					<td>--</td>
+					<td>--</td>
+					<td>--</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<page [(pageObj)]="pageCustParams" (fnParent)="getCustSbrbList()"></page>
+	<div class="clearfix subscribe">
+		<span class="tit">他的申购</span>
+		<span >客户申购总量：{{hissbrbSmy.custSbrbTnum}} 亿</span>
+		<span >他的申购总量：{{hissbrbSmy.mySbrbTnum}} 亿</span>
+		<span >当前申购量差：{{hissbrbSmy.custSbrbTnum-hissbrbSmy.mySbrbTnum}} 亿</span>
+		<span >他的中标总量：{{hissbrbSmy.winbidTnum}}</span>
+		<a href="{{downloadDstrHis}}"><button class="btn btn-primary pull-right">导出为excel</button></a>
+	</div>
+	<div class="tableList">
+		<table class="table table-bordered table-hover ">
+			<thead >
+				<tr>
+					<th class="info" style="width:200px;">机构</th>
+					<th class="info">联系人</th>
+					<th class="info">身份</th>
+					<th class="info">利率(%)</th><!-- 发送 -->
+					<th class="info" style="width:140px;">认购量（亿）</th>
+					<th class="info">申购状态</th>
+					<th class="info">渠道</th>
+					<th class="info">申购时间</th>
+					<th class="info">备注</th>
+					<th class="info">中标结果</th>
+					<th class="info" style="width:140px;">中标量（亿）</th>
+					<th class="info" style="width:140px;">票面利率（%）</th>
+				</tr>
+			</thead>
+			<tbody *ngFor="let item of hislist">
+				<tr>
+					<td>
+						<div [tooltip]="item.rcptyInstNm">{{item.rcptyInstNm}}</div>
+					</td>
+					<td>{{item.rcptyUserNm}}</td>
+					<td>{{item.rcptyUserRl}}</td>
+					<td>{{item.sbrbIntrt}}</td>
+					<td>{{item.sbrbNum}}</td>
+					<td>{{item.sbrbEStatus}}</td>
+					<td>{{item.sbrbChnl}}</td>
+					<td>{{item.createTime}}</td>
+					<td>{{item.rmrk}}</td>
+					<td>--</td>
+					<td>--</td>
+					<td>--</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<page [(pageObj)]="pageParams" (fnParent)="getSbrbList()"></page>
+</main>

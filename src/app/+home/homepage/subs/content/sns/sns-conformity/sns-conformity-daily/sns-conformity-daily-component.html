@@ -1,0 +1,142 @@
+<div class="header clearfix">
+	<span class="head icon">|</span><span class="head" >日报管理</span>
+	<div class="condition container-fluid">
+		<button type="button" class="btn btn-primary" (click)="detialTo()" [disabled]="todayIsSend==1">添加资讯</button>
+	</div>
+	<div class="condition container-fluid">
+		<button type="button" class="btn btn-primary" [disabled]="issend==1" (click)="showSend(delay)">发送</button>
+	</div>
+	<div class="condition container-fluid">
+		<button type="button" class="btn btn-primary" [disabled]="issend==0" (click)='infoReleaseDEF()'>撤回</button>
+	</div>
+</div>
+<div class="condition container-fluid">
+	<span>选择日报:</span>
+	<select [(ngModel)]="infoCon.dm_id" style="width: 300px;height: 34px;border-radius: 5px"  (change)="dayInfoList()" name="day">
+		<option *ngFor="let item of dayLists" [value]="item.dm_id">{{item.d_title}}   <span *ngIf="item.release_state==1">已发送</span><span *ngIf="item.release_state==0">未发送</span></option>
+	</select>
+</div>
+<div class="condition container-fluid">
+		<button type="button" class="btn btn-primary" *ngIf="1" (click)="ord.show()">分类显示设置</button>
+	</div>
+<!-- <div>{{infoList}}</div> -->
+<div class="tableList " style="overflow-x: scroll" >		
+	<table class="table table-bordered table-hover " >
+	 <thead>
+	 	<tr>
+	 		<td class="info" style="width: 100px" >操作 </td>
+	 		<td   class="info" >资讯标题</td>
+	 		<td  class="info" style="width: 130px">资讯分类</td>
+	 		<td class="info" style="width: 150px">资讯时间 </td>
+	 		<td class="info" style="width:200px">资讯来源</td>
+	 	</tr>
+	 </thead>
+	 <tbody>
+	 	<tr *ngFor="let item of infoList">
+	 		<td><a (click)="infoDelShow(del,item.dd_id)" >删除</a></td>
+	 		<td>{{item.title}}</td>
+	 		<td><select  [disabled]="issend==1" #sele style="height: 32px;width: 120px;border:none" [ngModel]="item.info_type" (change)="dayInfoEdit(item.dd_id,sele)">
+	 			<option [value]="item2.businID" *ngFor="let item2 of Infodic">{{item2.businName}}</option>
+	 		</select></td>
+	 		<td>{{item.time_str}}</td>
+	 		<td>{{item.source}}</td>
+	 	</tr>
+	 </tbody>
+	</table>
+</div>
+
+
+	<!-- 日报预览 -->
+<div bsModal #delay="bs-modal" class="modal fade modelPon" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content clearfix" >
+            <div class="modal-header">
+                <button type="button" class="close" aria-label="Close" (click)="delay.hide()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">日报预览</h4>
+            </div>
+            <div class="modal-body contentxinxi">
+            	<h4>{{showList.d_title}}</h4>
+	            <div *ngFor="let item of showList.data">
+	            <h5 style="font-weight:600" *ngIf="showList.day_type==2">{{item.type_name}}</h5>
+	           		<h5 style="margin-left: 30px;margin-top: 10px" *ngFor="let data of item.data">{{data.title}}</h5>
+	           </div>
+            </div>
+             <div class="condition container-fluid" style="padding-left: 400px">
+				<button style="margin-top:-40px" type="button" class="btn btn-primary" (click)="infoReleaseSED(delay)">确认发送</button>
+				<button style="margin-top:-40px" type="button" class="btn btn-primary" (click)="delay.hide()">取消</button>
+			</div>
+        </div>
+    </div>
+</div>
+
+
+	<!-- 删除-->
+<div bsModal #del="bs-modal" class="modal fade modelPon" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content clearfix" >
+            <div class="modal-header">
+                <button type="button" class="close" aria-label="Close" (click)="del.hide()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">删除</h4>
+            </div>
+            <div class="modal-body contentxinxi">
+            	你确定删除吗？
+            </div>
+             <div class="condition container-fluid" style="padding-left: 400px">
+				<button style="margin-top:-40px" type="button" class="btn btn-primary" (click)="delInfo(del)">确认删除</button>
+				<button style="margin-top:-40px" type="button" class="btn btn-primary" (click)="del.hide()">取消</button>
+			</div>
+        </div>
+    </div>
+</div>
+
+	<!-- 排序-->
+<div bsModal #ord="bs-modal" class="modal fade modelPon" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content clearfix" >
+            <div class="modal-header">
+                <button type="button" class="close" aria-label="Close" (click)="ord.hide()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">分类排序</h4>
+            </div>
+            <div class="modal-body contentxinxi clearfix">
+            	<div style="width: 80%;float: left" class="tableList">
+            		<table class="table table-bordered table-hover ">
+            			<thead style="text-align:center; ">
+            			<tr>
+            				<!-- <td class="info" style="width: 80px">操作</td> -->
+            				<td class="info" >日报分类</td>
+            				<td class="info" >显示顺序</td>
+            			</tr>
+            				
+            			</thead>	
+            			<tbody>
+            				<tr #dt *ngFor="let item of DTList;let i = index " (click)="chooseOne(i,dt)" name='dailyType'>
+            					<!-- <td><button pButton type="button" class='sp0'  icon="fa-pencil-square-o" ></button></td> -->
+            					<td>{{item.it_name}}</td>
+            					<td>{{i+1}}</td>
+            				</tr>
+            				<tr *ngIf="addNew">
+            					<td><input [(ngModel)]="newtype" type="" style="width: 150px" name=""></td>
+            					<td></td>
+            				</tr>
+            			</tbody>
+            		</table>
+            	</div>
+            	<div style="width: 20%;float: left;margin-top: 100px;">
+            		<button style="width: 100%;height:50%"  pButton type="button" class='spUp'  icon="fa-angle-up" (click)="turnUp()"></button>
+            		<button style="width: 100%;height:50%"  pButton type="button" class='spUp'  icon="fa-angle-down" (click)="turnDown()"></button>
+            	</div>
+            </div>
+             <div class="condition container-fluid" style="width:100%">
+                <button style="margin-top:-40px;margin-right:300px" type="button" class="btn btn-primary" (click)="addNews()"><span *ngIf="!addNew">新增</span><span  *ngIf="addNew">确定</span></button>
+				<button style="margin-top:-40px" type="button" class="btn btn-primary" (click)="ord.hide()">取消</button>
+				<button style="margin-top:-40px" type="button" class="btn btn-primary" (click)="setDayInfoOrder(ord)">保存</button>
+			</div>
+        </div>
+    </div>
+</div>

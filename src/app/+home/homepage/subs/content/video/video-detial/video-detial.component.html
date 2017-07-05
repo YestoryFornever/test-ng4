@@ -1,0 +1,154 @@
+<div class="header clearfix">
+	<span class="head icon">|</span><span class="head" >视频详情</span>
+	<div class="btnHeader head">
+		<button class="btn btn-primary" (click)="returnList()">返回</button>
+	</div>
+</div>
+<div class="v_header">
+	<div class="tit">视频详情</div>
+	<div class="isTip" *ngIf="tipList.length>0">【被举报：{{tipList.length}}】</div>
+</div>
+<div class="package clearfix">
+	<div class="contents clearfix">
+		<div class="title"><b>{{Detial.title}}</b></div>
+		<div class="note">{{Detial.note}}</div>
+		<div class="tool">
+			<div class="info clearfix">
+				<div class="shx">点赞：{{Detial.like_cnt}}</div>
+				<div class="shx">评论：{{Detial.comment_cnt}}</div>
+				<div class="shx">来源：{{Detial.source}}</div>
+				<div class="shx">操作人：{{Detial.op_name}}</div>
+				<div class="shx">{{Detial.release_time}}</div>
+			</div>
+			<div class="edit clearfix">
+				<i class="fa fa-thumbs-o-up" (click)="setLikes(1)"><div  class="thumb" (click)="stopBubble(event)"><span (click)="setLikes(100)">100</span><span (click)="setLikes(50)">50</span><span (click)="setLikes(20)">20</span><span (click)="setLikes(5)">5</span></div></i>
+				<i class="fa fa-pencil-square-o" (click)="view.show()"></i>
+				<i class="fa fa-trash" (click)="del.show()"></i>
+			</div>
+		</div>
+		<div class="preview">
+			<video class="video" [src]="Detial.url" controls="controls"></video>
+		</div>
+		<div class="comment clearfix">
+			<ul class="comment1" >
+				<li  *ngFor="let item of allCommentList,let i = index " class="clearfix" (click)="textOverFlow()" style="position: relative">
+					<span class="user">{{item.user_name}}<span *ngIf="item.reply_uname"> 回复 {{item.reply_uname}}</span>:</span><span class="note cont" #note (resize)="textOverFlow()" [innerHtml]="item.content"></span><span *ngIf="item.overflow" class="open" (click)="openText(note,i)">{{openOrclose}}</span><div class="time"><i class="fa fa-trash" style="cursor:pointer" (click)="snsDel(item.cid)"></i> {{item.time}}</div>
+					<!-- <ul class="comment2">
+						<li>
+							<span class="user">张三 回复 李四:</span><span class="note">希望大家认真学习，以求提高场内服务质量，希望大家认真学习，以求提高场内服务质量，希望大家认真学习，以求提高场内服务质量，希望大家认真学习，以求提高场内服务。</span><div class="time"> 2017-5-20</div>
+						</li>
+					</ul> -->
+				</li>
+				<li>
+					<div *ngIf="haveComment==3" (click)="moreCommentLists()" style="cursor: pointer" class="more">-----查看更多-----</div>
+					<div *ngIf="haveComment==2" class="more">-----没有更多内容了-----</div>
+					<div *ngIf="haveComment==1" class="more">-----此视频还没有评论-----</div>
+				</li>
+			</ul>
+		</div>
+	</div>
+	
+
+	<!-- 举报列表 -->
+	<div class="tipList">
+		<table class="table table-bordered table-hover ">
+			<thead>
+				<tr>
+					<td>举报人</td>
+					<td>举报类型</td>
+				</tr>
+			</thead>
+			<tbody>
+				<tr *ngFor="let item of tipList">
+					<td>{{item.user_name}}</td>
+					<td>{{item.tip_cause}}</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+
+<!-- 添加视频-->
+<div bsModal #view="bs-modal" class="modal fade modelPon" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content clearfix" >
+            <div class="modal-header">
+                <button type="button" class="close" aria-label="Close" (click)="view.hide()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">添加/修改视频</h4>
+            </div>
+            <div class="modal-body contentxinxi">
+            	<div class="condition container-fluid" style="width: 100%">
+					<span><b style="color: red">*</b>视频标题</span>
+					<input [(ngModel)]="addVideo.title" maxlength="50" type="text" style="width: 400px;height: 34px;" name="" placeholder="视频标题名称">
+					<!-- <input type="text" name="" placeholder=""  class="form-control"> -->
+				</div>
+				<div class="condition container-fluid" style="width:570px;height:80px">
+					<span style="vertical-align: top;"><b style="color: #fff">*</b>视频描述</span>
+					<textarea [(ngModel)]="addVideo.note" maxlength="500" style="width: 400px;height: 68px;" maxlength="800" placeholder="视频描述"></textarea>
+					<span style="color:#9a9a9a ">{{addVideo.note.length}}/800</span>
+					<!-- <input type="text" name="" placeholder=""  class="form-control"> -->
+				</div>
+				<div class="condition container-fluid" style="width: 100%">
+					<span style="float:left"><b style="color: red">*</b>视频类型</span>
+					<select class="form-control" style="width: 200px;height: 34px;float:left" [(ngModel)]="addVideo.url_type">
+						<option value="1">爱奇艺</option>
+						<option value="2">万事</option>
+						<option value="3">七牛</option>
+					</select>
+					<!-- <input  type="text" style="width: 400px;height: 34px;" name="" placeholder="视频地址"> -->
+					<!-- <input type="text" name="" placeholder=""  class="form-control"> -->
+				</div>
+				<div class="K-V" style="padding-left:10px;height: 270px;float:left">
+				<label [hidden]="imghead" for="exampleInputFile"><b style="color: red">*</b>选择图片</label> 
+				<input type="file" accept = 'image/*' class="form-control-file filecss" id="file_input" #file_ipt (change)="fileChange(file_ipt,$event)" />
+				<div style="width:304px;height: 208px;margin-left: 80px"  class="file-upload-thumbnail" #umbnail>
+					<img style="width:304px;height: 208px" *ngIf="img.src" [src]="img.src" name="newsImg"/>
+				</div> 
+				</div>
+				<div class="condition container-fluid" style="width: 100%">
+					<span><b style="color: red">*</b>视频时长</span>
+					<input [(ngModel)]="addVideo.times" type="text" style="width: 400px;height: 34px;" name="" placeholder="视频时长">
+					<!-- <input type="text" name="" placeholder=""  class="form-control"> -->
+				</div>
+				<div class="condition container-fluid" style="width: 100%">
+					<span><b style="color: red" *ngIf="addVideo.url_type!=1">*</b><b style="color: #fff" *ngIf="addVideo.url_type==1">*</b>视频链接</span>
+					<input [(ngModel)]="addVideo.url" type="text" style="width: 400px;height: 34px;" name="" placeholder="视频地址">
+					<!-- <input type="text" name="" placeholder=""  class="form-control"> -->
+				</div>
+				<div class="condition container-fluid" style="width: 100%">
+					<span><b style="color: red" *ngIf="addVideo.url_type==1">*</b><b style="color: #fff" *ngIf="addVideo.url_type!=1">*</b>视频ID串</span>
+					<input [(ngModel)]="addVideo.url_id" type="text" style="width: 400px;height: 34px;" name="" placeholder="视频ID串">
+					<!-- <input type="text" name="" placeholder=""  class="form-control"> -->
+				</div>
+            </div>
+
+             <div class="condition container-fluid" style="padding-left: 400px">
+				
+				<button type="button" class="btn btn-primary" (click)="view.hide()">取消</button>
+				<button  type="button" class="btn btn-primary" (click)="saveVideo(view)" [disabled]="saving">保存</button>
+			</div>
+        </div>
+    </div>
+</div>
+	<!-- 删除视频-->
+<div bsModal #del="bs-modal" class="modal fade modelPon" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content clearfix" >
+            <div class="modal-header">
+                <button type="button" class="close" aria-label="Close" (click)="del.hide()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">删除</h4>
+            </div>
+            <div class="modal-body contentxinxi">
+            	你确定删除吗？
+            </div>
+             <div class="condition container-fluid" style="padding-left: 400px">
+				<button  type="button" class="btn btn-primary" (click)="infoDel()">确认删除</button>
+				<button  type="button" class="btn btn-primary" (click)="del.hide()">取消</button>
+			</div>
+        </div>
+    </div>
+</div>

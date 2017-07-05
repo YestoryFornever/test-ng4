@@ -1,0 +1,181 @@
+<div class="header clearfix">
+    <span class="head icon">|</span><span class="head">上架商品列表</span>
+    <div class="btnHeader head">
+        <button class="btn btn-primary" (click)="showBox(change)">上架商品</button>
+    </div>
+</div>
+<!-- 标题行 -->
+<div class="row rowtop2">
+    <div class="condition">
+        <span>状态</span>
+        <div class="btn-group btnborder">
+            <label class="btn btn-mint " [(ngModel)]="default.isEnabled" btnRadio='' [ngModelOptions]="{standalone: true}">全部</label>
+            <label class="btn btn-mint" [(ngModel)]="default.isEnabled" btnRadio="1">正常</label>
+            <label class="btn btn-mint" [(ngModel)]="default.isEnabled" btnRadio="0">已下架</label>
+        </div>
+    </div>
+    <!-- <button class="condition btn btn-primary sub" (click)="getNewsList()">查询</button> -->
+    <button class="condition btn btn-primary btnhoverju  sub" (click)="onSubmit()">查询</button>
+</div>
+<div class="border">
+    <table class="table table-hover table-bordered ">
+        <thead>
+            <tr>
+                <td class="info">操作</td>
+                <td class="info "> 顺序</td>
+                <td class="info">关联礼品名称</td>
+                <td class="info">商品价格</td>
+                <td class="info">剩余数量</td>
+                <td class="info">已发数量</td>
+                <td class="info ">添加用户</td>
+                <td class="info">添加时间</td>
+                <td class="info longTxt">有效时间</td>
+                <td class="info">状态</td>
+            </tr>
+        </thead>
+        <tbody #XXX id="list" *ngFor="let list of storesLists;let i = index;">
+            <tr class="">
+                <td class="table-hover">
+                    <a class="inLinBlock" (click)="goodsOrder(orderByStores,list)" *ngIf="list.isEnabled=='正常'">排序</a>
+                    <a class="inLinBlock" style="color:#ccc" *ngIf="list.isEnabled=='已下架'">排序</a>
+                    <a class="inLinBlock" *ngIf="list.isEnabled=='正常'" (click)="getGoodsDownId(goodsDown,list.goodsOnlineId )">下架</a>
+                    <a class="inLinBlock" style="color:#ccc" *ngIf="list.isEnabled=='已下架'">下架</a>
+                </td>
+                <td class="table-hover">{{(default.pageNum-1)*default.pageSize+i+1}} </td>
+                <td class="table-hover">{{list.name}}</td>
+                <td class="table-hover ">{{list.priceCoin }}</td>
+                <td class="table-hover">{{list.remain}}</td>
+                <td class="table-hover">{{list.total}}</td>
+                <td class="table-hover">{{list.createUserName }}</td>
+                <td class="table-hover">{{list.createTime }}</td>
+                <td class="table-hover">{{list.validdate}}</td>
+                <td class="table-hover">{{list.isEnabled }}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<!-- </div> -->
+<!-- 分页 -->
+<div class="row pagerow">
+    <div class="pageshowleft">每页显示
+        <select #selectPage name="" id="msgNum" (change)="sizeData(selectPage.value,userList)">
+            <option #optionPage *ngFor="let msgNumber of msgNumbers" value={{msgNumber.Number}}>{{msgNumber.Number}}</option>
+        </select>
+        条数据
+    </div>
+    <div class="pageshowmodle">
+        <span>{{currentPage}} / {{totalPages}}</span>页
+        <span>{{totalItems}}条数据</span>
+    </div>
+    <div class="pagefen">
+        <pagination [firstText]="firstText" [lastText]="lastText" [previousText]="previousText" [nextText]="nextText" [maxSize]="maxSize" [totalItems]="totalItems" [itemsPerPage]="itemsPerPage" [(ngModel)]="currentPage" [boundaryLinks]="true" (pageChanged)='pageChanged($event)' (numPages)='pageNumChange($event)' class="pagination-sm"></pagination>
+    </div>
+</div>
+<!-- 弹窗  上架商品 -->
+<div bsModal #change="bs-modal" class="modal fade " tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md ">
+        <div class="modal-content ">
+            <div class="modal-header">
+                <button type="button" class="close" (click)="change.hide()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">上架商品</h4>
+            </div>
+            <div class="modal-body ">
+                <form class="form-horizontal">
+                    <div id="gift_info_left" class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <div class="form-group">
+                            <label for="name" class="col-lg-3 col-md-3 col-sm-3 col-xs-3s control-label"><span class="red">*</span>上架商品名称</label>
+                            <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9">
+                                <select name="name" req  [(ngModel)]="addGoods.goodsId"  id="sex" class="form-control">
+                                    <option value="">请选择上架商品名称</option>
+                                    <option *ngFor="let list of goodsNameLists" [value]="list.goodsId">{{list.name}}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="num" class="col-lg-3 col-md-3 col-sm-3 col-xs-3 control-label"><span class="red">*</span>发放总量</label>
+                            <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5">
+                                <input type="number" req class="form-control" name="num" min="1" [ngModel]="addGoods.total" (ngModelChange)="addGoods.total = $event" placeholder="请填写发放数量">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="time" class="col-lg-3 col-md-3 col-sm-3 col-xs-3 control-label"><span class="red">*</span>有效时间</label>
+                            <div class="col-xs-9">
+                                <p-calendar [locale]='mon' [monthNavigator]="true" [yearNavigator]="true" yearRange="2000:2050" placeholder="请输入时间" [(ngModel)]=" myStartTime" [ngModelOptions]="{standalone: true}" showTime="showTime" hourFormat="24"></p-calendar>&nbsp;到&nbsp;
+                                <p-calendar [locale]='mon' [(ngModel)]=" myEndTime" [ngModelOptions]="{standalone: true}" [monthNavigator]="true" [yearNavigator]="true" yearRange="2000:2050" placeholder="请输入时间" showTime="showTime" hourFormat="24"></p-calendar>
+                            </div>
+                            <!-- <p-calendar showTime="showTime" hourFormat="24"></p-calendar> -->
+                            <!-- 
+                              <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9">
+                                   <input class="selection " [ngModel]="addGoods.validdateStart" (ngModelChange)="addGoods.validdateStart = $event"  name="time1" style="display:inline" type="date">&nbsp;到&nbsp;<input name="time2" class="selection" [ngModel]="addGoods.validdateEnd" (ngModelChange)="addGoods.validdateEnd = $event" type="date">
+                              </div> -->
+                        </div>
+                    </div>
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+                        <button type="button" class="btn btn-primary pull-right btn-space btnhoverju marL20" (click)="addGoodsNameList(change,addGoods)">保存</button>
+                        <button type="button" class="btn btn-search pull-right btn-space" (click)="change.hide()">取消</button>
+                    </div>
+                    <div style="clear:both;"></div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 弹窗 排序上架商品 -->
+<div bsModal #orderByStores="bs-modal" class="modal fade " tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm myModal ">
+        <div class="modal-content ">
+            <div class="modal-header">
+                <button type="button" class="close" (click)="orderByStores.hide()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">排序上架商品</h4>
+            </div>
+            <div class="modal-body ">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="form-group">
+                        <label class="col-lg-4 col-md-4 col-sm-4 col-xs-4 control-label">排序上架商品</label>
+                        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+                            <div class="marB5">{{orderList.name}}</div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="num" class="col-lg-4 col-md-4 col-sm-4 col-xs-4 control-label"><span class="red">*</span>排序位置序号</label>
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 padT10">
+                            <input type="number" min='1' max="{{maxNum}}" class="form-control" [ngModel]="orderList.displayOrder" (ngModelChange)="orderList.displayOrder = $event" name="num" placeholder="请填写排序号">
+                        </div>
+                        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">(1-{{maxNum}})</div>
+                    </div>
+                </div>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 marT20">
+                    <button type="button" class="btn btn-primary pull-right btn-space marL20" (click)="order(orderByStores)">排序</button>
+                    <button type="button" class="btn btn-default pull-right btn-space" (click)="orderByStores.hide()">取消</button>
+                </div>
+                <div style="clear:both;"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 下架 弹窗 -->
+<div bsModal #goodsDown="bs-modal" class="modal fade modelPon" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm ">
+        <div class="modal-content ">
+            <div class="modal-header ">
+                <button type="button" class="close" aria-label="Close" (click)="goodsDown.hide()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">下架</h4>
+            </div>
+            <div class="modal-body  ">
+                <div class="cont ">
+                    确认要下架该商品？？？
+                </div>
+                <div class="btnstyle">
+                    <button type="button" class="btn btn-default btnhoverlan" (click)="goodsDown.hide()">取消</button>
+                    <button type="button" class="btn btn-primary btnhoverju" (click)="goodsIdDown(goodsDown)">确认</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

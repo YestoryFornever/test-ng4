@@ -1,0 +1,11 @@
+<div class="clearfix bond-info">
+	<span class="tit">{{baseInfo.bondNm}}</span>
+	<span class="label label-info label-as-badge mar_r10" 
+		style="padding:6px 8px;font-size:14px;font-weight:normal;"
+		*ngIf="offering=='true'">{{enqrTp|enqrTp}}</span>
+	<span class="info">期限：{{baseInfo.trm}}D</span>
+	<span class="info">利率：{{baseInfo.sbrbIntrtLwrLmt}}-{{baseInfo.sbrbIntrtUpLm}}</span>
+	<span class="info">发行量：{{baseInfo.issuNum}}亿元</span>
+	<span class="info">发债主体：{{baseInfo.entpTp|entpTp}}</span>
+	<span class="info">主/债：{{baseInfo.sbjRtg}}/{{baseInfo.dbtItmRtg}}</span>
+</div>

@@ -1,0 +1,410 @@
+<div class="box">
+    <div class="rowtop" >
+        <div class="before">用户列表</div>
+        <a type="button" class="btn btn-primary btn1 btnhoverju" routerLink='../user-edit' routerLinkActive="active">添加用户</a>
+       <button type="button" class="btn btn-default btn2 btnhoverlan" (click)="exportExcel(default)">导出</button>
+        <button type="button" id="searchshow2" class="searchshow" (click)="isCollapsed = !isCollapsed">︿</button>
+       
+       
+    </div>
+ 
+    <div class="row rowtop2" (collapsed)="collapsed($event)" (expanded)="expanded($event)" [collapse]="isCollapsed">
+            <div>
+                <div class="condition">
+                    <span>注册手机号： </span><input req  maxlength="11" type="text" name="loginName" placeholder="手机号"  class="form-control" [(ngModel)]="default.loginName" [ngModelOptions]="{standalone: true}" required #loginName="ngModel">
+                </div>
+                <div class="condition">
+                    <span>用户姓名： </span><input #username req 
+                    [(ngModel)]="default.userName" 
+                    [ngModelOptions]="{standalone: true}" 
+                    placeholder="全部"  class="form-control" >
+                </div>
+                <div class="condition">  
+                    <span>机构简称：</span>
+                <!--  organizationShortName-->
+                    <input #cm req placeholder="全部" class="form-control"
+                    [(ngModel)]="organizationName" 
+                    [typeahead]="fullnameTypeAhead.source"
+                    [typeaheadOptionsLimit]="fullnameTypeAhead.limit"
+                     [typeaheadOptionField]="'organizationShortName'"
+                    (typeaheadOnSelect)="typeaheadOnCompanys($event)" 
+                    (typeaheadLoading)="fullnameTypeAhead.loading($event)"
+                    (typeaheadNoResults)="fullnameTypeAhead.noresult($event)"/>
+                <div *ngIf="fullnameTypeAhead.isloading===true">
+                    <i class="glyphicon glyphicon-refresh ng-hide" style=""></i>
+                </div>
+                <div *ngIf="fullnameTypeAhead.hasNoResult===true" class="" style="">
+                    <i class="glyphicon glyphicon-remove"></i> 无结果
+                </div>
+                    <input type="text"  name="organizationId" class="hide" [(ngModel)]="default.organizationId" [ngModelOptions]="{standalone: true}">
+                </div>
+                <div class="condition">
+                    <span>部门：</span>  
+                    <input #dpt req  placeholder="全部" class="form-control"  
+                    [(ngModel)]="dptmt" 
+                    [typeahead]="partlist"  
+                    (typeaheadOnSelect)="typeaheadOnDepartments($event)" 
+                    [typeaheadOptionField]="'departmentName'"
+                    [ngModelOptions]="{standalone: true}"
+                    (blur)="blurDepartmentName(dpt,$event)"
+                    (change)="changeDepartmentName(dpt,$event)">
+                    <input type="text"  name="departmentId" class="hide" [(ngModel)]="default.departmentId" [ngModelOptions]="{standalone: true}">
+                </div>
+                <div class="condition">
+                    <span>实名认证状态:</span>
+                        <div class="btn-group btnborder">
+                            <label class="btn btn-mint" [(ngModel)]="default.realCertifyState"
+                             btnRadio=''
+                              [ngModelOptions]="{standalone: true}">全部</label>
+                            <label class="btn btn-mint" [(ngModel)]="default.realCertifyState" btnRadio="1" [ngModelOptions]="{standalone: true}">未认证</label>
+                            <label class="btn btn-mint" [(ngModel)]="default.realCertifyState"
+                             btnRadio="2" [ngModelOptions]="{standalone: true}">待认证</label>
+                             <label class="btn btn-mint" [(ngModel)]="default.realCertifyState" btnRadio="3" [ngModelOptions]="{standalone: true}">认证通过</label>
+                            <label class="btn btn-mint" [(ngModel)]="default.realCertifyState"
+                             btnRadio="4" [ngModelOptions]="{standalone: true}">认证失败</label>
+                        </div>
+                </div>
+            </div>
+            <div> 
+                <!--<div class="condition">
+                    <span #a2>用户分类:</span>
+                        <div class="btn-group  btnborder"> (click)="btnstarts(a2)"
+                            <label class="btn  btn-mint" [(ngModel)]="checkModel.left" btnCheckbox  (click)="btnsall(a2)">全部</label>
+                            <label class="btn  btn-mint" [(ngModel)]="checkModel.middle" btnCheckbox (click)="btnstarts(a2)">普通</label>
+                            <label class="btn  btn-mint" [(ngModel)]="checkModel.right" btnCheckbox (click)="btnstarts(a2)">管理</label>
+                        </div>
+                </div>!-->
+                <div class="condition">
+                    <span #a3>用户来源:</span>
+                        <div class="btn-group  btnborder"> 
+                            <label class="btn btn-mint" [(ngModel)]="default.userSource"
+                             btnRadio='' [ngModelOptions]="{standalone: true}">全部</label>
+                            <label class="btn btn-mint" [(ngModel)]="default.userSource" btnRadio="1" [ngModelOptions]="{standalone: true}">用户</label>
+                            <label class="btn btn-mint" [(ngModel)]="default.userSource"
+                             btnRadio="2" [ngModelOptions]="{standalone: true}">管理</label>
+                        </div>
+                </div>
+                <div class="condition">
+                    <span>邮箱认证状态:</span>
+                        <div class="btn-group  btnborder" >
+                            <label class="btn btn-mint" [(ngModel)]="default.emailCertifyState"
+                             btnRadio='' [ngModelOptions]="{standalone: true}">全部</label>
+                            <label class="btn btn-mint" [(ngModel)]="default.emailCertifyState" btnRadio="3" [ngModelOptions]="{standalone: true}">认证通过</label>
+                            <label class="btn btn-mint" [(ngModel)]="default.emailCertifyState"
+                             btnRadio="1" [ngModelOptions]="{standalone: true}">未认证</label>
+                        </div>
+                </div>
+                <div class="condition">
+                    <span style="float:left;line-height:30px;">回访状态:</span>
+                        <div class="btn-group  btnborder">
+                            <label class="btn btn-mint" [(ngModel)]="default.visitState"
+                             btnRadio='' [ngModelOptions]="{standalone: true}">全部</label>
+                            <label class="btn btn-mint" [(ngModel)]="default.visitState" btnRadio="1" [ngModelOptions]="{standalone: true}">未回访</label>
+                            <label class="btn btn-mint" [(ngModel)]="default.visitState"
+                             btnRadio="2" [ngModelOptions]="{standalone: true}">已回访</label>
+                        </div>
+                </div>
+               
+            </div> 
+            <div class="condition">
+                    <span style="float:left;line-height:30px;">注册时间:</span>
+                    <div class="btn-group  btnborder">
+                            <label class="btn btn-mint" [(ngModel)]="default2.loginDate2"
+                             btnRadio='' [ngModelOptions]="{standalone: true}" (click)="timebtn()">全部</label>
+                            <label class="btn btn-mint" [(ngModel)]="default2.loginDate2" btnRadio="1" [ngModelOptions]="{standalone: true}" (click)="timebtn2()">今日</label>
+                            <label class="btn btn-mint" [(ngModel)]="default2.loginDate2"
+                             btnRadio="2" [ngModelOptions]="{standalone: true}" (click)="timebtn3()">最近3日</label>
+                             <label class="btn btn-mint" [(ngModel)]="default2.loginDate2"
+                             btnRadio="3" [ngModelOptions]="{standalone: true}">具体</label>
+                    </div>
+                    <input #dada type="date" name="starttime" class="datestyle" [(ngModel)]="defauleStarttime" style="margin-right:3px;" [disabled]="default2.loginDate2!=3" (change)="starttimeChange()">~~
+                    <input type="date" name="endtime" class="datestyle" [(ngModel)]="defauleEndtime" style="margin-left:0px;" [disabled]="default2.loginDate2!=3" (change)="endtimeChange()">  
+                    <span class="hide">{{timepoint}}</span> 
+            </div> 
+            <div class="condition" style="float:right;margin-right:40px;">
+                <div class="btn-group  btnborder"  >
+                </div>
+                <button type="button" class="btn btn-primary btn5 btnhoverju" (click)="onSubmit()">查询</button>
+              <!--<button type="button" class="btn btn-default btn4" (click)="ColumnHead($event,title)">۞</button> -->
+            </div>
+       
+    </div>
+    <div class="border">
+          <table class="table table-hover tablestyle" id="tableExcel" #organization_table>
+                <thead >
+                <tr>
+                    <td style="width:150px">修改时间</td>
+                    <td style="width:150px">注册时间</td>
+                    <td style="width:240px">操作</td>
+                    <td style="width:50px">名片</td>
+                    <td style="width:70px">姓名</td>
+                   
+                    <td style="width:180px">机构全称</td>
+                     <td style="width:130px">机构简称</td>
+                    <td style="width:70px">部门</td>
+                    <td style="width:70px">职位</td>
+                    <td style="width:100px">注册手机号</td>
+                    <td style="width:100px">联系电话</td>
+                    <td style="width:240px">公司邮箱</td>
+                    <td style="width:160px">工作电话</td>
+                    <td style="width:240px">所在地</td>
+                    <td >昵称</td>
+                    <td style="width:50px">性别</td> 
+                    <td >用户来源</td>
+                    <td >用户状态</td>
+                    <td >实名认证</td>
+                    <td >邮箱认证</td>
+                    <td >回访状态</td>
+                    <td >备注</td>         
+                    
+                </tr>
+                </thead>
+                <tbody>
+               <tr #userList  [ngStyle]="{'background-color': color }" class="Userlist" *ngFor="let userLi of userLists" (click)="userListId(userList)" name="tr">
+                    <td class="table-hover">{{userLi.updateTime}}</td>
+                    <td class="table-hover">{{userLi.createTime}}</td>
+                    <td><button type="button" (click)="return_visit(userLi,$event,payReturn)">回访</button>|<button type="button" *ngIf="userLi.userState==1" (click)="open_freeze(userLi,$event,openFreeze)">冻结</button><button type="button" *ngIf="userLi.userState==3" (click)="open_freeze(userLi,$event,openFreeze)">解冻</button>|<button type="button" (click)="amend(userLi,$event)">修改</button>|<button type="button" (click)="auth_status(userLi,$event,authStatus)" [ngClass]="setLoadClasses(userLi.realCertifyState)">变更认证状态</button><!--|<button type="button" (click)="userAuthority.show()">授权</button>|<button type="button" (click)="userClass.show()">分类</button>-->
+                    </td>
+                    <td class="table-hover" (mouseover)="mousefun(Card,userLi.businessCardAnnexUrl,$event)" (mouseout)="outfun(Card)" (click)="cardShow(userCard,userLi.businessCardAnnexUrl,$event,img,userLi.userId,userLi)">
+                       <img alt="无" src="{{userLi.businessCardAnnexUrl}}"/>
+                    </td> 
+                    <td class="table-hover"><div [tooltip]="userLi.userName">{{userLi.userName}}</div></td> 
+                    
+                    <td class="table-hover"><div [tooltip]="userLi.organizationFullName">{{userLi.organizationFullName}}</div></td>
+                     <td class="table-hover"><div [tooltip]="userLi.organizationShortName">{{userLi.organizationShortName}}</div></td>
+                    <td class="table-hover"><div [tooltip]="userLi.department">{{userLi.department}}</div></td>
+                    <td class="table-hover"><div [tooltip]="userLi.position">{{userLi.position}}</div></td>
+                    <td class="table-hover">{{userLi.loginName}}</td>
+                    <td class="table-hover">{{userLi.contactPhone}}</td>
+                    <td class="table-hover">{{userLi.companyMail}}</td>
+                    <td class="table-hover">{{userLi.workPhone}}</td>  
+                    <td class="table-hover">{{userLi.workAddress}}</td>
+                    <td class="table-hover">{{userLi.nickname}}</td>
+                    <td class="table-hover">{{userLi.genderName}}</td>
+                    <td class="table-hover">{{userLi.userSourceName}}</td>
+                    <td class="table-hover">{{userLi.userStateName}}</td>
+                    <td class="table-hover">{{userLi.realCertifyStateName}}</td> 
+                    <td class="table-hover">{{userLi.emailCertifyStateName}}</td>
+                    <td class="table-hover">{{userLi.visitStateName}}</td>
+                    <td class="table-hover">{{userLi.userRemark}}</td> 
+                    
+                    
+                </tr>
+                </tbody>
+            </table>
+            <div id="spanss" #Card><img src="{{Cardhtml}}"/></div>
+    </div>
+    <!--分页!-->
+    <div class="row pagerow">
+        <div class="pageshowleft">每页显示
+            <select #selectPage name="" id="msgNum" (change)="sizeData(selectPage.value,userList)" [(ngModel)]="itemsPerPage">
+                <option #optionPage  *ngFor="let msgNumber of msgNumbers" value={{msgNumber.Number}}>{{msgNumber.Number}}</option>
+            </select>
+            条数据
+        </div>
+        <div class="pageshowmodle">
+            <span>{{currentPage}} / {{totalPages}}</span>页
+            <span>{{totals}}条数据</span>
+        </div>
+
+        <div class="pagefen">
+            <pagination  [firstText]="firstText" [lastText]="lastText" [previousText]="previousText" [nextText]="nextText" [maxSize]="maxSize" [totalItems]="totals" [itemsPerPage]="itemsPerPage" [(ngModel)]="currentPage" [boundaryLinks]="true" (pageChanged)='pageChanged($event)' (numPages)='pageNumChange($event)' class="pagination-sm"></pagination>
+        </div>
+    </div>
+
+</div>
+
+<!--弹框 解冻冻结-->
+<div bsModal #openFreeze="bs-modal" class="modal fade modelPon" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content modal-contentding" style="height:400px;">
+            <div class="modal-header">
+                <button type="button" class="close" aria-label="Close" (click)="openFreeze.hide()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">用户处理</h4>
+            </div>
+            <div class="modal-body contentxinxi" *ngIf="openFreeze_list">
+                <p class="pp">用户名称：<span>{{openFreeze_list.userName}}</span><span>{{openFreeze_list.organizationFullName}}</span><span>{{openFreeze_list.department}}</span><span>{{openFreeze_list.position}}</span></p>
+                <p class="pp" *ngIf="openFreeze_list.userState==1">处理方式：冻结</p>
+                <p class="pp" *ngIf="openFreeze_list.userState==3">处理方式：解冻</p>
+                <p class="pp2">处理备注：
+                    <textarea class="form-control" rows="3" placeholder="提示文本" [(ngModel)]="frozenRemark"></textarea>
+                </p>
+                <div class="btnstyle">
+                    <button type="button" class="btn btn-default btnhoverlan" aria-label="Close" (click)="openFreeze.hide()">取消</button>
+                    <button type="button" #userbtn class="btn btn-primary btnhoverju" (click)="frozenUserfun(openFreeze_list,openFreeze,userbtn)">保存设置</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--弹框 列标题设置-->
+<div bsModal #title="bs-modal" class="modal fade modelPon" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content" style="height:450px;">
+            <div class="modal-header">
+                <button type="button" class="close" (click)="title.hide()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">列标题设置</h4>
+            </div>
+            <div class="modal-body">
+                <div class="checklist">
+                   
+                    <p><button type="button" class="btn btn-default" (click)="allchecked()">全选/取消全选</button></p>
+                    <div> 
+                        <ul class="divinput">
+                            <li *ngFor="let chl of Chls">
+                                <input type="checkbox" name="choose" value="option1" checked="checked" [(ngModel)]="chl.fieldEn"/>
+                            {{chl.fieldCn}}</li>
+                        </ul>
+                    </div>
+                    <div class="btnstyle">
+                        <button type="button" class="btn btn-default btnhoverlan" (click)="title.hide()" aria-label="Close">取消</button>
+                        <button type="submit" class="btn btn-primary btnhoverju" (click)="titleall(titlelist,title)">保存设置</button>
+                    </div>
+                   
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--弹框 回访-->
+<div bsModal #payReturn="bs-modal" class="modal fade modelPon" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content modal-contentding" style="height:350px;">
+            <div class="modal-header">
+                <button type="button" class="close" aria-label="Close" (click)="payReturn.hide()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">回访</h4>
+            </div>
+            <div class="modal-body contentxinxi" *ngIf="return_list">
+                <p class="pp">用户信息：<span>{{return_list.userName}}</span><span>{{return_list.organizationFullName}}</span><span>{{return_list.department}}</span><span>{{return_list.position}}</span></p>
+                <div class="pp">
+                    <span>回访状态：</span>
+                        <div class="btn-group  btnborder">
+                            <label class="btn btn-mint" [(ngModel)]="change.visitState" btnRadio="1" [ngModelOptions]="{standalone: true}">未回访</label>
+                            <label class="btn btn-mint" [(ngModel)]="change.visitState"
+                             btnRadio="2" [ngModelOptions]="{standalone: true}">已回访</label>
+                        </div>
+                </div>
+                <p class="pp2">回访备注：
+                    <textarea class="form-control" rows="3" placeholder="提示文本" [(ngModel)]="visitremark"></textarea>
+                </p>
+                <div class="btnstyle">
+                    <button type="button" class="btn btn-default btnhoverlan"  aria-label="Close" (click)="payReturn.hide()">取消</button>
+                    <button type="button"  #btn class="btn btn-primary btnhoverju" (click)="visituser(return_list.userId,payReturn,btn)">保存设置</button>
+                </div>
+              
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--弹框 名片-->
+<div bsModal #userCard="bs-modal" class="modal fade modelPon" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm" style="height:600px;width: 500px">
+        <div class="modal-content modal-contentding" style="height:600px;width:500px;">
+            <div class="modal-header">
+                <button type="button" class="close" aria-label="Close" (click)="userCard.hide()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">用户名片</h4>
+            </div>
+            <div #img   class="modal-body contentxinxi" style="height:480px;width: 480px;padding: 0;margin: 10px;">
+                <h2 *ngIf="!cardurl">该用户尚未上传名片</h2>
+                     <img  style="width: auto;height: auto;max-width: 100%;max-height: 100%" src="{{cardurl}}" *ngIf="cardurl"/>
+            </div>
+            <!-- <div>{{current}}</div> -->
+            <div class="btnstyle" style="width: 100%"  *ngIf="cardurl">
+                <div style="width: 30px;height: 30px;float:left;margin: 0 5px"  (click)="turnRound(img,-1)"><img style="width: 100%;height: 100%;cursor: pointer" src='../../../../public/images/turn_left.png'></div>
+                <div class="btn_turn" style="width: 30px;height: 30px;float:left;transform: rotateY(180deg);margin: 0 5px" (click)="turnRound(img,1)"><img style="width: 100%;height: 100%;cursor: pointer" src='../../../../public/images/turn_left.png'></div>
+                <div class="btn_turn" style="float:right" >
+                    <button type="button" class="btn btn-default btnhoverlan" aria-label="Close" (click)="dealWitchPicture(userCard)">保存</button>
+                <button type="button" class="btn btn-default btnhoverlan" aria-label="Close" (click)="userCard.hide()">关闭</button>
+                </div>
+                
+             </div>
+
+        </div>
+    </div>
+</div>
+
+<!--弹框 更改认证状态-->
+<div bsModal #authStatus="bs-modal" class="modal fade modelPon" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content modal-contentding" style="padding-bottom:30px;height:auto">
+            <div class="modal-header">
+                <button type="button" class="close" aria-label="Close" (click)="authStatus.hide()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">变更用户实名认证状态</h4>
+            </div>
+            <div class="modal-body contentxinxi" *ngIf="checkrealyStatus.status">
+              <!--待审核-->
+                <div *ngIf="checkrealyStatus.status=='206101'"> 
+                    <div class="text_message">该用户仍存在待审核的信息</div>
+                    <div class="text_message">请前往“用户管理 - 用户审核”页处理</div>
+                </div>
+                <!--信息为空-->
+                <div *ngIf="checkrealyStatus.status=='206102'"> 
+                    <div class="text_message">该用户信息为空</div>
+                    <div class="text_message">请前往“用户管理 - 修改用户”页补全用户信息</div>
+                </div>
+                <!--未认证----认证通过 -->
+                <div *ngIf="checkrealyStatus.status=='0' && authStatus_list.realCertifyState=='1'">
+                    <p class="pp">用户信息：<span>{{authStatus_list.userName}}</span><span>{{authStatus_list.organizationFullName}}</span><span>{{authStatus_list.department}}</span><span>{{authStatus_list.position}}</span></p>
+                    <div class="pp">
+                        <span>变更状态：</span>
+                            <div class="btn-group  btnborder">
+                                <label class="btn btn-mint" [(ngModel)]="change.realCertifyState" btnRadio="1" [ngModelOptions]="{standalone: true}">未认证</label>
+                                <label class="btn btn-mint" [(ngModel)]="change.realCertifyState"
+                                 btnRadio="3" [ngModelOptions]="{standalone: true}">认证通过</label>
+                            </div>
+                    </div>
+                </div>
+                <!--认证失败----认证通过 -->
+               <div *ngIf="checkrealyStatus.status=='0' && authStatus_list.realCertifyState=='4'">
+                    <p class="pp">用户信息：<span>{{authStatus_list.userName}}</span><span>{{authStatus_list.organizationFullName}}</span><span>{{authStatus_list.department}}</span><span>{{authStatus_list.position}}</span></p>
+                    <div class="pp">
+                        <span>变更状态：</span>
+                            <div class="btn-group  btnborder">
+                                <label class="btn btn-mint" [(ngModel)]="change.realCertifyState" btnRadio="4" [ngModelOptions]="{standalone: true}">认证失败</label>
+                                <label class="btn btn-mint" [(ngModel)]="change.realCertifyState"
+                                 btnRadio="3" [ngModelOptions]="{standalone: true}">认证通过</label>
+                            </div>
+                    </div>
+                </div>
+                <!--认证通过----认证失败 -->
+                <div *ngIf="checkrealyStatus.status=='0' && authStatus_list.realCertifyState=='3'">
+                    <p class="pp">用户信息：<span>{{authStatus_list.userName}}</span><span>{{authStatus_list.organizationFullName}}</span><span>{{authStatus_list.department}}</span><span>{{authStatus_list.position}}</span></p>
+                    <div class="pp">
+                        <span>变更状态：</span>
+                            <div class="btn-group  btnborder">
+                                <label class="btn btn-mint" [(ngModel)]="change.realCertifyState" btnRadio="3" [ngModelOptions]="{standalone: true}" (click)="grayFUn2()">认证通过</label>
+                                <label class="btn btn-mint" [(ngModel)]="change.realCertifyState"
+                                 btnRadio="4" [ngModelOptions]="{standalone: true}" (click)="grayFUn()">认证失败</label>
+                            </div>
+                    </div>
+                    <p class="pp2" [ngStyle]="{'color': gray }">*消息提醒：很抱歉，您提交的实名认证未通过审核，原因是
+                        <textarea class="form-control" rows="5" placeholder="提示文本" [(ngModel)]="remarks" [disabled]="change.realCertifyState=='3'"></textarea>
+                    </p>
+                </div> 
+                <!--三种状态的按钮-->
+                <div class="btnstyle" *ngIf="checkrealyStatus.status=='0'">
+                    <button type="button" class="btn btn-default btnhoverlan" aria-label="Close" (click)="authStatus.hide()">取消</button>
+                    <button type="button" #userbtn class="btn btn-primary btnhoverju" #btn2 (click)="authUserStatus(authStatus_list.userId,authStatus,btn2)">保存设置</button>
+                </div>
+                <!--一 二种状态的按钮-->
+                <div class="btnstyle" *ngIf="checkrealyStatus.status!='0'">
+                    <button type="button" class="btn btn-default btnhoverlan" aria-label="Close" (click)="authStatus.hide()">关闭</button>
+                </div>
+
+            </div>
+            
+        </div>
+    </div>
+</div>
+

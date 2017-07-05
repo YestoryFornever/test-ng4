@@ -1,0 +1,289 @@
+<div class="header">
+	<span class="head icon">|</span><span class="head" >用户角色</span>
+	<div class="btnHeader head">
+		<button class="btn btn-primary" (click)="editRolePop(userRole,null,null,null,null)" >添加角色</button>
+		
+	</div>
+</div>
+<div class="coat">
+	<div class="screen">
+		<div class="condition container-fluid">
+			<span>角色名称</span>
+			<input [(ngModel)]="search.roleName" class="form-control">
+			
+		</div>
+
+		<button class="condition btn btn-primary sub" (click)="getRoles()">查询</button>
+		<div style="clear:both"></div>
+	</div>
+</div>
+<div class="coat">
+	<div class="tableList" >
+		<table #role_table class="table table-bordered table-hover ">
+			<thead>
+				<tr>
+					<th class="info">操作</th>
+					<!-- <th class="info" >序号</th> -->
+					<th class="info">角色名称</th>
+					<th class="info">角色描述</th>
+				
+				</tr>
+			</thead>
+			<tbody id="list" >
+
+				<tr #userList class="Userlist" *ngFor="let list of roles">
+				<td  class="table-hover">
+					<a href="javascript:void(0)"class="list-exe"  (click)="editRolePop(userRole,add_role,list.roleId,list.roleName,list.description)" >修改</a>
+					<a href="javascript:void(0)"class="list-exe" (click)="deleteRolePop(roleDelete,list.roleId)">删除</a>
+					<a href="javascript:void(0)" class="list-exe" (click)="getUsersForRoles(userMaintain,list.roleId,list.roleName)">成员维护</a>
+					<a href="javascript:void(0)"class="list-exe" (click)="approveRolePop(userLookApprove,list.roleId,list.roleName)">查看授权</a>
+					<!-- <a href="javascript:void(0)"class="list-exe" (click)="approveRolePop(userLookApprove,list,$event)">查看授权</a> -->
+					<a href="javascript:void(0)"class="list-exe" (click)="getPermissionGroup(userApproveGroup,list.roleId,list.roleName)">授权分组</a>
+					<a href="javascript:void(0)" class="list-exe" (click)="copyRolePop(userCopy,list.roleId,list.roleName)">复制角色</a>
+				</td>
+				<!-- <td  class="table-hover">{{list.roleId}}</td> -->
+				<td  class="table-hover">{{list.roleName}}</td>
+				<td  class="table-hover">{{list.description}}</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+<!-- 分页 -->
+<div class="row pagerow">
+    <div class="pageshowleft">每页显示
+        <select #selectPage name="" id="msgNum" (change)="sizeData(selectPage.value,userList)">
+            <option #optionPage *ngFor="let msgNumber of msgNumbers" value={{msgNumber.Number}}>{{msgNumber.Number}}</option>
+        </select>
+        条数据
+    </div>
+    <div class="pageshowmodle">
+        <span>{{currentPage}} / {{totalPages}}</span>页
+        <span>{{totalItems}}条数据</span>
+    </div>
+    <div class="pagefen">
+        <pagination [firstText]="firstText" [lastText]="lastText" [previousText]="previousText" [nextText]="nextText" [maxSize]="maxSize" [totalItems]="totalItems" [itemsPerPage]="itemsPerPage" [(ngModel)]="currentPage" [boundaryLinks]="true" (pageChanged)='pageChanged($event,allcheck)' (numPages)='pageNumChange($event)' class="pagination-sm"></pagination>
+    </div>
+</div>
+
+
+
+<!--弹窗部分-->
+<!--1.添加和修改角色-->
+<div bsModal #userRole="bs-modal" class="modal fade modelPon" tabindex="-1" role="dialog" aria-
+	 labelledby="mySmallModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-sm">
+		<div class="modal-content modal-hight">
+			<div class="modal-header">
+				<button type="button" class="close" aria-label="Close" (click)="userRole.hide
+()" >
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<h4 class="modal-title modal-font-h"><span *ngIf="isAdd">添加角色</span><span *ngIf="!isAdd">修改角色</span></h4>
+			</div>
+			<div class="modal-body contentxinxi ">
+				<div class="pp content-center"><i>*</i>&nbsp;<span>角色名称
+</span>&nbsp;<input type="text" name="name"  [(ngModel)]="add_role.roleName"  placeholder="提示文本"/></div>
+				<div class="pp content-center-one"><span><i>*</i>&nbsp;角色描述
+</span>&nbsp;<textarea  id="txtarea" name="description"   [(ngModel)]="add_role.description"   style="height:
+90px;width: 260px;" placeholder="提示文本"></textarea></div>
+				<!--<div class="pp"><span>回访状态：</span>-->
+			</div>
+
+			<div class="btnstyle ">
+				<button type="button" class="btn btn-default btnhoverlan" (click)
+						="userRole.hide()">取消</button>
+				<button type="button" class="btn btn-primary btnhoverju"(click)="editRole(userRole)">保存</button>
+			</div>
+		</div>
+	</div>
+</div>
+<!--查看授权-->
+<div bsModal #userLookApprove="bs-modal" class="modal fade modelPon" tabindex="-1" role="dialog" aria-
+	 labelledby="mySmallModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-sm">
+		<div class="modal-content modal-hight modal-Approve">
+			<div class="modal-header">
+				<button type="button" class="close" aria-label="Close" (click)
+						="userLookApprove.hide()">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<h4 class="modal-title modal-font-h">查看"{{items.name}}"授权</h4>
+			</div>
+			<div class="modal-body contentxinxi contentxinxi-content ">
+				 <!--  <ul *ngFor="let lis of it">
+                    <li class="system">
+                        <input type="checkbox"  [checked]="lis.isChecked"/> {{lis.label}}
+                        <ul class="user-set" *ngFor="let xx of  lis.children"  >
+                            <li><input type="checkbox" [checked]="xx.isChecked"/>{{xx.label}}
+                                <ul class="user-set-second" *ngFor="let ss of xx.children">
+                                    <li ><input type="checkbox"  [checked]="ss.isChecked"/>{{ss.label}}
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                </ul> -->
+                <h1 *ngIf="this.tip=='提示'" style="padding:60px 10px;">该角色没有分配权限</h1>
+<!-- ************************************** -->
+			<p-tree    *ngIf="this.tip=='不提示'"  [value]="it" selectionMode="checkbox" [(selection)]="arrayss"  ></p-tree>
+						<!-- <div>Selected Nodes: <span *ngFor="let file of selectedFiles">{{file.label}} </span></div> -->
+<!-- ****************************************************** -->
+			</div>
+
+			<div class="btnstyle btn-rf">
+				<!--<button type="button" class="btn btn-default btnhoverlan" (click)-->
+				<!--="userLookApprove.hide()">取消</button>-->
+				<button type="button" class="btn btn-primary btnhoverju"  (click)="editRolePopClose(userLookApprove)" >关闭</button>
+			</div>
+		</div>
+	</div>
+</div>
+<!--维护成员-->
+<div bsModal #userMaintain="bs-modal" class="modal fade modelPon" tabindex="-1" role="dialog" aria-
+	 labelledby="mySmallModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-sm">
+		<div class="modal-content modal-service ">
+			<div class="modal-header">
+				<button type="button" class="close" aria-label="Close"(click)
+						="userMaintain.hide()">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<h4 class="modal-title modal-font-h">为"{{data2.roleName}}"维护成员</h4>
+			</div>
+			<div class="content-main">
+				<!-- <div class="content_con" style="height:60px;width:100%;">
+					<div  style="height:60px;width:50%;padding-top:10px; float:left;">
+						<h4 style="font-family:'宋体';">待选用户</h4>
+					</div>
+					<div  style="height:60px;width:50%; float:left;padding-left:36px;padding-top:10px;">
+						<h4 style="font-family:'宋体';">已选用户</h4>
+					</div>
+				</div> -->
+				<div id="picklist">
+					<p-pickList [source]="data3"   [target]="data4" sourceHeader="待选用户" targetHeader="已选用户" [showSourceControls]="false" [showTargetControls]="false"  [responsive]="true"  >
+					    <ng-template  let-arr  pTemplate="item">
+					    	{{arr.loginName}}&nbsp;({{arr.userName}})
+					        <!-- <div class="ui-helper-clearfix" > -->
+					        	<!-- <input type="checkbox" name="input" ng-reflect-ng-class="[object onject]">{{arr.userName}} -->
+					          <!-- <div  style="font-size:14px;float:left;"> <input type="checkbox"  ng-reflect-ng-class="[object onject]">{{arr.userName}}</div> -->
+					        <!-- </div> -->
+					    </ng-template>
+					</p-pickList>
+				</div>
+
+			</div>
+			<div class="modal_footer ">
+				<button type="button" class="btn btn-default btnhoverlan" (click)
+						="userMaintain.hide()">取消</button>
+				<button type="button" class="btn btn-primary btnhoverju" (click)="updataRoles(userMaintain)" >保存</button>
+			</div>
+		</div>
+	</div>
+</div>
+<!--分配权限分组弹窗-->
+<div bsModal #userApproveGroup="bs-modal" class="modal fade modelPon" tabindex="-1" role="dialog" aria-
+	 labelledby="mySmallModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-sm">
+		<div class="modal-content modal-service ">
+			<div class="modal-header">
+				<button type="button" class="close" aria-label="Close"(click)
+						="userApproveGroup.hide()">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<h4 class="modal-title modal-font-h">为"{{obj5.roleName}}"分配权限分组</h4>
+			</div>
+			<div class="content-main">
+
+				<!-- <div class="content_con" style="height:60px;width:100%;">
+					<div  style="height:60px;width:50%; float:left;">
+						<h4>待选权限</h4>
+					</div>
+					<div  style="height:60px;width:50%; float:left;padding-left:38px;">
+						<h4>已选权限</h4>
+					</div>
+				</div> -->
+				<div id="picklist">
+					<p-pickList [source]="data5" [target]="data6" sourceHeader="待选权限" targetHeader="已选权限" [showSourceControls]="false" [showTargetControls]="false"  [responsive]="true"  >
+					    <ng-template let-array   pTemplate="item">
+					        <div class="ui-helper-clearfix">
+					          <div style="font-size:14px;float:left;"> {{array.permissionGroupName}}</div>
+					        </div>
+					    </ng-template>
+					</p-pickList>
+				</div>
+			</div>
+			<div class="modal_footer ">
+				<button type="button" class="btn btn-default btnhoverlan" (click)
+						="userApproveGroup.hide()">取消</button>
+				<button type="button" class="btn btn-primary btnhoverju" (click)="updatePermssionGroup(userApproveGroup)" >保存</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!--角色复制弹出-->
+<div bsModal #userCopy="bs-modal" class="modal fade modelPon" tabindex="-1" role="dialog" aria-
+	 labelledby="mySmallModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-sm">
+		<div class="modal-content modal-service modal-copy ">
+			<div class="modal-header">
+				<button type="button" class="close" aria-label="Close" (click)
+						="userCopy.hide()">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<h4 class="modal-title modal-font-h">复制"{{copy.beforeName}}"角色</h4>
+			</div>
+			<div class="modal-body contentxinxi  ">
+				<div class="pp content-role"><i>*</i>&nbsp;<span>新角色名称
+                </span>&nbsp;<input type="text"  [(ngModel)]="copy.roleName"    placeholder="提示文本"/></div>
+
+				<div class="pp content-descript">
+					<div class="one"><i>*</i>&nbsp;新角色描述</div>
+					<div class="two">
+						<textarea  class="txtarea" style="height:150px;width: 340px;"
+								   [(ngModel)]="copy.description"   placeholder="提示文本"></textarea>
+					</div>
+				</div>
+				<div class="pp content-role  content-pl"><i></i>&nbsp;<span>功能选项 </span>
+					&nbsp;<label class="btn btn-default btnhoverlan" [(ngModel)]="copy.copyPermissionGroupIndex" style="margin: 0" btnCheckbox >复制权限</label>
+					<label class="btn btn-default btnhoverlan" [(ngModel)]="copy.copyUserIndex"  style="margin: 0"
+						   btnCheckbox  >复制用户</label>
+					<!--&nbsp;<button type="button" class="btn btn-default btnhoverlan"  btnCheckbox [(ngModel)]='copy.copyPermissionGroupIndex' >复制权限</button>-->
+					<!--<button type="button" class="btn btn-default btnhoverlan"  btnRadio="false" btnCheckbox  [(ngModel)]='copy.copyPermissionGroupIndex' style="display:none">复制权限</button>-->
+					<!--<button type="button" class="btn btn-default btnhoverlan"  btnCheckbox >复制用户-->
+					<!--</button>-->
+				</div>
+			</div>
+
+			<div class="btnstyle btn-bom">
+				<button type="button" class="btn btn-default btnhoverlan" (click)
+						="userCopy.hide()">取消</button>
+				<button type="button" class="btn btn-primary btnhoverju" (click)="copyRoles(userCopy)">复制</button>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- 删除提示弹出 -->
+<div bsModal #roleDelete="bs-modal" class="modal fade modelPon" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm ">
+        <div class="modal-content ">
+            <div class="modal-header ">
+                <button type="button" class="close" aria-label="Close" (click)="roleDelete.hide()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">删除</h4>
+            </div>
+            <div class="modal-body  ">
+                <div class="cont ">
+                    确认要删除该角色吗？？？
+                </div>
+                <div class="btndelet">
+                    <button type="button" class="btn btn-default btnhoverlan" (click)="roleDelete.hide()">取消</button>
+                    <button type="button" class="btn btn-primary btnhoverju" (click)="deletedRole(roleDelete)">确认</button>
+            	</div>
+            </div>
+        </div>
+       		
+    </div>
+</div>

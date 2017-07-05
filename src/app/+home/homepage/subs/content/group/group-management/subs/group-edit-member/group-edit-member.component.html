@@ -1,0 +1,153 @@
+<!--编辑群成员-->
+<div class="row col-xs-12 col-md-12" style="padding-left:30px;">
+    <div class="row rowtop">
+        <div class="before"><span class="icon">|</span>编辑群成员</div>
+        <button type="button" class="btn btn-primary btn1 btnhoverju" #brn (click)="submitgrouplist(brn,addbtn)">确定保存</button>
+    </div>
+    <div class="tableone">
+            <div class="row">
+                <div class="col-xs-6">
+                    <p>已选成员{{totals}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;管理员{{groupedit.groupMgtStaffNum}}</p>
+                </div>
+                <div class="col-xs-2">
+                    
+                </div>
+                <div class="col-xs-2">
+                    
+                </div>
+                <div class="col-xs-2">
+                   
+                </div>
+            </div>
+            <div class="row" style="padding:5px;border-bottom:1px #dadada solid">
+                <div class="col-xs-2">
+                </div>
+                <div class="col-xs-7">
+                    <input type="text" class="form-control" placeholder="搜索成员，搜索群成员" [(ngModel)]="default.usrNm">
+                </div>
+                <div class="col-xs-2">
+                    <input type="button" class="btn btn-primary btn1 btnhoverju btn2" value="搜索" (click)="searchMember()"/>
+                </div>
+            </div>
+            <div class="table-responsive">
+                 <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th>顺序</th>
+                    <th>姓名</th>
+                    <th>机构</th>
+                    <th>注册手机号</th>
+                    <th>入群日期</th>
+                    <th>群主身份数量</th>
+                    <th>状态</th>
+                    <th>身份</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                    <tr #userList  [ngStyle]="{'background-color': color }" class="Userlist" *ngFor="let list of groupMemberList;let i=index;">
+                        <td>{{i+1}}</td>
+                        <td>{{list.userName}}</td>
+                        <td>{{list.organizationShortName}}</td>
+                        <td>{{list.loginName}}</td>
+                        <td>{{list.createTime}}</td>
+                        <td>{{list.masterNum}}</td>
+                        <td>{{list.usrEStatus}}</td>
+                        <td>
+                            <select class="form-control form-control-sm" [(ngModel)]="list.usrAhr" (change)="usrAhrchange(ziji,list,$event,groupMemberList)" #ziji>
+                                <option value="0">群主</option>
+                                <option value="2">成员</option> 
+                                <option value="1">管理员</option>
+                            </select>
+                        </td>
+                        <td><button type="button" (click)="unadd(list,i,$event,groupMemberList)">删除</button></td>
+                    </tr>
+                </tbody>
+            </table>
+            </div>
+            <div class="row pagerow">
+                <div class="pageshowleft">每页显示
+                    <select #selectPage name="" id="msgNum" (change)="sizeData(selectPage.value,userList)" [(ngModel)]="itemsPerPage">
+                        <option #optionPage  *ngFor="let msgNumber of msgNumbers" value={{msgNumber.Number}}>{{msgNumber.Number}}</option>
+                    </select>
+                    条数据 
+                </div>
+                <div class="pageshowmodle">
+                    <span>{{currentPage}} / {{totalPages}}</span>页
+                    <span>{{totals}}条数据</span>
+                </div>
+
+                <div class="pagefen">
+                    <pagination  [firstText]="firstText" [lastText]="lastText" [previousText]="previousText" [nextText]="nextText" [maxSize]="maxSize" [totalItems]="totals" [itemsPerPage]="itemsPerPage" [(ngModel)]="currentPage" [boundaryLinks]="true" (pageChanged)='pageChanged($event)' (numPages)='pageNumChange($event)' class="pagination-sm"></pagination>
+                </div>
+            </div>
+
+    </div>
+    <div class="tableone" style="margin-bottom:30px;">
+        <div class="row">
+            <div class="col-xs-6">
+                <p>待选成员</p>
+            </div>
+        </div>
+        <div class="row" style="padding:5px;">
+            <div class="col-xs-2">
+            </div>
+            <div class="col-xs-7">
+                <input type="text" class="form-control" placeholder="搜索成员，搜索群成员" [(ngModel)]="likedata.userName">
+            </div>
+            <div class="col-xs-2">
+                <input type="button" class="btn btn-primary btn1 btnhoverju btn2" value="搜索" (click)="searchMember2()"/>
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th>姓名</th>
+                    <th>机构</th>
+                    <th>注册手机号</th>
+                    <th>注册时间</th>
+                    <th>身份</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr #userList2  [ngStyle]="{'background-color': color }" class="Userlist" *ngFor="let list of grouplikeList;let i=index;">
+                    <td>{{list.userName}}</td>
+                    <td>{{list.organizationShortName}}</td>
+                    <td>{{list.loginName}}</td>
+                    <td>{{list.createTime}}</td>
+                    <td>
+                        <select class="form-control form-control-sm" [(ngModel)]="list.usrAhr" #ziji>
+                            <option value="0">群主</option>
+                            <option value="2">成员</option> 
+                            <option value="1">管理员</option>
+                        </select>
+                    </td>
+                    <td>
+                       <button type="button" #addbtn (click)="addGroupperson(list.userId,list,$event,addbtn)">添加</button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="row pagerow">
+                <div class="pageshowleft">每页显示
+                    <select #selectPage2 name="" id="msgNum" (change)="sizeData2(selectPage2.value,userList2)" [(ngModel)]="itemsPerPage2">
+                        <option #optionPage  *ngFor="let msgNumber of msgNumbers" value={{msgNumber.Number}}>{{msgNumber.Number}}</option>
+                    </select>
+                    条数据
+                </div>
+                <div class="pageshowmodle">
+                    <span>{{currentPage2}} / {{totalPages2}}</span>页
+                    <span>{{totals2}}条数据</span>
+                </div> 
+
+                <div class="pagefen">
+                    <pagination  [firstText]="firstText" [lastText]="lastText" [previousText]="previousText" [nextText]="nextText" [maxSize]="maxSize" [totalItems]="totals2" [itemsPerPage]="itemsPerPage2" [(ngModel)]="currentPage2" [boundaryLinks]="true" (pageChanged)='pageChanged2($event)' (numPages)='pageNumChange2($event)' class="pagination-sm"></pagination>
+                </div>
+        </div>
+ 
+    </div>
+
+</div>

@@ -1,0 +1,71 @@
+<div class="header clearfix">
+	<span class="head icon">|</span><span class="head" >用户组编辑</span>
+	<div class="btnHeader head">
+		<button class="btn btn-primary"(click)="deleteGp(delete)">批量删除</button>
+        <button class="btn btn-primary" (click)="detialTo()">添加成员</button>
+         <button class="btn btn-primary" (click)="returnTo()">返回</button>
+    </div>
+</div>
+<div class="tableList " >
+	<div style="margin-bottom: 10px ">当前用户组：{{Name}}</div>
+	<table class="table table-bordered table-hover " >
+		<thead >
+			<tr>
+				<td class="info" ><input #allcheck type="checkbox" name="allCheck"  (change)="checkAll(allcheck)">姓名</td>
+				<td class="info middleTxt">公司</td>
+				<td class="info" >部门</td>
+				<td class="info ">职位</td>
+				<td class="info ">联系电话</td>
+			</tr>
+		</thead>
+			<tbody  id="list"  *ngFor="let gp of group">
+			<tr #userList class="Userlist">
+				<td><input  type="checkbox" #listState name="user" (change)="changeState(listState,userList)" >{{gp.userDomain.userName}}</td>
+				<td>{{gp.userDomain.organizationFullName}}</td>
+				<td>{{gp.userDomain.department}}</td>
+				<td>{{gp.userDomain.position}}</td>
+				<td>{{gp.userDomain.contactPhone}}</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+
+<!-- pagination -->
+<div class="row pagerow">
+	<div class="pageshowleft">每页显示
+		<select #selectPage name="" id="msgNum" (change)="sizeData(selectPage.value,userList)" [(ngModel)]="itemsPerPage">
+			<option #optionPage  *ngFor="let msgNumber of msgNumbers" value={{msgNumber.Number}}>{{msgNumber.Number}}</option>
+		</select>
+		条数据
+	</div>
+	<div class="pageshowmodle">
+		<span>{{currentPage}} / {{totalPages}}</span>页
+		<span>{{totalItems}}条数据</span>
+	</div>
+
+	<div class="pagefen">
+		<pagination  [firstText]="firstText" [lastText]="lastText" [previousText]="previousText" [nextText]="nextText" [maxSize]="maxSize" [totalItems]="totalItems" [itemsPerPage]="itemsPerPage" [(ngModel)]="currentPage" [boundaryLinks]="true" (pageChanged)='pageChanged($event)' (numPages)='pageNumChange($event)' class="pagination-sm"></pagination>
+	</div>
+</div>
+
+<!-- 删除组成员 --> 
+<div bsModal #delete="bs-modal" class="modal fade modelPon" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content" style="height: 160px;width: 300px">
+            <div class="modal-header">
+                <button type="button" class="close" aria-label="Close" (click)="delete.hide()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">删除组成员</h4>
+            </div>
+            <div class="modal-body contentxinxi">
+                
+                <div style="font-size: 20px">是否删除选中的{{checkGroup.length}}个用户？</div>
+                <div class="btnstyle">
+                    <button type="button" class="btn btn-default btnhoverlan"(click)="deleteGroupUser(delete)">确定</button>
+                    <button type="button" class="btn btn-primary btnhoverju" (click)="delete.hide()">取消</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,100 @@
+<div class="header clearfix">
+	<span class="head icon">|</span><span class="head" >机构详情</span>
+	<div class="condition container-fluid">
+		<button type="button" class="btn btn-primary">返回</button>
+	</div>
+</div>
+<div class="content" style="width: 1250px">
+	<div style="width: 700px;float: left">
+		<div class="newsTxt">
+			<div class="newsHeader reportState">基本信息</div>
+			<div class="inner">
+				<div class="condition container-fluid">
+					<span><i style="color: red">*</i> 机构全称</span><input class="btn-group" style="height: 34px;border-radius: 5px;border:1px solid #ddd;width: 250px" type="" name="">	
+				</div>
+				<div class="condition container-fluid">
+					<span><i style="color: red">*</i> 机构简称</span><input class="btn-group" style="height: 34px;border-radius: 5px;border:1px solid #ddd;width: 250px" type="" name="">	
+				</div>
+				<div class="condition container-fluid">
+					<span><i style="color: red">*</i> 机构有效状态</span>
+					<div class="btn-group btnborder">
+						<label class="btn btn-mint" [(ngModel)]="model" btnRadio='1'>有效</label>
+						<label class="btn btn-mint" [(ngModel)]="model" btnRadio='2'>无效</label>
+						<label class="btn btn-mint" [(ngModel)]="model" btnRadio='3'>待确认</label>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="newsTxt" style="margin-top: 20px">
+			<div class="newsHeader reportState">机构类别</div>
+			<div class="inner">
+				<label>照片：</label>
+					<div>
+					  <!--上传组件 -->
+					   <p-fileUpload 
+					     name="uploadPhoto[]" 
+					     url="http://localhost:3333/api/upload"
+					     (onUpload)="onPhotoUpload($event)" accept="image/*" maxFileSize="1000000">
+					     <template pTemplate type="content">
+					       <ul *ngIf="photoFiles.length">
+					         <li *ngFor="let file of photoFiles">
+					           {{file.name}} - {{file.size}} bytes
+					         </li>
+					       </ul>
+					     </template>
+					   </p-fileUpload>
+					</div>
+					<!--如果图片上传成功，显示图片 -->
+					<div *ngIf="demo.photo">
+					  <img src="{{photoUrl}}">
+					</div>
+			</div>
+		</div>
+		<div class="newsTxt" style="margin-top: 20px">
+			<div class="newsHeader reportState">补充信息</div>
+			<div class="inner">
+				 <form id="form1" enctype="multipart/form-data" method="post" action="Upload.aspx">
+				    <div class="row">
+				      <label for="fileToUpload">Select a File to Upload</label><br />
+				      <input type="file" name="fileToUpload" id="fileToUpload" onchange="fileSelected();"/>
+				    </div>
+				    <div id="fileName"></div>
+				    <div id="fileSize"></div>
+				    <div id="fileType"></div>
+				    <div class="row">
+				      <input type="button" onclick="uploadFile()" value="Upload" />
+				    </div>
+				    <div id="progressNumber"></div>
+				  </form>
+				  <video style="width: 400px;height:250px" src="G:\视频桌面\小鸟.mp4"></video>
+			</div>
+		</div>
+	</div>
+	<div style="width: 500px;float: left;margin-left:20px ">
+		<div class="newsMsg">
+			<div class="newsHeader reportState">部门信息</div>
+			<div class="inner">
+				<div id="charts" [(ng2-echarts)]="chartData" style="height: 500px; width: 100%"></div>
+			</div>
+		</div>
+		<div class="newsMsg" style="margin-top: 20px;height: 820px">
+			<div class="newsHeader reportState">用户信息</div>
+			<div class="inner">
+			<div class="uploading" style="width:100px;height: 100px" >
+				<input style="width:100px;height: 100px;opacity: 0;cursor: pointer" #input type="file" name="" multiple="multiple" size="9" (change)="fileChange(input)">
+			</div>
+				<div style="width: 100px;height: 100px;margin:10px;float:left;position: relative" *ngFor="let item of news,let i =index ">
+					<img style="width: 100%;height: 100%" [src]="item" name="newsImg" class='once'/> <button  pButton type="button"  icon="fa-close" class=" btn-primary" style="height: 20px;width:20px;border-radius:50%;position: absolute;right: -10px;top: -10px"  (click)="deletedImg(i)"></button>
+				</div>
+				<div >
+					<div id="froalaEditor">
+						<div [froalaEditor]="option" [(froalaModel)]="froalaText"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	
+	
+</div>

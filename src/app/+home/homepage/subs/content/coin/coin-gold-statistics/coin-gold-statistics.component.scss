@@ -1,0 +1,389 @@
+.clearfix:after {
+    content: ".";
+    display: block;
+    clear: both;
+    visibility: hidden;
+    height: 0;
+}
+span{
+	font-family: 'Microsoft Yahei'!important;
+	font-size: 14px!important;
+}
+.btn{
+	border-radius: 0;
+	padding:5px 16px;
+}
+.btn-primary:hover{
+	background-color: #fb6300;
+	color: #fff;
+	border-color:#fb6300;
+}
+.btn-default:hover{
+	background-color: #337ab7;
+	color:#fff;
+	border-color:#2e6da4;
+}
+.header{
+	overflow: hidden;
+	height: 60px;
+	border-bottom:solid 1px #e1e7eb;
+	padding-left: 6px; 
+}
+.header span{
+	font:600 14px "微软雅黑";
+	color: #333;
+	line-height: 60px;
+	margin-left: 10px;
+}
+.header .icon{
+	font-size: 16px;
+	color:#f44336;
+}
+.header .head{
+	float: left;
+}
+.header .btnHeader{
+	height: 32px;
+	margin-left: 50px;
+	margin-top: 14px;
+}
+.header .btnHeader .btn{
+	margin-right: 10px;
+}
+/*查询条件*/
+.screen{
+	margin-top: 14px;
+	margin-left: 16px;
+	padding:16px 0 16px 16px; 
+	border:solid 1px #e1e7eb; 
+	float: left;
+	/*box-sizing: content-box;*/
+
+}
+.condition{
+	display: inline;
+	margin: 5px;
+	float: left;
+}
+.condition span{
+	display: inline-block;
+	width: 90px
+}
+.conditionAddr{
+	width: 600px;
+}
+.conditionAddr span{
+	width: 120px;
+}
+.conditionAddr input{
+	width: 400px !important;
+	height: 35px;
+	border: solid 1px #ccc;
+	border-radius: 5px;
+}
+.conditionAddr textarea{
+	border: solid 1px #ccc;
+	border-radius: 5px;
+}
+.condition input{
+	width: 150px;
+	display: inline;
+
+}
+.screen .btn{
+	margin: 6px 50px;
+}
+#list input{
+	margin: 5px;
+}
+.selection{
+	width: 150px;
+	height: 35px;
+	border: solid 1px #ccc;
+	border-radius: 5px;
+}
+.ng-valid[req], .ng-valid.req {
+  border-left: 5px solid #42A948; /* green */
+}
+.form-control:focus {
+    border-color: #66afe9;
+    outline: 0;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6);
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6);
+}
+/*table*/
+.tableList{
+	width: 100%;
+	/*height: 300px;*/
+	overflow-x: scroll;
+	/*margin-top: 16px;*/
+	padding: 16px;
+}
+
+.table tr{
+	height: 32px;
+	line-height: 32px;
+
+}
+.table tr:active{
+	color: blue;
+	background: #bfa;
+}
+.verify,.revisit{
+	color: #367ec1;
+	cursor: pointer;
+}
+.middleTxt{
+	width: 200px;
+}
+.longTxt{
+	width: 400px;
+}
+.shortTxt{
+	width: 100px;
+}
+.addModify{
+	width: 200px;
+	margin: 0 auto;
+}
+/*分页*/
+.pagerow{
+	height:auto;
+	background:#f5f7fb;
+	width:98%;
+	border:1px #dadada solid;
+	margin:0 16px;
+    display:-webkit-box;
+    display:-moz-box;
+    display:-ms-box;
+    display:-o-box;
+}
+.pageshowleft{
+	width:190px;
+	height:66px;
+	line-height:66px;
+	margin-left:15px;
+}
+.pageshowleft select{
+	width:50px;
+	height:34px;
+	line-height:34px;
+	background:#fff;
+}
+.pageshowmodle{
+	-webkit-box-flex:1;
+	line-height:66px;
+	text-align: center;
+}
+.pagefen{
+	height:66px;
+	line-height:66px;
+	margin-right:16px;
+}
+
+/*弹窗*/
+.modal-content{
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	margin-left: -350px;
+}
+.modal-body{
+	height: 300px;
+}
+/*弹窗*/
+.delete{
+	width: 550px;
+	height: 350px;
+}
+.modifyContent{
+	width: 700px;
+}
+.noproblem{
+	width: 350px;
+	height: 200px
+
+}
+.win_head{
+	width: 80px;
+	font:18px '黑体';
+	text-align: right;
+	margin-right: 10px;
+	float: left;
+}
+.pp{
+	width: 100%;
+	margin-bottom: 20px
+}
+.visState{
+	float: left;
+	width: 200px;
+	height: 120px;
+}
+.btnstyle{
+	position: absolute;
+	left: 50%;
+	bottom: 30px;
+}
+.container{
+	position: relative;
+	/*padding-bottom: 20px; */
+	/*border-bottom: 1px solid #e1e7eb;*/
+}
+.borBottom{
+	/*padding-bottom: 40px;*/
+	/*margin-bottom: 100px;*/
+	/*border-bottom: 1px solid #e1e7eb;*/
+}
+.containerLeft{
+	float: left;
+	margin: 100px 0 0 30px;
+	/*background: url(../../../../../../../public/images/coin-turnover-statistic.png) no-repeat left top;*/
+}
+.containerRight{
+	width: 300px;
+	position: absolute;
+	left: 720px;
+	top:5px;
+}
+.containerRight1{
+	margin:25px 0 0 20px;
+}
+.containerRight1 span,.containerRight2 span{
+	color: #ff9372;
+}
+.containerRight2{
+	margin:45px 0 0 20px;
+}
+
+.containerRight3{
+	margin:4px 0 0 20px;
+}
+.containerRight4{
+	margin:5px 0 0 20px;
+}
+.containerRight3 span,.containerRight4 span{
+	color: #b376dd;
+}
+
+.containerRight li{
+	line-height: 20px;
+}
+
+.containerRight i{
+	width: 150px; 
+	font-style:normal; 
+	display: inline-block;
+}
+
+.userRecharge{
+	position: absolute;
+	top:270px;
+	left: 605px;
+}
+
+.pirse{
+	font:18px '黑体';
+	color: #fff;
+}
+.grant{
+	position: absolute;
+	top:125px;
+	left: 605px;
+}
+.userCostSum{
+	position: absolute;
+	top:420px;
+	left: 607px;
+}
+.todyDeduct{
+	position: absolute;
+	top:354px;
+	left: 607px;
+}
+.income{
+	position: absolute;
+	top:195px;
+	left: 436px;
+}
+.expend{
+	position: absolute;
+	top:388px;
+	left: 436px;
+}
+.userDeduct{
+	position: absolute;
+	top:520px;
+	left: 450px;
+
+}
+.total{
+	position: absolute;
+	top:290px;
+	left: 140px;
+}
+.totalHide{
+	position: absolute;
+	top:247px;
+	left: 223px;
+	/*border: 1px solid #ccc;*/
+	width: 25px;
+	height: 25px;
+}
+.UserLiabilities{
+	position: absolute;
+	top:500px;
+	left: 492px;
+	/*border: 1px solid #ccc;*/
+	width: 15px;
+	height: 15px;
+}
+.todayStatics{
+	/*position: absolute;*/
+	/*top:410px;*/
+}
+.anth{
+	float: left;
+	margin-right: 10px
+}
+.anth span{
+	margin: 0 3px;
+	color: #ff9372;
+}
+.marT20{
+	margin-top: 20px;
+}
+.line{
+	border-bottom:  1px solid purple;
+	/*width: 42%;*/
+	display: inline-block;
+}
+.lineCont{
+	text-align: center;
+	position: relative;
+	top: -20px;
+}
+.lineBox{
+	line-height: 40px;
+	margin: 30px 0px;
+}
+.lineContainer{
+	position: relative;
+	/*padding-bottom: 20px;*/
+}
+.tody{
+	position: absolute;
+	left: 55px;
+	top: 25px;
+	color: #ff9372;
+}
+.todyR{
+	position: absolute;
+	left: 150px;
+	top: 28px;
+	color: #b376dd;
+}
+
+.totalHide,.purpleUp,.purpleDown,.UserLiabilities{
+	cursor: pointer;
+}

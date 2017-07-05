@@ -1,0 +1,94 @@
+.bond-detail{
+	padding:10px;
+}
+
+.info-cards{
+	margin:10px 0;
+}
+.info-cards>div.col-md-5,.info-cards>div.col-md-7{
+	padding:0 5px;
+}
+.info-cards div.card{
+	border-width:1px;
+	border-style:solid;
+	height:auto;
+	width:100%;
+}
+.info-cards div.card-header{
+	background-color:#377dc2;
+	margin:0;
+	padding:6px;
+	color:#eee;
+}
+.card-block span.card-title{
+	display:block;
+	background-color:#c8a49d;
+}
+
+.info-base{
+	border-color:#76a601;
+}
+.info-base div.card-header{
+	background:#76a601;
+}
+.info-base #Syndicate{
+	position: relative;
+	bottom: 10px;
+}
+.info-seller{
+	border-color:#d03a1d;
+}
+.info-seller div.card-header{
+	background:#d03a1d;
+}
+.info-buyer{
+	border-color:#753325;
+}
+.info-buyer div.card-header{
+	background:#753325;
+}
+.info-cal{
+	border-color:#d7a656;
+}
+.info-cal div.card-header{
+	background:#d7a656;
+}
+.info-cal table{
+	width:100%;
+}
+.info-cal table td{
+	padding:10px;
+}
+
+.info-buyer #friendList{}
+li.friend{
+	height:60px;
+	line-height:60px;
+}
+li.friend div.icon{
+	margin:5px 0 0 5px;
+	width: 50px;
+	height:50px;
+	vertical-align: middle;
+	text-align: center;
+	float: left;
+	-moz-border-radius: 25px;
+	-webkit-border-radius: 25px;
+	border-radius: 25px;
+	background-color: #ccc;
+}
+div.icon img{
+	width:100%;
+	height:100%;
+	display:block;
+	-moz-border-radius: 25px;
+	-webkit-border-radius: 25px;
+	border-radius: 25px;
+}
+li.friend div.detail{
+	margin-left:60px;
+}
+li.friend div.detail div{
+	height:30px;
+	line-height:30px;
+}

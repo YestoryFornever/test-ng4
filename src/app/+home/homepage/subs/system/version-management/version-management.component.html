@@ -1,0 +1,249 @@
+	<div class="header clearfix">
+		<span class="head icon">|</span><span class="head" >版本发布管理</span>
+	</div>
+
+	<div class="screen .clearfix">
+		<div class="condition container-fluid">
+			<span>版本种类</span>
+			<select [(ngModel)]="versionType" name="" class="selection">				
+				<option value="1">pc端</option>
+				<option value="2">web</option>	
+				<option value="3">android</option>
+				<option value="4">ios</option>
+			</select>
+		</div>
+
+		<div class="condition container-fluid">
+			<span>发布时间</span>
+			<p-calendar [(ngModel)]="startDate"   [locale]="en" [showTime]="true"></p-calendar>
+			<!-- <input class="selection"  type="date" [(ngModel)]="startDate"> -->
+			&nbsp;到&nbsp;
+			<p-calendar [(ngModel)]="endDate"   [locale]="en" [showTime]="true"></p-calendar>
+			<!-- <input class="selection" type="date" [(ngModel)]="endDate"> -->
+		</div>
+		
+		<div class="condition container-fluid">
+			<span>版本状态</span>
+			<select [(ngModel)]="versionState" name="" class="selection">
+				<option value="1">有效</option>
+				<option value="0">无效</option>
+			</select>
+		</div>
+		
+		<button class="condition btn btn-primary sub" (click)='turnFirst()'>查询</button>
+	</div>
+
+
+	<!-- list -->
+	<div class="tableList">
+		<table class="table table-bordered table-hover ">
+			<thead >
+				<tr>
+					<td class="info shortTxt">版本记录ID</td>
+					<td class="info shortTxt">版本种类</td>
+					<td class="info shortTxt">版本号</td>
+					<td class="info middleTxt">版本名称</td>
+					<td class="info middleTxt">发布时间</td>
+					<td class="info shortTxt">强制升级标志</td>
+					<td class="info longTxt">升级内容描述</td>
+					<td class="info longTxt">升级包下载地址</td>
+					<td class="info shortTxt">版本状态</td>
+					<td class="info shortTxt">安装包大小</td>
+					<td class="info middleTxt">创建时间</td>
+					<td class="info middleTxt">更新时间</td>
+				</tr>
+			</thead>
+			<tbody>
+				<tr #trId *ngFor="let version of versionLists" (click)="getVersionId(trId,version.versionId,version)">
+					<td>{{version.versionId}}</td>
+					<td>{{version.versionType}}</td>
+					<td>{{version.versionNumber}}</td>
+					<td>{{version.versionName}}</td>
+					<td>{{version.releaseTime}}</td>
+					<td>{{version.mandatoryUpgradeFlag}}</td>
+					<td><div class="td" [tooltip]="version.upgradeDescription">{{version.upgradeDescription}}</div></td>
+					<td><a [href]=version.downloadAddress class="td" [tooltip]="version.downloadAddress">{{version.downloadAddress}}</a></td>
+					<td>{{version.versionState}}</td>
+					<td>{{version.packetSize}}MB</td>
+					<td>{{version.createTime}}</td>
+					<td>{{version.updateTime}}</td>
+				</tr>
+			</tbody>
+			<!--<tbody #XXX id="list" *ngFor="let userMsg of userMsge">
+				
+			</tbody>-->
+		</table>
+	</div>
+	<div class="addModify">
+		<button class="btn btn-primary" (click)="add.show()">添加</button>
+		<button class="btn btn-primary"  (click)="modifyList(change,reTImes)">修改</button>		
+	</div>
+	
+<!-- 分页 -->
+	<div class="row pagerow">
+		<div class="pageshowleft">每页显示
+			<select #selectPage name="" id="msgNum" (change)="sizeData(selectPage.value)">
+				<option #optionPage  *ngFor="let msgNumber of msgNumbers" value={{msgNumber}}>{{msgNumber}}</option>
+			</select>
+			条数据
+		</div>
+		<div class="pageshowmodle">
+			<span>{{condition.currentPage}} / {{condition.totalPages}}</span>页
+			<span>{{condition.totalItems}}条数据</span>
+		</div>
+
+		<div class="pagefen">
+			<pagination
+				[firstText]="firstText" 
+				[lastText]="lastText" 
+				[previousText]="previousText" 
+				[nextText]="nextText" 
+				[maxSize]="condition.maxSize" 
+				[totalItems]="condition.totalItems" 
+				[itemsPerPage]="condition.itemsPerPage" 
+				[(ngModel)]="condition.currentPage" 
+				[boundaryLinks]="true" 
+				(pageChanged)='pageChanged($event)' 
+				(numPages)='pageNumChange($event)' 
+			class="pagination-sm"></pagination>
+		</div>
+	</div>
+
+
+	<!--添加-->
+<div bsModal #add="bs-modal" class="modal fade modelPon" tabindex="-1"  role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-sm">
+		<div class="modal-content delete">			
+			<div class="modal-header ">
+				<button type="button" class="close" aria-label="Close" (click)="add.hide()">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<h4 class="modal-title">添加版本发布信息</h4>
+			</div>
+			<div class="modal-body contentxinxi">
+				
+				<div class="condition container-fluid">
+					<span>版本种类</span>
+					<select [(ngModel)]="addNew.versionType" name="" class="selection">
+						<option value="1">pc端</option>
+						<option value="2">web</option>
+						<option value="3">android</option>
+						<option value="4">ios</option>
+					</select>
+				</div>		
+				<div class="condition container-fluid">
+					<span>发布时间</span>
+					<p-calendar [(ngModel)]="addTime"   [locale]="en" [showTime]="true"></p-calendar>
+					<!-- <input class="selection"  type="date" [(ngModel)]='addNew.releaseTime'> -->
+				</div>		
+				<div class="condition container-fluid">
+					<span>版本号</span>
+					<input class="selection" type="text" [(ngModel)]="addNew.versionNumber" placeholder="输入整数值">
+				</div>
+				<div class="condition container-fluid">
+					<span>安装包大小</span>
+					<input class="selection" type="text" [(ngModel)]="addNew.packetSize" placeholder="输入整数值">MB
+				</div>
+				<div class="condition container-fluid">
+					<span>强制升级标志</span>
+					<select [(ngModel)]="addNew.mandatoryUpgradeFlag" name="" class="selection">
+						<option value="1">是</option>
+						<option value="2">否</option>
+					</select>
+				</div>	
+				<div class="condition container-fluid">
+					<span>版本名称</span>
+					<input class="selection"  type="text" [(ngModel)]="addNew.versionName" placeholder="输入字符串">
+				</div>
+				<div class="condition container-fluid">
+					<span>版本状态</span>
+					<select [(ngModel)]="addNew.versionState" name="" class="selection">
+						<option value="1">有效</option>
+						<option value="0">无效</option>
+					</select>
+				</div>									
+				<div class="condition container-fluid conditionAddr">
+					<span>升级包下载地址</span>
+					<input type="text" [(ngModel)]="addNew.downloadAddress">
+				</div>
+				<div class="condition container-fluid conditionAddr">
+					<span>升级内容描述</span>
+					<textarea name="" rows="5" cols="50" style="vertical-align: top" [(ngModel)]="addNew.upgradeDescription" placeholder="填写版本描述，字数限制500"></textarea>
+				</div>
+				<div class="btnstyle">
+					<button type="button" class="btn btn-primary btnhoverju" (click)="addVersionList(add)">保存</button>
+					<button type="button" class="btn btn-default btnhoverlan" (click)="add.hide()">取消</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+	<!--修改-->
+<div bsModal #change="bs-modal" class="modal fade modelPon" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-sm">
+		<div class="modal-content delete">			
+			<div class="modal-header ">
+				<button type="button" class="close" aria-label="Close" (click)="change.hide()">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<h4 class="modal-title">修改版本发布信息</h4>
+			</div>
+			<div class="modal-body contentxinxi">
+				
+				<div class="condition container-fluid">
+					<span>版本种类</span>
+					<select [(ngModel)]="save.versionType" name="" class="selection">
+						<option value="1">pc端</option>
+						<option value="2">web</option>
+						<option value="3">android</option>
+						<option value="4">ios</option>
+					</select>
+				</div>		
+				<div class="condition container-fluid">
+					<span>发布时间</span>
+					<p-calendar [(ngModel)]="startTime"   [locale]="en" [showTime]="true"></p-calendar>
+					<!-- <input class="selection" id="retime"  #reTImes type="date" [(ngModel)]='releaseTime'> -->
+				</div>		
+				<div class="condition container-fluid">
+					<span>版本号</span>
+					<input class="selection" type="text" [(ngModel)]="save.versionNumber" placeholder="输入整数值">
+				</div>
+				<div class="condition container-fluid">
+					<span>安装包大小</span>
+					<input class="selection" type="text" [(ngModel)]="save.packetSize" placeholder="输入整数值">MB
+				</div>
+				<div class="condition container-fluid">
+					<span>强制升级标志</span>
+					<select [(ngModel)]="save.mandatoryUpgradeFlag" name="" class="selection">
+						<option value="1">是</option>
+						<option value="2">否</option>
+					</select>
+				</div>	
+				<div class="condition container-fluid">
+					<span>版本名称</span>
+					<input class="selection" type="text" [(ngModel)]="save.versionName" placeholder="输入字符串">
+				</div>
+				<div class="condition container-fluid">
+					<span>版本状态</span>
+					<select [(ngModel)]="save.versionState" name="" class="selection">
+						<option value="1">有效</option>
+						<option value="0">无效</option>
+					</select>
+				</div>									
+				<div class="condition container-fluid conditionAddr">
+					<span>升级包下载地址</span>
+					<input type="text" [(ngModel)]="save.downloadAddress">
+				</div>
+				<div class="condition container-fluid conditionAddr">
+					<span>升级内容描述</span>
+					<textarea name="" rows="5" cols="50" style="vertical-align: top" [(ngModel)]="save.upgradeDescription" placeholder="填写版本描述，字数限制500"></textarea>
+				</div>
+				<div class="btnstyle">
+					<button type="button" class="btn btn-default btnhoverlan" (click)="change.hide()">取消</button>
+					<button type="button" class="btn btn-primary btnhoverju" (click)="modifyVersionList(change,reTImes)">保存</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

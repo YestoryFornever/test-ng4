@@ -1,0 +1,87 @@
+	<div class="header clearfix">
+		<span class="head icon">|</span><span class="head" >用户反馈列表</span>
+		<div class="btnHeader head">
+			<!-- <button class="btn btn-primary" routerLink='../sns-share-add'  routerLinkActive="active">新增动态</button> -->
+			<!-- <button class="btn btn-primary">删除</button> -->
+			<button type="button" class="btn btn-primary" (click)="exportUserLogExcel(default)">导出</button>
+		</div>
+	</div>
+
+	<div class="screen .clearfix">
+		<div class="condition container-fluid">
+			<span>用户注册手机号</span><input type="tel" [(ngModel)]="default.loginName"   req placeholder="手机号" class="form-control">
+		</div>
+		
+		<div class="condition container-fluid">
+			<span>用户姓名</span><input  [(ngModel)]="default.userName"  req placeholder="用户姓名" class="form-control">
+		</div>
+		<div class="condition container-fluid">
+			<span>反馈时间</span><input [(ngModel)]="myStartTime"  class="selection"  type="date">&nbsp;到&nbsp;<input [(ngModel)]="myEndTime" class="selection" type="date">
+		</div>
+		<div class="condition container-fluid">
+			<span >反馈状态</span><select  [(ngModel)]="default.feedbackState"   class="selection" ><option [value]="''">全部</option><option [value]="1">待处理</option><option [value]="3">已采纳</option><option [value]="2">已忽略</option></select>
+		</div>
+		
+		<button class="condition btn btn-primary sub" (click)="onSubmit()" >查询</button>
+	</div>
+
+	<div class="tableList " >
+		
+		<table class="table table-bordered table-hover " >
+			<thead >
+				<tr>
+					<td class="info shortTxt" style="text-align:center">操作</td>
+					<!-- <td class="info shortTxt" >用户反馈ID</td> -->
+					<!-- <td class="info shortTxt" >用户ID</td> -->
+					<td class="info shortTxt ">用户姓名</td>
+					<td class="info ">用户注册手机号</td>
+					<td class="info ">反馈内容</td>
+					<td class="info shortTxt" >反馈状态</td>
+					<td class="info ">处理用户姓名</td>
+					<td class="info middleTxt">处理意见</td>
+					<td class="info middleTxt">反馈时间</td>
+					<td class="info middleTxt">处理时间</td>
+					
+				</tr>
+			</thead>
+			<tbody  *ngFor="let userList of userBackList">
+				<!-- *ngIf="isEmpty(userMsgName)" -->
+				<tr  #aa  class="table-hover">
+					<td class="table-hover" style="text-align: center">
+						<a class="revisit "  (click)="check(userList.userFeedbackId,userList.userId)" *ngIf="userList.feedbackState =='待处理'">处理</a>
+						<a class="revisit "  (click)="check(userList.userFeedbackId,userList.userId)" *ngIf="(userList.feedbackState =='已采纳'  || userList.feedbackState =='已忽略')">查看</a>
+					</td>
+					<!-- <td class="table-hover" >{{userList.userFeedbackId}}</td> -->
+					<!-- <td class="table-hover" >{{userList.userId}}</td> -->
+					<td class="table-hover">{{userList.userName}}</td>
+					<td class="table-hover">{{userList.loginName}}</td>
+					<td class="table-hover"><div [tooltip]="userList.feedbackContent">{{userList.feedbackContent}}</div></td>
+					<td class="table-hover">{{userList.feedbackState}}</td>
+					<td class="table-hover">{{userList.processUserName}}</td>
+					<td class="table-hover" ><div [tooltip]="userList.handlingSuggestion">{{userList.handlingSuggestion}}</div></td>
+					<td class="table-hover">{{userList.createTime}}</td>
+					<td class="table-hover">{{userList.updateTime}}</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+
+	<!-- 分页 -->
+	<div class="row pagerow" >
+		<div class="pageshowleft">每页显示
+			<select #selectPage name="" id="msgNum" (change)="sizeData(selectPage.value,userList)">
+				<option #optionPage  *ngFor="let msgNumber of msgNumbers" value={{msgNumber.Number}}>{{msgNumber.Number}}</option>
+			</select>
+			条数据
+		</div>
+		<div class="pageshowmodle">
+			<span>{{currentPage}} / {{totalPages}}</span>页
+			<span>{{totalItems}}条数据</span>
+		</div>
+
+		<div class="pagefen">
+			<pagination  [firstText]="firstText" [lastText]="lastText" [previousText]="previousText" [nextText]="nextText" [maxSize]="maxSize" [totalItems]="totalItems" [itemsPerPage]="itemsPerPage" [(ngModel)]="currentPage" [boundaryLinks]="true" (pageChanged)='pageChanged($event)' (numPages)='pageNumChange($event)' class="pagination-sm"></pagination>
+		</div>
+	</div>
+
+

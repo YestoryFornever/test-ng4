@@ -1,0 +1,81 @@
+<div class="header">
+	<span class="head icon">|</span>
+	<span class="head">债帮手团队</span>
+	<div class="btnHeader head">
+		<button class="btn btn-primary" (click)="createTeam()">创建团队</button>
+		<!-- <button (click)="checkDetail()">test</button> -->
+	</div>
+</div>
+<main>
+	<div class="condition-container">
+		<div class="btns">
+			<div class="condition-btn">
+				<button class="btn btn-primary sub" (click)="getList()">查询</button>
+			</div>
+		</div>
+		<div class="conditions" style="min-width:580px;">
+			<div class="condition">
+				<label for="rgstmblphNo" class="text-right">注册手机</label>
+				<div class="condition-input">
+					<input type="text" class="form-control" [(ngModel)]="condition.rgstmblphNo">
+				</div>
+			</div>
+			<div class="condition">
+				<label for="qqNo" class="text-right">用户QQ</label>
+				<div class="condition-input">
+					<input type="text" class="form-control" [(ngModel)]="condition.qqNo">
+				</div>
+			</div>
+			<div class="condition">
+				<label for="userName" class="text-right">用户姓名</label>
+				<div class="condition-input">
+					<input type="text" class="form-control" [(ngModel)]="condition.userName">
+				</div>
+			</div>
+			<div class="condition">
+				<label for="teamEstatus" class="text-right">团队状态</label>
+				<div class="condition-input">
+					<!-- <btns [(btnsModel)]="condition.teamEstatus" [btnsPattern]="condition.teamEstatusPattern"></btns> -->
+					<div class="btn-group">
+						<label class="btn btn-mint" [(ngModel)]="condition.teamEstatus"
+				 btnRadio="">全部</label>
+						<label class="btn btn-mint" [(ngModel)]="condition.teamEstatus" btnRadio="1">有效</label>
+						<label class="btn btn-mint" [(ngModel)]="condition.teamEstatus"
+				 btnRadio="0">无效</label>
+					</div>
+				</div>
+			</div>
+			<div style="clear:both;"></div>
+		</div>
+	</div>
+	<div class="table-list">
+		<table class="table table-bordered table-hover">
+			<thead>
+				<tr>
+					<th>管理</th>
+					<th>团队名称</th>
+					<th>团队成员数</th>
+					<th>团队状态</th>
+					<th>绑定QQ群</th>
+					<th>操作人</th>
+					<th>修改时间</th>
+				</tr>
+			</thead>
+			<tbody *ngFor="let item of list">
+				<tr>
+					<td class="table-hover">
+						<a href="javascript:void(0)" (click)="checkDetail(item)">查看详情</a>
+					</td>
+					<td class="table-hover">{{item.teamNm}}</td>
+					<td class="table-hover">{{item.teamMenm}}</td>
+					<td class="table-hover">{{item.teamEstatus|teamEstatus}}</td>
+					<td class="table-hover">{{item.bndgqqGroup}}</td>
+					<td class="table-hover">{{item.mnpltUsr}}</td>
+					<td class="table-hover">{{item.moTm}}</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<!-- 分页 -->
+	<!--<page [(pageObj)]="pageParams" (fnParent)="fn()"></page>-->
+</main>

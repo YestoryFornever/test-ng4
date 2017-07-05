@@ -1,0 +1,190 @@
+<div class="header">
+    <span class="head icon">|</span>
+    <span class="head">资讯来源列表</span>
+    <div class="btnHeader head">
+        <button class="btn btn-primary" (click)="addWin(addNews,file_add)">新增资讯来源</button>
+    </div>
+</div>
+<!-- condition -->
+<main>
+	 <div class="condition-container">
+        <div class="conditions" style="min-width:580px;">
+        	<div class="condition">
+                <label for="fullname" class="text-right">状态</label>
+                <div class="condition-input">
+                    <div class="btn-group" >
+						<label class="btn btn-mint" [(ngModel)]="state" btnRadio="0" 
+						>全部</label>
+						<label class="btn  btn-mint" [(ngModel)]="state" btnRadio="1" 
+						>正常</label>
+						<label class="btn  btn-mint" [(ngModel)]="state" btnRadio="2" 
+						>待处理</label>
+					</div>
+                </div>
+            </div>
+            <div class="condition">
+                <label for="fullname" class="text-right">来源名</label>
+                <div class="condition-input">
+                    <input type="text" class="form-control" [(ngModel)]="default.s_name">
+                </div>
+            </div>
+             <div class="btns">
+                <div class="condition-btn">
+                    <button class="btn btn-primary sub" (click)="turnFirst()">查询</button>
+                </div>
+           	</div>
+            <div style="clear:both;"></div>
+        </div>
+    </div>
+    <div class="tableList ">
+		<table class="table table-bordered table-hover ">
+			<thead >
+				<tr>
+					<td class="table-hover middleTxt">操作</td>
+					<td class="table-hover">正确名</td>
+					<td class="table-hover ">别名数量</td>
+					<td class="table-hover ">资讯数量</td>
+					<td class="table-hover middleTxt">状态</td>					
+				</tr>
+			</thead>
+			<tbody *ngFor="let source of sourceLists">
+				<tr >
+					<td><a class="verify" (click)="changeSorce(changeName,source,file_change)">修改</a>/<a class="revisit" (click)="toChange(source.s_id,source.s_name)">别名详情</a>/<a (click)="moveNameWin(moveName,source.s_id,source.s_name,cm)">转移别名</a></td>
+					<td>{{source.s_name}}</td>
+					<td>{{source.alias_cnt}}</td>
+					<td>{{source.info_cnt}}</td>
+					<td><span *ngIf="source.s_state==0">待处理</span><span *ngIf="source.s_state==1">正常</span></td>				
+				</tr>	
+			</tbody>
+		</table>
+	</div>
+</main>
+	
+	<!-- pagination -->
+	<div class="row pagerow">
+		<div class="pageshowleft">每页显示
+			<select #selectPage name="" id="msgNum" (change)="sizeData(selectPage.value,userList)" [(ngModel)]="itemsPerPage">
+				<option #optionPage  *ngFor="let msgNumber of msgNumbers" value={{msgNumber.Number}}>{{msgNumber.Number}}</option>
+			</select>
+			条数据
+		</div>
+		<div class="pageshowmodle">
+			<span>{{currentPage}} / {{totalPages}}</span>页
+			<span>{{totalItems}}条数据</span>
+		</div>
+
+		<div class="pagefen">
+			<pagination  [firstText]="firstText" [lastText]="lastText" [previousText]="previousText" [nextText]="nextText" [maxSize]="maxSize" [totalItems]="totalItems" [itemsPerPage]="itemsPerPage" [(ngModel)]="currentPage" [boundaryLinks]="true" (pageChanged)='pageChanged($event,allcheck)' (numPages)='pageNumChange($event,allcheck)' class="pagination-sm"></pagination>
+		</div>
+	</div>
+
+
+<!--新增资讯弹窗 -->
+<div bsModal #addNews="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content add">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="addNews.hide()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">新增资讯来源</h4>
+	</div>
+		<div class="modal-body">
+			<form class="form-horizontal" role="form" #editgroupmessage="ngForm">
+				<div class="col-xs-6 col-md-6" style="margin-top:10px;height:auto;">
+					<fieldset class="form-group">
+						<div class="lab" style="line-height:30px ">
+							<span style="font-weight: 600;width: 50px;text-align: left">正确名</span><input type="text" name="link" [(ngModel)]="addDetial.s_name">
+						</div>
+						<label [hidden]="imghead" for="exampleInputFile"> LOGO</label> 
+						<input type="file" class="form-control-file filecss" id="file_input" #file_add (change)="fileChangeAdd(file_add,$event)"/>
+						<div  class="file-upload-thumbnail">
+							<img  [src]="new.src" name="newsImg" class='once'/>
+						</div>
+					<!-- 	<input [(ngModel)]="detial.pictureUrl" required  name="imgh" [hidden]="'true'" #imgh="ngModel"/> -->
+						<div class="btnstyle">
+	                    	<button type="button" class="btn btn-default btnhoverlan" (click) = "addSource(addNews,file_add)">保存</button>
+	                   		<button type="button" class="btn btn-primary btnhoverju" (click)="addHide(addNews,file_add)">取消</button>
+               			</div>
+					</fieldset>
+				</div>
+			</form>
+		</div>
+	</div>
+  </div>
+</div>
+
+<!--转移别名弹窗 -->
+<div bsModal #moveName="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content move">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="moveName.hide()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">转移别名</h4>
+	</div>
+		<div class="modal-body">
+			<form class="form-horizontal" raole="form" #editgroupmessage="ngForm">
+				<div class="col-xs-6 col-md-6" style="margin-top:10px;height:auto;">
+					<fieldset class="form-group">
+						<div class="lab">
+							<span style="font-weight: 600">当前别名</span><span>{{moveDetialName}}</span>
+						</div>
+						<div class="lab">
+							<span style="font-weight: 600">目标资讯来源</span><input #cm  placeholder="全部"
+		                    [(ngModel)]="sourceMove.s_name" 
+		                    [typeahead]="Allcompanylist" 
+		                    (typeaheadOnSelect)="typeaheadOnCompanys($event)" 
+		                    [typeaheadOptionField]="'s_name'"          
+		                    [ngModelOptions]="{standalone: true}"
+		                    (blur)="blurCompany(cm)">
+		                    <input type="text"  name="companyId" class="hide" [(ngModel)]="default.organizationId" [ngModelOptions]="{standalone: true}">
+						</div>
+						<div class="btnstyle">
+	                    	<button type="button" class="btn btn-default btnhoverlan" (click) = "MoveSource(moveName,cm)">保存</button>
+	                   		<button type="button" class="btn btn-primary btnhoverju" (click)="winHide(moveName)">取消</button>
+               			</div>
+					</fieldset>
+				</div>
+			</form>
+		</div>
+	</div>
+  </div>
+</div>
+
+<!--修改资讯弹窗 -->
+<div bsModal #changeName="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content add">
+      	<div class="modal-header">
+			<button type="button" class="close" aria-label="Close" (click)="changeName.hide()">
+				<span aria-hidden="true">&times;</span>
+			</button>
+			<h4 class="modal-title">修改资讯来源</h4>
+		</div>
+		<div class="modal-body">
+			<form class="form-horizontal" role="form" #editgroupmessage="ngForm">
+				<div class="col-xs-6 col-md-6" style="margin-top:10px;height:auto;">
+					<fieldset class="form-group">
+						<div class="lab" style="line-height:30px ">
+							<span style="font-weight: 600;width: 50px;text-align: left">正确名</span><input type="text" name="link" [(ngModel)]="sorceDetial.s_name">
+						</div>
+						<label [hidden]="imghead" for="exampleInputFile"> LOGO</label> 
+						<input type="file" class="form-control-file filecss" id="file_input" #file_change (change)="fileChangeOther(file_change,$event)"  />
+						<div  class="file-upload-thumbnail">
+							<img  [src]="new.src" name="newsImg" class='once'/>
+							<img *ngIf="once" class="once" [src]="sorceDetial.s_logo " name="show">
+						</div>
+					<!-- 	<input [(ngModel)]="detial.pictureUrl" required  name="imgh" [hidden]="'true'" #imgh="ngModel"/> -->
+						<div class="btnstyle">
+	                    	<button type="button" class="btn btn-default btnhoverlan" (click) = "saveSource(changeName,file_change)">保存</button>
+	                   		<button type="button" class="btn btn-primary btnhoverju" (click)="winHide(changeName)">取消</button>
+               			</div>
+					</fieldset>
+				</div>
+			</form>
+		</div>
+	</div>
+  </div>
+</div>

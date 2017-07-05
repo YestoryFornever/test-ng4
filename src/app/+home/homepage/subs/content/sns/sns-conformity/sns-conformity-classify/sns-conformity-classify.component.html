@@ -1,0 +1,71 @@
+<div class="header box">
+	<span class="head icon">|</span><span class="head" >资讯分类管理</span>
+	<div class="btnHeader head">
+		<!-- <button class="btn btn-primary" (click)="ColorFul()">添加</button> -->
+	</div>
+</div>
+<div class="package box">
+	<div class="con_title">资讯分类与资讯源列表</div>
+	<div class="con_con">
+		<div class="con_list"  *ngFor="let items of typeList;let i=index ">
+            <i *ngIf="isshow[i]" (click)="showthis(i)"  type="button" class='spUp fa fa-angle-up'></i>
+            <i *ngIf="!isshow[i]" (click)="hidethis(i)"  type="button" class='spDown fa fa-angle-down' ></i>
+
+		    <div class="t_1">{{items[0].info_type_name}}<i  type="button" class='sp0 fa fa-pencil-square-o'  (click)="showEdit(items[0].info_type_id,edit)"  ></i></div>
+            <div *ngIf="isshow[i]" ><div   class="t_2"  *ngFor='let item of items;let j = index' name='sp'>{{item.source_name}}<span *ngIf="item.source_name">({{item.v_uname}})</span><i *ngIf="item.source_name"  type="button" name='sp1'  class="fa fa-close" (click)="deleteOne(i,j)" ></i></div></div>
+			
+		</div>
+	</div>
+</div>
+
+<!-- -->
+<div bsModal #edit="bs-modal" class="modal fade modelPon" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content clearfix" >
+            <div class="modal-header">
+                <button type="button" class="close" aria-label="Close" (click)="edit.hide()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">编辑资讯分类与资讯源</h4>
+            </div>
+            <div class="modal-body contentxinxi">
+                <div class="condition container-fluid">
+                    <span>资讯分类</span>
+                    <select [(ngModel)]="infoType" name='infoTp' class="inft" (change)="changes()">
+                        <option [value]="item.businID" *ngFor="let item of INFO_TYPE">{{item.businName}}</option>
+                    </select>
+                </div>
+            	<div class="type" style="max-height: 400px;overflow-y: scroll;width: 100%">	
+        			<table class="table table-bordered table-hover " >
+            			<thead>	
+                            <tr>
+                                <td class="info" style="width: 50px">状态</td>
+                                <td class="info">资讯源名称</td>
+                                <td class="info">关联用户</td>
+                            </tr>
+            			</thead>	
+            			<tbody >
+            			<tr *ngFor="let item of infoSourceList">	
+							<td><input [(ngModel)]="item.is_check" type="checkbox" name="checkInfo"></td>
+                            <td>{{item.source_name}}</td>
+                            <td>
+                                <select [(ngModel)]="item.v_uid" name="Vuser" [disabled]="infoType!=4">
+                                    <option value=''>无</option>
+                                    <option  *ngFor="let item2 of Vuser" [value]="item2.userId">{{item2.userName}}</option>
+                                </select>
+                            </td>
+            			</tr>
+            			</tbody>
+            		</table>
+            		
+            	</div>
+            	<div class="sourceName">	
+            	</div>
+            </div>
+             <div class="condition container-fluid" style="padding-left: 420px">
+				<button style="margin-top:-30px" type="button" class="btn btn-primary" (click)="addInfoSource(edit)">确认</button>
+				<button style="margin-top:-30px" type="button" class="btn btn-primary" (click)="edit.hide()">取消</button>
+			</div>
+        </div>
+    </div>
+</div>

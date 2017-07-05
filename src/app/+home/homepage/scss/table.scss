@@ -1,0 +1,50 @@
+/*table*/
+.tableList{
+	overflow-x: auto;
+	margin: 14px;
+}
+.table{
+	/* width: 2400px; */
+}
+.table tr{
+	height: 32px;
+	line-height: 32px;
+}
+/* .table tbody:nth-child(odd) tr td{
+	background-color: #fff;
+}
+.table tbody:nth-child(even) tr td{
+	background-color: #fff;
+} */
+.table tbody tr:hover td{
+	color: #367ec1;
+	background: #e6f1fc;
+}
+.table tbody tr:active td{
+	background: #f5faff;
+}
+/* table.table>tbody>tr>td,table.table>tbody>tr>th,table.table>tbody>tr,table.table{
+	border:none;
+}*/
+table.table>tbody{
+	border:0;
+}
+table td.tableexe a{
+	margin-right:5px;
+}
+table td.tableexe a:hover{
+	color:#f44336;
+}
+.table-bordered>thead>tr>td, .table-bordered>thead>tr>th{
+	border-bottom-width:0;
+}
+.verify,.revisit{
+	color: #367ec1;
+	cursor: pointer;
+}
+.middleTxt{
+	width: 200px;
+}
+.longTxt{
+	width: 300px;
+}

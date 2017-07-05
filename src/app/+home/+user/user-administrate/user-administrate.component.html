@@ -1,0 +1,200 @@
+<div class="header">
+    <span class="head icon">|</span><span class="head" >管理员列表</span>
+    <div class="btnHeader head">
+        <button class="btn btn-primary" (click)="userAm.show()">添加管理员</button>
+    </div>
+</div>
+<iframe #excel_helper style="display:none"></iframe>
+<div class="coat">
+    <div class=" conditions">
+        <div class=" condition " id="condition_l">
+            <label for="loginName"  class=" ">账号
+                <input type="text"  [(ngModel)]="ad.loginName"  class="form-control" >
+            </label>
+        </div>
+         <div class=" condition " id="condition_l">
+            <label for="" class="">姓名
+                    <input type="text" class="form-control" [(ngModel)]="ad.userName" >
+            </label>
+        </div>
+         <div class=" condition " id="condition_l">
+            <label for="" class=" ">角色 </label>
+                <select name=""  class="form-control" [(ngModel)]="ad.roleId"  >
+                    <!--角色变历-->
+                    <option value=""  selected  >全部</option>
+                    <option [value]='dt.roleId' *ngFor="let dt of data1" >{{dt.roleName}}</option>
+                </select>
+               
+           
+        </div>
+             <div class=" condition " id="condition_2">
+             <label for="">用户状态</label>&nbsp;&nbsp;
+                     <div class="btn-group btnborder">
+                           <label class="btn btn-mint"  btnRadio=""  [(ngModel)]="ad.userState">全部</label>
+                            <label class="btn btn-mint"  btnRadio="1"  [(ngModel)]="ad.userState" >正常</label>
+                            <label class="btn btn-mint"  btnRadio="3"  [(ngModel)]="ad.userState">冻结</label>
+                    </div>
+             </div>  
+       
+            <div class=" condition " id="condition_3">
+               <button class="btn btn-primary sub" (click)="getAdminLists()">查询</button>
+                        <!-- <input type="button" class="btn btn-primary sub"  > -->
+               
+            </div>
+
+        </div>
+    </div>
+
+<div class="coat">
+    <div class="tableList" >
+        <table #role_table class="table table-bordered table-hover ">
+            <thead>
+            <tr>
+                <th class="info">帐号</th>
+                <th class="info">姓名</th>
+                <th class="info">手机号</th>
+                <th class="info" >用户角色</th>
+                <th class="info" >是否运营</th>
+                <th class="info">用户状态</th>
+                <th class="info" >操作</th>
+                <!-- <th class="info">状态</th> -->
+
+            </tr>
+            </thead>
+            <tbody id="list" >
+            <tr  *ngFor="let lis of data"  >
+                <td>{{lis.loginName}}</td>
+                <td>{{lis.userName}}</td>
+                <td>{{lis.contactPhone}}</td>
+                <td >
+                    <span  id="list_td" *ngFor="let role of lis.roles">{{role.roleName}}&nbsp;</span>
+                </td>
+                <td>
+                    <span *ngIf="lis.isOp">是</span><span *ngIf="!lis.isOp">否</span>
+                </td>
+                <td><span *ngIf="lis.userState=='冻结'">冻结</span><span *ngIf="lis.userState=='正常'">正常</span></td>
+                <td>
+                    <a href="javascript:void(0)"class="list-exe" (click)="editAdminPop(userRet,lis.userId,lis.loginName,lis.userName,lis,data1,lis.contactPhone)">修改</a>
+                    <a href="javascript:void(0)" class="list-exe" (click)="resetPassword(lis.userId)">重置密码</a>
+                    <a href="javascript:void(0)" class="list-exe" *ngIf="lis.userState=='冻结'" (click)="updateStatus(lis.userId,lis.userState)">解冻</a>
+                     <a href="javascript:void(0)" class="list-exe"  *ngIf="lis.userState=='正常'"(click)="updateStatus(lis.userId,lis.userState)">冻结</a>
+                      <a  class="list-exe"  *ngIf="lis.isOp" (click)="setOperation(lis,userType)">设置</a>
+                </td>
+
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<!-- 分页 -->
+<div class="row pagerow">
+    <div class="pageshowleft">每页显示
+        <select #selectPage name="" id="msgNum" (change)="sizeData(selectPage.value,userList)">
+            <option #optionPage *ngFor="let msgNumber of msgNumbers" value={{msgNumber.Number}}>{{msgNumber.Number}}</option>
+        </select>
+        条数据
+    </div>
+    <div class="pageshowmodle">
+        <span>{{currentPage}} / {{totalPages}}</span>页
+        <span>{{totalItems}}条数据</span>
+    </div>
+    <div class="pagefen">
+        <pagination [firstText]="firstText" [lastText]="lastText" [previousText]="previousText" [nextText]="nextText" [maxSize]="maxSize" [totalItems]="totalItems" [itemsPerPage]="itemsPerPage" [(ngModel)]="currentPage" [boundaryLinks]="true" (pageChanged)='pageChanged($event,allcheck)' (numPages)='pageNumChange($event)' class="pagination-sm"></pagination>
+    </div>
+</div>
+<!--弹窗-->
+<div bsModal #userAm="bs-modal" class="modal fade modelPon" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog ">
+        <div class="modal-content modal-sm modal-hw">
+            <div class="modal-header">
+                <button type="button" class="close" aria-label="Close" (click)="editAdmPopClose(userAm)">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">添加管理人员</h4>
+            </div>
+            <div class="line"></div>
+            <div class="modal-body contentxinxi  ">
+                <div class="pp "><i style="color:red;">*</i>&nbsp;<span class="sp1">管理人员账号</span>&nbsp;<input class="inp" type="text"  [(ngModel)]="obj1.loginName"    placeholder="提示文本"/></div>
+                <div class="pp"><i style="color:red;">*</i>&nbsp;<span class="sp1">管理人员姓名</span>&nbsp;<input class="inp"type="text"  name="userName" [(ngModel)]="obj1.userName"  placeholder="提示文本"/></div>
+
+                <div class="pp"><i style="color:red;">*</i><span class="sp1">手机号</span>&nbsp;<input class="inp"type="text"  name="userName" [(ngModel)]="obj1.contactPhone"  placeholder="提示文本"/></div>
+
+                <div class="pp-role"><div class="bb" ><i style="color:red;">*</i>&nbsp;<span class="sp1">管理人员角色</span></div>&nbsp;<div class="box">
+                    <ul>
+                        <li *ngFor="let dt of data1"><input type="checkbox" name="user" #listState (change)=" checks(listState)" />{{dt.roleName}}</li>
+                    </ul>
+                </div>
+                </div>
+
+                <div class="btnstyle ">
+                    <button type="button" class="btn btn-default btnhoverlan" (click)="editAddPopClose(userAm)">取消</button>
+                    <button type="button" class="btn btn-primary btnhoverju" (click)="addAdministrate(userAm)">保存</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--修改管理人员弹窗-->
+<div bsModal #userRet="bs-modal" class="modal fade modelPon" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog ">
+        <div class="modal-content modal-sm modal-hw">
+            <div class="modal-header">
+                <button type="button" class="close" aria-label="Close" (click)="editAdmPopClose(userRet)">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">修改管理人员</h4>
+            </div>
+            <div class="line"></div>
+            <div class="modal-body contentxinxi  ">
+                <div class="pp "><i style="color:red;">*</i>&nbsp;<span class="sp1">修改人员账号</span><label
+                        for="" style="color:#e5e5e5;">{{obj2.loginName}}</label>
+                </div>
+                <div class="pp"><i style="color:red;">*</i>&nbsp;<span class="sp1">管理人员姓名</span>&nbsp;<input class="inp" type="text" [(ngModel)]="obj2.userName" placeholder="提示文本"/></div>
+                <div class="pp"><i style="opacity:0;">*</i>&nbsp;<span class="sp1">手机号</span>&nbsp;<input class="inp" type="text"  [(ngModel)]="obj2.contactPhone" placeholder="提示文本"/></div>
+               
+                <div class="pp-role"><div class="bb" ><i style="color:red;">*</i>&nbsp;<span class="sp1">管理人员角色</span></div>&nbsp;<div class="box">
+                    <ul>
+                        <li *ngFor="let dt of data1" class="lk" ><input type="checkbox" name="userRole"  />{{dt.roleName}}</li>
+                    </ul>
+                </div>
+                </div>
+
+                <div class="btnstyle ">
+                    <button type="button" class="btn btn-default btnhoverlan" (click)="editAdmPopClose(userRet)">取消</button>
+                    <button type="button" class="btn btn-primary btnhoverju" (click)="editAdministrate(userRet)">保存</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--设置运营号-->
+<div bsModal #userType="bs-modal" class="modal fade modelPon" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog ">
+        <div class="modal-content modal-sm modal-hw">
+            <div class="modal-header">
+                <button type="button" class="close" aria-label="Close" (click)="userType.hide()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">设置运营号/官方号</h4>
+            </div>
+            <div class="line"></div>
+            <div class="modal-body contentxinxi  ">
+            <div>管理人员账号：{{userName}}</div>
+            <div><span style="display: inline-block;width: 50%;padding-left:15px">待选运营号/官方号：{{list1.length}}个</span><span style="display: inline-block;width: 50%;padding-left:15px">已选运营号/官方号：{{list2.length}}个</span></div>
+               <p-pickList [source]="list1" [target]="list2" sourceHeader="账号名称" targetHeader="账号名称">
+                    <template let-car pTemplate="item">
+                        <div class="ui-helper-clearfix">
+                            <div style="font-size:14px;margin:10px 5px 0 0">{{car.userName}} - {{car.nickName}}</div>
+                        </div>
+                    </template>
+                 </p-pickList>
+        
+                <div class="btnstyle ">
+                    <button type="button" class="btn btn-default btnhoverlan" (click)="userType.hide()">取消</button>
+                    <button type="button" class="btn btn-primary btnhoverju" (click)="showList(userType)">保存</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

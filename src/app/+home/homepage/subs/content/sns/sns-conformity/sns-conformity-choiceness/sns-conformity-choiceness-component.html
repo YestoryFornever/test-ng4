@@ -1,0 +1,153 @@
+<div class="header clearfix">
+	<span class="head icon">|</span><span class="head" >要闻管理</span>
+	
+	<div class="condition container-fluid">
+		<button type="button" class="btn btn-primary" (click)="detialTo()">添加要闻</button>
+	</div>
+</div>
+<div class="screen clearfix" >
+	<div class="condition container-fluid">
+		<span>推送日期</span><p-calendar [(ngModel)]="startDate" [maxDate]="endDate"    [locale]="en" [showTime]="false"></p-calendar>
+		&nbsp;到&nbsp;
+		<p-calendar [(ngModel)]="endDate"  [minDate]="startDate"  [locale]="en" [showTime]="false"></p-calendar>
+	</div>
+	<div class="condition container-fluid">
+		<span>标题</span><input [(ngModel)]="default.title" style='width: 300px' class="selection" type="" name="">
+	</div>
+	<div class="condition container-fluid">
+		<span>来源正确名</span><input [(ngModel)]="default.source" style='width: 300px' class="selection" type="" name="">
+	</div>
+	<div class="condition container-fluid">
+		<button type="button" class="btn btn-primary" (click)="turnFirst()">查询</button>
+	</div>
+</div>
+<div class="tableList " >		
+	<table class="table table-bordered table-hover " >
+	 <thead>
+	 	<tr>
+	 		<td class="info" style="width: 120px" >操作 </td>
+	 		<td  class="info" style="min-width:200px">要闻标题</td>
+	 		<td  class="info" >要闻展示</td>
+	 		<td class="info" style="width: 150px">推送时间 </td>
+	 		<td class="info" style="width: 150px">来源正确名 </td>
+	 		<td class="info" style="width: 70px" >状态 </td>
+	 	</tr>
+	 </thead>
+	 <tbody>
+	 	<tr *ngFor="let item of importantLists">
+	 		<td><span *ngIf="item.release_state=='已发送'" style="color: #ddd">发送</span><a *ngIf="item.release_state!='已发送'"  (click)="sendSweeping(item.important_id)">发送</a>/<a (click)="editTo(item.important_id)">编辑</a>/<a (click)="deleShwo(item.important_id,del)">删除</a></td>
+	 		<td ><div style="white-space:nowrap;text-overflow:ellipsis;overflow: hidden;"  [tooltip]='item.e_title'><a *ngIf="item.html_path" [href]="item.html_path" target="_black">{{item.e_title}}</a><span *ngIf="!item.html_path">{{item.e_title}}</span ></div></td>
+			<td ><div style="white-space:nowrap;text-overflow:ellipsis;overflow: hidden;"  [tooltip]='item.e_note'>{{item.e_note}}</div></td>
+	 		<td>{{item.info_time}}</td>
+	 		<td>{{item.source}}</td>
+	 		<td>{{item.release_state}}</td>
+	 	</tr>
+	 </tbody>
+	</table>
+</div>
+
+<!-- <textarea [(ngModel)]="test">
+	
+</textarea><div>{{test}}</div> -->
+<!-- 分页 -->
+	<div class="row pagerow" >
+		<div class="pageshowleft">每页显示
+			<select #selectPage name="" id="msgNum" (change)="sizeData(selectPage.value,userList)" value='30'>
+				<option #optionPage  *ngFor="let msgNumber of msgNumbers" [value]="msgNumber.Number">{{msgNumber.Number}}</option>
+			</select>
+			条数据
+		</div>
+		<div class="pageshowmodle">
+			<span>{{currentPage}} / {{totalPages}}</span>页
+			<span>{{totalItems}}条数据</span>
+		</div>
+
+		<div class="pagefen">
+			<pagination  [firstText]="firstText" [lastText]="lastText" [previousText]="previousText" [nextText]="nextText" [maxSize]="maxSize" [totalItems]="totalItems" [itemsPerPage]="itemsPerPage" [(ngModel)]="currentPage" [boundaryLinks]="true" (pageChanged)='pageChanged($event)' (numPages)='pageNumChange($event)' class="pagination-sm"></pagination>
+		</div>
+	</div>
+
+	<!-- 发送扫雷-->
+<div bsModal #add="bs-modal" class="modal fade modelPon" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content clearfix" >
+            <div class="modal-header">
+                <button type="button" class="close" aria-label="Close" (click)="add.hide()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">发送</h4>
+            </div>
+            <div class="modal-body contentxinxi">
+            	你确定发送选中的<span style="font-weight: 600">{{allow.length}}</span>条咨询吗？
+            </div>
+             <div class="condition container-fluid" style="padding-left: 400px">
+				<button style="margin-top:-40px" type="button" class="btn btn-primary" (click)="sendSweeping(add)">确认发送</button>
+				<button style="margin-top:-40px" type="button" class="btn btn-primary" (click)="add.hide()">取消</button>
+			</div>
+        </div>
+    </div>
+</div>
+<!-- 发送条件不足 -->
+<div bsModal #addnot="bs-modal" class="modal fade modelPon" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content clearfix" >
+            <div class="modal-header">
+                <button type="button" class="close" aria-label="Close" (click)="addnot.hide()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">发送条件不足</h4>
+            </div>
+            <div class="modal-body contentxinxi">
+            	<div class="modal-body contentxinxi">
+            	你发送的<span  style="font-weight: 600;display: inline-block;width: 200px;white-space:nowrap;text-overflow:ellipsis;overflow: hidden;margin:0 5px  " *ngFor="let item of isNotAllow">{{item.e_title}}</span>{{isNotAllow.length}}条资讯为重点关注，但是关联机构和个债为空，请补充
+            	</div>
+            </div>
+             <div class="condition container-fluid" style="padding-left: 450px">
+				<button style="margin-top:-40px" type="button" class="btn btn-primary" (click)="addnot.hide()">确认</button>
+			</div>
+        </div>
+    </div>
+</div>
+
+	<!-- 撤回扫雷-->
+<div bsModal #dele="bs-modal" class="modal fade modelPon" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content clearfix" >
+            <div class="modal-header">
+                <button type="button" class="close" aria-label="Close" (click)="dele.hide()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">撤回</h4>
+            </div>
+            <div class="modal-body contentxinxi">
+            	你确定撤回选中的<span style="font-weight: 600">{{deles.length}}</span>条资讯吗？
+            </div>
+             <div class="condition container-fluid" style="padding-left: 400px">
+				<button style="margin-top:-40px" type="button" class="btn btn-primary" (click)="deleSweeping(dele)">确认撤回</button>
+				<button style="margin-top:-40px" type="button" class="btn btn-primary" (click)="dele.hide()">取消</button>
+			</div>
+        </div>
+    </div>
+</div>
+
+
+	<!-- 删除扫雷-->
+<div bsModal #del="bs-modal" class="modal fade modelPon" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content clearfix" >
+            <div class="modal-header">
+                <button type="button" class="close" aria-label="Close" (click)="del.hide()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">删除</h4>
+            </div>
+            <div class="modal-body contentxinxi">
+            	你确定删除吗？
+            </div>
+             <div class="condition container-fluid" style="padding-left: 400px">
+				<button style="margin-top:-40px" type="button" class="btn btn-primary" (click)="infoDel(del)">确认删除</button>
+				<button style="margin-top:-40px" type="button" class="btn btn-primary" (click)="del.hide()">取消</button>
+			</div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,330 @@
+<cmmn-title cmmn="内容运营"></cmmn-title>
+<div style="margin:10px;">
+	<header>
+		<form id="condition" (ngSubmit)="listContentByType()">
+			<label for="contentType">内容分类:</label>
+			<select name="contentType" id="contentType" class="form-control" 
+				[(ngModel)]="contentType"
+				(ngModelChange)="changeContentType()">
+				<option value="1">资讯</option>
+				<option value="2">问答</option>
+				<option value="3">动态</option>
+				<!-- <option value="4">干货</option>
+				<option value="5">自媒体</option>
+				<option value="6">活动</option>
+				<option value="7">招聘求职</option>
+				<option value="8">会议培训</option> -->
+				<option value="9">视频</option>
+			</select>
+			<label for="contentDate">日期:</label>
+			<p-calendar name="contentDate" [(ngModel)]="timeBegin"></p-calendar>
+			<button type="submit" class="btn btn-primary">查询</button>
+			<label>
+				<input type="checkbox" name="isTip" [(ngModel)]="isTip" (ngModelChange)="listContentByType()">
+				只看被举报
+			</label>
+		</form>
+		<div id="btns">
+			<button *ngIf="contentType=='3'" class="btn btn-primary" (click)="addWeibo(froalaDialogNew)">动态</button>
+			<!-- <label>发布栏:</label>
+			<button class="btn btn-primary" (click)="froalaDialog.show()">自媒体</button>
+			<button class="btn btn-primary" (click)="froalaDialog.show()">干货</button>
+			<button class="btn btn-primary" (click)="froalaDialog.show()">提问</button>
+			<button class="btn btn-primary" (click)="froalaDialog.show()">活动</button>
+			<button class="btn btn-primary" (click)="froalaDialog.show()">会议</button> -->
+			<button class="btn btn-primary" (click)="toggleRightTable()">
+				<i *ngIf="!rightTabActived" class="fa fa-arrow-left" aria-hidden="true"></i>
+				<i *ngIf="rightTabActived" class="fa fa-arrow-right" aria-hidden="true"></i>
+			</button>
+		</div>
+		<div style="clear:both;"></div>
+	</header>
+	<main style="margin-top:10px;">
+		<section id="rightTable" *ngIf="rightTabActived">
+			<table id="counts" class="table table-bordered">
+				<thead>
+					<tr>
+						<th>状态</th>
+						<th>账号名称</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr *ngFor="let item of operateUserList">
+						<td>
+							<input type="checkbox" [(ngModel)]="item.checked" (ngModelChange)="updateUserIds($event,item.userId)">
+						</td>
+						<td>{{item.nickName}}</td>
+					</tr>
+				</tbody>
+			</table>
+		</section>
+		<section id="leftTable">
+			<table id="contents" class="table table-bordered">
+				<thead>
+					<tr>
+						<th style="width:240px;">标题/正文</th>
+						<th>分类</th>
+						<th>点赞</th>
+						<th>评论</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr *ngFor="let item of list" (click)="showDetail(item)" 
+					[style.font-weight]="item.actived?'bold':'normal'" 
+					[style.background]="item.actived?'#eee':'transparent'">
+						<td>
+							<span container="body" [tooltip]="item.title" placement="right" tooltipClass="customClass" class="title-main">{{item.title}}</span>
+						</td>
+						<td>{{item.category|contentType}}</td>
+						<td>{{item.like_cnt}}</td>
+						<td>{{item.comment_cnt}}</td>
+					</tr>
+				</tbody>
+			</table>
+			<page [(pageObj)]="pageParams" (fnParent)="listContentByType()" [statistics]="'false'"></page>
+		</section>
+		<article [style.margin-right]="rightTabActived?'':'0'">
+			<header id="articleHeader">
+				<span>标题/正文</span>
+				<span>【{{contentType|contentType}}】</span>
+				<span *ngIf="detail.title" class="article-header-title" [tooltip]="detail.title" placement="right" tooltipClass="customClass">
+					{{detail.title}}
+					<!-- <input id="contentTitle" type="text" [(ngModel)]="detail.title"> -->
+				</span>
+				<span class="pull-right" style="color:#f44336;">【被举报{{detail.tipCnt}}】</span>
+			</header>
+			<div id="froalaEditor" class="fr-view">
+				<div [innerHtml]="detail.content|trusthtml"></div>
+			</div>
+			<!-- <div>{{detail.content|trusthtml}}</div> -->
+			<div class="articleBtns">
+				<div class="btns-left">
+					<!--仅动态可编辑-->
+					<button type="button" class="btn btn-default" 
+						[disabled]="contentType!=3&&contentType!=2"
+						(click)="froalaDialog.show()">
+						<i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>
+					<!--均可删除-->
+					<button type="button" class="btn btn-default"
+						(click)="delByType()">
+						<i class="fa fa-trash" aria-hidden="true"></i>
+					</button>
+				</div>
+				<div class="btns-right">
+					<!--资讯、动态可点赞-->
+					<div id="praises" *ngIf="praiseBtnActived">
+						<button class="btn btn-default" (click)="setLikes('5')">5</button>
+						<button class="btn btn-default" (click)="setLikes('20')">20</button>
+						<button class="btn btn-default" (click)="setLikes('50')">50</button>
+						<button class="btn btn-default" (click)="setLikes('100')">100</button>
+					</div><button id="praise" type="button" class="btn btn-default" 
+						[ngClass]="{active:praiseBtnActived}"
+						(click)="togglePraiseBtn()"
+						[disabled]="contentType!=1&&contentType!=3">
+						<i class="fa fa-thumbs-o-up" aria-hidden="true"></i>
+					</button>
+					<!--资讯、动态、回答、视频可评论-->
+					<button type="button" class="btn btn-default" 
+						(click)="publishCommentDialog(commentDialog)"
+						[disabled]="contentType!='1'&&contentType!='3'&&contentType!='9'">评论</button>
+					<button type="button" class="btn btn-default" 
+						(click)="publishAnswerDialog(answerDialog)"
+						[disabled]="contentType!='2'">回答</button>
+					<!--资讯、动态、评论、回答可编辑-->
+					<button type="button" class="btn btn-default"
+						(click)="transmitWeibo()"
+						[disabled]="contentType!='1'&&contentType!='3'">转发至动态</button>
+				</div>
+				<div style="clear:both;"></div>
+			</div>
+			<div class="fr-view">
+				<ul [hidden]="contentType==2">
+					<li class="commit" *ngFor="let item of commentList">
+						<div class="commit-content">
+							<span class="commit-nm" *ngIf="!item.reply_uid">{{item.user_name}}:</span>
+							<span class="commit-nm" *ngIf="item.reply_uid">{{item.user_name}}&nbsp;回复&nbsp;{{item.reply_uname}}:</span>
+							<span class="commit-detail" [innerHtml]="item.content|trusthtml"></span>
+						</div>
+						<div class="commit-operate">
+							{{item.time}}
+							<div class="btns">
+								<i (click)="deleteComment(item)" class="fa fa-trash" aria-hidden="true"></i>
+								<i (click)="publishCommentDialog(commentDialog,item)" class="fa fa-reply" aria-hidden="true"></i>
+							</div>
+						</div>
+					</li>
+					<li class="tip" *ngIf="commentList.length!=0&&showCount<commentPage.totalResult" (click)="checkMoreList(item)">查看更多</li>
+					<li class="tip" *ngIf="commentList.length!=0&&showCount>=commentPage.totalResult">没有更多内容了</li>
+					<li class="tip" *ngIf="commentList.length==0">暂无评论</li>
+				</ul>
+				<ul [hidden]="contentType!=2">
+					<li class="commit" *ngFor="let item of answerList">
+						<div class="commit-content">
+							<span class="commit-nm">{{item.user_name}}:</span>
+							<span class="commit-detail" [innerHtml]="item.content|trusthtml"></span>
+						</div>
+						<div class="commit-operate">
+							{{item.time}}
+							<div class="btns">
+								<i (click)="deleteAnswer(item)" class="fa fa-trash" aria-hidden="true"></i>
+								<i (click)="publishAnswerDialog(commentAnswerDialog,item)" class="fa fa-reply" aria-hidden="true"></i>
+							</div>
+						</div>
+					</li>
+					<li class="tip" *ngIf="answerList.length!=0&&showCount<answerPage.totalResult" (click)="checkMoreAnswerList(item)">查看更多</li>
+					<li class="tip" *ngIf="answerList.length!=0&&showCount>=answerPage.totalResult">没有更多内容了</li>
+					<li class="tip" *ngIf="answerList.length==0">暂无回答</li>
+				</ul>
+			</div>
+		</article>
+		<div style="clear:both;"></div>
+	</main>
+</div>
+<!--发布评论-->
+<div bsModal #commentDialog="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="commentDialog" aria-hidden="true">
+	<div class="modal-dialog modal-sm">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" (click)="commentDialogClose(commentDialog)" aria-label="关闭">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<h4 class="modal-title">评论</h4>
+			</div>
+			<div class="modal-body">
+				<form>
+					<div style="border:1px solid #ddd;" [froalaEditor]="optionComment" [(froalaModel)]="curCommentContent"></div>
+					<!--<textarea name="curCommentCotent" class="form-control" [(ngModel)]="curCommentContent"></textarea>-->
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary" (click)="commentDialogClose(commentDialog)">关闭</button>
+				<button type="button" class="btn btn-primary" (click)="publishComment(commentDialog)">确定</button>
+			</div>
+		</div>
+	</div>
+</div>
+<!--评论回答-->
+<div bsModal #commentAnswerDialog="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="commentAnswerDialog" aria-hidden="true">
+	<div class="modal-dialog modal-sm">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" (click)="commentAnswerDialogClose(commentAnswerDialog)" aria-label="关闭">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<h4 class="modal-title">评论</h4>
+			</div>
+			<div class="modal-body">
+				<form>
+					<div style="border:1px solid #ddd;" [froalaEditor]="optionComment" [(froalaModel)]="curAnswerContent"></div>
+					<!--<textarea name="curAnswerContent" class="form-control" [(ngModel)]="curAnswerContent"></textarea>-->
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary" (click)="commentAnswerDialogClose(commentAnswerDialog)">关闭</button>
+				<button type="button" class="btn btn-primary" (click)="publishAnswerComment(commentAnswerDialog)">确定</button>
+			</div>
+		</div>
+	</div>
+</div>
+<!--发布回答-->
+<div bsModal #answerDialog="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="answerDialog" aria-hidden="true">
+	<div class="modal-dialog modal-sm">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" (click)="answerDialogClose(answerDialog)" aria-label="关闭">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<h4 class="modal-title">回答</h4>
+			</div>
+			<div class="modal-body">
+				<form>
+					<div style="border:1px solid #ddd;" [froalaEditor]="optionComment" [(froalaModel)]="curAnswerContent"></div>
+					<!--<textarea name="curAnswerCotent" class="form-control" [(ngModel)]="curAnswerContent"></textarea>-->
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary" (click)="answerDialogClose(answerDialog)">关闭</button>
+				<button type="button" class="btn btn-primary" (click)="publishAnswer(answerDialog)">确定</button>
+			</div>
+		</div>
+	</div>
+</div>
+<!--编辑动态-->
+<div bsModal #froalaDialog="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="froalaDialog" aria-hidden="true">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" (click)="froalaDialog.hide()" aria-label="关闭">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<h4 class="modal-title">编辑:【{{contentType|contentType}}】</h4>
+			</div>
+			<div class="modal-body">
+				<form>
+					<div class="form-group row" *ngIf="contentType!='3'">
+						<div class="col-md-1">
+							标题:
+						</div>
+						<div class="col-md-11">
+							<input maxlength="50" type="text" name="detailTitle" class="form-control" [(ngModel)]="detail.title">
+						</div>
+					</div>
+					<div class="form-group row" style="margin-top:10px;">
+						<div class="col-md-1">
+							<span style="color:red;">*</span>正文:
+						</div>
+						<div class="col-md-11" >
+							<div style="border:1px solid #ddd;" name="zw" [froalaEditor]="option" [(froalaModel)]="detail.content"></div>
+						</div>
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary" (click)="froalaDialog.hide()">取消</button>
+				<button type="button" class="btn btn-primary" 
+				(click)="saveDetail(froalaDialog)"
+				>
+					<span *ngIf="contentType==3">保存并发布至动态</span>
+					<span *ngIf="contentType==2">保存</span>
+				</button>
+			</div>
+		</div>
+	</div>
+</div>
+<!--新建动态-->
+<div bsModal #froalaDialogNew="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="froalaDialogNew" aria-hidden="true">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" (click)="froalaDialogNew.hide()" aria-label="关闭">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<h4 class="modal-title">新建:【{{contentType|contentType}}】</h4>
+			</div>
+			<div class="modal-body">
+				<form>
+					<div class="form-group row" *ngIf="contentType!='3'">
+						<div class="col-md-1">
+							标题:
+						</div>
+						<div class="col-md-11">
+							<input maxlength="50" type="text" name="detailTitle" class="form-control" [(ngModel)]="detailNew.title">
+						</div>
+					</div>
+					<div class="form-group row" style="margin-top:10px;">
+						<div class="col-md-1">
+							<span style="color:red;">*</span>正文:
+						</div>
+						<div class="col-md-11" >
+							<div style="border:1px solid #ddd;" name="zw" [froalaEditor]="option" [(froalaModel)]="detailNew.content"></div>
+						</div>
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary" (click)="froalaDialogNew.hide()">取消</button>
+				<button type="button" class="btn btn-primary" (click)="saveDetail(froalaDialogNew)">保存并发布至动态</button>
+			</div>
+		</div>
+	</div>
+</div>

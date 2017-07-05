@@ -1,0 +1,44 @@
+/*查询条件*/
+.coat{
+	overflow: auto;
+}
+.screen{
+	width:auto;
+	margin: 14px 14px 0 14px;
+	padding:16px 0 16px 16px; 
+	border:solid 1px #e1e7eb;
+} 
+label{
+	font-weight: normal;
+	display:inline-block;
+}
+/*conditions 需要设置一个最小宽度，宽度值为最宽条件的宽度*/
+div.conditions{
+	margin-right:100px;
+}
+div.btns{
+	width:100px;
+	float:right;
+}
+div.condition{
+	float:left;
+	margin:14px auto auto 10px;
+	height:36px;
+	line-height:36px;
+}
+div.condition label{
+	width:86px;
+	vertical-align:top;
+}
+div.condition div.condition-input{
+	display:inline-block;
+}
+div.condition-input>*{
+	display:inline-block;
+	width:initial;
+}
+div.condition-btn{
+	margin-top:14px;
+	height:36px;
+	line-height:36px;
+}

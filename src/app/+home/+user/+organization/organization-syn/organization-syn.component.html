@@ -1,0 +1,38 @@
+<div class="header box">
+	<span class="head icon">|</span>
+	<span class="head">同步异常列表</span>
+	<div class="btnHeader head">
+		<button class="btn btn-primary">刷新异常列表</button>
+		<i class="fa fa-question-circle" tooltip="自动同步处理异常发债机构，成功则删除异常记录。"  placement="right"></i>
+	</div>
+</div>
+<div class="tableList box">
+    <table class="table table-bordered table-hover ">
+        <thead>
+            <tr>
+                <td class="table-hover" style="width:120px">操作</td>
+                <td class="table-hover">发债机构全称 </td>
+                <td class="table-hover">发债机构简称</td>
+                <td class="table-hover">关联机构全称</td>
+                <td class="table-hovet">同步时间 
+                    <div class="order"><button (click)="Order('ASC','createTime')" class="fa fa-chevron-up" aria-hidden="true"></button><button (click)="Order('DESC','createTime')" class="fa fa-chevron-down"  aria-hidden="true"></button></div>
+                </td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let organization of organizationList">   
+               <td>  <i  class="fa fa-pencil-square-o" (click)='turnToDetial(organization.id)'></i>
+               		 <bSwitch style='background-color: #fff' switch-size="mini" (onChangeState)="onChange($event,position)"
+	                 switch-on-color="success"
+         			 switch-off-color="offColor"> 
+				     </bSwitch>
+				     <i class="fa fa-trash" aria-hidden="true"></i>
+				</td>
+				<td> </td>
+				<td> </td>
+				<td> </td>
+				<td> </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

@@ -1,0 +1,108 @@
+	<div class="header clearfix">
+		<span class="head icon">|</span><span class="head" (click)="toDetial()">修改资讯</span>
+		<div class="btnHeader head">
+			<button class="btn btn-primary" (click)="infoUpdate(save)">保存</button>
+			<button class="btn btn-primary" (click)="abandon.show()" >放弃编辑</button>
+		</div>
+	</div>
+	
+	<div class="newsMsg">
+		<div class="acont">
+			<h5><b>*</b><span>资讯标题</span></h5>
+			<input style="width:100%" type="text" name="title" [(ngModel)]="detial.title">
+	    </div>
+		<div class="acont">
+			<h5><b>*</b>资讯正文</h5>
+			<textarea class="contentText all" [(ngModel)]="detial.content"></textarea>
+		</div>
+		<div class="acont harf">
+			<h5><b>*</b>资讯来源正确名</h5>
+			<input #cm class="selection"  placeholder="全部"
+		                    [(ngModel)]="detial.source_ok" 
+		                    [typeahead]="companylist" 
+		                    (typeaheadOnSelect)="typeaheadOnCompanys($event)" 
+		                    [typeaheadOptionField]="'s_name'"          
+		                    [ngModelOptions]="{standalone: true}"
+		                    (blur)="blurCompany(cm)" >
+		                    <input type="text"  name="companyId" class="hide" [(ngModel)]="default.organizationId" [ngModelOptions]="{standalone: true}">
+		</div>
+		<div class="acont">
+			<h5><b>*</b>资讯来源原始名</h5>
+			<input type="text" class="contentText all" [(ngModel)]="detial.source">
+		</div>
+		<div class="acont harf">
+		 	<h5><b>*</b>资讯来源链接</h5>
+			<input type="text" name="title" [(ngModel)]="detial.source_path">
+	 	</div>
+	    
+		<div class="acont harf">
+			<h5><b>*</b>资讯分类</h5>
+			 <div class="btn-group">
+            	<label class="btn btn-mint" [(ngModel)]="sc4" btnRadio="4"
+				uncheckable>全部</label>
+				<label class="btn btn-mint" [(ngModel)]="sc3" btnRadio="3"
+				uncheckable>负面</label>
+				<label class="btn btn-mint" [(ngModel)]="sc5" btnRadio="5"
+				uncheckable>自媒体</label>
+			</div>
+			<!-- <select id="11" style="width: 150px"  class="selection"  [(ngModel)]="detial.category"><option value='无'>无</option><option value='负面'>负面</option></select> -->
+		</div>
+		<div class="acont harf">
+			<h5><b>*</b>资讯作者</h5>
+			<input type="text" name="title"  [(ngModel)]="detial.auth">
+		</div>
+		<div class="acont harf">
+			<h5><b>*</b>资讯源时间</h5>
+			<!-- <input class="selection" type="date" name="title" > -->
+			<input class="selection" type="datetime-local" name="" [(ngModel)]="detial.source_time">
+		</div>
+		<div class="acont harf">
+			<h5><b>*</b>修改理由</h5>
+			<p><span  *ngIf="detial.is_tip==1">含有举报</span><span *ngIf="detial.is_tip==0">无</span></p>
+		</div>
+		<div class="acont harf">
+			<h5>修改理由备注</h5>
+			<textarea [(ngModel)]="default.edit_note" class="contentText all" type="text" name="title"></textarea>
+		</div>
+	</div>
+
+
+<!--保存-->
+<div bsModal #save="bs-modal" class="modal fade modelPon" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content noproblem">
+            <div class="modal-header ">
+                <button type="button" class="close" aria-label="Close" (click)="save.hide()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">保存修改</h4>
+            </div>
+            <div class="modal-body contentxinxi">
+                <div class="pp clearfix">保存成功！</div>
+                <div class="btnstyle">
+                    <button type="button" class="btn btn-default btnhoverlan" (click)="tolist(save)">确定</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 放弃 -->
+<div bsModal #abandon="bs-modal" class="modal fade modelPon" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content noproblem">
+            <div class="modal-header ">
+                <button type="button" class="close" aria-label="Close" (click)="abandon.hide()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">放弃修改</h4>
+            </div>
+            <div class="modal-body contentxinxi">
+                <div class="pp clearfix">是否放弃修改？</div>
+                <div class="btnstyle">
+                    <button type="button" class="btn btn-default btnhoverlan" (click)="tolist(abandon)">放弃</button>
+                     <button type="button" class="btn btn-primary btnhoverju" (click)="abandon.hide()">取消</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

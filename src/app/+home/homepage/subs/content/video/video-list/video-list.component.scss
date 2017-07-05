@@ -1,0 +1,169 @@
+
+table{
+	margin-top: 10px;
+	table-layout:fixed;
+	 color: #333
+}
+.table>tbody>tr>td{
+	height: 30px;
+	font-size: 14px;
+	white-space:nowrap;
+	text-overflow:ellipsis;
+	overflow: hidden;
+	padding: 0px 2px;
+    line-height: 30px;
+
+}
+.verify,.revisit{
+	color: #367ec1;
+	cursor: pointer;
+	padding:5px 10px;
+}
+.middleTxt{
+	width: 200px;
+}
+.longTxt{
+	width: 300px;
+}
+.shortTxt{
+	width: 100px;
+}
+.isCheck{
+	font-weight: 600;
+	background-color: #e8f1ff
+}
+/*分页*/
+.pagerow{
+	height:auto;
+	background:#f5f7fb;
+	/*width:98%;*/
+	border:1px #dadada solid;
+	margin:0 10px;
+    display:-webkit-box;
+    display:-moz-box;
+    display:-ms-box;
+    display:-o-box;
+}
+.pageshowleft{
+	width:190px;
+	height:66px;
+	line-height:66px;
+	margin-left:15px;
+}
+.pageshowleft select{
+	width:50px;
+	height:34px;
+	line-height:34px;
+	background:#fff;
+}
+.pageshowmodle{
+	-webkit-box-flex:1;
+	line-height:66px;
+	text-align: center;
+}
+.pagefen{
+	height:66px;
+	line-height:66px;
+	margin-right:16px;
+}
+/*弹窗*/
+.delete{
+	width: 350px;
+	height: 300px
+	/*text-align: center;*/
+}
+.win_head{
+	width: 80px;
+	font:18px '黑体';
+	text-align: right;
+	margin-right: 10px;
+	float: left;
+}
+.pp{
+	width: 270px;
+	margin-bottom: 20px;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+.visState{
+	float: left;
+	width: 190px;
+	height: 120px;
+}
+.btnstyle{
+	position: absolute;
+	right: 10px;
+}
+
+.btn2{margin-left:20px;background:#f5f5f5;}
+
+.ord{
+	width: 8px;
+	height: 20px;
+	/*background-color: #bfa;*/
+	float: right;
+	/*margin-top:5px;*/
+}
+.ord img{
+	margin: 0;
+	width: 8px;
+	height: 6px;
+	float: left;
+	cursor: pointer;
+}
+.types{
+	display: inline-block;
+	width: 70px;
+	text-align: right;
+}
+.isRel{
+	/*background-color: #fff;*/
+	height: 28px;
+    border-radius: 14px;
+	border:none;
+}
+.isRel:hover{
+	/*content: '取消推荐';*/
+	background-color: #377dc2;
+}
+.isRel:visited{
+	border:none 
+}
+/* 开关 */
+.box{
+	width: 40px;
+	height: 20px;
+	/* background: #377dc2; */
+	background: #3377a2;
+	border-radius: 20px;
+	margin-top: 5px;
+	/* margin: 10px auto; */
+	position: relative
+}
+.box .onOff:hover{
+	cursor: pointer;
+}
+.box .onOff{
+	width: 20px;
+	height: 20px;
+	color: white;
+	line-height: 20px;
+	text-align: center;
+	/* top: -7px; */
+	border-radius: 50%;
+	position: absolute;
+}
+.box .on{
+	left: 20px;
+	background: #377dc2;
+}
+.box .off{
+	
+	/* left: -2px; */
+	background:#ccc;
+}
+
+main{
+	margin: 10px
+}

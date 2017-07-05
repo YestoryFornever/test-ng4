@@ -1,0 +1,171 @@
+<div class="mian">
+	<div class="header clearfix">
+		<span class="head icon">|</span><span class="head" >crm用户列表</span>
+	</div>
+</div>
+
+<!-- table -->
+	<div class="tableList "  >
+		<div class = "loading" [ngClass]="setLoadClasses()" [ngStyle]="{'height': height }">
+		 <div class="loader">
+			<div class="loader-inner">
+				<div class="loader-line-wrap">
+					<div class="loader-line"></div>
+				</div>
+				<div class="loader-line-wrap">
+					<div class="loader-line"></div>
+				</div>
+				<div class="loader-line-wrap">
+					<div class="loader-line"></div>
+				</div>
+				<div class="loader-line-wrap">
+					<div class="loader-line"></div>
+				</div>
+				<div class="loader-line-wrap">
+					<div class="loader-line"></div>
+				</div>
+			</div>
+		 </div>
+		</div>
+		<table class="table table-bordered table-hover " [ngClass]="setListClasses()">
+
+			<thead >
+				<tr>
+					<td class="info longTxt">操作</td>
+					<td class="info shortTxt">用户组</td>
+					<td class="info middleTxt">所含管理员</td>
+					<td class="info middleTxt">所含管理员姓名</td>					
+					<td class="info shortTxt">管理机构数</td>
+					<td class="info middleTxt">管理联系人数</td>
+					<td class="info ">最近一次拜访时间</td>
+				</tr>
+			</thead>
+			<tbody  id="list" *ngFor="let customer of customerList"  >
+				<tr #userList   [ngStyle]="{'background-color': color }" class="Userlist">
+					<td><a (click)="toChange(customer.receiveId,customer.loginName,customer.userName )">查看已分配机构</a><a *ngIf="!customer.flag" (click)="toAllocation(customer.receiveId,customer.loginName,customer.userName )">/ 分配机构</a><a *ngIf="!customer.flag" (click)="allocation(userVe,customer.receiveId)">/ 批量分配</a></td>
+					
+					<td class="table-hover">{{customer.groupName}}</td>
+					<td class="table-hover">{{customer.loginName}}</td>
+					<td class="table-hover">{{customer.userName}}</td>
+					<td class="table-hover">{{customer.orgNumber}}</td>
+					<td class="table-hover">{{customer.contactNumber}}</td>
+					<td class="table-hover">{{customer.visitTime}}</td> 
+				</tr>
+			</tbody>
+		</table>
+	</div>
+
+
+	<!-- 分配 -->
+	<div bsModal #userVe="bs-modal" class="modal fade modelPon" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" [config]="{backdrop: 'static'}" aria-hidden="true">
+	    <div class="modal-dialog modal-sm">
+	        <div class="modal-content noproblem" style="width: 500px;height: 410px">
+	            <div class="modal-header ">
+	                <button type="button" class="close" aria-label="Close" (click)="userVe.hide()">
+	                    <span aria-hidden="true">&times;</span>
+	                </button>
+	                <h4 class="modal-title">批量分配机构</h4>
+	            </div>
+	            <div class="modal-body contentxinxi">
+	                <div class="gel container-fluid">
+	                	<span class="gol">分配组</span><div>{{initdata.nameStr}}</div>
+	                </div>
+	            <div  *ngIf="!isSuccess">
+	                <div class="gel container-fluid">
+	                	<span class="gol">批量分配维度：</span>
+	                	<div class="btn-group" >
+							<label class="btn btn-mint" [(ngModel)]="apha" btnRadio="1"
+							uncheckable>按金融机构分类</label>
+							<label class="btn  btn-mint" [(ngModel)]="apha" btnRadio="2"
+							uncheckable>按机构所在地分类</label>
+						</div>
+					</div>
+					<div class=" gel container-fluid" *ngIf="apha==1" >
+						<span class="gol">金融机构分类 </span>
+						<select #o1 name=""  class="form-control" [(ngModel)]="aInfo.organizationCategoryId1" (change)="getOrgCate2($event,o1)">
+							<option value="" selected>全部</option>
+							<option value="{{org1.organizationCategoryId}}"  *ngFor="let org1 of orgCate1">{{org1.categoryName}}</option>
+						</select>
+						<select #o2 [disabled]="!orgCate2" name=""  class="form-control" [(ngModel)]="aInfo.organizationCategoryId2" (change)="getOrg(o2)">
+							<option value="" selected>全部</option>
+							<option value="{{org2.organizationCategoryId}}" *ngFor="let org2 of orgCate2">{{org2.categoryName}}</option>
+						</select>
+					</div>
+				<div class=" gel container-fluid" *ngIf="apha==2">
+					<span class="gol">机构所在地 </span><SELECT class="form-control kuan"  name="sheng" id="to_cn" #city (change)="set_city(city)" > 
+							<option value=''>请选择</option> 
+							<option value=北京>北京</option> 
+							<option value=上海>上海</option> 
+							<option value=天津>天津</option> 
+							<option value=重庆>重庆</option> 
+							<option value=河北>河北</option> 
+							<option value=山西>山西</option> 
+							<option value=辽宁>辽宁</option> 
+							<option value=吉林>吉林</option> 
+							<option value=黑龙江>黑龙江</option> 
+							<option value=江苏>江苏</option> 
+							<option value=浙江>浙江</option> 
+							<option value=安徽>安徽</option> 
+							<option value=福建>福建</option> 
+							<option value=江西>江西</option> 
+							<option value=山东>山东</option> 
+							<option value=河南>河南</option> 
+							<option value=湖北>湖北</option> 
+							<option value=湖南>湖南</option> 
+							<option value=广东>广东</option> 
+							<option value=海南>海南</option> 
+							<option value=四川>四川</option> 
+							<option value=贵州>贵州</option> 
+							<option value=云南>云南</option> 
+							<option value=陕西>陕西</option> 
+							<option value=甘肃>甘肃</option> 
+							<option value=青海>青海</option> 
+							<option value=内蒙古>内蒙古</option> 
+							<option value=广西>广西</option> 
+							<option value=西藏>西藏</option> 
+							<option value=宁夏>宁夏</option> 
+							<option value=新疆>新疆</option> 
+							<option value=香港>香港</option> 
+							<option value=澳门>澳门</option> 
+							<option value=台湾>台湾</option> 
+							<option value=其他地区>其他地区</option> 
+							<option value=国外机构>国外机构</option> 
+						</SELECT>
+						<select id="city"  name="shi" class="form-control kuan" (change)="con_city()"> 
+							<option value=''>请选择</option> 
+						</select> 
+					</div>
+					<div style="text-align: center"><a (click)="multipleAllocateQuery()">开始查询</a></div>
+					<div class=" gel container-fluid">
+						<span class="gol">查询结果:</span>
+						<div>管理机构:{{pPie.sum}}</div>
+						<div>已分配机构:{{pPie.notAllocated}}</div>
+						<div>可分配机构:{{pPie.allowAllocated}}</div>
+					</div>
+				</div>
+	            <div *ngIf="isSuccess">
+	            	 <div class="gel container-fluid">
+	                	<span class="gol">分配机构：</span>
+	                	<div style="display: inline" *ngIf="apha==2">{{aInfo.province}}-{{aInfo.city}}的{{pPie.orgIdList.length}}个机构</div>
+	                	<div style="display: inline" *ngIf="apha==1">{{orgc1}}-{{orgc2}}的{{pPie.orgIdList.length}}个机构</div>
+	            </div>
+	                <div class="gel container-fluid">
+	                	<span class="gol">分配结果：</span>{{aliGro.msg}}
+	                </div>
+	            </div>  
+	            </div>
+	            <div *ngIf="!isSuccess">
+		             <div class="btnstyle" *ngIf="isAli">
+		                    <button type="button" class="btn btn-default btnhoverlan" (click)="addAllocate(userVe)" [disabled]="pPie.orgIdList<=0">分配</button>
+		                     <button type="button" class="btn btn-primary btnhoverju" (click)="userVe.hide()">取消</button>
+		             </div>
+		             <div style="text-align:center" *ngIf="!isAli">分配中,请勿关闭窗口</div>
+	       		</div>
+	       		<div *ngIf="isSuccess">
+	       			 <div class="btnstyle" *ngIf="isAli">
+		                     <button type="button" class="btn btn-primary btnhoverju" (click)="userVe.hide()">确定</button>
+		             </div>
+	       		</div>
+	        </div>
+	    </div>
+	</div>

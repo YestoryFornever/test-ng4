@@ -1,0 +1,456 @@
+<div [hidden]="!submitted">
+	<div id="boom" class="rowtop">
+		<div id="icon"><i class="fa fa-hand-peace-o fa-5x"></i></div>
+		<div id="tips">
+			<span *ngIf="isAdd">添加成功</span>
+			<span *ngIf="!isAdd">编辑成功</span>
+		</div>
+		<div id="btns">
+			<button *ngIf="isAdd" (click)="routeAddUser()">继续添加用户</button>
+			<button (click)="userCancel(isAdd)">回到列表</button>
+		</div>
+	</div>
+</div>
+<div [hidden]="submitted">
+	<div class="header clearfix" *ngIf="isAdd">
+		<span class="head icon">|</span><span class="head" >添加用户</span>
+		<div class="btnHeader head">
+			<button type="button" class="btn btn-primary" (click)="userAdd(user_edit_form)" [disabled]="!user_edit_form.form.valid||isSaving">保存用户</button>
+			<button class="btn btn-default" (click)="userReset()">重置</button>
+		</div>
+	</div>
+	<div class="header clearfix"  *ngIf="!isAdd">
+		<span class="head icon">|</span><span class="head" >修改用户</span>
+		<div class="btnHeader head">
+			<button type="button" class="btn btn-primary" (click)="userEdit(user_edit_form)" [disabled]="!user_edit_form.form.valid||isSaving">修改用户</button>
+			<button class="btn btn-default" (click)="userCancel()">放弃编辑</button>
+			<button class="btn btn-default" (click)="resetPassword()">重置密码</button>
+		</div>
+		<span *ngIf="editErrorMsg" style="color:#c30e2e;">{{editErrorMsg}}</span>
+	</div>
+	<main>
+		<div class="container">
+			<form class="form-horizontal" role="form" #user_edit_form="ngForm">
+				<div id="user-info" class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+					<div class="main-title">用户信息</div>
+					<div class="form-group">
+						<label for="phone" class="col-lg-3 col-md-3 col-sm-3 col-xs-3 control-label required-item-label">注册手机号</label>
+						<div class="col-lg-9 col-md-9 col-sm-9 col-xs-9">
+							<input #phone type="text" class="form-control" id="phone" name="phone" required minlength="11" maxlength="11" pattern="^[0-9]*$" [(ngModel)]="user.phone" (blur)="blurPhone(phone)">
+							<div *ngIf="formErrors.phone" class="alert alert-danger">
+								{{ formErrors.phone }}
+							</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="head_thumbnail" class="col-lg-3 col-md-3 col-sm-3 col-xs-3 control-label">头像</label>
+						<div class="col-lg-9 col-md-9 col-sm-9 col-xs-9">
+							<alphain-file-upload #head_thumbnail [attr_width]="'140px'" [attr_height]="'140px'" (fileData)="head_thumbnail_data($event)" [resetTrigger]="resetTrigger" [thumbnail_url]="user.head_thumbnail_url"></alphain-file-upload>
+						</div>
+					</div>
+					<div class="form-group" *ngIf="haveUserType">
+						<label for="name" class="col-lg-3 col-md-3 col-sm-3 col-xs-3 control-label required-item-label">用户分类</label>
+						<div class="btn-group">
+							<label name="userType" class="btn btn-mint"  [(ngModel)]="user.userType" btnRadio="2">官方账号<span class="fa fa-check" style="margin-left: 10px" aria-hidden="true"></span ></label>
+							<label name="userType" class="btn btn-mint" [(ngModel)]="user.userType" btnRadio="3">运营账号<span class="fa fa-check" style="margin-left: 10px" aria-hidden="true"></span ></label>
+							<label name="userType" class="btn btn-mint" [(ngModel)]="user.userType" btnRadio="4">大V账号<span class="fa fa-check" style="margin-left: 10px" aria-hidden="true"></span ></label>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="name" class="col-lg-3 col-md-3 col-sm-3 col-xs-3 control-label required-item-label">姓名</label>
+						<div class="col-lg-9 col-md-9 col-sm-9 col-xs-9">
+							<input type="text" class="form-control" id="name" name="name" required [(ngModel)]="user.name">
+							<div *ngIf="formErrors.name" class="alert alert-danger">
+								{{ formErrors.name }}
+							</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="company" class="col-lg-3 col-md-3 col-sm-3 col-xs-3 control-label required-item-label" style="width:">机构简称</label>
+						<div class="col-lg-9 col-md-9 col-sm-9 col-xs-9">
+						<!-- <input type="text" class="form-control" #company name="company" required [(ngModel)]="user.company" (blur)="searchOrg()" > -->
+						<!-- 	<input type="tel" [(ngModel)]="default.instNm"   req placeholder="机构名称" class="form-control" (keyup)="searchOrg()"> --><!--  <i *ngIf="orgListShow" (click)="closeOrg()" style="cursor:pointer; position: relative;left: 245px;top: -30px;"><img src='../../../../public/images/btn_close.png'></i>
+						<ul  class="moh" *ngIf="orgListShow" style="position:absolute">
+							<li *ngFor="let item of orgList" (click)="OrgSerch(item)"><div [tooltip]="item">{{item}}</div></li>
+						</ul> -->
+							<input style="width:70%;float:left" type="text" class="form-control" #company name="company" required autocomplete="off" 
+								[(ngModel)]="user.company"
+								(typeaheadOnSelect)="orgsOnSelect($event)"
+								[typeaheadOptionField]="'organizationShortName'"
+								[typeahead]="fullnameTypeAhead.source"
+								(typeaheadLoading)="changeOrgsLoading($event)"
+								(typeaheadNoResults)="changeOrgsNoResults($event)"
+								[typeaheadOptionsLimit]="10"
+								[typeaheadWaitMs]="200" 
+								(blur)="blurCompany(company,$event)"
+								(change)="changeCompany(company,$event)">
+							<button style="width:25%;margin: 0 2.5%;float:right"  class="btn btn-primary" (click)="addOrg.show()">添加</button>
+							<div *ngIf="orgsLoading===true">
+								<i class="glyphicon glyphicon-refresh ng-hide" style=""></i>
+							</div>
+							<div *ngIf="orgsNoResults===true" class="" style="">
+								<i class="glyphicon glyphicon-remove"></i> 无结果
+							</div>
+							<div *ngIf="formErrors.company" class="alert alert-danger">
+								{{ formErrors.company }}
+							</div>
+							<input type="text" name="companyId" [hidden]="'true'" [(ngModel)]="user.companyId">
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="contact" class="col-lg-3 col-md-3 col-sm-3 col-xs-3 control-label">机构全称：</label>
+						<div class="col-lg-9 col-md-9 col-sm-9 col-xs-9">
+							<div  class="alert alert-info">
+								{{ user.organizationFullName }}
+							</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="department" class="col-lg-3 col-md-3 col-sm-3 col-xs-3 control-label required-item-label">部门</label>
+						<div class="col-lg-9 col-md-9 col-sm-9 col-xs-9">
+							<input type="text" class="form-control" id="department" name="department" required 
+								[(ngModel)]="user.department"
+								(typeaheadOnSelect)="depsOnSelect($event)"
+								[typeaheadOptionField]="'departmentName'"
+								[typeahead]="dataSourceDeps"
+								(typeaheadLoading)="changeDepsLoading($event)"
+								(typeaheadNoResults)="changeDepsNoResults($event)"
+								[typeaheadOptionsLimit]="10"
+								[typeaheadWaitMs]="200">
+							<div *ngIf="depsLoading===true">
+								<i class="glyphicon glyphicon-refresh ng-hide" style=""></i>
+							</div>
+							<div *ngIf="depsNoResults===true" class="" style="">
+								<i class="glyphicon glyphicon-remove"></i> 无结果
+							</div>
+							<div *ngIf="formErrors.department" class="alert alert-danger">
+								{{ formErrors.department }}
+							</div>
+							<input type="text" name="departmentId" [hidden]="'true'" [(ngModel)]="user.departmentId">
+						</div>
+					</div>
+					
+					<div class="form-group">
+						<label for="position" class="col-lg-3 col-md-3 col-sm-3 col-xs-3 control-label required-item-label">职位</label>
+						<div class="col-lg-9 col-md-9 col-sm-9 col-xs-9">
+							<input type="text" class="form-control" id="position" name="position" required [(ngModel)]="user.position">
+							<div *ngIf="formErrors.position" class="alert alert-danger">
+								{{ formErrors.position }}
+							</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="contact" class="col-lg-3 col-md-3 col-sm-3 col-xs-3 control-label required-item-label">联系电话</label>
+						<div class="col-lg-9 col-md-9 col-sm-9 col-xs-9">
+							<input type="text" class="form-control" id="contact" name="contact" maxlength="20" required [(ngModel)]="user.contact">
+							<div *ngIf="formErrors.contact" class="alert alert-danger">
+								{{ formErrors.contact }}
+							</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="work_contact" class="col-lg-3 col-md-3 col-sm-3 col-xs-3 control-label">工作电话</label>
+						<div class="col-lg-9 col-md-9 col-sm-9 col-xs-9">
+							<input type="text" class="form-control" id="work_contact" name="work_contact" maxlength="20" [(ngModel)]="user.work_contact">
+							<div *ngIf="formErrors.work_contact" class="alert alert-danger">
+								{{ formErrors.work_contact }}
+							</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="mail" class="col-lg-3 col-md-3 col-sm-3 col-xs-3 control-label">公司邮箱</label>
+						<div class="col-lg-9 col-md-9 col-sm-9 col-xs-9">
+							<input type="mail" class="form-control" id="mail" name="mail" [(ngModel)]="user.mail" pattern="^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$">
+							<div *ngIf="formErrors.mail" class="alert alert-danger">
+								{{ formErrors.mail }}
+							</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="work_address" class="col-lg-3 col-md-3 col-sm-3 col-xs-3 control-label">工作地址</label>
+						<div class="col-lg-9 col-md-9 col-sm-9 col-xs-9">
+							<input type="text" class="form-control" id="work_address" name="work_address" [(ngModel)]="user.work_address">
+							<div *ngIf="formErrors.work_address" class="alert alert-danger">
+								{{ formErrors.work_address }}
+							</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="nickname" class="col-lg-3 col-md-3 col-sm-3 col-xs-3 control-label">昵称</label>
+						<div class="col-lg-9 col-md-9 col-sm-9 col-xs-9">
+							<input type="text" class="form-control" id="nickname" name="nickname" [(ngModel)]="user.nickname">
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="sex" class="col-lg-3 col-md-3 col-sm-3 col-xs-3 control-label">性别</label>
+						<div class="col-lg-9 col-md-9 col-sm-9 col-xs-9">
+							<select name="sex" id="sex" class="form-control" [(ngModel)]="user.sex">
+								<option value="3" selected>不详</option>
+								<option value="1">男</option>
+								<option value="2">女</option>
+							</select>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="birthday" class="col-lg-3 col-md-3 col-sm-3 col-xs-3 control-label">生日</label>
+						<div class="col-lg-9 col-md-9 col-sm-9 col-xs-9">
+							<p-calendar name="birthday" [(ngModel)]="user.birthday" [monthNavigator]="true" [yearNavigator]="true" yearRange="1960:2030" dateFormat="yy-mm-dd"></p-calendar>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="home_address" class="col-lg-3 col-md-3 col-sm-3 col-xs-3 control-label">家乡</label>
+						<div class="col-lg-9 col-md-9 col-sm-9 col-xs-9">
+							<input type="text" class="form-control" id="home_address" name="home_address" [(ngModel)]="user.home_address">
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="qq_num" class="col-lg-3 col-md-3 col-sm-3 col-xs-3 control-label">QQ号</label>
+						<div class="col-lg-9 col-md-9 col-sm-9 col-xs-9">
+							<input type="text" class="form-control" id="qq_num" name="qq_num" [(ngModel)]="user.qq_num">
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="wechat_num" class="col-lg-3 col-md-3 col-sm-3 col-xs-3 control-label">微信号</label>
+						<div class="col-lg-9 col-md-9 col-sm-9 col-xs-9">
+							<input type="text" class="form-control" id="wechat_num" name="wechat_num" [(ngModel)]="user.wechat_num">
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="referrer_phonenum" class="col-lg-3 col-md-3 col-sm-3 col-xs-3 control-label">推荐人注册手机</label>
+						<div class="col-lg-7 col-md-7 col-sm-7 col-xs-7">
+							<input #referrer_phonenum type="text" class="form-control" id="referrer_phonenum" name="referrer_phonenum" [(ngModel)]="user.referrer_phonenum" minlength="11" maxlength="11" pattern="^[0-9]*$">
+							<div *ngIf="formErrors.referrer_phonenum" class="alert alert-danger">
+								{{ formErrors.referrer_phonenum }}
+							</div>
+						</div>
+						<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+							<button type="button"  class="btn btn-primary" (click)="getReferrer(referrer_phonenum,referrer)" [disabled]="formErrors.referrer_phonenum||!user.referrer_phonenum">匹配</button>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="referrer" class="col-lg-3 col-md-3 col-sm-3 col-xs-3 control-label">推荐人</label>
+						<div class="col-lg-9 col-md-9 col-sm-9 col-xs-9">
+							<input #referrer type="text" class="form-control" id="referrer" name="referrer" [(ngModel)]="user.referrer" disabled>
+						</div>
+					</div>
+				</div>
+				
+				<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6" >
+					<div id="card-info">
+						<div class="main-title">名片信息</div>
+						<div class="form-group">
+							<label for="card_thumbnail" class="col-lg-3 col-md-3 col-sm-3 col-xs-3 control-label">名片</label>
+							<div class="col-lg-9 col-md-9 col-sm-9 col-xs-9">
+								<alphain-file-upload id="card_thumbnail" [attr_width]="'282px'" [attr_height]="'172px'" (fileData)="name_card_data($event)" (fileUrl)="name_card_url($event)" [resetTrigger]="resetTrigger" [thumbnail_url]="user.name_card_url"></alphain-file-upload>
+								<input type="text" name="name_card_url" class="form-control" [(ngModel)]="user.name_card_url"  style="display:none;">
+								<div *ngIf="formErrors.name_card_url" class="alert alert-danger">
+									{{ formErrors.name_card_url }}
+								</div>
+							</div>
+						</div>
+					</div>
+					<div id="card-info">
+						<div class="main-title">解析名片信息</div>
+						<div class="form-group">
+							<label for="card_thumbnail" class="col-lg-3 col-md-3 col-sm-3 col-xs-3 control-label">名片</label>
+							<div class="col-lg-9 col-md-9 col-sm-9 col-xs-9">
+								<alphain-file-upload id="card_thumbnail" [attr_width]="'282px'" [attr_height]="'172px'" (fileData)="info_card_data($event)" (fileUrl)="info_card_url($event)" [resetTrigger]="resetTrigger" [thumbnail_url]="user.info_card_url"></alphain-file-upload>
+								<input type="text" name="name_card_url" class="form-control" [(ngModel)]="user.info_card_url"  style="display:none;">
+								<div *ngIf="formErrors.info_card_url" class="alert alert-danger">
+									{{ formErrors.info_card_url }}
+								</div>
+							</div>
+							<button *ngIf="!isS"  style="float: right" type="button" class="btn btn-primary"  (click)="UploadBusinessCardAnalysis(del)">解析</button>
+							<button *ngIf="isS" disabled="disabled"  style="float: right" type="button" class="btn btn-primary"  (click)="UploadBusinessCardAnalysis(del)">解析中...</button>
+						</div>
+					</div>
+					<div id="system-info">
+						<div class="main-title">系统信息</div>
+						<div class="form-group" *ngIf="!isAdd">
+							<label for="userStatus" class="col-lg-3 col-md-3 col-sm-3 col-xs-3 control-label">用户状态</label>
+							<div class="col-lg-9 col-md-9 col-sm-9 col-xs-9">
+								<label name="userStatus" class="control-label">{{user.userStatus | userStatus}}</label>
+								<!-- 1 正常 3 冻结 -->
+							</div>
+						</div>
+						<div class="form-group" *ngIf="!isAdd">
+							<label for="approveStatus" class="col-lg-3 col-md-3 col-sm-3 col-xs-3 control-label">实名认证状态</label>
+							<div class="col-lg-9 col-md-9 col-sm-9 col-xs-9">
+								<label name="approveStatus" class="control-label">{{user.approveStatus | approveStatus}}</label>
+								<!-- 4 未认证 3 已认证 -->
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="mailStatus" class="col-lg-3 col-md-3 col-sm-3 col-xs-3 control-label">邮箱认证状态</label>
+							<div class="col-lg-9 col-md-9 col-sm-9 col-xs-9">
+								<div class="btn-group">
+									<label name="mailStatus" class="btn btn-mint" [(ngModel)]="user.mailModel" btnRadio="1">未认证</label>
+									<label name="mailStatus" class="btn btn-mint" [(ngModel)]="user.mailModel" btnRadio="3">已认证</label>
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="visitStatus" class="col-lg-3 col-md-3 col-sm-3 col-xs-3 control-label">回访状态</label>
+							<div class="col-lg-9 col-md-9 col-sm-9 col-xs-9">
+								<div class="btn-group" *ngIf="isAdd">
+									<label name="visitStatus" class="btn btn-mint" [(ngModel)]="user.visitModel" btnRadio="1">未回访</label>
+									<label name="visitStatus" class="btn btn-mint" [(ngModel)]="user.visitModel" btnRadio="2">已回访</label>
+								</div>
+								<label name="visitStatus" class="control-label" *ngIf="!isAdd">{{user.visitModel | visitStatus}}</label>
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="backup" class="col-lg-3 col-md-3 col-sm-3 col-xs-3 control-label">用户备注</label>
+							<div class="col-lg-9 col-md-9 col-sm-9 col-xs-9">
+								<textarea name="backup" class="form-control" rows="5" id="backup" [(ngModel)]="user.backup"></textarea>
+							</div>
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+	</main>
+</div>
+
+
+
+<div bsModal #addOrg="bs-modal" class="modal fade modelPon" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="false">
+    <div class="modal-dialog">
+        <div class="modal-content clearfix" style="height: 380px">
+            <div class="modal-header">
+                <button type="button" class="close" aria-label="Close" (click)="addOrg.hide()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">添加机构</h4>
+            </div>
+            <div class="modal-body contentxinxi" style="height: 320px">
+            <div class="bsud" style="width: 45%;float:left">
+            	<div>
+            	<span><i style="color:red"> * </i>机构简称</span><input class="divbd" [(ngModel)]="organization.organizationShortName"  type="" name="">
+	            </div>
+	           <div>
+	           	<span><i style="color:red"> * </i>机构全称</span><input class="divbd" [(ngModel)]="organization.organizationFullName"  type="" name="">
+	           </div>
+	            <div>
+	           	<span><i style="color:red"> * </i>是否是金融机构</span>
+	           		<div class="btn-group">
+							<label name="isFinancial" class="btn btn-mint" [(ngModel)]="organization.ifFinancialInstitution" btnRadio="1">是</label>
+							<label name="isFinancial" class="btn btn-mint" [(ngModel)]="organization.ifFinancialInstitution" btnRadio="2">否</label>
+					</div>
+	           	</div>
+	           	<div>
+            	<span>机构所在地：</span>
+		            <SELECT class="form-control"  name="sheng" id="to_cn" #city (change)="set_city(city)" > 
+						<option value=''>请选择</option> 
+						<option value=北京>北京</option> 
+						<option value=上海>上海</option> 
+						<option value=天津>天津</option> 
+						<option value=重庆>重庆</option> 
+						<option value=河北>河北</option> 
+						<option value=山西>山西</option> 
+						<option value=辽宁>辽宁</option> 
+						<option value=吉林>吉林</option> 
+						<option value=黑龙江>黑龙江</option> 
+						<option value=江苏>江苏</option> 
+						<option value=浙江>浙江</option> 
+						<option value=安徽>安徽</option> 
+						<option value=福建>福建</option> 
+						<option value=江西>江西</option> 
+						<option value=山东>山东</option> 
+						<option value=河南>河南</option> 
+						<option value=湖北>湖北</option> 
+						<option value=湖南>湖南</option> 
+						<option value=广东>广东</option> 
+						<option value=海南>海南</option> 
+						<option value=四川>四川</option> 
+						<option value=贵州>贵州</option> 
+						<option value=云南>云南</option> 
+						<option value=陕西>陕西</option> 
+						<option value=甘肃>甘肃</option> 
+						<option value=青海>青海</option> 
+						<option value=内蒙古>内蒙古</option> 
+						<option value=广西>广西</option> 
+						<option value=西藏>西藏</option> 
+						<option value=宁夏>宁夏</option> 
+						<option value=新疆>新疆</option> 
+						<option value=香港>香港</option> 
+						<option value=澳门>澳门</option> 
+						<option value=台湾>台湾</option> 
+						<option value=其他地区>其他地区</option> 
+						<option value=国外机构>国外机构</option> 
+					</SELECT>
+					<select id="city"  name="shi" class="form-control" (change)="con_city()"> 
+						<option value=''>请选择</option> 
+					</select> 
+          		 </div>
+	          <!--   <div>
+	           		<span>是否是发债机构</span>
+	           		<div class="btn-group">
+							<label name="isFinancial" class="btn btn-mint" [(ngModel)]="organization.ifFinancialInstitution" btnRadio="1">是</label>
+						<label name="isFinancial" class="btn btn-mint" [(ngModel)]="organization.ifFinancialInstitution" btnRadio="2">否</label>
+					</div>
+           		</div> -->
+           	 </div>
+           
+           <div  class="bsud"  style="width: 45%;float:left">
+           	 	
+          		 <div>
+	           		<span>详细地址</span>
+	           		<input class="divbd" [(ngModel)]="organization.detailedAddress"  type="" name="">
+           		</div>
+           		 <div>
+	           		<span><i style="color:red"> * </i>金融机构分类</span><select name=""  class="form-control" [(ngModel)]="orgCondition.c1" (change)="getOrgCate2($event)">
+					<option value="" selected>全部</option>
+					<option value="{{org1.organizationCategoryId}}" *ngFor="let org1 of orgCate1">{{org1.categoryName}}</option>
+					</select>
+					<select [disabled]="!orgCate2" name=""  class="form-control" [(ngModel)]="orgCondition.c2">
+					<option value="" selected>全部</option>
+					<option value="{{org2.organizationCategoryId}}" *ngFor="let org2 of orgCate2">{{org2.categoryName}}</option>
+					</select>
+           		</div>
+           		 <div>
+	           		<span>国标分类</span>
+	           		<select name="ic1"  class="form-control" [(ngModel)]="organization.internationClassifyId1" (change)="getOrgInCate2EP($event)">
+						<option value="" selected></option>
+						<option value="{{org1.internationClassifyId}}" *ngFor="let org1 of orgInCate1">{{org1.internationClassifyName}}</option>
+					</select>
+					<select [disabled]="!orgInCate2EP" name="ic2"  class="form-control" [(ngModel)]="organization.internationClassifyId2">
+						<option value="" selected>无</option>
+						<option value="{{org2.internationClassifyId}}" *ngFor="let org2 of orgInCate2EP">{{org2.internationClassifyName}}</option>
+					</select>
+           		</div>
+           		<div>
+           			<button style=" position: relative; bottom: -80px;right: -229px;" class="btn btn-primary" (click)="addOrganization(addOrg)">保存</button>
+           		</div>
+            </div>
+             <div class="condition container-fluid" style="padding-left: 400px">
+				<!-- <button style="margin-top:-40px" type="button" class="btn btn-primary" (click)="del.hide()">取消</button> -->
+			</div>
+        </div>
+    </div>
+</div>
+
+<div bsModal #q="bs-modal" class="modal fade modelPon" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="false">
+    <div class="modal-dialog">
+        <div class="modal-content clearfix" style="height: 300px">
+            <div class="modal-header">
+                <button type="button" class="close" aria-label="Close" (click)="addOrg.hide()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">添加机构</h4>
+            </div>
+            <div class="modal-body">
+            	<div >
+					<div class="reo"><span class="verkey">机构全称</span><input type="text" [(ngModel)]="organization.organizationFullName" class="form-control" name="fullnameEP" required/></div>
+					<div class="reo"><span class="verkey">机构简称</span><input [(ngModel)]="organization.organizationShortName" type="text" class="form-control" name="abbreviationEP" required /></div>
+					<div class="reo"><span class="verkey">是否金融机构</span>
+					<div class="btn-group">
+						<label name="isFinancial" class="btn btn-mint" [(ngModel)]="organization.ifFinancialInstitution" btnRadio="1">是</label>
+						<label name="isFinancial" class="btn btn-mint" [(ngModel)]="organization.ifFinancialInstitution" btnRadio="2">否</label>
+					</div>
+				</div>
+            </div>
+        </div>
+</div>
+
+	<!--  -->

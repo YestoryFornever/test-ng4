@@ -1,0 +1,192 @@
+<div class="header clearfix">
+	<span class="head icon">|</span><span class="head" >推荐内容池</span>
+	<div class="btnHeader head">
+		<button class="btn btn-primary" (click)="addShare()">添加动态</button>
+		<!-- <button class="btn btn-primary" (click)="view.show()">添加视频</button> -->
+	</div>
+</div>
+<div class="screen .clearfix">
+		<div class="condition container-fluid">
+			<span>推荐内容</span>
+			<select class="sel" [(ngModel)]="conList.type">
+				<option  *ngFor="let item of contentType" [value]='item.id'>{{item.name}}</option>
+			</select>
+			<!-- <input type="text" name="" placeholder=""  class="form-control"> -->
+		</div>
+		<div class="condition container-fluid" *ngIf="conList.type == '10'||conList.type == '6'">
+		<span>推荐日期</span>
+			<p-calendar  [(ngModel)]="startDate" [maxDate]="endDate"    [locale]="en" [showTime]="false"></p-calendar>
+			<!-- <input class="selection"  type="date" [(ngModel)]="startDate"> -->
+			&nbsp;到&nbsp;
+			<p-calendar [(ngModel)]="endDate"  [minDate]="startDate"  [locale]="en" [showTime]="false"></p-calendar>
+		</div>
+		<div class="condition container-fluid" style="float: left">
+			<button type="button" class="btn btn-primary" (click)="turnFirst()">查询</button>
+		</div>
+		<div class="condition container-fluid" style="float: right">
+			<button type="button" class="btn btn-primary" (click)="setPrams(look)">参数设置</button>
+		</div>
+</div>
+
+<div class="tableList " style="overflow-x: scroll">		
+	<table class="table table-bordered table-hover " >
+		<thead >
+			<tr>
+				<td class="info " style="width: 190px">状态 </td>
+				<td class="info shortTxt">操作</td>
+				<td class="info" style="width:120px">内容分类
+					<!-- <div class="ord">
+					<img (click)="ordBy('state','asc')" *ngIf="!stateUp||stateNotChoose" style="margin-bottom: 4px" src='../../../../../../public/images/icon_arrow_up_normal.png' class="up">
+					<img (click)="ordBy('state','asc')" style="margin-bottom: 4px" src='../../../../../../public/images/icon_arrow_up_over.png' *ngIf="stateUp&&!stateNotChoose" class="up"><img (click)="ordBy('state','desc')" *ngIf="!stateDown||stateNotChoose" style="margin-top: 4px" src='../../../../../../public/images/icon_arrow_down_normal.png' class="down"><img (click)="ordBy('state','desc')" *ngIf="stateDown&&!stateNotChoose" style="margin-top: 4px" src='../../../../../../public/images/icon_arrow_down_over.png' class="down"></div> -->
+				</td>
+				<td class="info ">推荐内容</td>
+				<td class="info " style="width: 160px">推荐时间
+					<!-- <div class="ord"><img (click)="ordBy('begin_time','asc')" *ngIf="!timeUp||timeNotChoose" style="margin-bottom: 4px" src='../../../../../../public/images/icon_arrow_up_normal.png' class="up">
+					<img (click)="ordBy('begin_time','asc')" style="margin-bottom: 4px" src='../../../../../../public/images/icon_arrow_up_over.png' *ngIf="timeUp&&!timeNotChoose" class="up"><img (click)="ordBy('begin_time','desc')" *ngIf="!timeDown||timeNotChoose" style="margin-top: 4px" src='../../../../../../public/images/icon_arrow_down_normal.png' class="down"><img (click)="ordBy('begin_time','desc')" *ngIf="timeDown&&!timeNotChoose" style="margin-top: 4px" src='../../../../../../public/images/icon_arrow_down_over.png' class="down"></div> -->
+				</td>
+				<td class="info " style="width: 92px">点击量
+					<!-- <div class="ord"><img (click)="ordBy('click_num','asc')" *ngIf="!clickUp||clickNotChoose" style="margin-bottom: 4px" src='../../../../../../public/images/icon_arrow_up_normal.png' class="up">
+					<img (click)="ordBy('click_num','asc')" style="margin-bottom: 4px" src='../../../../../../public/images/icon_arrow_up_over.png' *ngIf="clickUp&&!clickNotChoose" class="up"><img (click)="ordBy('click_num','desc')" *ngIf="!clickDown||clickNotChoose" style="margin-top: 4px" src='../../../../../../public/images/icon_arrow_down_normal.png' class="down"><img (click)="ordBy('click_num','desc')" *ngIf="clickDown&&!clickNotChoose" style="margin-top: 4px" src='../../../../../../public/images/icon_arrow_down_over.png' class="down"></div> -->
+				</td>
+			</tr>
+		</thead>
+		<tbody  id="list" *ngFor="let conetent of homeList;let i = index">
+			<tr #userList class="Userlist" >
+				<td class=" ">
+					<button #btn (click)="delRecomSource(conetent,'1')" (mouseenter)="recommend(btn)" (mouseleave)="mouseleave(btn)"  *ngIf="conetent.is_special==1" class="btn btn-primary isRel" >特别推荐</button>
+					<button #btn2  (click)="addRecomSource(conetent)"  style="background-color: #fff;color:#fff;border: none"  *ngIf="!conetent.is_special==1" class="btn btn-primary isRel" (mouseenter)="recommend2(btn2)" (mouseleave)="mouseleave2(btn2)" >取消推荐</button>
+					<button #btn3 (click)="infoDel(conetent,'1')" (mouseenter)="recommend3(btn3)" (mouseleave)="mouseleave3(btn3)"  *ngIf="conetent.is_important==1&&conetent.obj_type == '1'" class="btn btn-primary isRel" >要闻</button>
+					<button #btn4  (click)="infoTo(conetent)"  style="background-color: #fff;color:#fff;border: none"  *ngIf="!conetent.is_important==1&&conetent.obj_type == '1'" class="btn btn-primary isRel" (mouseenter)="recommend4(btn4)" (mouseleave)="mouseleave4(btn4)" >非要闻</button>
+				</td>
+				<td class=" "><a (click)="delShow(conetent,'2',del)" *ngIf="conetent.obj_type == '10'||conetent.obj_type == '6'">删除</a></td>
+				<td class=" ">{{conetent.obj_type+'' | recommendType}}</td>
+				<td class=" ">{{conetent.title}} </td>
+				<td class=" ">{{conetent.time|time:'time':1}} </td>
+				<td class="">{{conetent.view_cnt}} </td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+<!-- 分页 -->
+	<div class="row pagerow" >
+		<div class="pageshowleft">每页显示
+			<select #selectPage name="" id="msgNum" (change)="sizeData(selectPage.value,userList)" value='30'>
+				<option #optionPage  *ngFor="let msgNumber of msgNumbers" [value]="msgNumber.Number">{{msgNumber.Number}}</option>
+			</select>
+			条数据
+		</div>
+		<div class="pageshowmodle">
+			<span>{{currentPage}} / {{totalPages}}</span>页
+			<span>{{totalItems}}条数据</span>
+		</div>
+
+		<div class="pagefen">
+			<pagination  [firstText]="firstText" [lastText]="lastText" [previousText]="previousText" [nextText]="nextText" [maxSize]="maxSize" [totalItems]="totalItems" [itemsPerPage]="itemsPerPage" [(ngModel)]="currentPage" [boundaryLinks]="true" (pageChanged)='pageChanged($event)' (numPages)='pageNumChange($event)' class="pagination-sm"></pagination>
+		</div>
+	</div>
+
+
+	<!-- 查看 -->
+<div bsModal #look="bs-modal" class="modal fade modelPon" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content" style="height: 315px">
+            <div class="modal-header">
+                <button type="button" class="close" aria-label="Close" (click)="look.hide()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">参数设置</h4>
+            </div>
+            <div class="modal-body contentxinxi">
+               <div style="width: 50%;float:left;margin-top: 10px">
+               		<div><span class="types">资讯：</span><input #ttp1 (change)="clsa(ttp1)" [(ngModel)]="Prams.obj_type1" min=0 style="width: 40px"  type="number" name=""></div>
+               </div>
+                <div style="width: 50%;float:left;margin-top: 10px">
+               		<div><span class="types">动态：</span><input #ttp2 (change)="clsa(ttp2)"  [(ngModel)]="Prams.obj_type6" min=0 style="width: 40px" type="number" name=""></div>
+               </div>
+                <div style="width: 50%;float:left;margin-top: 10px">
+               		<div><span class="types">人脉：</span><input #ttp3 (change)="clsa(ttp3)"  [(ngModel)]="Prams.obj_type5" min=0 style="width: 40px" type="number" name=""></div>
+               </div>
+                <div style="width: 50%;float:left;margin-top: 10px">
+               		<div><span class="types">直播：</span><input #ttp4 (change)="clsa(ttp4)"  [(ngModel)]="Prams.obj_type2" min=0 style="width: 40px" type="number" name=""></div>
+               </div>
+                <div style="width: 50%;float:left;margin-top: 10px">
+               		<div><span class="types">视频：</span><input  #ttp5 (change)="clsa(ttp5)" [(ngModel)]="Prams.obj_type7" min=0 style="width: 40px" type="number" name=""></div>
+               </div>
+                <div style="width: 50%;float:left;margin-top: 10px">
+               		<div><span class="types">扫雷：</span><input #ttp6 (change)="clsa(ttp6)"  [(ngModel)]="Prams.obj_type9" min=0 style="width: 40px" type="number" name=""></div>
+               </div>
+                <div style="width: 50%;float:left;margin-top: 10px">
+               		<div><span class="types">日报：</span><input #ttp7 (change)="clsa(ttp7)"  [(ngModel)]="Prams.obj_type8" min=0 style="width: 40px" type="number" name=""></div>
+               </div>
+                <div style="width: 50%;float:left;margin-top: 10px">
+               		<div><span class="types">特别推荐：</span><input #ttp8 (change)="clsa(ttp8)"  [(ngModel)]="Prams.obj_type10" min=0 style="width: 40px" type="number" name=""></div>
+               </div>
+                <div style="width: 50%;float:left;margin-top: 10px">
+               		<div><span class="types">报价：</span><input #ttp9 (change)="clsa(ttp9)"  [(ngModel)]="Prams.obj_type4" min=0 style="width: 40px" type="number" name=""></div>
+               </div>
+                <div style="width: 50%;float:left;margin-top: 10px">
+               		<div><span class="types">债券行情：</span><input #ttp10 (change)="clsa(ttp10)"  [(ngModel)]="Prams.obj_type3" min=0 style="width: 40px" type="number" name=""></div>
+               </div>
+               <div class="condition container-fluid" style="float: right;margin-top: 20px;width: 100%">
+				
+               <span style="float:left;margin-left: 10px"><span *ngIf="overOh" style="float:left;color: red">超过100%!</span>合计{{all}}%</span>
+					<button style="float:right;margin-right: 5px" type="button" class="btn btn-primary" (click)="setRecomParams(look)">保存</button>
+					<button style="float:right;margin-right: 5px" type="button" class="btn btn-primary"  (click)="look.hide()">取消</button>
+				</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- 添加视频-->
+<div bsModal #view="bs-modal" class="modal fade modelPon" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content clearfix" >
+            <div class="modal-header">
+                <button type="button" class="close" aria-label="Close" (click)="view.hide()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">删除</h4>
+            </div>
+            <div class="modal-body contentxinxi">
+            	<div class="condition container-fluid" style="width: 100%">
+					<span>视频内容</span>
+					<input type="text" style="width: 400px;height: 34px;" name="" placeholder="视频标题">
+					<!-- <input type="text" name="" placeholder=""  class="form-control"> -->
+				</div>
+				<div class="condition container-fluid" style="width: 100%">
+					<span>视频链接</span>
+					<input type="text" style="width: 400px;height: 34px;" name="" placeholder="视频地址">
+					<!-- <input type="text" name="" placeholder=""  class="form-control"> -->
+				</div>
+            </div>
+             <div class="condition container-fluid" style="padding-left: 400px">
+				
+				<button style="margin-top:-40px" type="button" class="btn btn-primary" (click)="view.hide()">取消</button>
+				<button style="margin-top:-40px" type="button" class="btn btn-primary" (click)="infoDel(del)">保存</button>
+			</div>
+        </div>
+    </div>
+</div>
+
+<!-- 删除-->
+<div bsModal #del="bs-modal" class="modal fade modelPon" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content clearfix" >
+            <div class="modal-header">
+                <button type="button" class="close" aria-label="Close" (click)="del.hide()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">删除</h4>
+            </div>
+            <div class="modal-body contentxinxi">
+            	你确定删除吗？
+            </div>
+             <div class="condition container-fluid" style="padding-left: 400px">
+				<button style="margin-top:-40px" type="button" class="btn btn-primary" (click)="delRecomSource(del)" >确认删除</button>
+				<button style="margin-top:-40px" type="button" class="btn btn-primary" (click)="del.hide()">取消</button>
+			</div>
+        </div>
+    </div>
+</div>

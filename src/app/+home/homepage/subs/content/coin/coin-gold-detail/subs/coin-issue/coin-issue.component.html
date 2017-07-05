@@ -1,0 +1,225 @@
+<div class="header">
+    <span class="head icon">|</span>
+    <span class="head">金币发放</span>
+    <div class="btnHeader head">
+        <button class=" btn btn-primary" (click)='alertShow(orderByStores)'>发放金币</button>
+    </div>
+    <div class="btnHeader head">
+        <button class=" btn btn-primary" (click)='alertReShow(reduceCoin)'>扣除金币</button>
+    </div>
+</div>
+<!-- condition -->
+<main>
+    <div class="condition-container">
+        
+        <div class="conditions" style="min-width:580px;">
+            <div class="condition">
+                <label for="fullname" class="text-right">操作人</label>
+                <div class="condition-input">
+                    <select class="form-control" [(ngModel)]="default.createUserId">
+                        <option value="">全部</option>
+                        <option  [value]="item.createUserId" *ngFor="let item of managerList">{{item.createUserName}}</option>
+                    </select>
+                </div>
+            </div>
+            <div class="condition">
+                <label for="fullname" class="text-right">用户名</label>
+                <div class="condition-input">
+                    <input type="text" class="form-control" [(ngModel)]="default.userName">
+                </div>
+            </div>
+            <div class="condition" *ngIf="0">
+                <label for="fullname" class="text-right">机构名称</label>
+                <div class="condition-input">
+                    <input type="text" class="form-control" [(ngModel)]="xxx">
+                </div>
+            </div>
+            <div class="condition">
+                <label for="fullname" class="text-right">类型</label>
+                <div class="condition-input">
+                    <select class="form-control" [(ngModel)]="default.coinSendType">
+                        <option value="">全部</option>
+                        <option value="101">发放</option>
+                        <option value="102">扣除</option>
+                    </select>
+                </div>
+            </div>
+            <div class="condition">
+                <label for="fullname" class="text-right">发放时间</label>
+                <div class="condition-input">
+                <p-calendar  [(ngModel)]="startDate" [maxDate]="endDate"    [locale]="en" [showTime]="false"></p-calendar>
+                <!-- <input class="selection"  type="date" [(ngModel)]="startDate"> -->
+                &nbsp;到&nbsp;
+                <p-calendar [(ngModel)]="endDate"  [minDate]="startDate"  [locale]="en" [showTime]="false"></p-calendar>
+                </div>
+            </div>
+            <div class="btns">
+                <div class="condition-btn">
+                    <button class="btn btn-primary sub" (click)="turnFirst()">查询</button>
+                </div>
+            </div>
+            <div style="clear:both;"></div>
+        </div>
+    </div>
+<!-- lists -->
+<div class="tableList ">
+    <table class="table table-bordered table-hover ">
+        <thead>
+            <tr>
+                
+                <td class="table-hover">注册手机号</td>
+                <td class="table-hover">用户姓名</td>
+                <td class="table-hover">机构简称</td>
+                <td class="table-hover">职称</td>
+                <td class="table-hover">操作类型
+                    <div class="order"><button (click)="Order('ASC','coinSendType')" class="fa fa-chevron-up" aria-hidden="true"></button><button (click)="Order('DESC','coinSendType')" class="fa fa-chevron-down"  aria-hidden="true"></button></div>
+                </td>
+                <td class="table-hover" style="min-width:125px">发放数量                    
+                    <div class="order"><button (click)="Order('ASC','coinNumber')" class="fa fa-chevron-up" aria-hidden="true"></button><button (click)="Order('DESC','coinNumber')" class="fa fa-chevron-down"  aria-hidden="true"></button></div>
+                </td>
+                <td class="table-hover">通知正文</td>
+                <td class="table-hover">操作人</td>
+                <td class="table-hovet">发放时间
+                    <div class="order"><button (click)="Order('ASC','createTime')" class="fa fa-chevron-up" aria-hidden="true"></button><button (click)="Order('DESC','createTime')" class="fa fa-chevron-down"  aria-hidden="true"></button></div>
+                </td>
+                <!-- <td class="info longTxt">通知标题</td> -->
+               
+            </tr>
+        </thead>
+        <tbody *ngFor="let list of detailLists">
+            <tr>      
+                <td>{{list.phoneNum }}</td>
+                 <td id="card" (mouseenter)="getUserInfo(list.userId)"><div [tooltipHtml]="popTemplate" placement="bottom" style="width: 100%;height: 100%">{{list.userName}}</div></td>
+                <td>{{list.orgName}}</td>
+                <td>{{list.position}}</td>
+                <td><span *ngIf="list.coinSendType==101">发放</span><span *ngIf="list.coinSendType==102">扣除</span></td>
+                <td>{{list.coinNumber  | numAddComma2}}</td>
+                 <td>{{list.messageBody}}</td>
+                <td>{{list.createUserName}}</td>
+                <td>{{list.createTime}}</td>
+                <!-- <td>{{list.messageTitle}}</td> --> 
+            </tr>
+        </tbody>
+    </table>
+</div>
+    <!-- 分页 -->
+    <page [(pageObj)]="pageParams" (fnParent)="getDetailList()"></page>
+</main>
+<!-- 发放金币弹窗 -->
+<div bsModal #orderByStores="bs-modal" class="modal fade " tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog  myModal ">
+        <div class="modal-content ">
+            <div class="modal-header">
+                <button type="button" class="close" (click)="orderByStores.hide()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">发放金币</h4>
+            </div>
+            <div class="modal-body ">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 marTB">
+                    <span class="col-lg-3 col-md-3 col-sm-3 col-xs-3"><i class="red">*</i>发放用户</span>
+                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 form-inline form-group">
+                        <label for="phone" style="display:none"></label>
+                        <input class="pp form-control" [(ngModel)]="phoneObj.phone" required type="text" minlength='1' maxlength="11" id="phone" name="phone" placeholder="请输入手机号" (change)="phoneChange()">
+                        <button [disabled]="phoneObj.phone.length!=11" class="PiPei btn btn-mint PiPei" (click)="getPhoneMsg()">匹配</button>
+                    </div>
+                </div>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 marTB">
+                    <span class="col-lg-3 col-md-3 col-sm-3 col-xs-3">用户信息</span>
+                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8" *ngIf="userInfo.data">{{userInfo.data}}</div>
+                </div>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 marTB">
+                    <span class="col-lg-3 col-md-3 col-sm-3 col-xs-3"><i class="red">*</i>发放金币数量</span>
+                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+                        <input class="pp form-control" (keyup)='changeNum()' [(ngModel)]="sendInfo.coinNumber" required type="test" min="1" placeholder="请输入金币数量 1-5000">
+                    </div>
+                </div>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 marTB">
+                    <span class="col-lg-3 col-md-3 col-sm-3 col-xs-3"><i class="red">*</i>可用金币数量</span>
+                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+                        <input class="pp form-control"  [(ngModel)]="availableCoinNumber" [disabled]="1">
+                    </div>
+                </div>
+                <div class=" col-xs-12 marTB">
+                    <span class=" col-xs-3"><i class="red">*</i>通知正文</span>
+                    <span class=" col-xs-8" style="text-align: left;color:#666">通知正文会作为‘系统消息’发送给用户</span>
+                </div>
+                <div class=" col-xs-12 marTB">
+                    <div class=" col-xs-9 pull-right">
+                        <input class="pp form-control " required [(ngModel)]="sendInfo.messageBody" placeholder="请输入内容">
+                    </div>
+                </div>
+                <div style="clear:both"></div>
+                <div class="btnstyle myBtnStyle">
+                    <button type="button"  class="btn btn-primary btnhoverju pull-right marR20" (click)="sendGolds(orderByStores)">提交</button>
+                    <button type="button" class="btn btn-default btnhoverlan pull-right marR20" (click)="unSubmit(orderByStores)">取消</button>
+                    <div style="clear:both"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 扣除金币弹窗 -->
+<div bsModal #reduceCoin="bs-modal" class="modal fade " tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog  myModal ">
+        <div class="modal-content ">
+            <div class="modal-header">
+                <button type="button" class="close" (click)="reduceCoin.hide()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">扣除金币</h4>
+            </div>
+            <div class="modal-body ">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 marTB">
+                    <span class="col-lg-3 col-md-3 col-sm-3 col-xs-3"><i class="red">*</i>扣除用户</span>
+                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 form-inline form-group">
+                        <label for="phone" style="display:none"></label>
+                        <input class="pp form-control" [(ngModel)]="phoneObj.phone" required type="text" minlength='1' maxlength="11" id="phone" name="phone" placeholder="请输入手机号" (change)="phoneChange()">
+                        <button class="PiPei btn btn-mint PiPei" [disabled]="phoneObj.phone.length!=11" (click)="getPhoneMsg()">匹配</button>
+                    </div>
+                </div>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 marTB">
+                    <span class="col-lg-3 col-md-3 col-sm-3 col-xs-3">用户信息</span>
+                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8" *ngIf="userInfo.data">{{userInfo.data}}</div>
+                </div>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 marTB">
+                    <span class="col-lg-3 col-md-3 col-sm-3 col-xs-3"><i class="red">*</i>扣除金币数量</span>
+                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+                        <input class="pp form-control" (keyup)='changeNum2()' [(ngModel)]="ReSendInfo.coinNumber" required type="test" min="1" placeholder="请输入金币数量 1-2000">
+                    </div>
+                </div>
+                <div class=" col-xs-12 marTB">
+                    <span class=" col-xs-3"><i class="red">*</i>通知正文</span>
+                    <span class=" col-xs-8" style="text-align: left;color:#666">通知正文会作为‘系统消息’发送给用户</span>
+                </div>
+                <div class=" col-xs-12 marTB">
+                    <div class=" col-xs-9 pull-right">
+                        <input class="pp form-control " required [(ngModel)]="ReSendInfo.messageBody" placeholder="请输入内容">
+                    </div>
+                </div>
+                <div style="clear:both"></div>
+                <div class="btnstyle myBtnStyle">
+                    <button type="button" class="btn btn-primary btnhoverju pull-right marR20" (click)="deduct(reduceCoin)">提交</button>
+                    <button type="button" class="btn btn-default btnhoverlan pull-right marR20" (click)="unSubmit(reduceCoin)">取消</button>
+                    <div style="clear:both"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 名片 -->
+<template #popTemplate>
+    <div class='cardBox'>
+        <div class="card"><img class="imgCard" [src]="userInfod.businessCardUrl"></div>
+        <div>
+            <div class="userTitle">{{userInfod.userName}} {{userInfod.loginName}}</div>
+            <div>
+                <div class="userInfo">机构： {{userInfod.organizationFullName}}</div>
+                <div class="userInfo">部门： {{userInfod.department}}</div>
+                <div class="userInfo">职位： {{userInfod.position}}</div>
+            </div>
+        </div>
+    </div>
+ </template>
+

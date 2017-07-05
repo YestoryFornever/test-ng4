@@ -1,0 +1,59 @@
+
+<div class="header clearfix">
+	<span class="head icon">|</span><span class="head" >IM 消息相关人员</span>
+	<div class="btnHeader head">
+        <button class="btn btn-primary" (click)="returnTo()">返回</button>
+    </div>
+</div>
+<div style="padding: 16px;border-bottom:1px solid #ddd">当前用户：<span *ngIf="Name!='undefined'">{{Name}}</span><span *ngIf="Name=='undefined'" style="color: red">未认证</span></div>
+<div class="screen .clearfix">
+		<div class="condition container-fluid">
+			<span>选择日期</span>
+			<p-calendar [(ngModel)]="startDate"   [locale]="en" [showTime]="true" dateFormat="yy-mm-dd "></p-calendar>
+			<!-- <input class="selection"  type="date" [(ngModel)]="startDate"> -->
+			&nbsp;到&nbsp;
+			<p-calendar  [(ngModel)]="endDate" [minDate]="startDate"   [locale]="en" [showTime]="true" dateFormat="yy-mm-dd"></p-calendar>
+			<!-- <input class="selection" type="date" [(ngModel)]="endDate"> -->
+		</div>
+		<button class="condition btn btn-primary sub" (click)='turnFirst()'>查询</button>
+</div>
+
+<div class="tableList " >		
+	<table class="table table-bordered table-hover " >
+		<thead >
+			<tr>
+				<td class="info longTxt">操作</td>
+				<td class="info middleTxt" ><input #allcheck type="checkbox" name="allCheck"  *ngIf="0" (change)="checkAll(allcheck)"> 注册手机号</td>
+				<td class="info ">用户姓名 </td>
+				<td class="info">机构简称</td>
+				<td class="info">部门</td>
+			</tr>
+		</thead>
+		<tbody  id="list" *ngFor="let user of userLists">
+			<tr #userList class="Userlist" >
+				<td><a (click)="detialTo(ID,Name,user.userId,user.userName)">查看IM详情</a></td>
+				<td>{{user.loginName}}</td>
+				<td>{{user.userName}}</td>
+				<td>{{user.organizationFullName}}</td>
+				<td>{{user.department}}</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+<!-- 分页 -->
+	<div class="row pagerow" >
+		<div class="pageshowleft">每页显示
+			<select #selectPage name="" id="msgNum" (change)="sizeData(selectPage.value,userList)">
+				<option #optionPage  *ngFor="let msgNumber of msgNumbers" value={{msgNumber.Number}}>{{msgNumber.Number}}</option>
+			</select>
+			条数据
+		</div>
+		<div class="pageshowmodle">
+			<span>{{currentPage}} / {{totalPages}}</span>页
+			<span>{{totalItems}}条数据</span>
+		</div>
+
+		<div class="pagefen">
+			<pagination  [firstText]="firstText" [lastText]="lastText" [previousText]="previousText" [nextText]="nextText" [maxSize]="maxSize" [totalItems]="totalItems" [itemsPerPage]="itemsPerPage" [(ngModel)]="currentPage" [boundaryLinks]="true" (pageChanged)='pageChanged($event)' (numPages)='pageNumChange($event)' class="pagination-sm"></pagination>
+		</div>
+	</div>

@@ -1,0 +1,108 @@
+<div class="mian">
+	<div class="header clearfix">
+		<span class="head icon">|</span><span class="head" >审核历史</span>
+	</div>
+</div>
+
+<div class="screen .clearfix">
+		<div class="condition container-fluid">
+			<span>注册手机号：</span><input req maxlength="11" type="text" name="phoneNum"  class="form-control" [(ngModel)]="default.loginName" #phone="ngModel" placeholder="全部">
+		</div>
+		<div  class="condition container-fluid">
+			<span>申请姓名：	</span><input #userName req [(ngModel)]="default.userName"  placeholder="全部"  class="form-control">
+		</div>
+		<div class="condition container-fluid">
+			<span>申请机构：	</span><input #cm req placeholder="全部" class="form-control kuan" 
+                    [(ngModel)]="default.organizationName" 
+                    [typeahead]="companylist" 
+                    (typeaheadOnSelect)="typeaheadOnCompanys($event)" 
+                    [typeaheadOptionField]="'organizationShortName'"             
+                    [ngModelOptions]="{standalone: true}" 
+                    (blur)="blurCompany(cm)">
+                    <input type="text"  name="companyId" class="hide" [(ngModel)]="default.organizationId" [ngModelOptions]="{standalone: true}">
+		</div>
+		<div class="condition container-fluid" *ngIf="0">
+			<span>部&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;门：	</span><input #dpt req  placeholder="全部" class="form-control kuan"  
+                    [(ngModel)]="departmentName" 
+                    [typeahead]="partlist"  
+                    (typeaheadOnSelect)="typeaheadOnDepartments($event)" 
+                    [typeaheadOptionField]="'departmentName'"
+                    [ngModelOptions]="{standalone: true}">
+                    <input type="text"  name="companyId" class="hide" [(ngModel)]="default.departmentId" [ngModelOptions]="{standalone: true}">
+		</div>
+		<button class="condition btn btn-primary sub" (click)="turnFirst()">查询</button>
+	</div>
+<!-- 表格 -->
+	<div class="tableList " >
+		<div class = "loading" [ngClass]="setLoadClasses()" [ngStyle]="{'height': height }">
+			<div class="loader">
+				<div class="loader-inner">
+					<div class="loader-line-wrap">
+						<div class="loader-line"></div>
+					</div>
+					<div class="loader-line-wrap">
+						<div class="loader-line"></div>
+					</div>
+					<div class="loader-line-wrap">
+						<div class="loader-line"></div>
+					</div>
+					<div class="loader-line-wrap">
+						<div class="loader-line"></div>
+					</div>
+					<div class="loader-line-wrap">
+						<div class="loader-line"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<table class="table table-bordered table-hover " [ngClass]="setListClasses()">
+			<thead >
+				<tr>
+					<td class="info ">审核结果</td>
+					<td class="info ">注册手机号</td>
+					<td class="info shortTxt">申请姓名</td>
+					<td class="info ">申请机构</td>
+					<!-- <td class="info shortTxt">部门</td>
+					<td class="info middleTxt">联系电话</td>
+					<td class="info middleTxt">工作电话</td> -->
+					<td class="info middleTxt">申请日期</td>
+					<td class="info middleTxt" >审核信息</td>
+					
+					<td class="info ">审核人</td>
+					<td class="info middleTxt">审核时间</td>
+				</tr>
+			</thead>
+			<tbody  id="list" *ngFor="let userMsg of userMsges">
+				<tr  class="Userlist">
+					<td class="table-hover"><span *ngIf="userMsg.auditState==2">审核通过</span><span *ngIf="userMsg.auditState==3">审核未通过</span></td>
+					<td class="table-hover" >{{userMsg.registPhone}}</td>
+					<td class="table-hover" >{{userMsg.userName}}</td>
+					<td class="table-hover "><div class="td" [tooltip]="userMsg.company">{{userMsg.company}}</div></td>
+					<!-- <td class="table-hover">{{userMsg.department}}</td>
+					<td class="table-hover">{{userMsg.constantPhone}}</td>
+					<td class="table-hover">{{userMsg.workPhone}}</td> -->
+					<td class="table-hover">{{userMsg.applyTime}}</td>
+					<td class="table-hover"><div class="td"  [tooltip]="userMsg.auditInformation">{{userMsg.auditInformation}}</div></td>
+					<td class="table-hover "><div class="td"  [tooltip]="userMsg.auditUserName">{{userMsg.auditUserName}}</div></td>
+					<td class="table-hover">{{userMsg.auditTime}}</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<!-- 分页 -->
+	<div class="row pagerow" [ngClass]="setListClasses()">
+		<div class="pageshowleft">每页显示
+			<select #selectPage name="" id="msgNum" (change)="sizeData(selectPage.value,userList)">
+				<option #optionPage  *ngFor="let msgNumber of msgNumbers" value={{msgNumber.Number}}>{{msgNumber.Number}}</option>
+			</select>
+			条数据
+		</div>
+		<div class="pageshowmodle">
+			<span>{{currentPage}} / {{totalPages}}</span>页
+			<span>{{totalItems}}条数据</span>
+		</div>
+
+		<div class="pagefen">
+			<pagination  [firstText]="firstText" [lastText]="lastText" [previousText]="previousText" [nextText]="nextText" [maxSize]="maxSize" [totalItems]="totalItems" [itemsPerPage]="itemsPerPage" [(ngModel)]="currentPage" [boundaryLinks]="true" (pageChanged)='pageChanged($event)' (numPages)='pageNumChange($event)' class="pagination-sm"></pagination>
+		</div>
+	</div>

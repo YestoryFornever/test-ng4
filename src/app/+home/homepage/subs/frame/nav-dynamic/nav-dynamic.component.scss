@@ -1,0 +1,21 @@
+a,a:hover,a:active{
+	color:#333;
+	text-decoration: none;
+}
+ul a{
+	display:block;
+	padding:16px;
+	text-align:center;
+}
+ul>a{
+	font-size:14px;
+}
+ul li a{
+	font-size:12px;
+}
+ul li a:hover{
+	background:#fff;
+}
+ul li a.active{
+	background:#eee;
+}

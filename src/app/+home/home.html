@@ -1,0 +1,230 @@
+<div class="wrapper">
+
+  <header class="main-header">
+
+    <!-- Logo -->
+    <a class="logo">
+      <!-- mini logo for sidebar mini 50x50 pixels -->
+      <span class="logo-mini"><img src="../../public/images/icon_logo.png"></span>
+      <!-- logo for regular state and mobile devices -->
+      <span class="logo-lg">
+        <img src="../../public/images/icon_logo.png">
+        <b>债金所</b>管理平台</span>
+    </a>
+
+    <!-- Header Navbar: 顶部导航 -->
+    <nav class="navbar navbar-static-top">
+      <!-- Sidebar toggle button-->
+      <a class="sidebar-toggle" data-toggle="offcanvas" role="button">
+        <span class="sr-only">控制菜单</span>
+      </a>
+      <div class="pull-left">
+        <ul class="nav navbar-nav">
+          <!-- User Account: style can be found in dropdown.less -->
+          <li *ngFor="let item of menu.navMenu; index as navIndex" 
+          (click)="menu.activeMenu([navIndex,-1,-1])"
+          [class.active]="menu.activeIndexs[0]==navIndex">
+            <a [routerLink]="item.routerLink" [queryParams]="item.queryParams">
+              <i class="{{item.icon}}"></i> <span>{{item.label}}</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+      <!-- Navbar Right Menu 顶部右边-->
+      <div class="navbar-custom-menu">
+        <ul class="nav navbar-nav">
+          <li title="在线客服">
+            <a (click)="controlSidebar=!controlSidebar">
+              <i class="fa fa-bell-o"></i>
+              <span class="label label-warning">10</span>
+            </a>
+          </li>
+          <li class="dropdown user user-menu">
+            <a class="dropdown-toggle" data-toggle="dropdown">
+              <span class="hidden-xs">欢迎您：{{account}}</span>
+            </a>
+            <ul class="dropdown-menu" role="menu" aria-labelledby="single-button">
+              <li class="user-body">
+                <a class="dropdown-item" href="javascript:void(0);" (click)="updatepwd.show()">修改密码</a>
+              </li>
+              <li class="user-footer">
+                <a class="dropdown-item" href="javascript:void(0);" (click)="logoutModal.show()">注销</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </nav>
+    
+  </header>
+  <!-- Left side column. contains the logo and sidebar 左侧菜单-->
+  <aside class="main-sidebar">
+    <!-- sidebar: style can be found in sidebar.less -->
+    <section class="sidebar">
+      <!-- sidebar menu: : style can be found in sidebar.less -->
+      <ul class="sidebar-menu tree">
+        <li class="treeview" *ngFor="let item of menu.sidebarMenu; index as i" [ngClass]="{'menu-open':menu.activeIndexs[1]==i, 'active':menu.activeIndexs[1]==i}">
+          <a *ngIf="!item.childs" [routerLink]="item.routerLink" [queryParams]="item.queryParams">
+            <i class="{{item.icon}}"></i> <span>{{item.label}}</span>
+          </a>
+          <a *ngIf="item.childs">
+            <i class="{{item.icon}}"></i> <span>{{item.label}}</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul *ngIf="item.childs" class="treeview-menu">
+            <li *ngFor="let child of item.childs; index as j" 
+            [ngClass]='{"active":menu.activeIndexs[2]==j}'
+            (click)="menu.activeMenu([menu.activeIndexs[0],i,j])">
+              <a [routerLink]="child.routerLink" 
+              [queryParams]="child.queryParams">
+                <i class="{{child.icon}}"></i> {{child.label}}
+              </a>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </section>
+    <!-- /.sidebar -->
+  </aside>
+
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) 面包屑导航-->
+    <!-- <section class="content-header">
+      <h1>
+        标题
+      </h1>
+      <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li class="active">Dashboard</li>
+      </ol>
+    </section> -->
+
+    <!-- Main content 主要内容区域-->
+    <section [hidden]="isLoadChildren==false">
+      <div class="spinner-main">
+        <div class="spinner">
+          <div class="spinner-container container1">
+            <div class="circle1"></div>
+            <div class="circle2"></div>
+            <div class="circle3"></div>
+            <div class="circle4"></div>
+          </div>
+          <div class="spinner-container container2">
+            <div class="circle1"></div>
+            <div class="circle2"></div>
+            <div class="circle3"></div>
+            <div class="circle4"></div>
+          </div>
+          <div class="spinner-container container3">
+            <div class="circle1"></div>
+            <div class="circle2"></div>
+            <div class="circle3"></div>
+            <div class="circle4"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section [hidden]="isLoadChildren">
+      <router-outlet></router-outlet>
+    </section>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+
+  <footer class="main-footer">
+    <div class="pull-right hidden-xs">
+      <b>Version</b> 1.1.0
+    </div>
+    <strong>Copyright &copy; 2017-2020 <a>债金所</a>.</strong> All rights
+    reserved.
+  </footer>
+  <!-- Control Sidebar -->
+  <aside class="control-sidebar control-sidebar-dark" 
+  [ngClass]="{'control-sidebar-open':controlSidebar}">
+    <user-msg></user-msg>
+  </aside>
+  <!-- /.control-sidebar -->
+</div>
+<!-- 动态组件容器 -->
+<div #compoentContainerBox></div>
+
+<div bsModal #updatepwd="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" (click)="closeUpdatepwd(updatepwd)" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<h4 class="modal-title">修改账户密码</h4>
+			</div>
+			<div class="modal-body">
+				<form class="form-horizontal" role="form" #updatepwdform="ngForm">
+					<div id="organizations_info_left" class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+						<div class="form-group">
+							<label for="acount" class="col-lg-3 col-md-3 col-sm-3 col-xs-3 control-label">账户名</label>
+							<div class="col-lg-9 col-md-9 col-sm-9 col-xs-9">
+								<input type="text" class="form-control" name="acount" disabled [(ngModel)]="account">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="oldPassword" class="col-lg-3 col-md-3 col-sm-3 col-xs-3 control-label">原密码</label>
+							<div class="col-lg-9 col-md-9 col-sm-9 col-xs-9">
+								<input type="text" class="form-control" name="oldPassword" required [(ngModel)]="oldPassword">
+								<div *ngIf="formErrors.oldPassword" class="alert alert-danger">
+									{{ formErrors.oldPassword }}
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="newPassword" class="col-lg-3 col-md-3 col-sm-3 col-xs-3 control-label">新密码</label>
+							<div class="col-lg-9 col-md-9 col-sm-9 col-xs-9">
+								<input type="text" class="form-control" name="newPassword" required [(ngModel)]="newPassword">
+								<div *ngIf="formErrors.newPassword" class="alert alert-danger">
+									{{ formErrors.newPassword }}
+								</div>
+							</div>
+						</div>
+						<!-- <div class="form-group">
+							<label for="repeat" class="col-lg-3 col-md-3 col-sm-3 col-xs-3 control-label">重复密码</label>
+							<div class="col-lg-9 col-md-9 col-sm-9 col-xs-9">
+								<input type="text" class="form-control" name="repeat" required [(ngModel)]="repeatPassword">
+								<div *ngIf="formErrors.repeatPassword" class="alert alert-danger">
+									{{ formErrors.repeatPassword }}
+								</div>
+							</div>
+						</div> -->
+					</div>
+					<div  class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+						<button type="button" class="btn btn-primary pull-right btn-space" (click)="saveNewPwd(updatepwd)" [disabled]="!currentForm.form.valid">保存</button>
+						<button type="button" class="btn btn-default pull-right btn-space" (click)="closeUpdatepwd(updatepwd)">取消</button>
+					</div>
+					<div style="clear:both;"></div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+<div bsModal #logoutModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" (click)="logoutModal.hide()" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<h4 class="modal-title">确认退出吗？</h4>
+			</div>
+			<div class="modal-body">
+				<form class="form-horizontal" role="form" #logoutform="ngForm">
+					<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+						<button (click)="logout()" type="button" class="btn btn-primary pull-right btn-space">确认退出</button>
+						<button type="button" class="btn btn-default pull-right btn-space" (click)="logoutModal.hide()">取消</button>
+					</div>
+					<div style="clear:both;"></div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>

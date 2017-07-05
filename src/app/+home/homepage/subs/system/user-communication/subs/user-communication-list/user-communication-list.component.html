@@ -1,0 +1,79 @@
+<div class="header clearfix">
+	<span class="head icon">|</span><span class="head" >查询具体用户</span>
+	<div class="btnHeader head">
+        <button class="btn btn-primary" (click)="logTo()">查询全部IM消息</button>
+    </div>
+</div>
+<div class="screen .clearfix">
+		<div class="condition container-fluid">
+			<span>注册手机号:</span><input [(ngModel)]="userCon.loginName" req maxlength="11" type="text" name="phoneNum"  class="form-control"  placeholder="全部">
+		</div>
+		<div class="condition container-fluid">
+			<span>姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名：	</span><input [(ngModel)]="userCon.userName" #userName req  placeholder="全部"  class="form-control">
+		</div>
+		<div class="condition container-fluid">
+			<span>机构简称：	</span><input #cm req placeholder="全部" class="form-control kuan" 
+                    [(ngModel)]="default.organizationName" 
+                    [typeahead]="companylist" 
+                    (typeaheadOnSelect)="typeaheadOnCompanys($event)" 
+                    [typeaheadOptionField]="'organizationShortName'"             
+                    [ngModelOptions]="{standalone: true}" 
+                    (blur)="blurCompany(cm)">
+                    <input type="text"  name="companyId" class="hide" [(ngModel)]="userCon.organizationId" [ngModelOptions]="{standalone: true}">
+		</div>
+		<div class="condition container-fluid">
+			<span>部&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;门：	</span><input #dpt req  placeholder="全部" class="form-control kuan"  
+                    [(ngModel)]="departmentName" 
+                    [typeahead]="partlist"  
+                    (typeaheadOnSelect)="typeaheadOnDepartments($event)" 
+                    [typeaheadOptionField]="'departmentName'"
+                    [ngModelOptions]="{standalone: true}"
+                    (blur)="blurDepatrment(dpt)">
+                    <input type="text"  name="companyId" class="hide" [(ngModel)]="userCon.departmentId" [ngModelOptions]="{standalone: true}">
+		</div>
+		<button class="condition btn btn-primary sub" (click)="turnFirst()">查询</button>
+		</div>
+<div class="tableList " >		
+	<table class="table table-bordered table-hover " >
+		<thead >
+			<tr>
+				<td class="info longTxt">操作</td>
+				<td class="info middleTxt" ><input #allcheck type="checkbox" name="allCheck"  *ngIf="0" (change)="checkAll(allcheck)"> 注册手机号</td>
+				<td class="info ">用户姓名 </td>
+				<td class="info">机构简称</td>
+				<td class="info">部门</td>
+				<td class="info ">认证状态</td>
+				<td class="info ">用户状态</td>
+			</tr>
+		</thead>
+		<tbody  id="list" *ngFor="let user of userLists">
+			<tr #userList class="Userlist" >
+				<td><a (click)="detialTo(user.userId,user.userName)">查看IM相关通信人员</a></td>
+				<td>{{user.loginName}}</td>
+				<td>{{user.userName}}</td>
+				<td>{{user.organizationFullName}}</td>
+				<td>{{user.department}}</td>
+				<td>{{user.realCertifyStateName}}</td>
+				<td>{{user.userStateName}}</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+<!-- pagination -->
+<div class="row pagerow">
+	<div class="pageshowleft">每页显示
+		<select #selectPage name="" id="msgNum" (change)="sizeData(selectPage.value,userList)" [(ngModel)]="itemsPerPage">
+			<option #optionPage  *ngFor="let msgNumber of msgNumbers" value={{msgNumber.Number}}>{{msgNumber.Number}}</option>
+		</select>
+		条数据
+	</div>
+	<div class="pageshowmodle">
+		<span>{{currentPage}} / {{totalPages}}</span>页
+		<span>{{totalItems}}条数据</span>
+	</div>
+
+	<div class="pagefen">
+		<pagination  [firstText]="firstText" [lastText]="lastText" [previousText]="previousText" [nextText]="nextText" [maxSize]="maxSize" [totalItems]="totalItems" [itemsPerPage]="itemsPerPage" [(ngModel)]="currentPage" [boundaryLinks]="true" (pageChanged)='pageChanged($event)' (numPages)='pageNumChange($event)' class="pagination-sm"></pagination>
+	</div>
+</div>
+

@@ -1,0 +1,33 @@
+export class verCondition{
+	constructor(){
+		this.versionId='';
+		this.versionType='';
+		this.versionNumber='';
+		this.versionName='';
+		this.mandatoryUpgradeFlag='';
+		this.upgradeDescription='';
+		this.downloadAddress='';
+		this.versionState='';
+		this.createTime='';
+		this.currentPage=1;
+		this.itemsPerPage=10;
+		this.maxSize=5;
+	}
+	versionId:string;
+	versionType:string;
+	versionNumber:string;
+	versionName:string;
+	releaseTime:Number;
+	mandatoryUpgradeFlag:string;
+	upgradeDescription:string;
+	downloadAddress:string;
+	versionState:string;
+	releaseStartTime:Number;
+	releaseEndTime:Number;
+	createTime:string;
+	currentPage:Number;
+	maxSize:Number;
+	itemsPerPage:Number;
+	totalItems:Number;
+	totalPages:Number;
+}

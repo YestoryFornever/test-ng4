@@ -1,0 +1,110 @@
+<div class="header clearfix">
+	<span class="head icon">|</span><span class="head" >机构分类统计</span>
+</div>
+<div class="container scr">
+    <div class="left" (click)="toChange()">机构</div>
+    <div class="right" (click)="toChange1()">分类</div>
+</div><br>
+<div class="coat">
+    <div class="container screen1">
+        <div class="conditions1" style="min-width:380px;">
+            <div class="condition1">
+                <label  class="text-right leftfirst">机构全称</label>
+                <div class="condition-input">
+                    <input #cm req placeholder="全部" class="form-control" 
+                    [(ngModel)]="organizationName" 
+                    [typeahead]="companylist" 
+                    (typeaheadOnSelect)="typeaheadOnCompanys($event)" 
+                    [typeaheadOptionField]="'organizationFullName'"          
+                    [ngModelOptions]="{standalone: true}"
+                    (blur)="blurCompany(cm)">
+                    <input type="text"  name="companyId" class="hide" [(ngModel)]="default.organizationId" [ngModelOptions]="{standalone: true}">
+                </div>
+            </div>
+            <div style="clear:both;"></div>
+        </div>
+        <div class="bt">
+            <div class="condition-btn1">
+                <button class="btn btn-primary sub" (click)="total()">统计</button>
+            </div>
+        </div>
+    </div>
+    <div class="tableList1">
+        <table class="table table-bordered table-hover " >
+            <thead >
+                <tr>
+                    <td class="info longTxt">机构名称</td>
+                    <td class="info longTxt">注册用户数</td>
+                    <td class="info longTxt">已实名用户</td>
+                    <td class="info longTxt">未实名用户</td>                  
+                </tr>
+            </thead>
+            <tbody id="list" *ngFor="let userMsg of userMsges">
+                <tr #userList class="Userlist">
+                    <td>{{userMsg.fullName }}</td>
+                    <td>{{userMsg.regUserNum}}</td>
+                    <td>{{userMsg.realNameUserNum}}</td>
+                    <td>{{userMsg.notRealNameUserNum}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="coat1">
+    <div class="container screen1">
+        <div class="conditions1" style="min-width:380px;">
+            <div class="condition1">
+                <label for="fullname" class="text-right leftfirst">机构有效状态</label>
+                    <div class="condition-input">
+                        <div class="btn-group">
+                            <label class="btn btn-mint" [(ngModel)]="orgCondition.approveStatus" btnRadio="0" style="min-width:110px;" (click)="change1()">金融机构分类</label>
+                            <label class="btn btn-mint" [(ngModel)]="orgCondition.approveStatus" btnRadio="1" style="min-width:110px;" (click)="change2()">国际分类</label>
+                        </div>
+                    </div>
+                </div>
+            <div style="clear:both;"></div>
+        </div>
+         <div class="bt">
+            <div class="condition-btn1">
+                <button class="btn btn-primary sub" (click)="total()">统计</button>
+            </div>
+        </div>
+    </div>
+    <div class="tableList1">
+        <table class="table table-bordered table-hover " >
+            <thead >
+                <tr>
+                    <td class="info longTxt">行业名称</td>
+                    <td class="info longTxt">注册用户数</td>
+                    <td class="info longTxt">已实名用户</td>
+                    <td class="info longTxt">未实名用户</td>                  
+                </tr>
+            </thead>
+            <tbody id="list" *ngFor="let userMsg of userMsges">
+                <tr #userList class="Userlist">
+                    <td>{{userMsg.fullName }}</td>
+                    <td>{{userMsg.regUserNum}}</td>
+                    <td>{{userMsg.realNameUserNum}}</td>
+                    <td>{{userMsg.notRealNameUserNum}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<!-- 分页 -->
+    <div class="row pagerow" >
+        <div class="pageshowleft">每页显示
+            <select #selectPage name="" id="msgNum" (change)="sizeData(selectPage.value,userList)">
+                <option #optionPage  *ngFor="let msgNumber of msgNumbers" value={{msgNumber.Number}}>{{msgNumber.Number}}</option>
+            </select>
+            条数据
+        </div>
+        <div class="pageshowmodle">
+            <span>{{currentPage}} / {{totalPages}}</span>页
+            <span>{{totalItems}}条数据</span>
+        </div>
+
+        <div class="pagefen">
+            <pagination  [firstText]="firstText" [lastText]="lastText" [previousText]="previousText" [nextText]="nextText" [maxSize]="maxSize" [totalItems]="totalItems" [itemsPerPage]="itemsPerPage" [(ngModel)]="currentPage" [boundaryLinks]="true" (pageChanged)='pageChanged($event)' (numPages)='pageNumChange($event)' class="pagination-sm"></pagination>
+        </div>
+    </div>

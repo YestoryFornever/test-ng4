@@ -1,0 +1,47 @@
+<div class="header">
+	<span class="head icon">|</span><span class="head" >角色授权</span>
+	<div class="btnHeader head">
+		<button class="btn btn-primary" >保存角色</button>
+		<button class="btn btn-default" >放弃编辑</button>
+	</div>
+</div>
+<div class="pad">
+	<tabset>
+		<tab heading="后台页面及功能">
+			后台页面及功能
+		</tab>
+		<tab heading="APP页面及功能">
+			APP页面及功能
+		</tab>
+		<tab heading="数据授权">
+			数据授权
+		</tab>
+		<tab heading="test" (select)="alertMe()"
+			active="true"
+			(select)="active = true"
+			(deselect)="active = false"
+			disabled="disabled"
+			removable="removable"
+			(removed)="removeTabHandler(tabz)"
+			customClass="customClass">
+			test
+		</tab>
+	</tabset>
+</div>
+<!-- 分页 -->
+<div class="row pagerow">
+	<div class="pageshowleft">每页显示
+		<select #selectPage name="" id="msgNum" (change)="sizeData(selectPage.value,userList)" class="form-control">
+			<option #optionPage  *ngFor="let msgNumber of msgNumbers" value={{msgNumber.Number}}>{{msgNumber.Number}}</option>
+		</select>
+		条数据
+	</div>
+	<div class="pageshowmodle">
+		<span>{{currentPage}}/{{totalPages}}</span>页
+		<span>{{totalItems}}条数据</span>
+	</div>
+
+	<div class="pagefen">
+		<pagination [firstText]="firstText" [lastText]="lastText" [previousText]="previousText" [nextText]="nextText" [maxSize]="maxSize" [totalItems]="totalItems" [itemsPerPage]="itemsPerPage" [(ngModel)]="currentPage" [boundaryLinks]="true" (pageChanged)='pageChanged($event,allcheck)' (numPages)='pageNumChange($event)' class="pagination-sm"></pagination>
+	</div>
+</div>

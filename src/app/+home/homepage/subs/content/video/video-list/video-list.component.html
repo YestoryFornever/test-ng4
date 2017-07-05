@@ -1,0 +1,182 @@
+<div class="header">
+    <span class="head icon">|</span>
+    <span class="head">视频管理</span>
+    <div class="btnHeader head">
+       <button class="btn btn-primary" (click)="viewShow(view,file_ipt)">添加视频</button>
+    </div>
+</div>
+<main>
+	<div class="condition-container" style="min-width:580px;">
+		<div class="condition">
+			<label for="fullname" class="text-right">视频标题</label>
+			<div class="condition-input">
+				<input type="text" [(ngModel)]="listCon.title" name=""  style="width: 300px"  class="form-control" placeholder="视频标题关键字">
+			</div>
+		</div>
+		<div class="condition">
+			<label for="fullname" class="text-right">视频日期</label>
+			<div class="condition-input">
+				<p-calendar  [(ngModel)]="startDate" [maxDate]="endDate"    [locale]="en" [showTime]="false"></p-calendar>
+				&nbsp;到&nbsp;
+				<p-calendar [(ngModel)]="endDate"  [minDate]="startDate"  [locale]="en" [showTime]="false"></p-calendar>
+			</div>
+		</div>
+		
+		<div class="condition" >
+			<label for="fullname" class="text-right">操作人</label>
+			<div class="condition-input">
+				<select class="form-control" [(ngModel)]="listCon.op_uid">
+					<option value="">全部</option>
+					<option  [value]="item.userId" *ngFor="let item of userList">{{item.userName}}-{{item.loginName}}</option>
+				</select>
+			</div>
+		</div>
+		<div class="btns">
+            <div class="condition-btn">
+                <button class="btn btn-primary sub" (click)="turnFirst()">查询</button>    
+            </div>
+            <div class="condition-btn">只看被举报
+            	<input [(ngModel)]="is_tip" type="checkbox" name="" id="" (change)="turnFirst()">
+            </div>
+        </div>
+        <div style="clear:both;"></div>
+	</div>
+<div class="tableList ">		
+	<table class="table table-bordered table-hover " >
+		<thead >
+			<tr class="ltr">
+				<td class="table-hover" style="width: 190px">操作 </td>
+				<td class="table-hover" style="width: 190px">视频标题</td>
+				<td class="table-hover" style="width:120px">来源
+					<div class="order"><button class="fa fa-chevron-up" aria-hidden="true" (click)="Order('like_cnt','asc')"></button><button class="fa fa-chevron-down"  aria-hidden="true" (click)="Order('like_cnt','desc')"></button></div>	
+				</td>
+				<td class="table-hover" style="width:120px">类型
+				</td>
+				<td class="table-hover" style="width: 160px">操作人
+					<div class="order"><button class="fa fa-chevron-up" aria-hidden="true" (click)="Order('source','asc')"></button><button class="fa fa-chevron-down"  aria-hidden="true" (click)="Order('source','desc')"></button></div>	</td>
+				<td class="table-hover" style="width: 160px">发布日期	
+					<div class="order"><button class="fa fa-chevron-up" aria-hidden="true" (click)="Order('release_time','asc')"></button><button class="fa fa-chevron-down"  aria-hidden="true" (click)="Order('release_time','desc')"></button></div>
+				</td>
+				<td class="table-hover" style="width: 92px">点赞数
+					<div class="order"><button class="fa fa-chevron-up" aria-hidden="true" (click)="Order('like_cnt','asc')"></button><button class="fa fa-chevron-down"  aria-hidden="true" (click)="Order('like_cnt','desc')"></button></div>	
+				</td>
+				<td class="table-hover" style="width: 92px">播放数	
+					<div class="order"><button class="fa fa-chevron-up" aria-hidden="true" (click)="Order('view_num','asc')"></button><button class="fa fa-chevron-down"  aria-hidden="true" (click)="Order('view_num','desc')"></button></div>
+				</td>
+				<td class="table-hover" style="width: 112px">累计回复	
+					<div class="order"><button class="fa fa-chevron-up" aria-hidden="true" (click)="Order('comment_cnt','asc')"></button><button class="fa fa-chevron-down"  aria-hidden="true" (click)="Order('comment_cnt','desc')"></button></div>
+				</td>
+				<td class="table-hover" style="width: 92px">举报
+					<div class="order"><button class="fa fa-chevron-up" aria-hidden="true" (click)="Order('is_tip','asc')"></button><button class="fa fa-chevron-down"  aria-hidden="true" (click)="Order('is_tip','desc')"></button></div>
+				</td>
+			</tr>
+		</thead>
+		<tbody id="list" *ngFor="let content of videoList;let i = index ">
+			<tr #userList class="Userlist ltr"  [ngClass]="{'isCheck':ischecked[i].isChecked}"   [ngStyle]="{'color':content.is_tip == 1 ? 'red' : 'black' }" (click)="checked(i)">
+				<td> <div class="box" style="float:left">
+                            <div class="onOff off" *ngIf="content.release_state==2" (click)="changeOnOff(content,1)">关</div>
+                            <div class="onOff on" *ngIf="content.release_state==1" (click)="changeOnOff(content,2)">开</div>
+                        </div>
+                        <a  style="float:left;width:30%" (click)="infoDel(content.video_id)">
+                        	<i class="fa fa-trash" style="font-size: 20px;padding-left:20px" aria-hidden="true"></i>
+                        </a>
+                         <a  style="float:left;width:30%" (click)="turnDetial(content.video_id)">
+                        	<i class="fa fa-pencil-square-o" style="font-size: 20px;padding-left:20px" aria-hidden="true"></i>
+                        </a></td>
+				<td class=" ">{{content.title}}</td>
+				<td class=" ">{{content.source}}</td>
+				<td class=" ">{{content.url_type|videoType}}</td>
+				<td class=" ">{{content.op_name}} </td>
+				<td class=" ">{{content.release_time}} </td>
+				<td class=" ">{{content.like_cnt}} </td>
+				<td class=" ">{{content.view_num}} </td>
+				<td class=" ">{{content.comment_cnt}} </td>
+				<td class=" "><div class="fa fa-check" *ngIf="content.is_tip==1" style="color: red;width:20px;height:20px;font-size: 16px" ></div> </td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+</main>
+<!-- 分页 -->
+	<div class="row pagerow" >
+		<div class="pageshowleft">每页显示
+			<select #selectPage name="" id="msgNum" (change)="sizeData(selectPage.value,userList)" value='30'>
+				<option #optionPage  *ngFor="let msgNumber of msgNumbers" [value]="msgNumber.Number">{{msgNumber.Number}}</option>
+			</select>
+			条数据
+		</div>
+		<div class="pageshowmodle">
+			<span>{{currentPage}} / {{totalPages}}</span>页
+			<span>{{totalItems}}条数据</span>
+		</div>
+
+		<div class="pagefen">
+			<pagination  [firstText]="firstText" [lastText]="lastText" [previousText]="previousText" [nextText]="nextText" [maxSize]="maxSize" [totalItems]="totalItems" [itemsPerPage]="itemsPerPage" [(ngModel)]="currentPage" [boundaryLinks]="true" (pageChanged)='pageChanged($event)' (numPages)='pageNumChange($event)' class="pagination-sm"></pagination>
+		</div>
+	</div>
+
+
+<!-- 添加视频-->
+<div bsModal #view="bs-modal" class="modal fade modelPon" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content clearfix" >
+            <div class="modal-header">
+                <button type="button" class="close" aria-label="Close" (click)="view.hide()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">添加/修改视频</h4>
+            </div>
+            <div class="modal-body contentxinxi">
+            	<div class="condition container-fluid" style="width: 100%">
+					<span><b style="color: red">*</b>视频标题</span>
+					<input [(ngModel)]="addVideo.title" maxlength="50" type="text" style="width: 400px;height: 34px;" name="" placeholder="视频标题名称">
+					<!-- <input type="text" name="" placeholder=""  class="form-control"> -->
+				</div>
+				<div class="condition container-fluid" style="width:570px;height:80px">
+					<span style="vertical-align: top;"><b style="color: #fff">*</b>视频描述</span>
+					<textarea [(ngModel)]="addVideo.note" maxlength="500" style="width: 400px;height: 68px;" maxlength="800" placeholder="视频描述"></textarea>
+					<span style="color:#9a9a9a ">{{addVideo.note.length}}/800</span>
+					<!-- <input type="text" name="" placeholder=""  class="form-control"> -->
+				</div>
+				<div class="condition container-fluid" style="width: 100%">
+					<span style="float:left"><b style="color: red">*</b>视频类型</span>
+					<select class="form-control" style="width: 200px;height: 34px;float:left" [(ngModel)]="addVideo.url_type">
+						<option value="1">爱奇艺</option>
+						<option value="2">万事</option>
+						<option value="3">七牛</option>
+					</select>
+					<!-- <input  type="text" style="width: 400px;height: 34px;" name="" placeholder="视频地址"> -->
+					<!-- <input type="text" name="" placeholder=""  class="form-control"> -->
+				</div>
+				<div class="K-V" style="padding-left:10px;height: 270px;float:left">
+				<label [hidden]="imghead" for="exampleInputFile"><b style="color: red">*</b>选择图片</label> 
+				<input type="file" accept = 'image/*' class="form-control-file filecss" id="file_input" #file_ipt (change)="fileChange(file_ipt,$event)" />
+				<div style="width:304px;height: 208px;margin-left: 80px"  class="file-upload-thumbnail" #umbnail>
+					<img style="width:304px;height: 208px" *ngIf="img.src" [src]="img.src" name="newsImg"/>
+				</div> 
+				</div>
+				<div class="condition container-fluid" style="width: 100%">
+					<span><b style="color: red">*</b>视频时长</span>
+					<input [(ngModel)]="addVideo.times" type="text" style="width: 400px;height: 34px;" name="" placeholder="视频时长">
+					<!-- <input type="text" name="" placeholder=""  class="form-control"> -->
+				</div>
+				<div class="condition container-fluid" style="width: 100%">
+					<span><b style="color: red" *ngIf="addVideo.url_type!=1">*</b><b style="color: #fff" *ngIf="addVideo.url_type==1">*</b>视频链接</span>
+					<input [(ngModel)]="addVideo.url" type="text" style="width: 400px;height: 34px;" name="" placeholder="视频地址">
+					<!-- <input type="text" name="" placeholder=""  class="form-control"> -->
+				</div>
+				<div class="condition container-fluid" style="width: 100%">
+					<span><b style="color: red" *ngIf="addVideo.url_type==1">*</b><b style="color: #fff" *ngIf="addVideo.url_type!=1">*</b>视频ID串</span>
+					<input [(ngModel)]="addVideo.url_id" type="text" style="width: 400px;height: 34px;" name="" placeholder="视频ID串">
+					<!-- <input type="text" name="" placeholder=""  class="form-control"> -->
+				</div>
+            </div>
+             <div class="condition container-fluid" style="padding-left: 400px">
+				
+				<button type="button" class="btn btn-primary" (click)="view.hide()">取消</button>
+				<button  type="button" class="btn btn-primary" (click)="saveVideo(view)"  [disabled]="saving">保存</button>
+			</div>
+        </div>
+    </div>
+</div>
+

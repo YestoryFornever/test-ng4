@@ -1,0 +1,41 @@
+<!--编辑群信息-->
+<div class="row col-xs-12 col-md-12" style="padding-left:30px;">
+<form class="form-horizontal" role="form" #editgroupmessage="ngForm">
+    <div class="row rowtop">
+        <div class="before"><span class="icon">|</span>编辑群信息</div>
+        <button type="button" class="btn btn-primary btn1 btnhoverju" #self (click)="editgrouplist(self,ty,file_input)" [disabled]="!editgroupmessage.form.valid">确定保存</button>
+    </div>
+    <div class="col-xs-6 col-md-6" style="margin-top:10px;padding-left:30px;">
+        <div class="condition">
+            <span><i>*</i>群名：</span><input type="text" class="form-control text" [(ngModel)]="groupeditMessage.groupGrpNm"  name="gNm" required #gNm="ngModel"/> 
+        </div>
+        <div [hidden]="gNm.valid || gNm.pristine"
+             class="alert alert-danger">
+          groupName is required 
+        </div>
+        <div class="condition">
+            <span style="float:left;"><i></i>群属性：</span>
+            <input type="checkbox" class="checkbox" checked="checked" name="gty" #ty [(ngModel)]="groupeditMessage.groupTp" required style="float:left;"/>
+            <span style="float:left;margin-top:2px;">官方群</span>
+       </div> 
+        <div class="condition" style="clear:both;">
+            <div>群介绍：</div>
+            <textarea  rows="9" cols="30" [(ngModel)]="groupeditMessage.groupDsc" name="gdsc"></textarea>
+        </div>
+    </div> 
+    <div class="col-xs-6 col-md-6" style="margin-top:10px;">
+        <fieldset class="form-group">
+            <label for="exampleInputFile">群头像</label>
+            <input type="file" class="form-control-file" #file_input (change)="fileChange(file_input,thumbnail)" />
+            <div  class="file-upload-thumbnail" #thumbnail>
+                <img *ngIf="groupeditMessage.groupheadAdr" [src]="groupeditMessage.groupheadAdr"/>
+            </div>
+            <input [(ngModel)]="groupeditMessage.groupheadAdr" required  name="imgh" [hidden]="'true'" #imgh="ngModel"/>
+            <div [hidden]="imgh.valid ||imgh.pristine" class="alert alert-danger hide" style="margin-top:10px;margin-left:0px;">
+               Group head is required
+            </div>
+      </fieldset>
+    
+    </div>
+</form>
+</div>

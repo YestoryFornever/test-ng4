@@ -1,0 +1,91 @@
+<div class="header clearfix box">
+	<span class="head icon">|</span><span class="head" >发送消息</span>
+	<div class="btnHeader head">
+		<button class="btn btn-primary" (click)="pushMessage()">发送</button>
+		<button class="btn btn-primary" (click)="turnTo()">返回</button>
+	</div>
+</div>
+
+<div class="content box">
+	<div class="newsTxt">
+		<div class="newsHeader">消息内容</div>
+		<div class="newsSurvey clearfix">
+			<div class="K-V">
+				<span class="newsKey"><b style="color: red">*</b>消息类型：</span>
+				 <div class="btn-group btnborder">
+                       <label class="btn btn-mint"  btnRadio="14"  [(ngModel)]="sendMsg.pshTpid">通知栏消息</label>
+                        <label class="btn btn-mint"  btnRadio="15"  [(ngModel)]="sendMsg.pshTpid" >系统消息</label>
+                        <label class="btn btn-mint"  btnRadio="17"  [(ngModel)]="sendMsg.pshTpid">短信</label>
+                </div>
+			</div>
+			<div class="K-V" *ngIf="sendMsg.pshTpid!=17">
+				  <span class="newsKey"><b style="color: red"  *ngIf="sendMsg.pshTpid!=15">*</b>消息标题：</span>
+				  <input [(ngModel)]="sendMsg.pshETitle" type="text" name="" style="width: 300px;height: 32px;">
+			</div>
+			<div class="K-V">
+				  <span class="newsKey"><b style="color: red">*</b>消息内容：</span>
+				  <textarea  [(ngModel)]="sendMsg.pshCntnt" style="width: 300px;height: 180px;margin-top: 10px"></textarea>
+			</div>
+			<div class="K-V" style="padding-left:25px" *ngIf="sendMsg.pshTpid==15&&sendMsg.pshTpid!=17">
+				<label [hidden]="imghead" for="exampleInputFile"><b style="color: red">*</b>选择图片</label> 
+				<input type="file" class="form-control-file filescss" id="file_input" #file_ipt (change)="fileChange(file_ipt,$event)" />
+				<div  class="file-upload-thumbnail" #umbnail>
+					<img *ngIf="sendMsg.pictureUrl" [src]="sendMsg.pictureUrl" name="newsImg"/>
+				</div>
+			</div>
+			<div class="K-V" *ngIf="sendMsg.pshTpid!=17">
+				<span class="newsKey"><b style="color: red">*</b>跳转方式：</span>
+				 <div class="btn-group btnborder">
+                       <label class="btn btn-mint"  btnRadio="1"  [(ngModel)]="turnType"><span *ngIf="sendMsg.pshTpid==14">打开APP</span><span *ngIf="sendMsg.pshTpid==15">无</span></label>
+                        <label class="btn btn-mint"  btnRadio="2"  [(ngModel)]="turnType" >H5</label>
+                </div>
+			</div>
+			<div class="K-V" *ngIf="turnType==2&&sendMsg.pshTpid!=17">
+				  <span class="newsKey"><b style="color: red">*</b>跳转链接：</span>
+				  <input [(ngModel)]="sendMsg.h5Url" type="text" name="" style="width: 300px;height: 32px;"><div style="margin-left:15px;color:#888">格式如：    http://www.baidu.com</div>
+			</div>
+		</div>
+	</div>
+  		<div class="newsMsg">
+			<div class="newsHeader">发送条件</div><br>
+			<div class="newsSurvey clearfix">
+				<div class="K-V">
+					<span class="newsKey"><b style="color: red">*</b>发送对象：</span>
+					<div class="btn-group btnborder">
+                        <label class="btn btn-mint"  btnRadio="A"  [(ngModel)]="sendMsg.targetGroup">全部</label>
+                        <label class="btn btn-mint"  btnRadio="B"  [(ngModel)]="sendMsg.targetGroup" >指定用户分组</label>
+                        <label class="btn btn-mint"  btnRadio="C"  [(ngModel)]="sendMsg.targetGroup" >单个用户</label>
+	                </div>
+	              <!--   <div *ngIf="sendMsg.targetGroup!='C'" style="font: 12px '微软雅黑'; color:#aaa;margin: 10px;margin-left: 100px">总用户数：5000 人</div> -->
+				</div>
+				<div class="K-V" *ngIf="sendMsg.targetGroup=='B'">
+					<span class="newsKey"><b style="color: red">*</b>指定分组：</span>
+					<select value='-1' style="height: 32px;width:200px" [(ngModel)]="groupID">
+					 	<option *ngFor="let item of infoList" [value]="item.grpgScmid">{{item.scmNm}}</option>
+					</select>
+				</div>
+				<div class="K-V" *ngIf="sendMsg.targetGroup=='C'">
+					<span class="newsKey"><b style="color: red">*</b>指定用户手机：</span>
+					<input type="" name="" [(ngModel)]="login.loginName" style="height: 32px"><button class="btn-primary" style="height: 32px;width:50px" (click)="queryUserList()">查询</button>
+				</div>
+				<div class="K-V" *ngIf="sendMsg.targetGroup=='C'">
+					<span class="newsKey">匹配用户：</span><span style="display:inline-block;height: 32px;line-height: 32px" *ngIf="user.length==1&&isSer">{{user[0].userName}}</span>
+					<span style="display:inline-block;height: 32px;line-height: 32px" *ngIf="user.length!=1&&isSer">没有匹配到精确地用户,请确认手机号</span>
+					<span style="display:inline-block;height: 32px;line-height: 32px" *ngIf="!isSer">{{content}}</span>
+				</div>
+				<div class="K-V">
+					<span class="newsKey"><b style="color: red">*</b>发送时间：</span>
+					<div class="btn-group btnborder">
+                       <label class="btn btn-mint"  btnRadio="0"  [(ngModel)]="sendMsg.wthrTmgSnd">立即</label>
+                       <label class="btn btn-mint"  btnRadio="1"  [(ngModel)]="sendMsg.wthrTmgSnd" >指定时间</label>
+	                </div>
+				</div>
+				<div class="K-V" *ngIf="sendMsg.wthrTmgSnd==1" style="min-height: 350px">
+					<span class="newsKey"><b style="color: red">*</b>时间设置：</span><p-calendar [(ngModel)]="dataPicker" [minDate]="toDate"  [locale]="en" [showTime]="true" (onSelect)="Piketime()"></p-calendar><!-- <p-calendar [(ngModel)]="timePicker" [locale]="en" [minDate]="toDate" [timeOnly]="true"></p-calendar> -->
+					<div>温馨提示：指定时间请至少于当前时间间隔五分钟后发送</div>
+				</div>
+				<!-- <div>{{timePicker}}</div> -->
+			</div>
+		</div>
+		  <div style="clear:both;"></div>
+</div>

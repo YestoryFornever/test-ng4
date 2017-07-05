@@ -1,0 +1,123 @@
+<div class="header clearfix">
+	<span class="head icon">|</span><span class="head" >用户组列表</span>
+	<div class="btnHeader head">
+        <button class="btn btn-primary" (click)="userVe.show()">新增</button>
+        <button class="btn btn-primary" (click)="deleteGp(delete)">删除</button>
+        <!-- <button class="btn btn-primary" >编辑组用户</button> -->
+    </div>
+</div>
+
+<div class="screen .clearfix">
+	<div class="condition container-fluid">
+		<span>组名：</span><input req maxlength="11" type="text" name="phoneNum"  class="form-control"  placeholder="全部" [(ngModel)]="default.groupGrpNm">
+	</div>
+	<div class="condition container-fluid" >
+		<span>类型管理：	</span><select [(ngModel)]="default.groupTp"  class="selection">
+			<option *ngFor="let type of sertype"  [value]="type.codedataId">{{type.codedataName}}</option>
+			</select>
+	</div>
+	<button class="condition btn btn-primary sub" (click)="turnFirst()">查询</button>
+</div>
+
+<div class="tableList " >
+	<table class="table table-bordered table-hover " >
+		<thead >
+			<tr>
+				<td class="info middleTxt"><input #allcheck type="checkbox" name="allCheck"  (change)="checkAll(allcheck)"> 操作</td>
+				<td class="info middleTxt">名称</td>
+				<td class="info shortTxt" >管理类型</td>
+				<td class="info ">备注</td>
+				<td class="info longTxt">创建日期</td>
+			</tr>
+		</thead>
+		<tbody  id="list"  *ngFor="let gp of group">
+			<tr #userList class="Userlist">
+				<td ><input  type="checkbox" #listState name="user" (change)="changeState(listState,userList)" ><a (click)="toDetial(gp.groupGrpid,gp.groupGrpNm)">查看成员</a> / <a (click)="changeGp(changeGroup,gp)">修改</a></td>
+				<td>{{gp.groupGrpNm}}</td>
+				<td>{{gp.groupTpName}}</td>
+				<td>{{gp.groupDsc}}</td>
+				<td>{{gp.createTime}}</td>
+				<!-- <td class="table-hover" ><input  *ngIf="0" type="checkbox" #listState name="user" (change)="changeState(listState,userList)" >{{userMsg.registPhone}}</td>
+				<td class="table-hover" #username>{{userMsg.userName}}</td>
+				<td class="table-hover middleTxt" #userMsgName><div [tooltip]="userMsg.company" class="td">{{userMsg.company}}</div></td>
+				<td class="table-hover">{{userMsg.applyTime}}</td> -->
+			</tr>
+		</tbody>
+	</table>
+</div>
+
+
+<!--新增用户组 -->
+<div bsModal #userVe="bs-modal" class="modal fade modelPon" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" aria-label="Close" (click)="userVe.hide()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">新增用户组</h4>
+            </div>
+            <div class="modal-body contentxinxi">
+                <div class="pp"><span>组名称：</span><input type="text" [(ngModel)]="addGroup.groupGrpNm" name="addname"></div>
+                <div class="pp"><span>组类型：</span>
+	                <select [(ngModel)]="addGroup.groupTp">
+		               <option *ngFor="let type of sertype"  [value]="type.codedataId">{{type.codedataName}}</option>
+					</select>
+				</div>
+                <div class="pp"><span>备注：</span><textarea class="verCom" [(ngModel)]="addGroup.groupDsc"></textarea></div>
+                <div class="btnstyle">
+                    <button type="button" class="btn btn-default btnhoverlan" (click)="saveGroup(userVe)">保存</button>
+                    <button type="button" class="btn btn-primary btnhoverju" (click)="userVe.hide()">取消</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 修改用户组 --> 
+<div bsModal #changeGroup="bs-modal" class="modal fade modelPon" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" aria-label="Close" (click)="changeGroup.hide()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">修改用户组</h4>
+            </div>
+            <div class="modal-body contentxinxi">
+                <div class="pp"><span>组名称：</span><input type="text" [(ngModel)]="changeCon.groupGrpNm" name="addname"></div>
+                <div class="pp"><span>组类型：</span>
+	                <select [(ngModel)]="changeCon.groupTp">
+		                <option *ngFor="let type of sertype"  [value]="type.codedataId">{{type.codedataName}}</option>
+					</select>
+				</div>
+                <div class="pp"><span>备注：</span><textarea class="verCom" [(ngModel)]="changeCon.groupDsc"></textarea></div>
+                <div class="btnstyle">
+                    <button type="button" class="btn btn-default btnhoverlan" (click)="saveChange(changeGroup)">保存</button>
+                    <button type="button" class="btn btn-primary btnhoverju" (click)="changeGroup.hide()">取消</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 删除用户组 --> 
+<div bsModal #delete="bs-modal" class="modal fade modelPon" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content" style="height: 170px;width: 300px">
+            <div class="modal-header">
+                <button type="button" class="close" aria-label="Close" (click)="delete.hide()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">删除用户组</h4>
+            </div>
+            <div class="modal-body contentxinxi">
+                
+                <div style="font-size: 20px">是否删除选中的{{checkGroup.length}}个用户组？</div>
+                <div class="btnstyle">
+                    <button type="button" class="btn btn-default btnhoverlan"(click)="deleteGroup(delete)">确定</button>
+                    <button type="button" class="btn btn-primary btnhoverju" (click)="delete.hide()">取消</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

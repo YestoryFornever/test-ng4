@@ -1,0 +1,7 @@
+<ul>
+	<a href="javascript:void(0)" [textContent]="nav_ul"></a>
+	<li *ngFor="let nav of nav_lis">
+		<a  routerLink="./{{nav.router_id}}" routerLinkActive="active" [textContent]="nav.label"></a>
+	</li>
+</ul>
+<!-- routerLink="/[nav.router_id]" routerLinkActive="active" -->

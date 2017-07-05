@@ -1,0 +1,50 @@
+<div class="header clearfix">
+	<span class="head icon">|</span><span class="head" >分销信息总览</span>
+</div>
+	<div class="condition container-fluid">
+		<div class="btn-group btnborder">
+			<label class="btn btn-mint" (click)="getDstrSmy(1)"  btnRadio="0"  [(ngModel)]="tm">最近一周</label>
+			<label class="btn btn-mint" (click)="getDstrSmy(2)"  btnRadio="1"  [(ngModel)]="tm" >最近一个月</label>
+			<label class="btn btn-mint" (click)="getDstrSmy(3)"  btnRadio="2"  [(ngModel)]="tm" >最近三个月</label>
+			<label class="btn btn-mint" (click)="getDstrSmy(4)"  btnRadio="3"  [(ngModel)]="tm" >最近一年</label>
+		</div>
+	</div>
+	<div class="package clearfix">
+		<div class="c_all">
+			<div class="c_title">发行债券支数（用户参与/总）</div>
+			<div class="c_content" style="color:blue">{{detial.bondNumUsr}}支/{{detial.bondNumTal}}支</div>
+		</div>
+		<div class="c_all">
+			<div class="c_title">债券发行规模（用户参与/总）</div>
+			<div class="c_content" style="color:red">{{detial.issuAmtUsr/100000000}}亿/{{detial.issuAmtTal/100000000}}亿</div>
+		</div>
+		<div class="c_all">
+			<div class="c_title">今日发行债券支数（用户参与/总）</div>
+			<div class="c_content" style="color:blue">{{detial.bondNumUsrTd}}支/{{detial.bondNumTalTd}}支</div>
+		</div>
+		<div class="c_all">
+			<div class="c_title">今日债券发行规模（用户参与/总）</div>
+			<div class="c_content" style="color:red">{{detial.issuAmtUsrTd/100000000}} 亿/{{detial.issuAmtTalTd/100000000}}亿</div>
+		</div>
+	</div>
+<div class="header clearfix">
+	<span class="head icon">|</span><span class="head" >维度占比</span>
+</div>
+<div class="screen clearfix">
+		<div class="condition container-fluid">
+			<span>统计日期</span>
+			<p-calendar [(ngModel)]="startDate" [maxDate]="endDate"    [locale]="en" [showTime]="false"></p-calendar>
+			<!-- <input class="selection"  type="date" [(ngModel)]="startDate"> -->
+			&nbsp;到&nbsp;
+			<p-calendar [(ngModel)]="endDate"  [minDate]="startDate"  [locale]="en" [showTime]="false"></p-calendar>
+			<!-- <input class="selection" type="date" [(ngModel)]="endDate"> -->
+		</div>
+		<button class="btn btn-primary" (click)='getLttPct()'>查询</button>
+</div>
+<div class="clearfix">
+	<div id="charts1" [(ng2-echarts)]="chartData2" style="height: 500px; width:600px;float:left"></div>
+	<div id="charts2" [(ng2-echarts)]="chartData1" style="height: 500px; width:600px;float:left"></div>
+	<div id="charts3" [(ng2-echarts)]="chartData4" style="height: 500px; width:600px;float:left"></div>
+	<div id="charts4" [(ng2-echarts)]="chartData3" style="height: 500px; width:600px;float:left"></div>
+</div>
+

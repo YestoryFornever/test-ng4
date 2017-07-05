@@ -1,0 +1,241 @@
+*{margin:0;padding:0;}
+*,*:focus {
+	outline: none;
+}
+textarea{
+	outline:none;resize:none;
+}
+html,body{height:100%;}
+body {
+	position:fixed;
+	top:0;
+	bottom:0;
+	left:0;
+	right:0;
+	/*background: #c30e2e;#0147A7*/
+	color: #333;
+	margin:0;
+	padding:0;
+	font-family:"Microsoft Yahei";
+	font-size:14px;
+}
+.boxes{
+	position: relative;
+    border-radius: 3px;
+    background: #ffffff;
+    border-top: 3px solid #d2d6de;
+    margin-bottom: 20px;
+    width: 100%;
+    box-shadow: 0 1px 1px rgba(0,0,0,0.1);
+}
+ul{
+	list-style: none;
+	font-size:0;
+	margin:0;
+	padding:0;
+}
+ul{
+	font-size:14px;
+}
+::selection {
+	background: #ffaf3a;
+	color: #fff;
+}
+::-moz-selection {
+	background: #ffaf3a;
+	color: #fff;
+}
+::-webkit-selection {
+	background: #ffaf3a;
+	color: #fff;
+}
+a,a:active,a:hover{
+	color:#337ab7;
+	text-decoration: none;
+	cursor: pointer;
+}
+#loading{
+	width: 86px;
+	position: absolute;
+	top: 50%;
+	margin-top: -43px;
+	left: 50%;
+	margin-left: -43px;
+}
+#loading i.fa-spinner{
+	-webkit-animation: fa-spin 1.2s infinite linear;
+	animation: fa-spin 1.2s infinite linear;
+}
+/* bootstrap patch */
+/* 删除button圆角 */
+.btn{
+	border-radius: 0;
+}
+.btn-mint{
+	color: #000;
+	background-color: #fff;
+	border-color: #d6d6d6;
+}
+.btn-mint.active{
+	color: green;
+	background-color: #d3fdd4;
+	border-color: #94e596;
+}
+.label-info {
+	color: green;
+	background-color: #d3fdd4;
+	border:1px solid #94e596;
+}
+/*issue:froala rich-editor scroll*/
+.fr-element.fr-view p{margin:0;}
+
+.ng-valid[required], .ng-valid.required  {
+	border-left: 5px solid #42A948; /* green */
+}
+
+.ng-invalid:not(form)  {
+	border-left: 5px solid #a94442; /* red */
+}
+
+.fr-toolbar.fr-ltr.fr-desktop.fr-inline{
+	z-index:1050;
+}
+.fr-popup.fr-desktop.fr-inline.fr-ltr.fr-active{
+	z-index:1050!important;
+}
+hr {
+	-moz-border-bottom-colors: none;
+	-moz-border-image: none;
+	-moz-border-left-colors: none;
+	-moz-border-right-colors: none;
+	-moz-border-top-colors: none;
+	border-color: #EEEEEE;
+	border-style: solid none;
+	border-width: 1px 0;
+	margin: 18px 0;
+}
+
+/*�ϴ����*/
+div.file-upload-thumbnail{
+	background:#ddd url("../images/icon_headimage.png") center center no-repeat;
+}
+
+/* Specify styling for tooltip contents */
+.tooltip.customClass .tooltip-inner {
+	color: #fff;
+	background-color: #293038;
+	-webkit-box-shadow: 0 0 20px rgba(0,0,0, 0.75);
+	-moz-box-shadow: 0 0 20px rgba(0,0,0, 0.75);
+	box-shadow: 0 0 20px rgba(0,0,0, 0.75);
+}
+/* Hide arrow */
+.tooltip.customClass .tooltip-arrow {
+	/*display: none;*/
+	border-top-color: #293038;
+}
+/*input ���  ���ô�С  */
+.ui-datepicker{
+	width: 21em;
+}
+/* ��������Ŀ�� */
+#aaa .ui-inputtext{
+	width: 100px;
+	height:30px;
+	/* background: red */
+}
+
+/*��Ƭ*/
+
+.cardBox{
+	width: 240px ;
+	height: 280px ;
+	/*background-color: #baf*/
+}
+.card{
+	width: 240px;
+	height: 150px;
+	/*background-color: #555*/
+}
+.imgCard{
+	
+	width: 240px;
+	height: 150px
+}
+.userTitle{
+	width: 240px;
+	height: 35px;
+	/*background-color: #acf*/
+	font-size: 18px;
+	line-height: 35px
+
+}
+.userInfo{
+	width: 240px;
+	height: 25px;
+	font-size: 14px;
+	line-height: 25px;
+	white-space:nowrap; 
+	overflow:hidden; 
+	text-overflow:ellipsis;
+}
+.Card{
+	position: relative;
+}
+.tooltip-inner{
+	max-width: 255px;
+	background-color: #111;
+}
+.tooltip.in{
+	opacity: 1;
+}
+.fr-view img.fr-dib {
+	margin: auto;
+	display: initial;
+	/*float: none;
+	vertical-align: top;*/
+}
+.selectMore label {
+	font-weight:100;
+}
+.selectMore .ui-multiselect .ui-multiselect-label {
+	width:180px;
+	padding: 0 0 0 5px;
+	line-height:34px;
+}
+.selectMore .fa{
+	margin-top: 10px;
+}
+.selectMore .ui-multiselect-header{
+	display:  none;
+}
+.selectMore .ui-multiselect-panel{
+	background-color: #fff;
+	min-width: 170px;
+}
+body p-multiSelect .ui-multiselect .ui-multiselect-trigger .fa {
+    margin-top: 0.6em;
+}
+body p-multiSelect .ui-multiselect{
+	padding:0 0.75em;
+}
+body p-multiSelect .fa-check:before {
+    content: "\f00c";
+    position: relative;
+    top: -10px;
+}
+/*修改下拉禁止选择，----------------机构名称修改*/
+.deg_content .ui-corner-all li{
+	pointer-events: none;
+	
+}
+.deg_content .ui-dropdown{
+	cursor: not-allowed;
+}
+.Con .ui-togglebutton{
+	width: 100%
+}
+/*修改 togglebutton 样式*/
+body .Con .ui-togglebutton:not(.ui-state-disabled).ui-state-active{
+	background-color:#edeef2;
+	color:#888;
+}

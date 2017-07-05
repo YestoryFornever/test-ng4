@@ -1,0 +1,102 @@
+div .condition label{
+	width:auto
+}
+div .condition .condition-input .harf_select{
+	width:90px
+}
+i{
+	cursor:pointer
+}
+.tableList{
+	overflow-x:auto
+}
+.table{
+	width:1800px
+}
+main{
+	margin:10px
+}
+.isEllipsis{
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+div table .tenWord{
+	width: 160px;
+}
+div{
+	word-break: break-all;
+}
+.red{
+	color:red
+}
+.fff{
+	color:#fff
+}
+.box-body .info{
+	margin:8px 0 0 
+} 
+.r_title{
+	font-weight:600
+}
+.green_gary{
+	display:inline-block;
+	padding:3px 0;
+	text-align:center;
+	background-color:#edeef2;
+	color:#34a337;
+	font-weight:600;
+}
+.logo{
+	float: left;
+	height:120px
+}
+.logo img{
+	width:100%;
+	height:100%
+}
+.ftit{
+	background-color: #edeef2;
+    width: 100px;
+    margin: 0 auto;
+    /* position: absolute; */
+    margin-top: -11px;
+}
+.grayLine{
+	border-top:2px dashed #edeef2;position:relative;
+	margin:15px 0
+}
+.grayLine button{
+	position: absolute;
+    right: 10px;
+    top: 20px;
+}
+.modal-dialog,.modal-content{
+	min-width: 650px
+}
+.btnstyle{
+	float:right;
+	padding-top:20px
+}
+.deg_content .row{
+	min-height:32px;
+	line-height:32px
+}
+.Con{
+	height: 32px;
+    line-height: 32px;
+    margin:10px 0
+}
+.Con label{
+	font-weight:600;
+}
+.Con input,.Con select{
+	height: 30px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    width:100%
+}
+.b_tips{
+  margin-top:10px
+}
+

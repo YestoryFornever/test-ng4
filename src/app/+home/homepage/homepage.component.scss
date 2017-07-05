@@ -1,0 +1,97 @@
+header{
+	width:100%;
+	min-width:1024px;
+	height:52px;
+	background-color:#3F4263;
+	color:#fff;
+}
+header *{float:left;}
+header div.logo{
+	width:50px;
+	padding:11px 8px;
+	background: #3F4263;
+}
+header div.logo img{
+	display:block;
+	margin:0 auto;
+	float:initial;
+}
+header div.introduce{
+	padding:4px 20px;
+	margin:12px auto;
+}
+header div#acount{
+	float:right;
+	margin: 10px 10px 0 0;
+}
+ul.dropdown-menu{
+	min-width:0;
+	right:0;
+	left:initial;
+}
+ul.dropdown-menu li,ul.dropdown-menu a{
+	width:100%;
+}
+header .btn .caret {
+	float:initial;
+}
+/*aside{
+	position: absolute;
+	top: 52px;
+	bottom: 0px;
+	left: 0px;
+	width: 50px;
+	background:#293038;
+}
+aside li{
+	display:block;
+	width:100%;
+	margin:28px 0;
+}
+aside li a{
+	display:block;
+	width:16px;
+	height:16px;
+	line-height:16px;
+	margin:0 auto;
+	color:#fff;
+	font-size:1em;
+}*/
+nav{
+	position: absolute;
+	top: 52px;
+	bottom: 0px;
+	left: 50px;
+	width: 100px;
+	background:#dadfe5;
+}
+
+
+/*Content*/
+div.content{
+}
+ul,li,a{
+	z-index: 100;
+}
+
+#acount .btn{
+	border-radius: 0;
+	padding:5px 16px;
+}
+#acount .btn-primary{
+	background-color: #3F4263;
+	border-color:#3F4263;
+}
+#acount .btn-primary:hover{
+	background-color: #525473;
+	color: #fff;
+	border-color:#525473;
+}
+#acount .btn-default:hover{
+	background: #666989;
+	color:#fff;
+	border-color:#666989;
+}
+#acount .btn-space {
+	margin-right: 5px;
+}

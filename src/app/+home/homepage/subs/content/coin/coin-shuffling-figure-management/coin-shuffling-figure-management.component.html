@@ -1,0 +1,224 @@
+<div class="header clearfix">
+    <span class="head icon">|</span><span class="head">活动图列表</span>
+    <div class="btnHeader head">
+        <button class="btn btn-primary" #add (click)="onShow( add,change,null,input  )">添加活动图</button>
+    </div>
+</div>
+
+    <div class="screen .clearfix">
+        <div class="condition container-fluid">
+            <span >活动图位置</span>
+            <select  [(ngModel)]="default.imageType"   class="selection" >
+                <option [value]="103">启动页</option>
+                <option [value]="102">我的财富页</option>
+                <option [value]="101">金币商城页</option>
+                <option [value]="104">官网首页活动图</option>
+                <option [value]="105">推荐资讯页</option>
+                <option [value]="106">我的财富(web)</option>
+            </select>
+        </div>
+        <button class="condition btn btn-primary sub" (click)="onSubmit()" >查询</button>
+    </div>
+<!-- list -->
+<div class="wrap clearfix">
+    <div class="tableList ">
+        <table class="table table-bordered table-hover ">
+            <thead>
+                <tr>
+                    <td class="info longTxt">操作</td>
+                    <td class="info shortTxt">顺序</td>
+                    <td class="info middleTxt">活动图标签</td>
+                    <td class="info middleTxt">活动图图片</td>
+                    <td class="info middleTxt">添加用户</td>
+                    <td class="info middleTxt">添加时间</td>
+                    <td class="info middleTxt">开始时间</td>
+                    <td class="info middleTxt">结束时间</td>
+                    <td class="info middleTxt">跳转方式</td>
+                    <!-- <td class="info middleTxt">跳转链接</td> -->
+                    <td class="info shortTxt">状态</td>
+                </tr>
+            </thead>
+            <tbody *ngFor="let list of imageLists; let i = index;">
+                <tr>
+                    <td class="table-hover"><a class="inLinBlock" #xiu (click)="onShow(xiu,change,list,input)">修改</a><a class="inLinBlock" (click)="goodsOrder(orderByStores,list)" *ngIf="list.isEnabled==true">排序</a><a class="inLinBlock" *ngIf="list.isEnabled==false" style="color:#CCC;">排序</a><a class="inLinBlock" (click)="deleted(list.configImageId)">删除</a></td>
+                    <td>{{(default.pageNum-1)*default.pageSize+i+1}}</td>
+                    <td><a href="{{list.linkUrl}}" target="_blank">{{list.title }}</a></td>
+                    <td>
+                        <a class="hoverDisplay"><img style="width: 30px;height: 30px" [src]=list.imageUrl *ngIf="list.imageUrl" alt="">
+                            <div>
+                                <img [src]=list.imageUrl *ngIf="list.imageUrl" alt="">
+                            </div>
+                        </a>
+                    </td>
+                    <td>{{list.createUserName }}</td>
+                    <td>{{list.createTime }}</td>
+                    <td>{{list.validdate.substring(0,19) }} </td>
+                    <td>{{list.validdate.substring(21) }} </td>
+                    <td>{{list.linkType }} </td>
+                    <td>
+                        <div class="box">
+                            <div class="onOff off" *ngIf="list.isEnabled==false" (click)="changeOnOff(list)">关</div>
+                            <div class="onOff on" *ngIf="list.isEnabled==true" (click)="changeOnOff(list)">开</div>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<!-- 分页 -->
+<div class="row pagerow">
+    <div class="pageshowleft">每页显示
+        <select #selectPage name="" id="msgNum" (change)="sizeData(selectPage.value,userList)">
+            <option #optionPage *ngFor="let msgNumber of msgNumbers" value={{msgNumber.Number}}>{{msgNumber.Number}}</option>
+        </select>
+        条数据
+    </div>
+    <div class="pageshowmodle">
+        <span>{{currentPage}} / {{totalPages}}</span>页
+        <span>{{totalItems}}条数据</span>
+    </div>
+    <div class="pagefen">
+        <pagination [firstText]="firstText" [lastText]="lastText" [previousText]="previousText" [nextText]="nextText" [maxSize]="maxSize" [totalItems]="totalItems" [itemsPerPage]="itemsPerPage" [(ngModel)]="currentPage" [boundaryLinks]="true" (pageChanged)='pageChanged($event)' (numPages)='pageNumChange($event)' class="pagination-sm"></pagination>
+    </div>
+<!--添加/修改-->
+
+</div>
+<!--添加/修改-->
+<div bsModal #change="bs-modal" class="modal fade modelPon" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content ">
+            <div class="modal-header ">
+                <button type="button" class="close" aria-label="Close" (click)="change.hide()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">添加/修改活动图</h4>
+            </div>
+            <div class="modal-body  myHei">
+                <form class="form-horizontal">
+                    <div id="gift_info_left" class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <div class="form-group">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <label for="title" class="col-lg-3 col-md-3 col-sm-3 col-xs-3 control-label"><span class="red">*</span>活动图标题</label>
+                                <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9">
+                                    <!-- <input name="title" required [(ngModel)]="configImageInfo.title"  class="form-control" name="title" id="title" type="text" placeholder="请输入标题" /> -->
+                                    <input name="title" required [(ngModel)]="configImageInfo.title" class="form-control" type="text" placeholder="请输入标题">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <label for="pic" class="col-lg-3 col-md-3 col-sm-3 col-xs-3 control-label"><span class="red"> * </span>活动图</label>
+                                <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9">
+                                    <input type="file" required name="pic" class="form-control" (change)="fileChange(input,thumbnail,$event)" #input/>
+                                    <div id="thumbnail" class="file-upload-thumbnail" #thumbnail>
+                                        <img [src]=PictureShow *ngIf="PictureShow">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group ">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12  ">
+                                <label for="linkType" class="col-lg-3 col-md-3 col-sm-3 col-xs-3 control-label"><span class="red"> * </span>位置</label>
+                                <select  [(ngModel)]="configImageInfo.imageType" [disabled]="!addOrChange  "  [ngModelOptions]="{standalone: true}"  class="selection" >
+                                    <option [value]="103">启动页</option>
+                                    <option [value]="102">我的财富页</option>
+                                    <option [value]="101">金币商城页</option>
+                                    <option [value]="104">官网首页活动图</option>
+                                    <option [value]="105">推荐资讯页</option>
+                                    <option [value]="106">我的财富(web)</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group ">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+                                <label for="time" class="col-lg-3 col-md-3 col-sm-3 col-xs-3 control-label"><span class="red"> * </span>有效时间</label>
+                                <!-- <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9">
+                                    <input required class=" selection pull-left"   name="time1" [ngModel]="configImageInfo.validdateStart" (ngModelChange)="configImageInfo.validdateStart = $event" style="display:inline" type="date">
+                                    <span class="dao">到</span><input name="time2" class="form-control selection pull-right" required  type="date" [ngModel]="configImageInfo.validdateEnd" (ngModelChange)="configImageInfo.validdateEnd = $event">
+                                </div> -->
+                                <p-calendar name='time'  [locale]='mon' [monthNavigator]="true" [yearNavigator]="true" [(ngModel)]="myStartTime" placeholder="请输入时间" showTime="showTime" hourFormat="24" yearRange="2000:2050"></p-calendar>&nbsp;到&nbsp;
+                                <p-calendar [monthNavigator]="true" name='time2' [yearNavigator]="true" [(ngModel)]="myEndTime" [locale]='mon' showTime="showTime" hourFormat="24" placeholder="请输入时间" yearRange="2000:2050"></p-calendar>
+                            </div>
+                        </div>
+                        <div class="form-group ">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12  ">
+                                <label for="linkType" class="col-lg-3 col-md-3 col-sm-3 col-xs-3 control-label"><span class="red"> * </span>跳转方式</label>
+                                <div class="btn-group btnborder">
+                                    <label name="linkType"  class="btn btn-mint  " [(ngModel)]="configImageInfo.linkType" btnRadio='' [ngModelOptions]="{standalone: true}">无</label>
+                                    <label class="btn btn-mint" *ngIf="configImageInfo.imageType!='104'"  [(ngModel)]="configImageInfo.linkType" btnRadio='101' [ngModelOptions]="{standalone: true}">金币商城页面</label>
+                                    <label class="btn btn-mint" [(ngModel)]="configImageInfo.linkType" btnRadio='102' [ngModelOptions]="{standalone: true}">H5页面</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="clear:both;"></div>
+                        <div class="form-group ">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+                                <label for="linkUrl" class="col-lg-3 col-md-3 col-sm-3 col-xs-3 control-label">跳转链接</label>
+                                <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9">
+                                    <input [disabled]="(configImageInfo.linkType=='' || configImageInfo.linkType=='101')" name="linkUrl" required [ngModel]="configImageInfo.linkUrl" (ngModelChange)="configImageInfo.linkUrl = $event" (blur)="approveUrl()" class="form-control" type="text">
+                                    <span *ngIf="warning&&configImageInfo.linkType==102">{{dangerInfo}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="margin-bottom: 10px;">
+                        <button type="button" class="btn btn-primary btnhoverju pull-right" style="margin-left:10px;" (click)="onSave(configImageInfo,configImagePicture,change)" [disabled]="(warning||configImageInfo.linkUrl=='')&&configImageInfo.linkType==102">保存</button>
+                        <button type="button" class="btn btn-default btnhoverlan pull-right" (click)="cancelLogo(change)">取消</button>
+                    </div>
+                    <div style='clear: both;'></div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 弹窗 排序上架商品 -->
+<div bsModal #orderByStores="bs-modal" class="modal fade " tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm  ">
+        <div class="modal-content ">
+            <div class="modal-header">
+                <button type="button" class="close" (click)="orderByStores.hide()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">排序活动图</h4>
+            </div>
+            <div class="modal-body myBody">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="form-group" >
+                        <label class="col-lg-4 col-md-4 col-sm-4 col-xs-4 control-label">位置</label>
+                        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+                            <div class="marB5">
+                                <select  [(ngModel)]="orderList.imageType" disabled="true"  class="selection" >
+                                    <option [value]="103">启动页</option>
+                                    <option [value]="102">我的财富页</option>
+                                    <option [value]="101">金币商城页</option>
+                                    <option [value]="104">官网首页活动图</option>
+                                    <option [value]="105">推荐资讯页</option>
+                                    <option [value]="106">我的财富(web)</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-4 col-md-4 col-sm-4 col-xs-4 control-label">排序活动图</label>
+                        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+                            <div class="marB5">{{orderList.title}}</div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="num" class="col-lg-4 col-md-4 col-sm-4 col-xs-4 control-label"><span class="red">*</span>排序位置序号</label>
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 padT10">
+                            <input type="number" min='1' max="{{maxNum}}" class="form-control" [ngModel]="orderList.displayOrder" (ngModelChange)="orderList.displayOrder = $event" name="num" placeholder="请填写排序号">
+                        </div>
+                        <div class="paddingTB col-lg-2 col-md-2 col-sm-2 col-xs-2">(1-{{maxNum}})</div>
+                    </div>
+                </div>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 marT5">
+                    <button type="button" class="btn btn-primary pull-right btn-space " style="margin-left:10px;" (click)="order(orderByStores)">排序</button>
+                    <button type="button" class="btn btn-default pull-right btn-space" (click)="orderByStores.hide()">取消</button>
+                </div>
+                <div style="clear: both;"></div>
+            </div>
+        </div>
+    </div>
+</div>

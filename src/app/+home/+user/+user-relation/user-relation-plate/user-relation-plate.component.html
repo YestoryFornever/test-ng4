@@ -1,0 +1,118 @@
+<div class="header clearfix">
+	<span class="head icon">|</span><span class="head" >用户统计模块</span>
+	<div class="btnHeader head">
+        <button class="btn btn-primary" (click)="returnTo()">返回</button>
+    </div>
+</div>
+<div style="padding: 16px 0  0 16px">当前用户 : <span>{{Name}}</span></div>
+<div class="screen .clearfix">
+		<div class="condition container-fluid">
+			<span>选择日期</span>
+			<p-calendar [(ngModel)]="startDate" [maxDate]="endDate"    [locale]="en" [showTime]="false"></p-calendar>
+			<!-- <input class="selection"  type="date" [(ngModel)]="startDate"> -->
+			&nbsp;到&nbsp;
+			<p-calendar [(ngModel)]="endDate"  [minDate]="startDate"  [locale]="en" [showTime]="false"></p-calendar>
+			<!-- <input class="selection" type="date" [(ngModel)]="endDate"> -->
+		</div>
+		<button class="condition btn btn-primary sub" (click)='getSectorStatisticsList()'>统计</button>
+</div>
+
+<div>
+	<div class="tableList ">
+		<div class="titleHead" style="font:600 18px '微软雅黑'" (click)="showOrHide('commont')">社区  <span style="font: 14px '微软雅黑';color:#ccc">资讯、动态、人脉</span>
+		<hr>
+		</div>	
+		<div [ngClass]="setCommonClasses()">
+			<div >社区</div>	
+			<table class="table table-bordered table-hover " >
+				<thead >
+					<tr>
+						<td class="info longTxt">操作名称</td>
+						<td class="info longTxt">操作描述</td>
+						<td class="info ">操作次数</td>
+					</tr>
+				</thead>
+				<tbody  id="list" *ngFor="let user of commontList">
+					<tr #userList class="Userlist">
+						<td>{{user.operationName}}</td>
+						<td>{{user.operationDesc}}</td>
+						<td>{{user.totalNum}}</td>
+					</tr>
+				</tbody>
+			</table>
+			<div>资讯</div>	
+			<table class="table table-bordered table-hover " >
+				<thead >
+					<tr>
+						<td class="info longTxt">操作名称</td>
+						<td class="info longTxt">操作描述</td>
+						<td class="info ">操作次数</td>
+					</tr>
+				</thead>
+				<tbody  id="list" *ngFor="let user of newsList">
+					<tr #userList class="Userlist">
+						<td>{{user.operationName}}</td>
+						<td>{{user.operationDesc}}</td>
+						<td>{{user.totalNum}}</td>
+					</tr>
+				</tbody>
+			</table>
+			<div>动态</div>	
+			<table class="table table-bordered table-hover " >
+				<thead >
+					<tr>
+						<td class="info longTxt">操作名称</td>
+						<td class="info longTxt">操作描述</td>
+						<td class="info ">操作次数</td>
+					</tr>
+				</thead>
+				<tbody  id="list" *ngFor="let user of shareList">
+					<tr #userList class="Userlist">
+						<td>{{user.operationName}}</td>
+						<td>{{user.operationDesc}}</td>
+						<td>{{user.totalNum}}</td>
+					</tr>
+				</tbody>
+			</table>
+			<div>人脉</div>	
+			<table class="table table-bordered table-hover " >
+				<thead >
+					<tr>
+						<td class="info longTxt">操作名称</td>
+						<td class="info longTxt">操作描述</td>
+						<td class="info ">操作次数</td>
+					</tr>
+				</thead>
+				<tbody  id="list" *ngFor="let user of connection">
+					<tr #userList class="Userlist">
+						<td>{{user.operationName}}</td>
+						<td>{{user.operationDesc}}</td>
+						<td>{{user.totalNum}}</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div  class="titleHead" style="font:600 18px '微软雅黑'" (click)="showOrHide('money')">资金  <span style="font: 14px '微软雅黑';color:#ccc" >资金需求</span>
+			<hr>
+		</div>	
+		<div [ngClass]="setMoneyClasses()">
+			<div>资金需求</div>	
+			<table class="table table-bordered table-hover " >
+				<thead >
+					<tr>
+						<td class="info longTxt">操作名称</td>
+						<td class="info longTxt">操作描述</td>
+						<td class="info ">操作次数</td>
+					</tr>
+				</thead>
+				<tbody  id="list" *ngFor="let user of moneyList">
+					<tr #userList class="Userlist">
+						<td>{{user.operationName}}</td>
+						<td>{{user.operationDesc}}</td>
+						<td>{{user.totalNum}}</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>

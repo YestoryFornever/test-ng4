@@ -1,0 +1,29 @@
+<!-- 分页 -->
+<div class="pagerow">
+	<div class="pageshowleft">每页显示
+		<select #selectPage name="" class="form-control" (change)="sizeData(selectPage.value)" [(ngModel)]="selectVal">
+			<option *ngFor="let msgNumber of listNum" value={{msgNumber}}>{{msgNumber}}</option>
+		</select>
+		条数据
+	</div>
+	<div class="pageshowmodle" *ngIf="statistics!='false'">
+		<span>{{pageObj.currentPage}}/{{pageObj.totalPages}}</span>页
+		<span>{{pageObj.totalItems}}条数据</span>
+	</div>
+
+	<div class="pagefen">
+		<pagination
+			[firstText]="firstText"
+			[lastText]="lastText"
+			[previousText]="previousText"
+			[nextText]="nextText"
+			[maxSize]="pageObj.maxSize"
+			[totalItems]="pageObj.totalItems"
+			[itemsPerPage]="pageObj.itemsPerPage"
+			[(ngModel)]="pageObj.currentPage"
+			[boundaryLinks]="true"
+			(pageChanged)='pageChanged($event,allcheck)'
+			(numPages)='pageNumChange($event)'
+		class="pagination-sm"></pagination>
+	</div>
+</div>

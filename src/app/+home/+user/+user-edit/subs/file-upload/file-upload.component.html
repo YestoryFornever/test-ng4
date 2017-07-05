@@ -1,0 +1,6 @@
+<div>
+	<input type="file" (change)="fileChange(input,thumbnail)" #input /> <!-- multiple -->
+	<div id="thumbnail" class="file-upload-thumbnail" #thumbnail [style.width]="attr_width" [style.height]="attr_height">
+		<img [src]=" nail_img|safeurl " *ngIf="nail_img">
+	</div>
+</div>

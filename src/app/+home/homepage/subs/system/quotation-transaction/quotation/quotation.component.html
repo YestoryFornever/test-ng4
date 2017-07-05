@@ -1,0 +1,353 @@
+<div class="header clearfix">
+	<span class="head icon">|</span><span class="head" >报价查询</span>
+</div>
+<div class="row ">
+        <div class="btn-group btnborder " style="display: block;">
+            <div class="col-xs-11">
+            	<div class="one" style="height:110px;border:1px solid #666;">
+	                <div class="two" style="width:100%;margin-top:10px;">
+	                    <span style="float:left; padding: 5px 8px;">机构类型</span>
+	                    <label  class="btn btn-mint btnB10" (click)="changeStatus2All(this.organizationType)" [(ngModel)]="organizationType.a " btnCheckbox >全部</label>
+					    <label  class="btn btn-mint btnB10" (click)="changeStatus2(this.organizationType)" [(ngModel)]="organizationType.a1" btnCheckbox >银行</label>
+						<label  class="btn btn-mint btnB10" (click)="changeStatus2(this.organizationType)" [(ngModel)]="organizationType.a2" btnCheckbox >证券</label>
+						<label  class="btn btn-mint btnB10" (click)="changeStatus2(this.organizationType)" [(ngModel)]="organizationType.a3" btnCheckbox >基金</label>
+						<label  class="btn btn-mint btnB10" (click)="changeStatus2(this.organizationType)" [(ngModel)]="organizationType.a5" btnCheckbox >保险</label>
+						<label  class="btn btn-mint btnB10" (click)="changeStatus2(this.organizationType)" [(ngModel)]="organizationType.a6" btnCheckbox >资产管理</label>
+						<label  class="btn btn-mint btnB10" (click)="changeStatus2(this.organizationType)" [(ngModel)]="organizationType.a7" btnCheckbox >信托公司</label>
+						<label  class="btn btn-mint btnB10" (click)="changeStatus2(this.organizationType)" [(ngModel)]="organizationType.a8" btnCheckbox >财务公司</label>
+						<label  class="btn btn-mint btnB10" (click)="changeStatus2(this.organizationType)" [(ngModel)]="organizationType.a4" btnCheckbox >投资公司</label>
+						<label  class="btn btn-mint btnB10" (click)="changeStatus2(this.organizationType)" [(ngModel)]="organizationType.a11" btnCheckbox >企业</label>
+						<label  class="btn btn-mint btnB10" (click)="changeStatus2(this.organizationType)" [(ngModel)]="organizationType.a13" btnCheckbox >其他金融</label>
+	                </div>
+	                <div class="two" style="width:100%;">
+							<div class="three" style="width:220px;height:50px;position:relative;">
+							        <span style="float:left; padding: 5px 8px;">机构名称</span>
+							       <input type="text"  class="form-control"   [(ngModel)]="fullName.value"
+							       style="display:inline;width:145px;height:30px;"
+							       (keyup)="getIssuerByFullNames()"
+							     >
+							     <div #bbbb  id="two" style="
+							     width:240px;z-index:40;margin-left:48px;background:#ffffff;" *ngIf="org_tags">
+							     	<ul *ngFor="let items of orc,let i = index;">
+							     		<li (click)="seleced_fullName(i,items,bbbb)">{{items.organizationFullName}}</li>
+							     	</ul>
+							     </div>
+							</div>
+					      <!-- <input #cm req placeholder="全部" class="form-control" 
+                    [(ngModel)]="orgFullName" 
+                    [typeahead]="orc" 
+                    (typeaheadOnSelect)="typeaheadOnCompanys($event)" 
+                    [typeaheadOptionField]="'organizationFullName'"             
+                    [ngModelOptions]="{standalone: true}" 
+                    (blur)="blurCompany(cm,$event)"
+                    (change)="changeCompany(cm,$event)"
+                    style="display:inline;height:30px;width:180px;">
+                    <input type="text"  class="hide" name="organizationId" [(ngModel)]="default.organizationId" [ngModelOptions]="{standalone: true}"> -->
+				        <span>用户姓名</span>
+				        <input  class="form-control " style="display:inline;height:30px;width:150px;" placeholder="请输入用户姓名"  type="text" [(ngModel)]="default.userName"/>
+				        <span>注册手机号</span>
+				        <input   class="form-control " style="display:inline;height:30px;width:150px;"req placeholder="请输入注册手机号"  type="text" [(ngModel)]="default.loginName" />
+				    </div>
+			    </div> 
+               <div style="clear: both;"></div>
+               <div class="one">
+	                <div class="two" style="margin-top:10px;">
+
+	                    <span style="float:left; padding: 5px 8px;">债券类型</span>
+	                    <!-- <label class="btn btn-mint btnB10"  btnCheckbox >用户充值</label> (click)="changeStatus1All()"-->
+	                    <label class="btn btn-mint btnB10" (click)="changeStatus2All(this.checkModel)" btnCheckbox [(ngModel)]="checkModel.a" >全部</label>
+						<label class="btn btn-mint btnB10" (click)="changeStatus2(this.checkModel)" [(ngModel)]="checkModel.b1" btnCheckbox >国债</label>
+						<label class="btn btn-mint btnB10" (click)="changeStatus2(this.checkModel)"  [(ngModel)]="checkModel.b2" btnCheckbox >央票</label>
+						<label class="btn btn-mint btnB10" (click)="changeStatus2(this.checkModel)"  [(ngModel)]="checkModel.b3" btnCheckbox >金融债</label>
+						<label class="btn btn-mint btnB10" (click)="changeStatus2(this.checkModel)"  [(ngModel)]="checkModel.b4" btnCheckbox >地方债</label>
+						<label class="btn btn-mint btnB10" (click)="changeStatus2(this.checkModel)"  [(ngModel)]="checkModel.b5" btnCheckbox >短融</label>
+						<label class="btn btn-mint btnB10" (click)="changeStatus2(this.checkModel)"  [(ngModel)]="checkModel.b6" btnCheckbox >中票</label>
+						<label class="btn btn-mint btnB10" (click)="changeStatus2(this.checkModel)"  [(ngModel)]="checkModel.b7" btnCheckbox >企业债</label>
+						<label class="btn btn-mint btnB10" (click)="changeStatus2(this.checkModel)"  [(ngModel)]="checkModel.b8" btnCheckbox >同业存单</label>
+						<label class="btn btn-mint btnB10" (click)="changeStatus2(this.checkModel)"  [(ngModel)]="checkModel.b9" btnCheckbox >公司债</label>
+						<label class="btn btn-mint btnB10" (click)="changeStatus2(this.checkModel)"  [(ngModel)]="checkModel.b99" btnCheckbox >其他</label>
+	                </div>
+	                <div class="two">
+	                    <span style="float:left; padding: 5px 8px;">剩余期限</span>
+	                    <label class="btn btn-mint btnB10"  btnCheckbox   (click)="changeStatus2All(this.rsdtrm)"  [(ngModel)]="rsdtrm.a ">全部</label>
+						<label class="btn btn-mint btnB10" (click)="changeStatus2(this.rsdtrm)" [(ngModel)]="rsdtrm.c1" btnCheckbox>&lt;=3M</label>
+						<label class="btn btn-mint btnB10" (click)="changeStatus2(this.rsdtrm)" [(ngModel)]="rsdtrm.c2" btnCheckbox>3~6M</label>
+						<label class="btn btn-mint btnB10" (click)="changeStatus2(this.rsdtrm)" [(ngModel)]="rsdtrm.c3" btnCheckbox>6~9M</label>
+						<label class="btn btn-mint btnB10" (click)="changeStatus2(this.rsdtrm)" [(ngModel)]="rsdtrm.c4" btnCheckbox>9~12M</label>
+						<label class="btn btn-mint btnB10" (click)="changeStatus2(this.rsdtrm)" [(ngModel)]="rsdtrm.c5" btnCheckbox>1~3Y</label>
+						<label class="btn btn-mint btnB10" (click)="changeStatus2(this.rsdtrm)" [(ngModel)]="rsdtrm.c6" btnCheckbox>3~5Y</label>
+						<label class="btn btn-mint btnB10" (click)="changeStatus2(this.rsdtrm)" [(ngModel)]="rsdtrm.c7" btnCheckbox>5~7Y</label>
+						<label class="btn btn-mint btnB10" (click)="changeStatus2(this.rsdtrm)" [(ngModel)]="rsdtrm.c8" btnCheckbox>7~10Y</label>
+						<label class="btn btn-mint btnB10" (click)="changeStatus2(this.rsdtrm)" [(ngModel)]="rsdtrm.c9" btnCheckbox>>10Y</label>
+	               	</div>
+	             </div>
+                <div style="clear: both;"></div>
+                <div class="one" style="padding-top:10px;">
+	                <div class="two" style="height:50px;">
+
+	                    <div class="three" style="width:220px;height:50px;position:relative;">
+					        <span style="float:left; padding:5px 8px;">代码/简称</span>
+
+					     <input type="text"  class="form-control"  [(ngModel)]="aa.keyword" 
+					       style="width:140px;height:30px;border-radius:4px;"
+					       (keyup)="search()" 
+					     >
+					     <div #aaaaaa  id="one" style="
+					     width:180px;z-index:40;margin-left:48px;" *ngIf="tags">
+					     	<ul *ngFor="let list of array1,let i = index;">
+					     		<li (click)="seleced(i,list,aaaaaa)">{{list.name}}</li>
+					     	</ul>
+					     </div>
+					    
+					    </div>
+					    
+	                    <div class="three" style="height:50px;">
+		                    <span style="float:left; padding: 5px 4px;">报价状态</span>
+		                    <label class="btn btn-mint btnB10"  btnCheckbox  (click)="changeStatus2All(this.ofrEStatus)"  [(ngModel)]="ofrEStatus.a ">全部</label>
+		                    <label class="btn btn-mint btnB10" (click)="changeStatus2(this.ofrEStatus)" [(ngModel)]="ofrEStatus.d1" btnCheckbox>有效</label>
+		                    <label class="btn btn-mint btnB10" (click)="changeStatus2(this.ofrEStatus)" [(ngModel)]="ofrEStatus.d3" btnCheckbox >成交</label>
+		                    <label class="btn btn-mint btnB10" (click)="changeStatus2(this.ofrEStatus)" [(ngModel)]="ofrEStatus.d2" btnCheckbox >撤销</label>
+		                </div>
+		                <div class="three"style="height:50px;">
+		                	<div class="btn-group btnborder">
+		                	<span style="float:left; padding: 5px 4px;">方向</span>
+		                    <button class="btn btn-mint " (click)="defaultFn()" [(ngModel)]="default.drc" btnRadio=""  >全部</button>
+		                    <button class="btn btn-mint "  [(ngModel)]="default.drc" btnRadio="1"  >卖出</button>
+		                    <button class="btn btn-mint "  [(ngModel)]="default.drc" btnRadio="-1" >买入</button>
+		                    </div>
+		                </div>
+						
+
+
+
+		                <div class="three" style="height:50px;width:304px;" >
+		                	
+						        <span style="float:left; padding: 5px 8px;">报价日期</span>
+						        <p-calendar id='aaa' [monthNavigator]="true" [yearNavigator]="true" [locale]= 'mon'  dateFormat="yy-mm-dd"  [(ngModel)]='myStartTime' yearRange="2000:2050" placeholder="" ></p-calendar>&nbsp;到&nbsp;
+						        <p-calendar id='aaa'[monthNavigator]="true" [yearNavigator]="true" [locale]= 'mon'  dateFormat="yy-mm-dd"   [(ngModel)]='myEndTime' yearRange="2000:2050" placeholder="2017-01-01"></p-calendar>
+						   
+		                </div>
+	                <!-- </div> -->
+	                <!-- <div class="two" style=" width:100%;"> -->
+	                	<div class="three" style="height:50px;width:35.4%;">
+	                		<span style="float:left; padding: 5px 8px;">挂牌类型</span>
+		                   <label class="btn btn-mint "  (click)="defaultFns()"  [(ngModel)]="default.gpType" btnRadio="">全部</label>
+		                   <label class="btn btn-mint "    [(ngModel)]="default.gpType" btnRadio="1" >公开挂牌</label>
+		                   <label class="btn btn-mint "  [(ngModel)]="default.gpType" btnRadio="2"  >定向发送</label>
+		                
+	                	</div>
+	                	<div class="three" style="height:42px;width:90px;padding-top:8px;float:left;">
+	                	<input  type="checkBox"  id="dg" (click)="dg()" style="display:block;height:12px;width:12px;float:left;margin-top:4px;"   ><span style="display:block;height:15px;float:left;">客服代挂</span>
+	                		
+	                	</div>
+						
+	                	 <div class="three" style="width:80px;height:42px;float:right;padding-left:8px;">
+	                	 	<button class="condition btn btn-primary sub" (click)="onSubmit()">搜索</button>
+	                	 </div>
+		                    
+	                </div>
+	                
+	             </div>
+               
+            </div>
+        </div>
+    </div>
+
+		 <div class="screenTop">
+			 <div class="screenTop_one">
+			 	<span >当前筛选下，共计报价{{message.bondSize}}笔，金额{{num}}亿。 </span>
+			 </div>
+			 <div class="screenTop_two">
+			 	<button class="btn btn-primary "(click)="selectUser.show()">发送给用户</button>
+				&nbsp;&nbsp;<a href="javascript:0;" >导出为excel</a>
+			 </div>
+		 	
+		 </div>
+		 <!-- <div class="all_list"> -->
+		    <div class=" tableList  "    >
+			    <table class="table table-bordered table-hover ">
+			        <thead>
+			            <tr  >
+			                <!-- <td class="info longTxt">操作用户姓名</td> -->
+			                
+			                <th class="shortTxt"></th>
+			                <th class="infos  middleText" style="text-align:center;" >操作</th>
+							<th class="infos " >用户姓名</th>
+							<th class="infos middleText" >注册手机</th>
+							<th class="infos  middleText" >机构名称</th>
+							<th class="infos  shortTxt" ><span (click)="orderSelect('1')">方向</span></th>
+							<th class="infos middleText" (click)="orderSelect('2')">债券简称</th>
+							<th class="infos" (click)="orderSelect('3')">债券代码</th>
+							<th class="infos " (click)="orderSelect('4')">剩余期限</th>
+							<th class="infos " (click)="orderSelect('5')">数量(万)</th>
+							<th class="infos  longText" (click)="orderSelect('6')" >收益率(%)</th>
+							<th class="infos" (click)="orderSelect('7')">净价(元)</th>
+							<th class="infos " >备注信息</th>
+							<th class="infos " style="text-align:center;" (click)="orderSelect('8')">报价状态</th>
+							<th class="infos middleText" (click)="orderSelect('9')">报价时间</th>
+							<th class="infos " >挂牌类型</th>
+							<th class="infos" >操作人</th>
+							
+			            </tr>
+			        </thead>
+			        <tbody  #XXX id="list"      *ngFor="let list of data" >
+			           <tr #userList  class="Userlist">
+			           		
+							<td><input type="checkbox"></td>
+							<td><a href="javascript:void(0)" class="user" (click)="Tanchange(userHistory,list.bondOfrId)">查看议价记录</a>&nbsp;<a href="javascript:void(0)" *ngIf="list.ofrEStatus=='有效'" >撤销</a></td>
+							<td >{{list.userName}}</td>
+							<td >{{list.loginName}}</td>
+							<td ><div class="td" [tooltip]="list.organizationFullName">{{list.organizationFullName}}</div></td>
+							<td>{{list.drc}}</td>
+							<td>{{list.bondShtrm}}</td>
+							<td>{{list.bondCd}}</td>
+							<td>{{list.rsdtrm}}</td>
+							<td>{{list.num}}</td>
+							<td>{{list.yldrto}}</td>
+							<td>{{list.netprc}}</td>
+							<td><div class="td" [tooltip]="list.rmrk">{{list.rmrk}}</div></td>
+							<td style="text-align:center;" >{{list.ofrEStatus}}</td>
+							<td><div class="td" style="width:160px;"[tooltip]="list.ofrDt">{{list.ofrDt}}</div></td>
+							<td>{{list.gpType}}</td>
+							<td>{{list.gohUserNm}}</td>
+							
+						</tr> 
+						
+			                
+			        </tbody>
+			    </table>
+			</div>
+	<!-- </div> -->
+<!-- 分页 -->
+<div class="row pagerow">
+        <div class="pageshowleft">每页显示
+            <select #selectPage name="" id="msgNum" (change)="sizeData(selectPage.value,userList)" [(ngModel)]="itemsPerPage">
+                <option #optionPage  *ngFor="let msgNumber of msgNumbers" value={{msgNumber.Number}}>{{msgNumber.Number}}</option>
+            </select>
+            条数据
+        </div>
+        <div class="pageshowmodle">
+            <span>{{currentPage}} / {{totalPages}}</span>页
+            <span>{{totals}}条数据</span>
+        </div>
+
+        <div class="pagefen">
+            <pagination  [firstText]="firstText" [lastText]="lastText" [previousText]="previousText" [nextText]="nextText" [maxSize]="maxSize" [totalItems]="totals" [itemsPerPage]="itemsPerPage" [(ngModel)]="currentPage" [boundaryLinks]="true" (pageChanged)='pageChanged($event)' (numPages)='pageNumChange($event)' class="pagination-sm"></pagination>
+        </div>
+    </div>
+<!-- 弹窗 -->
+<!-- 选择用户弹窗 -->
+ 
+
+
+<div bsModal #selectUser="bs-modal" class="modal fade diagle" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-sm  ">
+    <div class="modal-content modal-alert">
+      <div class="modal-header modal-nav">
+        <span class="modal-title pull-left" style="font-size:20px;font-weight:400;padding-top:4px;">用户选择</span>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="selectUser.hide()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+	        <div class="modal_main">
+				       <p><label for="">注册手机</label><input type="text"></p>
+				       <p><label for="">用户信息</label><span>张三 中国工商银行 金融同业部 交易员</span></p>
+				       <div class="modal_text">
+					       	<div class="modal_left">
+					       		<label for="">报价信息</label>
+					       	</div>
+					       	<div class="modal-right">
+						       	<ul>
+						       		<li>
+						       			卖出 16国开10 160210.IB  1.56Y 5000万 3.51% 100.25元 这里是备注
+						       		</li>
+						       		<li>卖出 16国开10 160210.IB  1.56Y 5000万 3.51% 100.25元 这里是备注</li>
+						       	</ul>
+					       	</div>	
+				       </div>      		
+		     </div>
+       		<div class="btnstyle ">
+				<button type="button" class="btn btn-default btnhoverlan" (click)
+						="selectUser.hide()">取消</button>
+				<button type="button" class="btn btn-primary btnhoverju"(click)="editRole(userRole)">保存</button>
+			</div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- 议价记录弹窗 -->
+	<!-- <button class="btn"  >议价记录弹窗 </button> -->
+<div bsModal #userHistory="bs-modal" class="modal fade diagle" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="false">
+  <div class="modal-dialog modal-sm  ">
+    <div class="modal-content modal-history">
+	      <div class="modal-header modal-nav" >
+	        <span style="font-size:16px;font-weight:600;">议价历史:</span>&nbsp;&nbsp;<span>{{default8.drc}}</span>&nbsp;
+	        <span>{{default8.bondShrtnm}}</span>&nbsp;
+	        <span>{{default8.bondCd}}</span>&nbsp;
+	        <span>{{default8.yldrto}}%</span>&nbsp;
+	        <span>{{default8.num}}</span>
+	        <button type="button" class="close pull-right" aria-label="Close" (click)="userHistory.hide()">
+	          <span aria-hidden="true">&times;</span>
+	        </button>
+	      </div>
+	      <div class="talk">
+				<p>议价人数：{{default8.negtNum}}人</p>
+			</div>
+	      <div class="modal-body" >
+	        <div class="modal_table">
+    		<ul>		
+		<li>       				
+	<div class="table_middle">
+		<table class="table table-bordered " *ngFor="let userMsg of userMsges 
+		let i=index">
+					<thead >
+						<tr >
+							
+							<th colspan="4"><span style="padding-left:1%;" >买方</span><span style="padding-left:10%;">{{userMsg.negtprcUserOrgnitn}}</span>
+							<span>-{{userMsg.negtprcUserNm}}</span></th>	
+						</tr>
+					</thead>
+					<tbody *ngFor="let info of userMsg.negtprcRecList let j=index" >
+						<tr *ngIf="info.drc!=1" [ngClass]="setClasses(userMsg.negtprcEStatusN,j)" >
+							<!--<td colspan="2"></td>-->
+							<td>{{(info.yldrto*100).toFixed(4)}}%</td>
+							<td>{{(info.netprc*1).toFixed(4)}}</td>
+							<td>{{info.num*1}}</td>
+							<td>{{(info.createTime).substring(0,16)}}</td>
+						</tr>  
+					</tbody>
+					<tr *ngFor="let lg of longer[i]" [ngStyle]="{'height': height }">
+					</tr>
+			 	</table>								
+			</div>
+			<div class="table_right">		
+				<table class="table table-bordered " *ngFor="let userMsg of userMsges let i=index">
+							<thead >
+								<tr>
+									<th colspan="4">
+									<span style="padding-left:5%;" >卖方</span><span style="padding-left:5%;">{{userMsg.ofrUserOrgnitn}}</span>
+									<span>-{{userMsg.ofrUserNm}}
+									</span>
+									<span style="padding-left:10%;" [ngClass]="setListClasses(userMsg.negtprcEStatusN)">{{userMsg.negtprcEStatusN}}</span></th>
+									
+								</tr>
+							</thead>
+							<tbody *ngFor="let info of userMsg.negtprcRecList">
+								<tr *ngIf="info.drc!=-1">
+									<td>{{(info.yldrto*100).toFixed(4)}}%</td>
+									<td>{{(info.netprc*1).toFixed(4)}}</td>
+									<td>{{info.num*1}}</td>
+									<td>{{(info.createTime).substring(0,16)}}</td>
+								</tr> 	
+							</tbody>
+							<tr *ngFor="let lg of longer1[i]" [ngStyle]="{'height': height1}"></tr>
+						</table>
+					        </div>
+						</li>
+					</ul>		        		
+				</div>
+			</div>		
+      	</div>
+    </div>
+</div>

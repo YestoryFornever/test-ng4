@@ -1,0 +1,22 @@
+.clearfix {
+  clear:both;
+  /*overflow: auto;*/
+  zoom: 1;
+}
+.first-bid-info{
+	background-color:#f2dede;
+	margin-top:10px;
+}
+.first-bid-info span{
+	display: inline-block;
+	min-width: 100px;
+	line-height: 32px;
+	margin-right: 60px;
+}
+span.tit{
+	font-size: 14px;
+	font-weight: 600;
+	margin-right: 0;
+	margin-left: 0;
+	width: 100px;
+}

@@ -1,0 +1,232 @@
+<div class="header clearfix">
+	<span class="head icon">|</span><span class="head" >公众号资讯</span>
+	<div class="btnHeader head">
+		<!-- <button class="btn btn-primary">查询</button> -->
+		<button class="btn btn-primary" (click)="addNewsShow(addNews,file_ipt)">添加</button>
+		<button class="btn btn-primary" (click)="upShelves()">上架选中内容</button>
+		<button class="btn btn-primary" (click)="downShelves()">下架选中资讯</button>
+	</div>
+</div>
+<tabset [justified]="false">
+    <tab (select)="get($event)"  heading="轮播图">
+    	<!-- table -->
+			<div class="tableList"  *ngIf="head=='轮播图'">
+				<div class = "loading" [ngClass]="setLoadClasses()" [ngStyle]="{'height': height }">
+					 <div class="loader">
+						<div class="loader-inner">
+							<div class="loader-line-wrap">
+								<div class="loader-line"></div>
+							</div>
+							<div class="loader-line-wrap">
+								<div class="loader-line"></div>
+							</div>
+							<div class="loader-line-wrap">
+								<div class="loader-line"></div>
+							</div>
+							<div class="loader-line-wrap">
+								<div class="loader-line"></div>
+							</div>
+							<div class="loader-line-wrap">
+								<div class="loader-line"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<table class="table table-bordered table-hover ">
+					<thead>
+						<tr>
+							<td class="info shortTxt"><input #allcheck type="checkbox" name="allCheck" (change)="checkAll(allcheck)">顺序</td>
+							<td class="info shortTxt">上架状态</td>
+							<td class="info middleTxt">图片</td>
+							<td class="info middleTxt">标题</td>
+							<td class="info middleTxt">跳转链接</td>
+							<td class="info shortTxt" >介绍</td>
+							<td class="info shortTxt">创建时间</td>
+							<td class="info shortTxt">阅读量</td>
+							<td class="info shortTxt">操作</td>
+						</tr>
+					</thead>
+					<tbody  id="list" *ngFor="let banner of bannerContent"  >
+						<tr class="tr">
+							<td><input  type="checkbox" #listState name="art" (change)="changeState($event,state1)" >{{banner.seqenceLook}}</td>
+							<td><span *ngIf="banner.state==0">未上架</span><span *ngIf="banner.state==1">已上架</span></td>
+							<td><img style="width: 150px;height:100px" [src]=banner.pictureUrl></td>
+							<td><div class="td" [tooltip]="banner.articleTitle">{{banner.articleTitle}}</div></td>
+							<td><div class="td" [tooltip]="banner.articleUrl"><a [href]=banner.articleUrl  target="_Blank">{{banner.articleUrl}}</a></div></td>
+							<td><div class="td" [tooltip]="banner.articleBrief">{{banner.articleBrief}}</div></td>
+							<td>{{banner.createTime }}</td>
+							<td>{{banner.readSum}}</td>
+							<td><a (click)="getArticle(banner.articleId,changeNews)">修改</a>/<a (click)="topArticle(banner)" >置顶</a>/<a (click)="deleteArticle(banner.articleId)">删除</a></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+    </tab>
+    <tab (select)="get($event)"  heading="负面" >
+		<!-- table -->
+			<div class="tableList" *ngIf="head=='负面'" >
+				<div class = "loading" [ngClass]="setLoadClasses()" [ngStyle]="{'height': height }">
+					 <div class="loader">
+						<div class="loader-inner">
+							<div class="loader-line-wrap">
+								<div class="loader-line"></div>
+							</div>
+							<div class="loader-line-wrap">
+								<div class="loader-line"></div>
+							</div>
+							<div class="loader-line-wrap">
+								<div class="loader-line"></div>
+							</div>
+							<div class="loader-line-wrap">
+								<div class="loader-line"></div>
+							</div>
+							<div class="loader-line-wrap">
+								<div class="loader-line"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<table class="table table-bordered table-hover ">
+					<thead>
+						<tr>
+							<td class="info shortTxt"><input #allcheck1 type="checkbox" name="allCheck" (change)="checkAll(allcheck1)">顺序</td>
+							<td class="info shortTxt">上架状态</td>
+							<td class="info middleTxt">图片</td>
+							<td class="info shortTxt">标题</td>
+							<td class="info middleTxt">跳转链接</td>
+							<td class="info middleTxt" >介绍</td>
+							<td class="info shortTxt">创建时间</td>
+							<td class="info shortTxt">阅读量</td>
+							<td class="info shortTxt">操作</td>
+						</tr>
+					</thead>
+					<tbody  *ngFor="let badNews of badContent" >
+						<tr class="tr">
+							<td><input  type="checkbox" #listState name="art" (change)="changeState($event,state1)" >{{badNews.seqenceLook}}</td>
+							<td><span *ngIf="badNews.state==0">未上架</span><span *ngIf="badNews.state==1">已上架</span></td>
+							<td><img style="width: 150px;height:100px" [src]=badNews.pictureUrl></td>
+							<td><div class="td" [tooltip]="badNews.articleTitle">{{badNews.articleTitle}}</div></td>
+							<td><div class="td" [tooltip]="badNews.articleUrl"><a [href]=badNews.articleUrl  target="_Blank">{{badNews.articleUrl}}</a></div></td>
+							<td><div class="td" [tooltip]="badNews.articleBrief">{{badNews.articleBrief}}</div></td>
+							<td>{{badNews.createTime }}</td>
+							<td>{{badNews.readSum}}</td>
+							<td><a (click)="getArticle(badNews.articleId,changeNews)">修改</a>/<a (click)="topArticle(badNews)" >置顶</a>/<a (click)="deleteArticle(badNews.articleId)">删除</a></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+    </tab>
+  </tabset>
+
+		<!-- pagination -->
+		<div class="row pagerow">
+			<div class="pageshowleft">每页显示
+				<select #selectPage name="" id="msgNum" (change)="sizeData(selectPage.value,userList)" [(ngModel)]="itemsPerPage">
+					<option #optionPage  *ngFor="let msgNumber of msgNumbers" value={{msgNumber.Number}}>{{msgNumber.Number}}</option>
+				</select>
+				条数据
+			</div>
+			<div class="pageshowmodle">
+				<span>{{currentPage}} / {{totalPages}}</span>页
+				<span>{{totalItems}}条数据</span>
+			</div>
+			<div class="pagefen">
+				<pagination  [firstText]="firstText" [lastText]="lastText" [previousText]="previousText" [nextText]="nextText" [maxSize]="maxSize" [totalItems]="totalItems" [itemsPerPage]="itemsPerPage" [(ngModel)]="currentPage" [boundaryLinks]="true" (pageChanged)='pageChanged($event)' (numPages)='pageNumChange($event)' class="pagination-sm"></pagination>
+			</div>
+		</div>
+<!--添加资讯弹窗 -->
+<div bsModal #addNews="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="addNews.hide()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">添加资讯</h4>
+	</div>
+		<div class="modal-body">
+			<form class="form-horizontal" role="form" #editgroupmessage="ngForm">
+				<div class="col-xs-6 col-md-6" style="margin-top:10px;height:auto;">
+					<fieldset class="form-group">
+						<div class="lab">
+							<span><b>*</b>类型</span>
+								<div class="btn-group" style="margin-left: 18px">
+									<label class="btn btn-mint" [(ngModel)]="newType" btnRadio="3" uncheckable name='banner'>轮播</label>
+									<label class="btn  btn-mint" [(ngModel)]="newType" btnRadio="1" uncheckable name='badlist'>负面</label>
+								</div>
+						</div>
+						<div class="lab">
+							<span><b>*</b>标题</span><input [(ngModel)]="new.title" type="text" name="title">
+						</div>
+						<div class="lab">
+							<span><b>&nbsp;</b>介绍</span><input [(ngModel)]="new.introduce" type="text" name="introduce">
+						</div>
+						<div class="lab">
+							<span><b>*</b>链接</span><input [(ngModel)]="new.link" type="text" name="link">
+						</div>
+						<label [hidden]="imghead" for="exampleInputFile">选择图片</label> 
+						<input type="file" class="form-control-file filescss" id="file_input" #file_ipt (change)="fileChange(file_ipt,$event)" />
+						<div  class="file-upload-thumbnail" #umbnail>
+							<img *ngIf="new.src" [src]="new.src" name="newsImg"/>
+						</div>
+						<!-- <input [(ngModel)]="new.src" required  name="imgh" [hidden]="'true'" #imgh="ngModel"/> -->
+						<div class="btnstyle">
+	                    	<button type="button" class="btn btn-default btnhoverlan" (click) = "addArticle(addNews,file_ipt)">保存</button>
+	                   		<button type="button" class="btn btn-primary btnhoverju" (click)="winHide(addNews)">取消</button>
+               			</div>
+					</fieldset>
+				</div>
+			</form>
+		</div>
+	</div>
+  </div>
+</div>
+
+<!--修改资讯弹窗 -->
+<div bsModal #changeNews="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="changeNews.hide()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">修改资讯</h4>
+	</div>
+		<div class="modal-body">
+			<form class="form-horizontal" role="form" #editgroupmessage="ngForm">
+				<div class="col-xs-6 col-md-6" style="margin-top:10px;height:auto;">
+					<fieldset class="form-group">
+						<div class="lab">
+							<span><b>*</b>类型</span>
+								<div class="btn-group" style="margin-left: 18px">
+									<label class="btn btn-mint" [(ngModel)]="detial.articleType" btnRadio="3" uncheckable name='banner'>轮播</label>
+									<label class="btn  btn-mint" [(ngModel)]="detial.articleType" btnRadio="1" uncheckable name='badlist'>负面</label>
+								</div>
+						</div>
+						<div class="lab">
+							<span><b>*</b>标题</span><input [(ngModel)]="detial.articleTitle" type="text" name="title">
+						</div>
+						<div class="lab">
+							<span><b>&nbsp;</b>介绍</span><input [(ngModel)]="detial.articleBrief" type="text" name="introduce">
+						</div>
+						<div class="lab">
+							<span><b>*</b>链接</span><input [(ngModel)]="detial.articleUrl" type="text" name="link">
+						</div>
+						<label [hidden]="imghead" for="exampleInputFile">选择图片</label> 
+						<input type="file" class="form-control-file filescss" id="file_input" #file_change (change)="fileChangeOther(file_change,$event)"  />
+						<div  class="file-upload-thumbnail">
+							<img *ngIf="detial.pictureUrl" [src]="detial.pictureUrl" name="newsImg" class='once'/>
+							<img *ngIf="once" class="once" [src]="detial.pictureUrlShow " name="show">
+						</div>
+					<!-- 	<input [(ngModel)]="detial.pictureUrl" required  name="imgh" [hidden]="'true'" #imgh="ngModel"/> -->
+						<div class="btnstyle">
+	                    	<button type="button" class="btn btn-default btnhoverlan" (click) = "updateArticle(changeNews,file_change)">保存</button>
+	                   		<button type="button" class="btn btn-primary btnhoverju" (click)="winHide(changeNews,file_change)">取消</button>
+               			</div>
+					</fieldset>
+				</div>
+			</form>
+		</div>
+	</div>
+  </div>
+</div>

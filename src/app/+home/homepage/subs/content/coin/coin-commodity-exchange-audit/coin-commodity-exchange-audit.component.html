@@ -1,0 +1,113 @@
+<div class="header clearfix">
+    <span class="head icon">|</span><span class="head">商品兑换审核</span>
+    <div class="btnHeader head">
+        <label type="button" class="btn btn-primary" (click)="exportExcelList()">导出</label>
+    </div>
+</div>
+<div class="row  rowtop2">
+    <div>
+        <div class="myCont">
+            <label for="fullname" class="text-right">审核详情</label>
+            <div class="myCont">
+                <div class="btn-group">
+                    <label class="btn btn-mint" (click)="changeStatusAll()" [(ngModel)]="condition.status.all" btnCheckbox>全部</label>
+                    <label class="btn btn-mint" (click)="changeStatus()" [(ngModel)]="condition.status.status101" btnCheckbox>等待审核</label>
+                    <label class="btn btn-mint" (click)="changeStatus()" [(ngModel)]="condition.status.status102" btnCheckbox>等待发货</label>
+                    <label class="btn btn-mint" (click)="changeStatus()" [(ngModel)]="condition.status.status103" btnCheckbox>拒绝申请</label>
+                    <label class="btn btn-mint" (click)="changeStatus()" [(ngModel)]="condition.status.status104" btnCheckbox>已发货</label>
+                    <label class="btn btn-mint" (click)="changeStatus()" [(ngModel)]="condition.status.status105" btnCheckbox>已完成</label>
+                </div>
+            </div>
+        </div>
+        <div class="myCont">
+            <label for="abbreviation" class="text-right">申请时间</label>
+            <div class="myCont">
+                <p-calendar [monthNavigator]="true" [yearNavigator]="true" [locale]= 'mon'  [(ngModel)]='condition.requestTimeStart' yearRange="2000:2050" placeholder="请选择时间"></p-calendar>&nbsp;到&nbsp;
+                <p-calendar [monthNavigator]="true" [yearNavigator]="true" [locale]= 'mon'  [(ngModel)]='condition.requestTimeEnd' yearRange="2000:2050" placeholder="请选择时间"></p-calendar>
+            </div>
+        </div>
+        <div class="myCont">
+            <label for="category" class="text-right">订单号</label>
+            <div class="myCont">
+                <input type="text" req name="" placeholder="订单号" class="form-control" [(ngModel)]="condition.orderNumber" />
+            </div>
+        </div>
+        <div class="myCont">
+            <label for="fullname" class="text-right">注册手机号</label>
+            <div class="myCont">
+                <input req type="text" name="" req placeholder="手机号" class="form-control" [(ngModel)]="condition.phone">
+            </div>
+        </div>
+        <button class="btn btn-primary sub" (click)="onSubmit()">查询</button>
+        <div style="clear:both;"></div>
+    </div>
+</div>
+<div class="clearfix wrap">
+    <div class="tableList" id="tableList" style="overflow: inherit">
+        <table  class="table table-bordered table-hover ">
+            <thead>
+                <tr>
+                    <th class="info">操作</th>
+                    <th class="info">订单号</th>
+                    <th class="info">兑换用户姓名</th>
+                    <th class="info">机构简称</th>
+                    <th class="info">注册手机号</th>
+                    <th class="info">兑换商品</th>
+                    <th class="info">商品属性</th>
+                    <th class="info">所需金额</th>
+                    <th class="info">申请时间</th>
+                    <th class="info">状态</th>
+                </tr>
+            </thead>
+            <tbody id="list">
+                <tr class="Userlist" *ngFor="let order of orders">
+                    <td class="table-hover tableexe" >
+                        <a href="javascript:void(0)" (click)="getAuditDetail(order)" class="list-exe">审核详情</a>
+                    </td>
+                    <td class="table-hover">{{order.orderNumber}}</td>
+                    <td class="table-hover user Card" (mouseenter)="getUserInfo(order.userId)"><div [tooltip]="popTemplate" style="width: 100%;height: 100%">{{order.userName}}</div>
+                        
+                    </td>
+                    <td class="table-hover">{{order.organizationFullName}}</td>
+                    <td class="table-hover">{{order.phone}}</td>
+                    <td class="table-hover">{{order.goodsName}}</td>
+                    <td class="table-hover">{{order.goodsType}}</td>
+                    <td class="table-hover">{{order.totalCoin}}</td>
+                    <td class="table-hover">{{order.requestTime}}</td>
+                    <td class="table-hover">{{order.status }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<!-- 分页 -->
+<div class="row pagerow">
+    <div class="pageshowleft">每页显示
+        <select #selectPage name="" id="msgNum" (change)="sizeData(selectPage.value)" class="form-control">
+            <option *ngFor="let msgNumber of msgNumbers" value={{msgNumber}}>{{msgNumber}}</option>
+        </select>
+        条数据
+    </div>
+    <div class="pageshowmodle">
+        <span>{{condition.currentPage}}/{{condition.totalPages}}</span>页
+        <span>{{condition.totalItems}}条数据</span>
+    </div>
+    <div class="pagefen">
+        <pagination [firstText]="firstText" [lastText]="lastText" [previousText]="previousText" [nextText]="nextText" [maxSize]="condition.maxSize" [totalItems]="condition.totalItems" [itemsPerPage]="condition.itemsPerPage" [(ngModel)]="condition.currentPage" [boundaryLinks]="true" (pageChanged)='pageChanged($event,allcheck)' (numPages)='pageNumChange($event)' class="pagination-sm"></pagination>
+    </div>
+</div>
+
+ <ng-template #popTemplate>
+     <div class='cardBox'>
+    <div class="card"><img class="imgCard" [src]="userInfo.businessCardUrl"></div>
+    <div>
+        <div class="userTitle">{{userInfo.userName}} {{userInfo.loginName}}</div>
+        <div>
+            <div class="userInfo">机构： {{userInfo.organizationFullName}}</div>
+            <div class="userInfo">部门： {{userInfo.department}}</div>
+            <div class="userInfo">职位： {{userInfo.position}}</div>
+        </div>
+    </div>
+</div>
+ </ng-template>
+

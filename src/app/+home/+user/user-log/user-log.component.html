@@ -1,0 +1,96 @@
+<div class="header clearfix">
+    <span class="head icon">|</span><span class="head">用户日志管理</span>
+    <div class="btnHeader head">
+        <!-- <button class="btn btn-primary" routerLink='../sns-share-add'  routerLinkActive="active">新增动态</button> -->
+        <!-- <button class="btn btn-primary">删除</button> -->
+    </div>
+</div>
+<!-- <div style="clear:both"></div> -->
+<div class="screen clearfix">
+    <div class="condition container-fluid">
+        <span>用户注册手机号</span>
+        <input type="tel" [(ngModel)]="default.phoneNum" req placeholder="手机号" class="form-control">
+    </div>
+    <div class="condition container-fluid">
+        <span>用户姓名</span>
+        <input [(ngModel)]="default.userName" req placeholder="全部" class="form-control">
+    </div>
+    <div class="condition container-fluid">
+        <span>操作类型</span>
+        <select [(ngModel)]="default.operationName" class="selection">
+            <option [value]="''">全部</option>
+            <option *ngFor="let list of businessList">{{list.businName}}</option>
+        </select>
+        <!-- [value]="list.businID" -->
+    </div>
+    <div class="condition container-fluid">
+        <span>功能模块</span>
+        <select [(ngModel)]="default.moduleName" class="selection">
+            <option [value]="''">全部</option>
+            <option *ngFor="let list2 of FnList">{{list2.businName}}</option>
+        </select>
+        <!-- [value]="list2.businID" -->
+    </div>
+    <div class="condition container-fluid">
+        <span>业务状态</span>
+        <select [(ngModel)]="default.status" class="selection">
+            <option [value]="''">全部</option>
+            <option [value]="0">成功</option>
+            <option [value]="1">失败</option>
+        </select>
+    </div>
+    <div class="condition container-fluid">
+        <span>日志记录时间</span>
+        <input [(ngModel)]="myStartTime" class="selection" type="date">&nbsp;到&nbsp;
+        <input [(ngModel)]="myEndTime" class="selection" type="date">
+    </div>
+    <button class="condition btn btn-primary sub" (click)="onSubmit()">查询</button>
+</div>
+<div class="wrap clearfix">
+    <div class="tableList ">
+        <table class="table table-bordered table-hover ">
+            <thead>
+                <tr>
+                    <td class="info shortTxt">记录号</td>
+                    <td class="info phone">用户注册手机号</td>
+                    <td class="info  name">用户姓名</td>
+                    <td class="info ">日志内容</td>
+                    <td class="info model">功能模块名</td>
+                    <td class="info shortTxt">操作类型</td>
+                    <td class="info mymd">日志记录时间</td>
+                    <td class="info ip">用户IP地址</td>
+                    <td class="info shortTxt">业务状态</td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="table-hover" *ngFor="let list of userLogLists">
+                    <td class="table-hover">{{list.userID}}</td>
+                    <td class="table-hover">{{list.phoneNum}}</td>
+                    <td class="table-hover">{{list.userName}}</td>
+                    <td class="table-hover"><div tooltip='{{list.logContent}}' >{{list.logContent}}</div></td>
+                    <td class="table-hover">{{list.moduleName}}</td>
+                    <td class="table-hover">{{list.operationName}}</td>
+                    <td class="table-hover">{{list.logTime}}</td>
+                    <td class="table-hover">{{list.ip}}</td>
+                    <td class="table-hover">{{list.status}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<!-- 分页 -->
+<div class="row pagerow">
+    <div class="pageshowleft">每页显示
+        <select #selectPage name="" id="msgNum" (change)="sizeData(selectPage.value)">
+            <option #optionPage *ngFor="let msgNumber of msgNumbers" value={{msgNumber.Number}}>{{msgNumber.Number}}</option>
+        </select>
+        条数据
+    </div>
+    <div class="pageshowmodle">
+        <span>{{currentPage}} / {{totalPages}}</span>页
+        <span>{{totalItems}}条数据</span>
+    </div>
+    <div class="pagefen">
+        <pagination [firstText]="firstText" [lastText]="lastText" [previousText]="previousText" [nextText]="nextText" [maxSize]="maxSize" [totalItems]="totalItems" [itemsPerPage]="itemsPerPage" [(ngModel)]="currentPage" [boundaryLinks]="true" (pageChanged)='pageChanged($event)' (numPages)='pageNumChange($event)' class="pagination-sm"></pagination>
+    </div>
+</div>

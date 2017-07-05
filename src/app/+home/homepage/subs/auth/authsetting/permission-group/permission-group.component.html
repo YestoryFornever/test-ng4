@@ -1,0 +1,201 @@
+<div class="header">
+    <span class="head icon">|</span><span class="head" >权限分组列表</span>
+    <div class="btnHeader head">
+        <button class="btn btn-primary"  (click)=" editPermissiongroupPop(userApproveGroup,null)">添加权限分组</button>
+    </div>
+</div>
+<iframe #excel_helper style="display:none"></iframe>
+<div class="coat">
+    <div class="screen">
+        <div class="condition container-fluid">
+            <span style="width:90px;">授权分组名称</span>
+            <input [(ngModel)]="obj1.permissionGroupName" class="form-control">
+        </div>
+        <button class="condition btn btn-primary sub" (click)="getPermiGroups()">查询</button>
+        <div style="clear:both"></div>
+    </div>
+</div>
+<div class="coat">
+    <div class="tableList" >
+        <table #role_table class="table table-bordered table-hover ">
+            <thead>
+            <tr>
+                <th class="info">操作</th>
+                 <!-- <th class="info" >序号</th> -->
+                <th class="info">权限分组名称</th>
+                <th class="info">权限分组描述</th>
+               
+
+            </tr>
+            </thead>
+            <tbody id="list" >
+            <tr *ngFor="let list of data">
+               <td>
+                <a href="javascript:void(0)"class="list-exe" (click)=" editPermissiongroupPop(userApproveGroup,obj2,list.permissionGroupId,list.permissionGroupName,list.description)" >修改</a>
+                <a href="javascript:void(0)"class="list-exe" (click)="deletePermissionGroupPop(permiDelete,list.permissionGroupId)">删除</a>
+                <!--<a href="javascript:void(0)" class="list-exe" (click)="userMaintain.show()">成员维护</a>-->
+                <a href="javascript:void(0)"class="list-exe" (click)="getMenusPermissiongroup(userLookApprove,list.permissionGroupId,list.permissionGroupName)">授权</a>
+                <!--<a href="javascript:void(0)"class="list-exe" (click)="userApproveGroup.show()">授权</a>-->
+                <a href="javascript:void(0)" class="list-exe" (click)="copyPermiPop(userCopy,list.permissionGroupId,list.permissionGroupName)">复制权限分组</a>
+            </td>
+                <!-- <td>{{list.permissionGroupId}}</td> -->
+                <td>{{list.permissionGroupName}}</td>
+                <td>{{list.description}}</td>
+                
+            </tr>
+
+            </tbody>
+        </table>
+    </div>
+</div>
+<!-- 分页 -->
+<div class="row pagerow">
+    <div class="pageshowleft">每页显示
+        <select #selectPage name="" id="msgNum" (change)="sizeData(selectPage.value,userList)">
+            <option #optionPage *ngFor="let msgNumber of msgNumbers" value={{msgNumber.Number}}>{{msgNumber.Number}}</option>
+        </select>
+        条数据
+    </div>
+    <div class="pageshowmodle">
+        <span>{{currentPage}} / {{totalPages}}</span>页
+        <span>{{totalItems}}条数据</span>
+    </div>
+    <div class="pagefen">
+        <pagination [firstText]="firstText" [lastText]="lastText" [previousText]="previousText" [nextText]="nextText" [maxSize]="maxSize" [totalItems]="totalItems" [itemsPerPage]="itemsPerPage" [(ngModel)]="currentPage" [boundaryLinks]="true" (pageChanged)='pageChanged($event,allcheck)' (numPages)='pageNumChange($event)' class="pagination-sm"></pagination>
+    </div>
+</div>
+<!--弹窗-->
+<!--1.添加和修改权限分组-->
+<div bsModal #userApproveGroup="bs-modal" class="modal fade modelPon" tabindex="-1" role="dialog" aria-
+     labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content modal-hight">
+            <div class="modal-header">
+                <button type="button" class="close" aria-label="Close" (click)="userApproveGroup.hide()" >
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title modal-font-h"><span *ngIf="isAdd">添加权限分组</span><span *ngIf="!isAdd">修改权限分组</span></h4>
+            </div>
+            <div class="modal-body  ">
+                <div class="pp content-center"><i>*</i>&nbsp;<span>权限分组名称
+</span>&nbsp;<input type="text" name="name"   placeholder="提示文本"   [(ngModel)]="obj2.permissionGroupName" /></div>
+                <div class="pp content-center-one"><span><i>*</i>&nbsp;权限分组描述
+</span>&nbsp;<textarea  id="txtarea" name="description"      style="height:
+90px;width: 260px;" placeholder="提示文本"  [(ngModel)]="obj2.description"    ></textarea></div>
+                <!--<div class="pp"><span>回访状态：</span>-->
+            </div>
+
+            <div class="btnstyle bnt-style">
+                <button type="button" class="btn btn-default btnhoverlan" (click)
+                        ="userApproveGroup.hide()">取消</button>
+                <button type="button" class="btn btn-primary btnhoverju"  (click)="editPermin(userApproveGroup)" >保存</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--为谁授权-->
+<div bsModal #userLookApprove="bs-modal" class="modal fade modelPon" tabindex="-1" role="dialog" aria-
+     labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content modal-hight modal-Approve">
+            <div class="modal-header">
+                <button type="button" class="close" aria-label="Close" (click)
+                        ="userLookApprove.hide()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title modal-font-h">为"{{obj4.permissionGroupName}}"授权</h4>
+            </div>
+            <div class="modal-body contentxinxi contentxinxi-content ">
+
+            <p-tree  [value]="data1" selectionMode="checkbox" [(selection)]="arrayss"   (onNodeSelect)="nodeSelect($event)" (onNodeUnselect)="onNodeUnselect($event)" ></p-tree>
+                <div id="wwwwww" style="opacity:0;">Selected Nodes: <span *ngFor="let file of arrayss" name="sp" >{{file.menuId}} </span></div>
+
+
+                <!-- style="opacity:0;" -->
+                 <!-- <div  >Selected Nodes: <span *ngFor="let file of arrayss"  >{{file.label}} </span></div> -->
+               <!--  <ul *ngFor="let lis of data1">
+                    <li class="system"><b>  > </b>
+                        <input type="checkbox" #allcheck name="user" (change)="checkAll(allcheck)" [checked]="lis.isChecked"/> {{lis.label}}
+                        <ul class="user-set" *ngFor="let xx of  lis.level"  >
+                            <li><b>  > </b><input type="checkbox" #listState1  name="user"  (change)="checkAll(listState1)"[checked]="xx.isChecked"/>{{xx.label}}
+                                <ul class="user-set-second" *ngFor="let ss of xx.level">
+                                    <li ><input type="checkbox" #listState2 name="user"  (change)= "checks(listState2)"  [checked]="ss.isChecked"/>{{ss.label}}
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                </ul> -->
+
+            </div>
+
+            <div class="btnstyle btn-rf">
+                <button type="button" class="btn btn-default btnhoverlan" (click)
+                ="userLookApprove.hide()">取消</button>
+                <button type="button" class="btn btn-primary btnhoverju" (click)="updateMenus(userLookApprove)" >确定</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--复制权限分组-->
+<div bsModal #userCopy="bs-modal" class="modal fade modelPon" tabindex="-1" role="dialog" aria-
+     labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content modal-service modal-copy ">
+            <div class="modal-header">
+                <button type="button" class="close" aria-label="Close" (click)
+                        ="userCopy.hide()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title modal-font-h">复制"{{copy.beforeName}}"权限分组</h4>
+            </div>
+            <div class="modal-body contentxinxi  ">
+                <div class="pp content-role"><i>*</i>&nbsp;<span>新分组名称
+</span>&nbsp;<input type="text" placeholder="提示文本"  [(ngModel)]="copy.permissionGroupName"/></div>
+
+                <div class="pp content-descript">
+                    <div class="one"><i>*</i>&nbsp;新分组描述</div>
+                    <div class="two">
+						<textarea  class="txtarea" style="height:150px;width: 340px;"
+                                   placeholder="提示文本" [(ngModel)]="copy.description "></textarea>
+                    </div>
+                </div>
+                <div class="pp content-role  content-pl"><i></i>&nbsp;<span>功能选项 </span>
+                    &nbsp;<button type="button" class="btn btn-default btnhoverlan" [(ngModel)]="copy.copyPermissionIndex" btnCheckbox >复制权限</button>
+                    <button type="button" class="btn btn-default btnhoverlan" [(ngModel)]="copy.copyRoleIndex" btnCheckbox >复制角色
+                    </button>
+                </div>
+            </div>
+
+            <div class="btnstyle btn-bom">
+                <button type="button" class="btn btn-default btnhoverlan" (click)
+                        ="userCopy.hide()">取消</button>
+                <button type="button" class="btn btn-primary btnhoverju" (click)="copyPermi(userCopy)">复制</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 删除提示弹出 -->
+<div bsModal #permiDelete="bs-modal" class="modal fade modelPon" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm ">
+        <div class="modal-content ">
+            <div class="modal-header ">
+                <button type="button" class="close" aria-label="Close" (click)="permiDelete.hide()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">删除</h4>
+            </div>
+            <div class="modal-body  ">
+                <div class="cont ">
+                    确认要删除该权限分组吗？？？
+                </div>
+                <div class="btndelet">
+                    <button type="button" class="btn btn-default btnhoverlan" (click)="permiDelete.hide()">取消</button>
+                    <button type="button" class="btn btn-primary btnhoverju" (click)="deletPermissionGroup(permiDelete)">确认</button>
+                </div>
+            </div>
+        </div>
+            
+    </div>
+</div>

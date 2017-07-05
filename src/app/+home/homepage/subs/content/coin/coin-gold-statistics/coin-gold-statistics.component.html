@@ -1,0 +1,83 @@
+	<div class="header clearfix">
+		<span class="head icon">|</span><span class="head" >金币收支统计</span>
+		<div class="btnHeader head ">
+			<button class=" btn btn-primary sub " (click)=" refresh()">刷新</button>
+		</div>
+	</div>
+	<div class="container clearfix lineContainer ">
+		<div class="lineBox ">
+			<i class="line col-xs-5"></i> 
+			<span class="col-xs-2 lineCont" >当日金币统计</span>
+			<i class="line col-xs-5"></i> 
+		</div>
+	</div>
+	<div class="container clearfix lineContainer" style="width: 980px">
+		<div class="col-xs-3" style="position: relative;"><span class="tody" >{{todayStatics.todaySysSend |
+		 numAddComma}}</span><img   src='../../../../../../../public/images/block_goldstatistics_01.png' alt=""></div>
+		<div class="col-xs-3" style="position: relative;"><span class="tody" >{{todayStatics.todayRecharge | numAddComma }}</span><img  src='../../../../../../../public/images/block_goldstatistics_02.png' alt=""></div>
+		<div class="col-xs-3" style="position: relative;"><span class="todyR" >{{todayStatics.todaySysDeduction  | numAddComma}}</span><img style="float: right;" src='../../../../../../../public/images/block_goldstatistics_03.png' alt=""></div>
+		<div class="col-xs-3" style="position: relative;"><span class="todyR" >{{todayStatics.todayConsume  | numAddComma}}</span><img style="float: right;" src='../../../../../../../public/images/block_goldstatistics_04.png' alt=""></div>
+
+	</div>
+	<div class="container clearfix ">
+		<div class="lineBox ">
+			<i class="line col-xs-5"></i> 
+			<span class="col-xs-2 lineCont" >累计金币统计</span>
+			<i class="line col-xs-5"></i> 
+		</div>
+	</div>
+	<div class="container clearfix borBottom">
+		<div class="containerLeft clearfix" >
+			<img src='../../../../../../../public/images/coin-turnover-statistic.png' style="position: relative;">
+			<div class="pirse grant">+<span>{{grant | numAddComma}}</span></div><!-- 系统发放 -->
+			<div class="pirse userCostSum"><span>{{userCostSum | numAddComma}}</span></div><!-- 商城消费 -->
+			<div class="pirse income">+<span>{{income | numAddComma}}</span></div><!-- 金币收入 -->
+			<div class="pirse userRecharge">+<span>{{userRecharge | numAddComma}}</span></div><!-- 金币充值 -->
+			<div class="pirse expend"><span>{{expend | numAddComma}}</span></div><!-- 金币支出 -->
+			<div class="pirse total"><span>{{total | numAddComma}}</span></div><!-- 总额 -->
+			<div class="pirse userDeduct"><span>{{userLiabilities | numAddComma}}</span></div> 
+			<div class="totalHide" tooltip="=|金币池增加|-|金币池减少|+|用户负债|"></div>
+			<div class="UserLiabilities" tooltip="指金币数为负值的账户中的金币总额"></div>
+			<div class="pirse todyDeduct" ><span>{{todyDeduct | numAddComma}}</span></div><!-- 系统扣除 -->
+		</div>
+		<div style="clear: both;"></div>
+		<div class="containerRight">
+			<ul class="containerRight1">
+				<!-- <li>实名认证<span [(ngModel)]="coinStatis.certification"></span></li> -->
+				<li><i >实名认证奖励</i><span>+{{coinStatis.certification | numAddComma}}</span></li>
+				<li><i >推荐用户奖励</i><span>+{{coinStatis.recommend  | numAddComma}}</span></li>
+				<li><i >登录奖励</i><span>+{{coinStatis.dailyLand | numAddComma}}</span></li>
+				<li><i >发布动态奖励</i><span>+{{coinStatis.publishDynamic | numAddComma}}</span></li>
+				<li><i >发布交易奖励</i><span>+{{coinStatis.publishPrice | numAddComma}}</span></li>
+				<li><i >用户反馈奖励</i><span>+{{coinStatis.feedBackWard | numAddComma}}</span></li>
+				<li><i >发布资金报价奖励</i><span>+{{coinStatis.publishFundPrice | numAddComma}}</span></li>
+				
+				<li><i >分享资讯</i><span>+{{coinStatis.shareInformation | numAddComma}}</span></li>
+				<li><i >人工发放</i><span>+{{coinStatis.releaseGold | numAddComma}}</span></li>
+			</ul>
+			<ul class="containerRight2">
+				<li><i >用户充值</i><span>+{{coinStatis.userRecharge | numAddComma}}</span></li>
+			</ul>
+			<ul class="containerRight3">
+				<li><i >实名认证奖励扣除<img tooltip='后台可以通过“取消实名认证”功能，将对应用户的“实名认证奖励”扣除，该部分记录是通过该方式扣除的金币总额。' src='../../../../../../../public/images/icon_question_purple.png' class="purpleUp"></i><span>{{coinStatis.cancelRealName | numAddComma}}</span></li>
+				<li><i >推荐用户奖励扣除<img tooltip='后台可以通过“取消实名认证”功能，将对应用户的“推荐用户奖励”扣除，该部分记录是通过该方式扣除的金币总额。' src='../../../../../../../public/images/icon_question_purple.png' class="purpleDown"></i><span>{{coinStatis.cancelRecommend | numAddComma}}</span></li>
+				<li><i >发布动态奖励扣除</i><span>{{coinStatis.cancelPublishDynamic | numAddComma}}</span></li>
+				<li><i >发布交易奖励扣除</i><span>{{coinStatis.cancelPublishPrice | numAddComma}}</span></li>
+				<li><i >发布资金报价奖励扣除</i><span>{{coinStatis.canclePublishFundPrice | numAddComma}}</span></li>
+				<li><i >手工扣除金币</i><span>{{coinStatis.deductCoin | numAddComma}}</span></li>
+			</ul>
+			<ul class="containerRight4">
+				<li><i >兑换商城商品<img tooltip='=用户提交兑换商城商品的金币数-兑换商城商品失败退回给用户的金币数。' src='../../../../../../../public/images/icon_question_purple.png' class="purpleUp"></i><span>{{coinStatis.goodsExchanges | numAddComma}}</span></li>
+				<li><i >抵用发票邮费<img tooltip='=用户提交抵用发票邮费的金币数-抵用发票邮费失败退回给用户的金币数。' src='../../../../../../../public/images/icon_question_purple.png' class="purpleUp"></i><span>{{coinStatis.logisticFee | numAddComma}}</span></li>
+			</ul>
+		</div>
+		<div style="clear: both;"></div>
+	</div>
+<!-- 
+	<div class="container clearfix ">
+		<div class="todayStatics marT20">
+			<div class="anth">今日系统发放<span>{{todayStatics.todaySysSend }}</span></div>
+			<div class="anth">今日充值<span>{{todayStatics.todayRecharge  }}</span></div>
+			<div class="anth">今日用户消费<span >{{todayStatics.todayConsume  }}</span></div>
+		</div>
+	</div> -->

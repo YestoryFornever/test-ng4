@@ -1,0 +1,156 @@
+<p></p>
+<div class="header" style="height: 30px">
+    <a [routerLink]="['../../contacts-list']">返回</a>
+    <label>同业宝人脉详情</label>
+</div>
+<div class="bar">
+    <form name="detailForm" #detailForm="ngForm">
+        <p><label>人脉基本信息</label></p>
+        <div class="ui-g">
+            <div class="ui-g-3">
+                <label><span class="text-danger">*</span>姓<span style="padding: 10px"></span>名: </label>
+                <input type="text" pInputText class="name" name="name" [(ngModel)]="detailInfo.userNm"/>
+            </div>
+            <div class="ui-g-3">
+                <label><span class="text-danger">*</span>机构全称: {{detailInfo.instfulnm}}</label>
+                <input [(ngModel)]="detailInfo.instfullNm"
+                       [typeahead]="arrayInfo"
+                       pInputText
+                       name="orgin"
+                       (keyup)="searchInfo(detailInfo.instfullNm)"
+                       (typeaheadOnSelect)="selectValue(detailInfo.instfullNm)"
+                >
+            </div>
+            <div class="ui-g-3">
+                <label><span class="text-danger">*</span>QQ<span style="padding: 0 8px"></span>号: </label>
+                <input type="text" pInputText class="qq" name="qqNm" [(ngModel)]="detailInfo.qqNm" disabled/>
+            </div>
+            <div class="ui-g-3">
+                <label>机构简称: </label>
+                <input type="text" pInputText class="orgin_l" name="instNm" [(ngModel)]="detailInfo.instNm" disabled/>
+            </div>
+
+            <div class="ui-g-3">
+                <label>所在地区: </label>
+                <input type="text" pInputText class="place_s" name="cfname" [(ngModel)]="detailInfo.province"
+                       style="width: 85px;" placeholder="无" disabled/>
+                <input type="text" pInputText class="place_e" name="ctname" [(ngModel)]="detailInfo.city"
+                       style="width: 80px;" placeholder="无" disabled/>
+            </div>
+            <div class="ui-g-3">
+                <label>注册手机: </label>
+                <input type="text" pInputText class="phone" name="rgstMblph" [(ngModel)]="detailInfo.rgstMblph" disabled/>
+            </div>
+            <div class="ui-g-3">
+                <label>联系方式: </label>
+                <input type="text" pInputText class="contact" name="ctcMod1" [(ngModel)]="detailInfo.ctcMod1"/>
+            </div>
+            <div class="ui-g-3">
+                <label>联系方式: </label>
+                <input type="text" pInputText class="contact_ohter" name="ctcMod2" [(ngModel)]="detailInfo.ctcMod2"/>
+            </div>
+            <div class="ui-g-3">
+                <label>录入渠道: </label>
+                <select pInputText class="channel" name="inptChnl" [(ngModel)]="detailInfo.inptChnl" disabled>
+                    <option value="0">用户</option>
+                    <option value="1">后台创建</option>
+                    <option value="2">后台导入</option>
+                    <option value="3">系统导入</option>
+                </select>
+            </div>
+            <div class="ui-g-3">
+                <label>数据来源: </label>
+                <input type="text" pInputText class="from" name="dataeSource" [(ngModel)]="detailInfo.dataeSource" disabled/>
+            </div>
+            <div class="ui-g-3">
+                <label>创建时间: </label>
+                <input type="text" pInputText class="create_time" name="createtime" [(ngModel)]="detailInfo.createtime"
+                       disabled/>
+            </div>
+            <div class="ui-g-3">
+                <label>上次使用: </label>
+                <input type="text" pInputText class="use_time" name="lsttmusetm" [(ngModel)]="detailInfo.lsttmusetm" disabled/>
+            </div>
+            <div class="ui-g-12">
+                <label>系统业务标签: </label>
+
+                <div class="ui-g">
+                    <span *ngFor="let item of bs_labels">
+                        <p-checkbox name="group1" value="{{item.id}}" label="{{item.name}}" [(ngModel)]="lbl" (onChange)="editCk(lbl)"></p-checkbox>
+                    </span>
+                </div>
+            </div>
+            <div class="ui-g-12">
+                <label>用户备注标签: </label>
+                <input type="text" pInputText name="udflbl" [(ngModel)]="detailInfo.udflbl" placeholder="多个标签请使用逗号隔开"/>
+            </div>
+            <p>
+                <button class="btn btn-primary btn1" (click)="sureUserInfo()">保存</button>
+                <button class="btn btn-primary btn1" [routerLink]="['../../contacts-list']">取消</button>
+            </p>
+        </div>
+    </form>
+    <form name="form_state">
+        <p></p>
+        <p><label>同业宝状态</label></p>
+        <div class="ui-g-12">
+            <label>同业宝状态: </label>
+            <select name="smbsnestatus" [(ngModel)]="detailInfo.smbsnestatus">
+                <option value="2">待审核</option>
+                <option value="1">审核成功</option>
+                <option value="0">审核失败</option>
+            </select>
+        </div>
+        <div class="ui-g-12" *ngIf="detailInfo.smbsnestatus == 0">
+            <label>审核失败原因: </label>
+            <!--<textarea class="form-control" [(ngModel)]="detailInfo.mnpltRsn">-->
+
+            <!--</textarea>-->
+        </div>
+        <div class="ui-g-12">
+            <label>QQ验证状态: </label>
+            <select pInputText [(ngModel)]="detailInfo.qqvldestatus" name="qqvldestatus" disabled>
+                <option value="0">审核失败</option>
+                <option value="1">审核成功</option>
+                <option value="2">待审核</option>
+            </select>
+            <button class="btn btn-primary btn1" (click)="contactDetail()">刷新</button>
+        </div>
+        <div class="ui-g-12">
+            <label>QQ验证链接: </label>
+            <input pInputText [(ngModel)]="detailInfo.vldqq" name="vldqq" readonly class="js-class"/>
+            <button class="btn btn-primary btn1 btnCopy" data-clipboard-action="copy" data-clipboard-target=".js-class">复制链接</button>
+        </div>
+        <div class="ui-g-3">
+            <label>审核操作人: </label>
+            <input pInputText [(ngModel)]="detailInfo.chkuname" name="chkuname" disabled/>
+        </div>
+        <div class="ui-g-3">
+            <label>上次审核时间: </label>
+            <input pInputText [(ngModel)]="detailInfo.lsttmchktm" name="lsttmchktm" disabled/>
+        </div>
+        <div class="ui-g-6"></div>
+        <div class="ui-g-12">
+            <p>
+                <button class="btn btn-primary btn1" (click)="form_state_click()">保存</button>
+                <button class="btn btn-primary btn1" [routerLink]="['../../contacts-list']">取消</button>
+            </p>
+        </div>
+    </form>
+    <div style="clear: both"></div>
+    <form name="house_state">
+        <p></p>
+        <p>
+            <label>债金所状态</label>
+        </p>
+        <div class="g-ui-12">
+            <label>债金所状态</label>
+            <select type="text" name="house_state_state" [(ngModel)]="detailInfo.state" disabled>
+                <option value="0">未注册</option>
+                <option value="1">已注册</option>
+                <option value="2">已实名认证</option>
+            </select>
+            <button class="btn btn-primary btn1">去创建债金所账号</button>
+        </div>
+    </form>
+</div>

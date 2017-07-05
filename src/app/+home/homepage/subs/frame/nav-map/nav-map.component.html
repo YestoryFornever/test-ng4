@@ -1,0 +1,20 @@
+<div class="nav">
+	<ul id="nav">
+		<li *ngFor="let lev1 of navMap">
+			<a  href="javascript:void(0)"><span class="nav-map-icon" id="{{lev1.iconId}}"></span>{{lev1.label}}</a><!-- id="{{lev1.iconId}}" -->
+			<ul class="second">
+				<li *ngFor="let lev2 of lev1.level" class="clearfix">
+					<a href="javascript:void(0)">
+						<span class="nav-map-icon-second"></span>{{lev2.label}}
+					</a>
+					<ul class="third">
+						<li *ngFor="let lev3 of lev2.level">
+							<!-- <a routerLink="{{lev3.routerlink}}" routerLinkActive="active">{{lev3.label}}</a> -->
+							<a href="javascript:void(0)" (click)="navTo(lev3)">{{lev3.label}}</a>
+						</li>
+					</ul>
+				</li>
+			</ul>
+		</li>
+	</ul>
+</div>

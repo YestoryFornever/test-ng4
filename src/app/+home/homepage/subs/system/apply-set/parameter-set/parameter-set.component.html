@@ -1,0 +1,118 @@
+<!-- 顶部 -->
+	<div class="header clearfix">
+		<span class="head icon">|</span><span class="head" >客户端(APP)参数设置</span>
+		<div class="btnHeader head">
+			<button class="condition btn btn-primary " (click)="saveApplicationSet()">保存设置</button>
+			<button class="condition btn btn-primary " (click)="default.show()">恢复默认设置</button>
+		</div>		
+	</div>
+<!-- 内容 -->
+	<div class="screen .clearfix">
+		<h5 class="screenTop">金币</h5>
+		<table class="table table-hover table-bordered ">
+			<thead>
+				<tr >
+					<td class="info texIndent middleTxt">金币数量</td>
+					<td class="info middleTxt">金币数量</td>
+					<td class="info middleTxt">促销开关</td>
+					<td class="info middleTxt">促销金币数量</td>
+					<td class="info middleTxt">促销时间段</td>
+					<td class="info middleTxt">每日前几条发放</td>
+					<td class="info middleTxt">发送消息内容</td>
+					<td class="info middleTxt">开关</td>
+				</tr>
+			</thead>
+			<tbody *ngFor="let list of applicationLists,let i = index ">
+				<tr>
+
+					<td class="table-hover">{{list.name}}</td>
+					<td class="table-hover">
+						<input type="number" min="0" [(ngModel)]="list.coinNomalNumber" [disabled]="!list.isEnabled"  class="shortTxt myInput">
+					</td>
+					<td class="table-hover">
+						<div class="box">
+                            <div class="onOff off" (click)="changeStatus(list,'allowActivity')" *ngIf="list.allowActivity==false">关</div>
+                            <div class="onOff on" (click)="changeStatus(list,'allowActivity')" *ngIf="list.allowActivity==true">开</div>
+                        </div>
+					</td>
+					<td class="table-hover">
+						<input type="number" min="0" [(ngModel)]="list.coinActivityNumber" [disabled]="(  !list.allowActivity || !list.isEnabled   )" class="shortTxt myInput">
+					</td>
+					<td class="table-hover">
+						<!-- <input type="date" [disabled]="(  !list.allowActivity || !list.isEnabled)" [(ngModel)]="list.activityStart"  class="myInput ">&nbsp;&nbsp;到&nbsp;
+						<input type="date" [disabled]="(  !list.allowActivity || !list.isEnabled)" [(ngModel)]="list.activityEnd"  class="myInput "> -->
+						<p-calendar styleClass ="myclass" [locale]='mon' dateFormat="yy-mm-dd" [monthNavigator]="true" [yearNavigator]="true" yearRange="2000:2050" placeholder="请输入时间" [disabled]="(  !list.allowActivity || !list.isEnabled)" [(ngModel)]="list.activityStart"  showTime="true" hourFormat="24"></p-calendar>&nbsp;到&nbsp;<p-calendar dateFormat="yy-mm-dd"  [disabled]="(  !list.allowActivity || !list.isEnabled)" [(ngModel)]="list.activityEnd" [monthNavigator]="true" [yearNavigator]="true" yearRange="2000:2050" showTime="true" [locale]='mon' hourFormat="24" placeholder="请输入时间"></p-calendar>
+					</td>
+					<td class="table-hover">
+						<input type="number" min="0" [(ngModel)]="list.rewardCount" [disabled]="!list.isEnabled" class="shortTxt myInput" *ngIf=" ( list.name=='发布动态奖励' || list.name=='债券报价奖励' || list.name=='对外分享资讯奖励'||list.name=='发布资金报价') ">
+					</td>
+					<td class="table-hover">
+						<input type="text"  class="form-control "  *ngIf="list.name!='推荐用户奖励'" req [(ngModel)]="list.message" >
+					</td>
+					<td class="table-hover">
+						<div class="box" >
+                            <div class="onOff off"  (click)="changeStatus(list,'isEnabled')" *ngIf="list.isEnabled ==false">关</div>
+                            <div class="onOff on"  (click)="changeStatus(list,'isEnabled')" *ngIf="list.isEnabled ==true">开</div>
+                        </div>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<h5 class="screenTop form-inline">
+			<span>每日发放金币预警数</span>&nbsp;&nbsp;
+			<input class="form-control" type="number" style='padding-left: 10px;' min="0"  [(ngModel)]="warningValue">
+		</h5>
+	</div>
+<!-- 恢复默认值 弹窗 -->
+
+<!-- <div bsModal #default="bs-modal" class="modal fade modelPon" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm myModal">
+        <div class="modal-content ">
+            <div class="modal-header ">
+                <button type="button" class="close" aria-label="Close" (click)="default.hide()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">恢复默认值设置</h4>
+            </div>
+            <div class="modal-body  ">
+                
+                <div class="cont ">
+                    是否恢复默认值设置
+                </div>
+
+                 
+
+                <div class="btnstyle">
+                    <button type="button" class="btn btn-default btnhoverlan" (click)="default.hide()">取消</button>
+                    <button type="button" class="btn btn-primary btnhoverju" (click)="toDefault(default)">确认</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> -->	
+<!-- 弹窗 -->
+<div bsModal #default="bs-modal" class="modal fade modelPon" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-ms myModal">
+        <div class="modal-content ">
+            <div class="modal-header ">
+                <button type="button" class="close" aria-label="Close" (click)="default.hide()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" >恢复默认值设置</h4>
+            </div>
+            <div class="modal-body  ">
+                
+                <div class="cont ">
+                   <h4> 是否恢复默认值设置</h4>
+                </div>
+
+                 <div style="clear:both"></div>
+
+                <div class="btnstyle">
+                    <button type="button" class="btn btn-default btnhoverlan" (click)="default.hide()">取消</button>
+                    <button type="button" class="btn btn-primary btnhoverju"  (click)="toDefault(default)">确认</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

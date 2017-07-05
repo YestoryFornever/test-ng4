@@ -1,0 +1,20 @@
+<!-- Create the tabs -->
+<ul class="nav nav-tabs nav-justified control-sidebar-tabs">
+  <li class="active"><a>用户消息</a></li>
+  <li><a>&nbsp;</a></li>
+</ul>
+<!-- Tab panes -->
+<div class="box box-success">
+    <div class="box-body chat" id="chat-box">
+        <div class="item" *ngFor="let item of userInfoList, let index = index" (click)="userClickFun(item, index)">
+            <img [src]="item.iconUrl" alt="user image" class="offline">
+            <div class="message">
+                <a class="nowrap">
+                    {{item.organShortName}} {{item.departName}} {{item.userName}} {{item.cTime}}
+                </a>
+                <div class="nowrap">{{item.msg}}</div>
+            </div>
+        </div>
+    </div>
+</div>
+

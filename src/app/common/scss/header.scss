@@ -1,0 +1,27 @@
+/*header*/
+.header{
+	overflow: hidden;
+	height: 60px;
+	border-bottom:solid 1px #e1e7eb; 
+}
+.header span{
+	font:600 14px "微软雅黑";
+	color: #333;
+	line-height: 60px;
+	margin-left: 16px;
+}
+.header .icon{
+	font-size: 16px;
+	color:#f44336;
+}
+.header .head{
+	float: left;
+}
+.header .btnHeader{
+	height: 32px;
+	margin-left: 50px;
+	margin-top: 14px;
+}
+.header .btnHeader .btn{
+	margin-right: 10px;
+}

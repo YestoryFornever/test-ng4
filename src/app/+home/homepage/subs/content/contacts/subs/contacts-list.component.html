@@ -1,0 +1,145 @@
+<div class="content">
+    <p></p>
+    <p class="header">
+        <span>同业宝</span>
+        <button class="btn btn-primary" [routerLink]="['../contacts-add']">创建人脉</button>
+        <button class="btn btn-primary" (click)="showDialog()">后台导入</button>
+        <a class="btn btn-primary btn1" style="color: #fff;" href="{{ip}}" target="_blank">导出人脉</a>
+        <button class="btn btn-primary" [routerLink]="['../contacts-manage']">管理客服</button>
+    </p>
+    <div class="bar">
+        <div>
+            <p>
+                QQ号查找：<input type="text" name="qqNm" [(ngModel)]="qqNm" pInputText class="mind"/>
+                姓名查找：<input type="text" name="userNm" [(ngModel)]="userNm" pInputText class="mind"/>
+                同业宝状态：
+                <p-selectButton [options]="states" [(ngModel)]="userStatus">
+                </p-selectButton>
+            </p>
+        </div>
+        <div class="moreSearch" *ngIf="showTag">
+            <p>
+                创建时间:
+                <p-calendar [(ngModel)]="timeBegin" dateFormat="yy-mm-dd"></p-calendar>
+                至
+                <p-calendar [(ngModel)]="timeEnd" dateFormat="yy-mm-dd"></p-calendar>
+            </p>
+            <p>
+                机构分类:
+                <select pInputText [(ngModel)]="org1" name="org1" (change)="childrenClass(org1)">
+                    <option value="">无</option>
+                    <option *ngFor="let item of oneClass" [ngValue]="item.internationClassifyId">
+                        {{item.internationClassifyName}}
+                    </option>
+                </select>
+                <select pInputText [(ngModel)]="org2" name="org2">
+                    <option value="">无</option>
+                    <option *ngFor="let item of twoClass" [ngValue]="item.internationClassifyId">
+                        {{item.internationClassifyName}}
+                    </option>
+                </select>
+            </p>
+            <p>
+                业务标签:
+                <p-selectButton [options]="tags" [(ngModel)]="lbl"></p-selectButton>
+            </p>
+            <p>
+                注册状态:
+                <p-selectButton class="mind" [options]="registers" [(ngModel)]="wthrRgst"></p-selectButton>
+
+                QQ验证:
+                <p-selectButton class="mind" [options]="qqs" [(ngModel)]="isQqCheck"></p-selectButton>
+
+                联系电话:
+                <p-selectButton [options]="telephones" [(ngModel)]="isInputph"></p-selectButton>
+            </p>
+            <p>
+                录入渠道:
+                <p-selectButton class="mind" [options]="channels" [(ngModel)]="inptChnl"></p-selectButton>
+
+                数据来源:
+                <p-selectButton [options]="froms" [(ngModel)]="dataeSource"></p-selectButton>
+            </p>
+        </div>
+        <button class="btn btn-primary" (click)="getContactsList(1)">查询</button>
+        <a (click)="moreInfoClick()">
+            <span *ngIf="showTag==false">更多筛选 v</span>
+            <span *ngIf="showTag==true">收起 ^</span>
+        </a>
+    </div>
+
+    <div class="tableList">
+        <p-dataTable [value]="tableBody" [emptyMessage]="No">
+            <p-column field="operation" header="操作">
+                <!--
+                    let-col: col这个td的值对象
+                    let-row: row这一行tr的值对象
+                -->
+                <template let-col let-row="rowData" pTemplate="body">
+                    <!--<a *ngIf="row.usreStatus == 2" (click)="contactsCheck(row)">审核</a>-->
+                    <a *ngIf="row.usreStatus == 2" [routerLink]="['../contacts-detail/'+ row.userid]">审核</a>
+                    <a [routerLink]="['../contacts-detail/'+ row.userid]">查看详情</a>
+                </template>
+            </p-column>
+            <p-column field="usreStatus" header="同业宝状态">
+                <template let-col let-row="rowData" pTemplate="body">
+                    {{row.usreStatus | userState}}
+                </template>
+            </p-column>
+            <p-column field="qqNm" header="QQ">
+                <template let-col let-row="rowData" let-index="" let-rowIndex="rowIndex" pTemplate="body">
+                    <div class="copy{{row.qqNo}}">
+                        <span>{{row.qqNo}}</span>
+                        <a class="text-primary">复制</a>
+                    </div>
+                </template>
+            </p-column>
+            <p-column field="userNm" header="姓名"></p-column>
+            <p-column field="instnm" header="机构全称"></p-column>
+            <p-column field="inptChnl" header="录入渠道">
+                <template let-col let-row="rowData" pTemplate="body">
+                    {{row.inptChnl | inputChnl}}
+                </template>
+            </p-column>
+            <p-column field="createtime" header="创建时间">
+                <template let-col let-row="rowData" pTemplate="body">
+                    {{row.createtime | timePipe}}
+                </template>
+            </p-column>
+            <p-column field="uName" header="操作人"></p-column>
+        </p-dataTable>
+        <pagination
+                [totalItems]="totalItems"
+                [(ngModel)]="currentPage"
+                [maxSize]="10"
+                class="pagination-sm"
+                [boundaryLinks]="true"
+                [rotate]="false"
+                (numPages)="numPages = $event"
+                (pageChanged)="pageChanged($event)"
+        >
+        </pagination>
+    </div>
+    <p></p>
+</div>
+
+<!--编辑框-->
+<p-dialog header='后台导入' [(visible)]="display" width="800">
+    <content>
+        <form method="post"  enctype="multipart/form-data">
+            <p>
+                <a class="btn btn-primary btn1" style="color: #fff;" target="_blank" href="{{downloadIp}}">点击下载模板</a>
+            </p>
+            <p>
+                上传文件：
+                <input type="file" (change)="changeFile($event)" />
+            </p>
+            <p></p>
+            <p class="text-right">
+                <span class="text-danger">{{message}}</span>
+                <button class="btn btn-primary" (click)="hideDialog()">取消</button>
+                <button class="btn btn-primary" (click)="uploadFile(file_add)">确定</button>
+            </p>
+        </form>
+    </content>
+</p-dialog>

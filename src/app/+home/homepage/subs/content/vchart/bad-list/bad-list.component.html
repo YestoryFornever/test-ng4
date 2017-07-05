@@ -1,0 +1,91 @@
+	<div class="header clearfix">
+		<span class="head icon">|</span><span class="head" >资讯负面打分列表</span>
+		<div class="btnHeader head">
+		<!-- <button class="btn btn-primary">查询</button> -->
+		<button class="btn btn-primary" *ngIf="1" (click)="addTurnPictures('1')">添加到负面</button>
+		<button class="btn btn-primary"  *ngIf="1" (click)="addTurnPictures('3')">添加到轮播</button>
+	</div>
+	</div>
+	
+	<!--  -->
+	<div class="screen .clearfix">
+		
+		<!-- <div class="condition container-fluid">
+			<span>截止日期</span><input [(ngModel)]="end_time" class="selection" type="date">
+		</div> -->
+		<span *ngIf="clust_time" class="inc le">{{clust_time}}全部资讯</span>
+		<span *ngIf="!clust_time" class="inc le">请选择日期</span>
+		<button class="condition btn btn-primary sub" style="margin: 5px" (click)="elary()">前一天</button>
+		<button class="condition btn btn-primary sub" style="margin: 5px" (click)="last()">后一天</button>
+		<button class="condition btn btn-primary sub " style="float: right" [disabled]="!clust_time" (click)="getinfoList()">查询</button>
+		<div class="condition container-fluid " style="float: right">
+			<span>选择日期</span><input [(ngModel)]="clust_time" class="selection" type="date">
+		</div>
+		<!-- <span *ngIf="clust_time" class="inc">{{default.time_begin}}至 {{default.time_end }}全部资讯</span>clust_time -->
+
+	</div>
+	<div style="text-align: center;margin:50px;font:18px '微软雅黑'" *ngIf="noData">暂无数据</div>
+	<div class="tableList">
+		<div class = "loading" [ngClass]="setLoadClasses()" [ngStyle]="{'height': height }">
+			<div class="loader">
+				<div class="loader-inner">
+					<div class="loader-line-wrap">
+						<div class="loader-line"></div>
+					</div>
+					<div class="loader-line-wrap">
+						<div class="loader-line"></div>
+					</div>
+					<div class="loader-line-wrap">
+						<div class="loader-line"></div>
+					</div>
+					<div class="loader-line-wrap">
+						<div class="loader-line"></div>
+					</div>
+					<div class="loader-line-wrap">
+						<div class="loader-line"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<table class="table table-bordered table-hover " [ngClass]="setListClasses()" *ngIf="!noData">
+			<thead >
+				<tr>
+					<td class="info shortTxt"><input #allcheck type="checkbox" name="allCheck" (change)="checkAll(allcheck)">顺序</td>
+					<td class="info ">资讯标题</td>
+					<td class="info ">跳转链接</td>
+					<td class="info middleTxt">发布时间</td>
+					<td class="info shortTxt">打分</td>
+				</tr>
+			</thead>
+			<tbody #XXX id="list" *ngFor="let new of infoList;let i=index" >
+				<tr #userList  class="Userlist" >
+				<!-- [checked]="i<10" -->
+					<td class="table-hover" > <input   type="checkbox" #listState name="user"  >{{i+1+(default.cur_page-1)*default.show_count}} </td>
+					<td class="table-hover">{{new.title}}</td>
+					<td class="table-hover" style="cursor: pointer"><a [href]=new.source_path target="_Blank">{{new.source_path}}</a></td>
+					<td class="table-hover">{{new.create_time}}</td>
+					<td class="table-hover">{{new.point}}</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+<!-- pagination -->
+<div class="row pagerow">
+	<div class="pageshowleft">每页显示
+		<select #selectPage name="" id="msgNum" (change)="sizeData(selectPage.value,userList)" [(ngModel)]="itemsPerPage">
+			<option #optionPage  *ngFor="let msgNumber of msgNumbers" value={{msgNumber.Number}}>{{msgNumber.Number}}</option>
+		</select>
+		条数据
+	</div>
+	<div class="pageshowmodle">
+		<span>{{currentPage}} / {{totalPages}}</span>页
+		<span>{{totalItems}}条数据</span>
+	</div>
+
+	<div class="pagefen">
+		<pagination  [firstText]="firstText" [lastText]="lastText" [previousText]="previousText" [nextText]="nextText" [maxSize]="maxSize" [totalItems]="totalItems" [itemsPerPage]="itemsPerPage" [(ngModel)]="currentPage" [boundaryLinks]="true" (pageChanged)='pageChanged($event)' (numPages)='pageNumChange($event)' class="pagination-sm"></pagination>
+	</div>
+</div>
+
+
+

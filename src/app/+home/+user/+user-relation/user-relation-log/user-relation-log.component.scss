@@ -1,0 +1,203 @@
+s.clearfix {
+  clear:both;
+  overflow: auto;
+  zoom: 1;
+}
+.btn{
+	border-radius: 0;
+	padding:5px 16px;
+}
+.btn-primary:hover{
+	background-color: #fb6300;
+	color: #fff;
+	border-color:#fb6300;
+}
+.btn-default:hover{
+	background-color: #337ab7;
+	color:#fff;
+	border-color:#2e6da4;
+}
+
+.verval{
+	width: 220px;
+}
+.hide{
+	display: none;
+}
+/*.show{
+	display: block;
+}*/
+/*button:focus{
+	background-color: #fff;
+}*/
+/*.btn:hover{
+	background-color: orange;
+	color: #fff;
+}*/
+/*header*/
+.header{
+	overflow: hidden;
+	height: 60px;
+	border-bottom:solid 1px #e1e7eb;
+	padding-left: 6px; 
+}
+.header span{
+	font:600 14px "微软雅黑";
+	color: #333;
+	line-height: 60px;
+	margin-left: 10px;
+}
+.header .icon{
+	font-size: 16px;
+	color:#f44336;
+}
+.header .head{
+	float: left;
+}
+.header .btnHeader{
+	height: 32px;
+	margin-left: 50px;
+	margin-top: 14px;
+}
+.header .btnHeader .btn{
+	margin-right: 10px;
+}
+
+/*table*/
+.tableList{
+	width: 100%;
+	/*height: 300px;*/
+	/*overflow-x: scroll;*/
+	/*margin: 16px;*/
+	padding: 16px;
+}
+.table{
+	width: 100%;
+	/*margin: 16px;*/
+}
+table{
+	table-layout:fixed
+}
+tr{
+	
+}
+td{
+	height: 38px;
+	white-space:nowrap;
+	text-overflow:ellipsis;
+	overflow: hidden;
+	background: #fff;
+}
+/*td:hover 
+{ 
+text-overflow:inherit; 
+overflow:visible; 
+color: blue;
+
+} */
+.table tr{
+	height: 32px;
+	line-height: 32px;
+
+}
+.table tr:active{
+	color: blue;
+	background: #bfa;
+}
+.verify,.revisit{
+	color: #367ec1;
+	cursor: pointer;
+}
+.middleTxt{
+	width: 200px;
+}
+.longTxt{
+	width: 300px;
+}
+.shortTxt{
+	width: 100px;
+}
+/*分页*/
+.pagerow{
+	height:auto;
+	background:#f5f7fb;
+	width:98%;
+	border:1px #dadada solid;
+	margin:0 16px;
+    display:-webkit-box;
+    display:-moz-box;
+    display:-ms-box;
+    display:-o-box;
+}
+.pageshowleft{
+	width:190px;
+	height:66px;
+	line-height:66px;
+	margin-left:15px;
+}
+.pageshowleft select{
+	width:50px;
+	height:34px;
+	line-height:34px;
+	background:#fff;
+}
+.pageshowmodle{
+	-webkit-box-flex:1;
+	line-height:66px;
+	text-align: center;
+}
+.pagefen{
+	height:66px;
+	line-height:66px;
+	margin-right:16px;
+}
+/*弹窗*/
+
+.modal-content{
+	/*margin: auto;*/
+	border-radius:0;
+	width:450px;
+	height:315px;
+}
+.modal-header{
+	background:#f6f7fb;
+}
+.modal-body span{
+	float: left;
+}
+.modal-body textarea{
+	width: 300px;
+	height: 80px;
+
+}
+.btnstyle{
+	position: absolute;
+	right: 10px;
+}
+.btnstyleVe{
+	position: absolute;
+	right: 10px;
+	bottom: -100px;
+}
+.btnstyle button{
+	margin:10px auto;
+	width:90px;
+}
+.pp{
+	width: 100%;
+    margin: 10px;
+    display: block;
+}
+.pp span{
+	text-align: right;
+	display: inline-block;
+	line-height: 32px;
+	width: 60px;
+}
+.pp input,select{
+	height: 32px;
+    width: 200px;
+    vertical-align: middle;
+    border-radius: 5px;
+    border: #BBC 1px solid;
+}

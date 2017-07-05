@@ -1,0 +1,70 @@
+<div class="header clearfix">
+	<span class="head icon">|</span><span class="head" >负面信息管理</span>
+	<div class="btnHeader head">
+		<button class="btn btn-primary">查询</button>
+		<button class="btn btn-primary">添加</button>
+	</div>
+</div>
+<!-- table -->
+	<div class="tableList "  >
+		<!-- <div class = "loading" [ngClass]="setLoadClasses()" [ngStyle]="{'height': height }">
+			 <div class="loader">
+				<div class="loader-inner">
+					<div class="loader-line-wrap">
+						<div class="loader-line"></div>
+					</div>
+					<div class="loader-line-wrap">
+						<div class="loader-line"></div>
+					</div>
+					<div class="loader-line-wrap">
+						<div class="loader-line"></div>
+					</div>
+					<div class="loader-line-wrap">
+						<div class="loader-line"></div>
+					</div>
+					<div class="loader-line-wrap">
+						<div class="loader-line"></div>
+					</div>
+				</div>
+			</div>
+		</div> -->
+		<table class="table table-bordered table-hover ">
+			<thead>
+				<tr>
+					<td class="info shortTxt">图片</td>
+					<td class="info middleTxt">标题</td>
+					<td class="info shortTxt" >介绍</td>
+					<td class="info middleTxt">创建时间</td>
+					<td class="info shortTxt">操作</td>
+				</tr>
+			</thead>
+			<tbody  id="list" *ngFor="let userMsg of userMsges"  >
+				<tr #userList   [ngStyle]="{'background-color': color }" class="Userlist">
+					<td class="table-hover"><span  class="verify">{{pub.approve}}</span></td>
+					<td class="table-hover" ><input  type="checkbox" #listState name="user">{{userMsg.registPhone}}</td>
+					<td class="table-hover" #username>{{userMsg.userName}}</td>
+					<td class="table-hover middleTxt" #userMsgName><div [tooltip]="userMsg.company" class="td">{{userMsg.company}}</div></td>
+					<td class="table-hover">{{userMsg.department}}</td>
+				</tr>
+			</tbody>
+		</table>
+		
+	</div>
+	<!-- pagination -->
+	<div class="row pagerow" [ngClass]="setListClasses()">
+		<div class="pageshowleft">每页显示
+			<select #selectPage name="" id="msgNum" (change)="sizeData(selectPage.value,userList)" [(ngModel)]="itemsPerPage">
+				<option #optionPage  *ngFor="let msgNumber of msgNumbers" value={{msgNumber.Number}}>{{msgNumber.Number}}</option>
+			</select>
+			条数据
+		</div>
+		<div class="pageshowmodle">
+			<span>{{currentPage}} / {{totalPages}}</span>页
+			<span>{{totalItems}}条数据</span>
+		</div>
+		<div class="pagefen">
+			<pagination  [firstText]="firstText" [lastText]="lastText" [previousText]="previousText" [nextText]="nextText" [maxSize]="maxSize" [totalItems]="totalItems" [itemsPerPage]="itemsPerPage" [(ngModel)]="currentPage" [boundaryLinks]="true" (pageChanged)='pageChanged($event)' (numPages)='pageNumChange($event)' class="pagination-sm"></pagination>
+		</div>
+
+</div>
+

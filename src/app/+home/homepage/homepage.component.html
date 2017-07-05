@@ -1,0 +1,122 @@
+<!--<header>
+	<div class="logo">
+		<img src='../../../public/images/icon_logo.png' alt="">
+	</div>
+	<div class="introduce">债金所后台管理系统</div>
+	<alphain-nav-map (updataDyNav)="updataDyNav($event)"></alphain-nav-map>
+	<div id="acount" class="btn-group" dropdown>
+		<button id="single-button" type="button" class="btn btn-primary" dropdownToggle>
+			{{account}}<span class="caret"></span>
+		</button>
+		<ul *dropdownMenu class="dropdown-menu" role="menu" aria-labelledby="single-button">
+			<li role="menuitem">
+				<a class="dropdown-item" href="javascript:void(0);" (click)="updatepwd.show()">修改密码</a>
+			</li>
+			<li class="divider dropdown-divider"></li>
+			<li role="menuitem">
+				<a class="dropdown-item" href="javascript:void(0);" (click)="logout.show()">注销</a>
+			</li>
+		</ul>
+	</div>
+</header>-->
+<!-- <aside>
+	<ul>
+		<li><a id="user-manage" href="javascript:void(0)"></a></li>
+		<li>
+			<a id="user-list" routerLink='./user-list' routerLinkActive="active"></a>
+		</li>
+		<li>
+			<a id="user-edit" routerLink='./user-edit' routerLinkActive="active" class="active"></a>
+		</li>
+		<li>
+			<a id="user-approve" routerLink='./user-approve' routerLinkActive="active"></a>
+		</li>
+	</ul>
+</aside> -->
+<nav class="nav-dynamic" *ngIf="showNavDynamic">
+	<alphain-nav-dynamic (ifshowDyNav)="ifshowDyNav($event)" [currentDyNav]="currentDyNav"></alphain-nav-dynamic>
+</nav>
+<main [class.showDyNav]="showNavDynamic">
+	<div>
+		<router-outlet></router-outlet>
+	</div>
+</main>
+<div bsModal #updatepwd="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" (click)="closeUpdatepwd(updatepwd)" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<h4 class="modal-title">修改账户密码</h4>
+			</div>
+			<div class="modal-body">
+				<form class="form-horizontal" role="form" #updatepwdform="ngForm">
+					<div id="organizations_info_left" class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+						<div class="form-group">
+							<label for="acount" class="col-lg-3 col-md-3 col-sm-3 col-xs-3 control-label">账户名</label>
+							<div class="col-lg-9 col-md-9 col-sm-9 col-xs-9">
+								<input type="text" class="form-control" name="acount" disabled [(ngModel)]="account">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="oldPassword" class="col-lg-3 col-md-3 col-sm-3 col-xs-3 control-label">原密码</label>
+							<div class="col-lg-9 col-md-9 col-sm-9 col-xs-9">
+								<input type="text" class="form-control" name="oldPassword" required [(ngModel)]="oldPassword">
+								<div *ngIf="formErrors.oldPassword" class="alert alert-danger">
+									{{ formErrors.oldPassword }}
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="newPassword" class="col-lg-3 col-md-3 col-sm-3 col-xs-3 control-label">新密码</label>
+							<div class="col-lg-9 col-md-9 col-sm-9 col-xs-9">
+								<input type="text" class="form-control" name="newPassword" required [(ngModel)]="newPassword">
+								<div *ngIf="formErrors.newPassword" class="alert alert-danger">
+									{{ formErrors.newPassword }}
+								</div>
+							</div>
+						</div>
+						<!-- <div class="form-group">
+							<label for="repeat" class="col-lg-3 col-md-3 col-sm-3 col-xs-3 control-label">重复密码</label>
+							<div class="col-lg-9 col-md-9 col-sm-9 col-xs-9">
+								<input type="text" class="form-control" name="repeat" required [(ngModel)]="repeatPassword">
+								<div *ngIf="formErrors.repeatPassword" class="alert alert-danger">
+									{{ formErrors.repeatPassword }}
+								</div>
+							</div>
+						</div> -->
+					</div>
+					<div  class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+						<button type="button" class="btn btn-primary pull-right btn-space" (click)="saveNewPwd(updatepwd)" [disabled]="!currentForm.form.valid">保存</button>
+						<button type="button" class="btn btn-default pull-right btn-space" (click)="closeUpdatepwd(updatepwd)">取消</button>
+					</div>
+					<div style="clear:both;"></div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+<div bsModal #logout="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" (click)="logout.hide()" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<h4 class="modal-title">确认退出吗？</h4>
+			</div>
+			<div class="modal-body">
+				<form class="form-horizontal" role="form" #logoutform="ngForm">
+					<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+						<a href="logout">
+							<button type="button" class="btn btn-primary pull-right btn-space">确认退出</button>
+						</a>
+						<button type="button" class="btn btn-default pull-right btn-space" (click)="logout.hide()">取消</button>
+					</div>
+					<div style="clear:both;"></div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>

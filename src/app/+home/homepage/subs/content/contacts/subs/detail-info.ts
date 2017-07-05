@@ -1,0 +1,31 @@
+export class DetailInfo {
+    constructor(
+        public userId: string,
+        public userNm: string,
+        public qqNm: string,
+        public instId: string,
+        public instfullNm: string,
+        public instNm: string,
+        public cfname: string,
+        public ctname: string,
+        public rgstMblph: string,
+        public ctcMod1: string,
+        public ctcMod2: string,
+        public inptChnl: string,
+        public dataeSource: string,
+        public createtime: string,
+        public lsttmusetm: string,
+        public lbl: string,
+        public udflbl: string,
+        public wxopenid: string,
+        public smbsnestatus: string,
+        public qqvldestatus: string,
+        public vldqq: string,
+        public chkuname: string,
+        public lsttmchktm: string,
+        public state: string,
+        public province: string,
+        public city: string,
+        public mnpltRsn: string
+    ) {}
+}

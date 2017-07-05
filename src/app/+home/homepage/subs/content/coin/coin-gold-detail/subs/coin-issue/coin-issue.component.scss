@@ -1,0 +1,93 @@
+/*弹窗*/
+.modal-content{
+	margin:150px 0;
+	border-radius:5px;
+	width:550px;
+	/* height:350px; */
+}
+.modal-header{
+	height: 40px;
+	line-height: 40px;
+	background:#f6f7fb;
+	border-radius:5px;
+}
+.modal-body span{
+	float: left;
+	text-align: right;
+	padding: 0px 10px ;
+}
+.modal-body textarea {
+	width: 200px;
+	height: 80px;
+
+}
+.modal-body  .pp{
+	width: 250px;
+	/* border-left: none; */
+}
+.PiPei{
+	padding:  5px;
+	background-color: none;
+}
+.btnstyle{
+	position: absolute;
+	right: 10px;
+}
+.btnstyleVe{
+	position: absolute;
+	right: 10px;
+	bottom: -100px;
+}
+.btnstyle button{
+	margin:10px auto;
+	width:90px;
+}
+/* 弹窗 */
+.modal-header{
+	padding: 10px ;
+}
+
+.marTB{
+	margin:10px 0px 0px 0px ;
+}
+.myModal{
+	width:550px;
+}
+.red{
+	color: red;
+	padding: 5px;
+	vertical-align: middle;
+	text-align: center;
+}
+.myBtnStyle{
+	position: static;
+}
+.marR20{
+	margin-right:20px!important;
+}
+
+
+/*名片*/
+ .tooltip-inner {
+    max-width: 260px;
+    width: 255px ;
+    height: 280px ;
+    padding-top: 10px;
+    background-color: #fff;
+    color: #333;
+    font-weight: 600;
+    text-align: left;
+    box-shadow: 0 0 20px rgba(0,0,0, 0.75);
+}
+:host >>> .tooltip .tooltip-arrow {
+  border-top-color: #009688;
+}
+:host >>>  .tooltip.in{
+    opacity: 1;
+}
+main{
+	margin: 10px
+}
+.tableList{
+	margin-top: 10px
+}

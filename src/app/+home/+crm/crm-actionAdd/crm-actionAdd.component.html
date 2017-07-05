@@ -1,0 +1,175 @@
+<div class="header box">
+	<span class="head icon">|</span>
+	<span class="head">添加行动</span>
+	<div class="btnHeader head">
+		<button class="btn btn-primary" (click)="turnToDetial()">保存</button>
+		<button class="btn btn-primary" (click)="turnToList()">放弃编辑</button>
+	</div>
+</div>
+<main class="box">
+	<div class="left_box">
+		<div class="condition">
+			<label for="fullname" class="text-right"><b class="red">*</b>机构全称</label>
+			<div class="condition-input">
+				<input  type="text" class="form-control" #company name="company" autocomplete="off"
+					[(ngModel)]="default.company"
+					(typeaheadOnSelect)="orgsOnSelect($event)"
+					[typeaheadOptionField]="'organizationShortName'"
+					[typeahead]="fullnameTypeAhead.source"
+					[typeaheadOptionsLimit]="10"
+					[typeaheadWaitMs]="200" 
+					(blur)="blurCompany(company,$event)"
+					(change)="changeCompany(company,$event)">
+				<input type="text" name="companyId" style="display: none" [(ngModel)]="default.companyId">
+				<button class="btn btn-primary btnInline" (click)="addOrg.show()">添加机构</button>
+			</div>
+		</div>
+		<div class="condition">
+			<label for="fullname" class="text-right">机构简称</label>
+			<div class="condition-input">
+				<input [disabled]="1"  type="text" class="form-control" #company name="company" autocomplete="off"	[(ngModel)]="default.organizationShortName">
+			</div>
+		</div>	
+		<div class="condition">
+			<label for="fullname" class="text-right">开始时间</label>
+			<div class="condition-input">
+				<p-calendar  [(ngModel)]="startDate" [maxDate]="endDate"    [locale]="cn" [showTime]="false"></p-calendar>
+			</div>
+		</div>
+		<div class="condition">
+			<label for="fullname" class="text-right">结束时间</label>
+			<div class="condition-input">
+				<p-calendar  [(ngModel)]="endDate"  [minDate]="startDate"  [locale]="cn" [showTime]="false"></p-calendar>
+			</div>
+		</div>
+		<div class="condition">
+			<label for="fullname" class="text-right"><b class="red">*</b>行动类型</label>
+			<div class="condition-input">
+				<select>
+					<option></option>
+				</select>
+			</div>
+		</div>	
+		<div class="condition">
+			<label for="fullname" class="text-right"><b class="red">*</b>客户经理</label>
+			<div class="condition-input">
+				<select>
+					<option></option>
+				</select>
+			</div>
+		</div>	
+		
+		<div class="condition">
+			<label for="fullname" class="text-right"><b class="red">*</b>工作地址</label>
+			<div class="condition-input">
+				<input  type="text" class="form-control" #company name="company" autocomplete="off"	[(ngModel)]="default.username">
+			</div>
+		</div>	
+	</div>
+	<div>
+		<div class="info">
+			<div class='info_head'>
+				行动记录
+			</div>
+			<textarea>行动详情，我到这家公司拜访，他们态度挺好的，可是合作意向不太强
+			</textarea>
+		</div>
+		<div class="info">
+			<div class='info_head'>
+				业务需求
+			</div>
+			<textarea>行动详情，我到这家公司拜访，他们态度挺好的，可是合作意向不太强
+			</textarea>
+		</div>
+		<div class="info">
+			<div class='info_head'>
+				产品需求
+			</div>
+			<textarea>行动详情，我到这家公司拜访，他们态度挺好的，可是合作意向不太强
+			</textarea>
+		</div>
+	</div>
+	
+	 <div style="clear:both;"></div>
+</main>
+<div bsModal #addOrg="bs-modal" class="modal fade modelPon" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="false">
+    <div class="modal-dialog">
+        <div class="modal-content clearfix" style="height: 380px">
+            <div class="modal-header">
+                <button type="button" class="close" aria-label="Close" (click)="addOrg.hide()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">添加机构</h4>
+            </div>
+            <div class="modal-body contentxinxi" style="height: 320px">
+            <div class="bsud" style="width: 45%;float:left">
+            	<div>
+            	<span><i style="color:red"> * </i>机构简称</span><input class="divbd" [(ngModel)]="organization.organizationShortName"  type="" name="">
+	            </div>
+	           <div>
+	           	<span><i style="color:red"> * </i>机构全称</span><input class="divbd" [(ngModel)]="organization.organizationFullName"  type="" name="">
+	           </div>
+	            <div>
+	           	<span><i style="color:red"> * </i>是否是金融机构</span>
+	           		<div class="btn-group">
+							<label name="isFinancial" class="btn btn-mint" [(ngModel)]="organization.ifFinancialInstitution" btnRadio="1">是</label>
+							<label name="isFinancial" class="btn btn-mint" [(ngModel)]="organization.ifFinancialInstitution" btnRadio="2">否</label>
+					</div>
+	           	</div>
+	           	<div>
+            	<span>机构所在地：</span>
+		           <SELECT class="form-control"  name="sheng" id="to_cn" #city (change)="set_city(city)" > 
+						<option value=''>请选择</option> 
+						<option *ngFor="let item of provList" [value]="item.name">{{item.name|safeurl}}</option>
+						
+					</SELECT>
+					<select id="city"  name="shi" class="form-control " (change)="con_city()"> 
+						<option value=''>请选择</option> 
+					</select> 
+          		 </div>
+	          <!--   <div>
+	           		<span>是否是发债机构</span>
+	           		<div class="btn-group">
+							<label name="isFinancial" class="btn btn-mint" [(ngModel)]="organization.ifFinancialInstitution" btnRadio="1">是</label>
+						<label name="isFinancial" class="btn btn-mint" [(ngModel)]="organization.ifFinancialInstitution" btnRadio="2">否</label>
+					</div>
+           		</div> -->
+           	 </div>
+           
+           <div  class="bsud"  style="width: 45%;float:left">
+           	 	
+          		 <div>
+	           		<span>详细地址</span>
+	           		<input class="divbd" [(ngModel)]="organization.detailedAddress"  type="" name="">
+           		</div>
+           		 <div>
+	           		<span><i style="color:red"> * </i>金融机构分类</span><select name=""  class="form-control" [(ngModel)]="orgCondition.c1" (change)="getOrgCate2($event)">
+					<option value="" selected>全部</option>
+					<option value="{{org1.organizationCategoryId}}" *ngFor="let org1 of orgCate1">{{org1.categoryName}}</option>
+					</select>
+					<select [disabled]="!orgCate2" name=""  class="form-control" [(ngModel)]="orgCondition.c2">
+					<option value="" selected>全部</option>
+					<option value="{{org2.organizationCategoryId}}" *ngFor="let org2 of orgCate2">{{org2.categoryName}}</option>
+					</select>
+           		</div>
+           		 <div>
+	           		<span>国标分类</span>
+	           		<select name="ic1"  class="form-control" [(ngModel)]="organization.internationClassifyId1" (change)="getOrganizationCategoryList2EP($event)">
+						<option value="" selected></option>
+						<option value="{{org1.internationClassifyId}}" *ngFor="let org1 of orgInCate1">{{org1.internationClassifyName}}</option>
+					</select>
+					<select [disabled]="!orgInCate2EP" name="ic2"  class="form-control" [(ngModel)]="organization.internationClassifyId2">
+						<option value="" selected>无</option>
+						<option value="{{org2.internationClassifyId}}" *ngFor="let org2 of orgInCate2EP">{{org2.internationClassifyName}}</option>
+					</select>
+           		</div>
+           		<div>
+           			<button style=" position: relative; bottom: -80px;right: -229px;" class="btn btn-primary" (click)="addOrganization(addOrg)">保存</button>
+           		</div>
+            </div>
+             <div class="condition container-fluid" style="padding-left: 400px">
+				<!-- <button style="margin-top:-40px" type="button" class="btn btn-primary" (click)="del.hide()">取消</button> -->
+			</div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,41 @@
+<div class="header">
+	<div class="btnHeader head">
+		<button class="btn btn-primary" (click)="goBack()">返回</button>
+	</div>
+	<span class="head">创建债帮手团队</span>
+</div>
+<main>
+	<form #createTeamForm="ngForm" class="form-horizontal db-col" role="form" (ngSubmit)="saveTeam()">
+		<div class="row">
+			<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+				<div class="form-group">
+					<label for="teamNm" class="col-lg-3 col-md-3 col-sm-3 col-xs-3 control-label required-item-label">团队名称</label>
+					<div class="col-lg-9 col-md-9 col-sm-9 col-xs-9">
+						<input #teamNm type="text" class="form-control" id="teamNm" name="teamNm" [(ngModel)]="condition.teamNm" required>
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="teamState" class="col-lg-3 col-md-3 col-sm-3 col-xs-3 control-label required-item-label">团队状态</label>
+					<div class="col-lg-9 col-md-9 col-sm-9 col-xs-9">
+						<select class="form-control" id="teamState" name="teamState" [(ngModel)]="condition.teamEstatus" required>
+							<option value="1">生效</option>
+							<option value="0">无效</option>
+						</select>
+					</div>
+				</div>
+			</div>
+			<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+				<div class="form-group">
+					<label for="bondQQ" class="col-lg-3 col-md-3 col-sm-3 col-xs-3 control-label required-item-label">绑定QQ群</label>
+					<div class="col-lg-9 col-md-9 col-sm-9 col-xs-9">
+						<input #bondQQ type="text" class="form-control" id="bondQQ" name="bondQQ" [(ngModel)]="condition.bndgqqGroup" required>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="block-btns">
+			<button type="submit" class="btn btn-primary" [disabled]="!createTeamForm.form.valid">确定</button>
+			<button type="button" class="btn btn-default" (click)="cancel()">取消</button>
+		</div>
+	</form>
+</main>

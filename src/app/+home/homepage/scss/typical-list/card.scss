@@ -1,0 +1,33 @@
+
+.cardBox{
+	width: 240px ;
+	height: 280px ;
+	/*background-color: #baf*/
+}
+.card{
+	width: 240px;
+	height: 150px;
+	/*background-color: #555*/
+}
+.imgCard{
+	
+	width: 240px;
+	height: 150px
+}
+.userTitle{
+	width: 240px;
+	height: 35px;
+	/*background-color: #acf*/
+	font-size: 18px;
+	line-height: 35px
+
+}
+.userInfo{
+	width: 240px;
+	height: 25px;
+	font-size: 14px;
+	line-height: 25px;
+	white-space:nowrap; 
+	overflow:hidden; 
+	text-overflow:ellipsis;
+}

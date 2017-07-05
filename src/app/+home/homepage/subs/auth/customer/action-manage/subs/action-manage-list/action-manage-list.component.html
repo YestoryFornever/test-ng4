@@ -1,0 +1,117 @@
+<div class="mian">
+	<div class="header clearfix">
+		<span class="head icon">|</span><span class="head" >行动列表</span>
+	</div>
+</div>
+
+<!-- section -->
+	<div class="screen .clearfix">
+		
+		<div class="condition container-fluid">
+			<span>CRM用户</span> 
+				<input #cm  placeholder="全部" class="form-control kuan" 
+	                    [(ngModel)]="organizationName" 
+	                    [typeahead]="customerList" 
+	                    (typeaheadOnSelect)="typeaheadOnCompanys($event)" 
+	                    [typeaheadOptionField]="'empName'"          
+	                    [ngModelOptions]="{standalone: true}" 
+	                     (blur)="noSection(cm)">
+	            <input type="text"  name="companyId" class="hide" [(ngModel)]="default.organizationId" [ngModelOptions]="{standalone: true}">
+		</div>
+		<div class="condition container-fluid">
+			<span>行动类型</span> <select  class="selection" [(ngModel)]="default.actionType"><option value="" selected = "selected">全部</option><option  value="1">上门拜访</option><option  value="2">电话回访</option><option  value="3">集体培训</option></select>
+		</div>
+		<div class="condition container-fluid">
+			<span>接待人	</span> <input #userName  [(ngModel)]="default.receiver"  placeholder="全部"  class="form-control">
+		</div>
+		
+		<div class="condition container-fluid" >
+			<span>行动时间</span><p-calendar [(ngModel)]="startTime"   [locale]="en"></p-calendar>&nbsp;到&nbsp;<p-calendar [(ngModel)]="endTime" [locale]="en"></p-calendar>
+		</div>
+		<button class="condition btn btn-primary sub" (click)="turnFirst()">查询</button>
+	</div>
+
+
+	<!-- table -->
+	<div class="tableList "  >
+		<!-- <div class = "loading" [ngClass]="setLoadClasses()" [ngStyle]="{'height': height }">
+		 <div class="loader">
+			<div class="loader-inner">
+				<div class="loader-line-wrap">
+					<div class="loader-line"></div>
+				</div>
+				<div class="loader-line-wrap">
+					<div class="loader-line"></div>
+				</div>
+				<div class="loader-line-wrap">
+					<div class="loader-line"></div>
+				</div>
+				<div class="loader-line-wrap">
+					<div class="loader-line"></div>
+				</div>
+				<div class="loader-line-wrap">
+					<div class="loader-line"></div>
+				</div>
+			</div>
+		 </div>
+		</div> -->
+		<table class="table table-bordered table-hover " >
+			<thead >
+				<tr>
+					<td class="info shortTxt">操作</td>
+					<td class="info shortTxt">接待人</td>
+					<td class="info middleTxt">CRM用户账号</td>
+					<td class="info middleTxt">CRM用户姓名</td>
+					<td class="info shortTxt">随访者</td>
+					<td class="info shortTxt">行动类型</td>
+					<td class="info ">行动时间</td>
+					<td class="info ">最后更新时间</td>				
+				</tr>
+			</thead>
+			<tbody  *ngFor="let userMsg of actionList" >
+				<tr>
+					<td><a (click)="toChange(userMsg.actionId)">详情</a></td>
+					<td>{{userMsg.receiver }}</td>
+					<td>{{userMsg.loginName }}</td>
+					<td>{{userMsg.userName }}</td>
+					<td>{{userMsg.followPersons }}</td>
+					<td><span *ngIf="userMsg.actionType==1">上门拜访</span><span *ngIf="userMsg.actionType==2">电话回访</span><span *ngIf="userMsg.actionType==3">集体培训</span></td>
+					<td>{{userMsg.startTime }}-{{userMsg.endTime}}</td>
+					<td>{{userMsg.updateTime }}</td>
+					
+				</tr>
+			</tbody>
+			<!-- <tbody  id="list" *ngFor="let userMsg of actionList"  >
+				<tr #userList   [ngStyle]="{'background-color': color }" class="Userlist">
+					<td class="table-hover"><span  class="verify"  (click)="singleApprove(msgChangeVer,realNameVer,userMsg)">{{pub.approve}}</span></td>
+					<td class="table-hover" ><input  type="checkbox" #listState name="user" (change)="changeState(listState,userList)" >{{userMsg.registPhone}}</td>
+					<td class="table-hover" #username>{{userMsg.userName}}</td>
+					<td class="table-hover middleTxt" #userMsgName><div tooltip="xxxxxxxx" class="td">{{userMsg.company}}</div></td>
+					 <a href="#" [tooltip]="organizationName" (tooltipStateChanged)="tooltipStateChanged($event)">Check me out!</a> 
+					<td class="table-hover">{{userMsg.department}}</td>
+					<td class="table-hover">{{userMsg.constantPhone}}</td>
+					<td class="table-hover">{{userMsg.workPhone}}</td>
+					<td class="table-hover">{{userMsg.applyTime}}</td>
+					<td class="table-hover">{{userMsg.auditInformation}}</td> 
+					<td class="table-hover longTxt" >{{userMsg.approveMsg}}</td> 		
+				</tr>
+			</tbody> -->
+		</table>
+	</div>
+	<!-- pagination -->
+	<div class="row pagerow">
+		<div class="pageshowleft">每页显示
+			<select #selectPage name="" id="msgNum" (change)="sizeData(selectPage.value,userList)" [(ngModel)]="itemsPerPage">
+				<option #optionPage  *ngFor="let msgNumber of msgNumbers" value={{msgNumber.Number}}>{{msgNumber.Number}}</option>
+			</select>
+			条数据
+		</div>
+		<div class="pageshowmodle">
+			<span>{{currentPage}} / {{totalPages}}</span>页
+			<span>{{totalItems}}条数据</span>
+		</div>
+
+		<div class="pagefen">
+			<pagination  [firstText]="firstText" [lastText]="lastText" [previousText]="previousText" [nextText]="nextText" [maxSize]="maxSize" [totalItems]="totalItems" [itemsPerPage]="itemsPerPage" [(ngModel)]="currentPage" [boundaryLinks]="true" (pageChanged)='pageChanged($event,allcheck)' (numPages)='pageNumChange($event,allcheck)' class="pagination-sm"></pagination>
+		</div>
+	</div>

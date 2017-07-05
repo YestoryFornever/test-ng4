@@ -1,0 +1,51 @@
+<div class="header clearfix">
+	<span class="head icon">|</span><span class="head" >用户分组列表</span>
+	<div class="btnHeader head">
+        <button class="btn btn-primary" (click)="turnTo()">添加用户分组</button>
+    </div>
+</div>
+<!-- <div class="screen .clearfix">
+		<div class="condition container-fluid">
+			<span>注册手机号:</span><input [(ngModel)]="userCon.loginName" req maxlength="11" type="text" name="phoneNum"  class="form-control"  placeholder="全部">
+		</div>
+</div> -->
+<div class="tableList " >		
+	<table class="table table-bordered table-hover " >
+		<thead >
+			<tr>
+				<td class="info middleTxt">分组名称 </td>
+				<td class="info">分组内容</td>
+				<td class="info">创建时间</td>
+				<td class="info">创建用户</td>
+				<td class="info">操作</td>
+			</tr>
+			<!-- [tooltip]="userMsg.company" -->
+		</thead>
+		<tbody  id="list" *ngFor="let item of infoList">
+			<tr #userList class="Userlist" >
+				<td class=" ">{{item.scmNm}}</td>
+				<td class="" ><div [tooltip]="item.content">{{item.content}}</div></td>
+				<td class=" ">{{item.udtTm}}</td>
+				<td class=" ">{{item.crtPsnNm}}</td>
+				<td class=" "><a (click)="update(item.grpgScmid)">修改</a></td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+<!-- 分页 -->
+	<div class="row pagerow" >
+		<div class="pageshowleft">每页显示
+			<select #selectPage name="" id="msgNum" (change)="sizeData(selectPage.value,userList)">
+				<option #optionPage  *ngFor="let msgNumber of msgNumbers" value={{msgNumber.Number}}>{{msgNumber.Number}}</option>
+			</select>
+			条数据
+		</div>
+		<div class="pageshowmodle">
+			<span>{{currentPage}} / {{totalPages}}</span>页
+			<span>{{totalItems}}条数据</span>
+		</div>
+
+		<div class="pagefen">
+			<pagination  [firstText]="firstText" [lastText]="lastText" [previousText]="previousText" [nextText]="nextText" [maxSize]="maxSize" [totalItems]="totalItems" [itemsPerPage]="itemsPerPage" [(ngModel)]="currentPage" [boundaryLinks]="true" (pageChanged)='pageChanged($event)' (numPages)='pageNumChange($event)' class="pagination-sm"></pagination>
+		</div>
+	</div>

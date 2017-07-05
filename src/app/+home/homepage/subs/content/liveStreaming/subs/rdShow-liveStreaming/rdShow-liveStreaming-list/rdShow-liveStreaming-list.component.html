@@ -1,0 +1,143 @@
+<div class="header clearfix">
+	<span class="head icon">|</span><span class="head" >路演直播管理</span>
+	<div class="btnHeader head">
+		<button class="btn btn-primary" (click)="turnTo()">添加直播</button>
+	</div>
+</div>
+<div class="screen .clearfix">
+		<div class="condition container-fluid">
+		<span>直播标题：</span>
+			<input type="text" [(ngModel)]="default.title" name="" placeholder="模糊搜索直播标题" style="width: 300px"  class="form-control">
+		</div>
+		<div class="condition container-fluid">
+		<span>直播创建时间</span>
+			<p-calendar [(ngModel)]="startDate" [maxDate]="endDate"    [locale]="en" [showTime]="false"></p-calendar>
+			<!-- <input class="selection"  type="date" [(ngModel)]="startDate"> -->
+			&nbsp;到&nbsp;
+			<p-calendar [(ngModel)]="endDate"  [minDate]="startDate"  [locale]="en" [showTime]="false"></p-calendar>
+		</div>
+		
+		<div class="condition container-fluid" >
+			<span>有效状态：</span>
+			<div class="btn-group btnborder">
+                <label style="margin: 0" class="btn btn-mint"  btnRadio="0" [(ngModel)]="default.valid" >全部</label>
+                <label style="margin: 0" class="btn btn-mint"  btnRadio="1" [(ngModel)]="default.valid" >有效</label>
+                <label style="margin: 0" class="btn btn-mint" btnRadio="2"  [(ngModel)]="default.valid">隐藏</label>
+	        </div>
+		</div>
+		
+		<div class="condition container-fluid" >
+			<span>直播状态：</span>
+			<div class="btn-group btnborder">
+                <label style="margin: 0" class="btn btn-mint"  btnRadio="0" [(ngModel)]="default.state" >全部</label>
+                <label style="margin: 0" class="btn btn-mint"  btnRadio="1" [(ngModel)]="default.state" >直播中</label>
+                <label style="margin: 0" class="btn btn-mint" btnRadio="4"  [(ngModel)]="default.state">马上开始</label>
+                <label style="margin: 0" class="btn btn-mint" btnRadio="2"  [(ngModel)]="default.state">预告</label>
+                <label style="margin: 0" class="btn btn-mint" btnRadio="3"  [(ngModel)]="default.state">回放</label>
+	        </div>
+		</div>
+		<div class="condition container-fluid" style="float: right">
+			<button type="button" class="btn btn-primary" (click)="turnFirst()">查询</button>
+		</div>
+</div>
+<div class="tableList " style="overflow-x: scroll">		
+	<table class="table table-bordered table-hover " >
+		<thead >
+			<tr>
+				<td class="info " style="width: 62px">顺序 </td>
+				<td class="info shortTxt">直播编号</td>
+				<td class="info" style="width: 80px">姓名</td>
+				<td class="info longTxt">直播标题</td>
+				<td class="info middleTxt">直播创建时间<div class="ord"><img (click)="ordBy('create_time','asc')" *ngIf="!timeUp||timeNotChoose" style="margin-bottom: 4px" src='../../../../../../../../../public/images/icon_arrow_up_normal.png' class="up">
+				<img (click)="ordBy('create_time','asc')" style="margin-bottom: 4px" src='../../../../../../../../../public/images/icon_arrow_up_over.png' *ngIf="timeUp&&!timeNotChoose" class="up"><img (click)="ordBy('create_time','desc')" *ngIf="!timeDown||timeNotChoose" style="margin-top: 4px" src='../../../../../../../../../public/images/icon_arrow_down_normal.png' class="down"><img (click)="ordBy('create_time','desc')" *ngIf="timeDown&&!timeNotChoose" style="margin-top: 4px" src='../../../../../../../../../public/images/icon_arrow_down_over.png' class="down"></div></td>
+				<td class="info " style="width: 92px">直播状态<div class="ord"><img (click)="ordBy('state','asc')" *ngIf="!stateUp||stateNotChoose" style="margin-bottom: 4px" src='../../../../../../../../../public/images/icon_arrow_up_normal.png' class="up">
+				<img (click)="ordBy('state','asc')" style="margin-bottom: 4px" src='../../../../../../../../../public/images/icon_arrow_up_over.png' *ngIf="stateUp&&!stateNotChoose" class="up"><img (click)="ordBy('state','desc')" *ngIf="!stateDown||stateNotChoose" style="margin-top: 4px" src='../../../../../../../../../public/images/icon_arrow_down_normal.png' class="down"><img (click)="ordBy('state','desc')" *ngIf="stateDown&&!stateNotChoose" style="margin-top: 4px" src='../../../../../../../../../public/images/icon_arrow_down_over.png' class="down"></div></td>
+				<td class="info " style="width: 92px">有效状态</td>
+				<td class="info " style="width: 102px">观看总人数<div class="ord"><img (click)="ordBy('view_num','asc')" *ngIf="!lookNumUp||lookNumNotChoose" style="margin-bottom: 4px" src='../../../../../../../../../public/images/icon_arrow_up_normal.png' class="up">
+				<img (click)="ordBy('view_num','asc')" style="margin-bottom: 4px" src='../../../../../../../../../public/images/icon_arrow_up_over.png' *ngIf="lookNumUp&&!lookNumNotChoose" class="up"><img (click)="ordBy('view_num','desc')" *ngIf="!lookNumDown||lookNumNotChoose" style="margin-top: 4px" src='../../../../../../../../../public/images/icon_arrow_down_normal.png' class="down"><img (click)="ordBy('view_num','desc')" *ngIf="lookNumDown &&!lookNumNotChoose" style="margin-top: 4px" src='../../../../../../../../../public/images/icon_arrow_down_over.png' class="down"></div></td>
+				<td class="info " style="width: 92px">查看统计</td>
+				<td class="info middleTxt">操作</td>
+			</tr>
+		</thead>
+		<tbody  id="list" *ngFor="let show of showList">
+			<tr #userList class="Userlist" >
+				<td class=" ">{{show.ord_no}} </td>
+				<td class=" ">{{show.live_no}} </td>
+				<td class=" ">{{show.name}} </td>
+				<td class=" "><a (click)="turnDetial(show.lid)">{{show.title}}</a></td>
+				<td class="">{{show.create_time|times:time:true}} </td>
+				<td class=""><span *ngIf="show.state==1">直播中</span><span *ngIf="show.state==2">马上开始</span><span *ngIf="show.state==3">预告</span><span *ngIf="show.state==4">回放</span> </td>
+				<td class=" "><span *ngIf="show.valid==1">有效</span><span *ngIf="show.valid==2">隐藏</span><span *ngIf="show.valid==3">删除</span> </td>
+				<td>{{show.view_num}}</td>
+				<td class=" "><a *ngIf="show.state==4" (click)="lookAt(show,look)">查看</a><span  *ngIf="show.state!=4" style="color: #aaa">查看</span> </td>
+				<td class=" "><a  (click)="showChange(changeStu,show)">修改状态</a>/<a (click)="detialTo(show.lid,show.state)">修改</a>   <a (click)="deleteShow(show.lid)">删除</a></td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+<!-- 分页 -->
+	<div class="row pagerow" >
+		<div class="pageshowleft">每页显示
+			<select #selectPage name="" id="msgNum" (change)="sizeData(selectPage.value,userList)" value='30'>
+				<option #optionPage  *ngFor="let msgNumber of msgNumbers" [value]="msgNumber.Number">{{msgNumber.Number}}</option>
+			</select>
+			条数据
+		</div>
+		<div class="pageshowmodle">
+			<span>{{currentPage}} / {{totalPages}}</span>页
+			<span>{{totalItems}}条数据</span>
+		</div>
+
+		<div class="pagefen">
+			<pagination  [firstText]="firstText" [lastText]="lastText" [previousText]="previousText" [nextText]="nextText" [maxSize]="maxSize" [totalItems]="totalItems" [itemsPerPage]="itemsPerPage" [(ngModel)]="currentPage" [boundaryLinks]="true" (pageChanged)='pageChanged($event)' (numPages)='pageNumChange($event)' class="pagination-sm"></pagination>
+		</div>
+	</div>
+<!-- 修改状态 -->
+<div bsModal #changeStu="bs-modal" class="modal fade modelPon" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content" style="height: 210px">
+            <div class="modal-header">
+                <button type="button" class="close" aria-label="Close" (click)="changeStu.hide()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">设置状态</h4>
+            </div>
+            <div class="modal-body contentxinxi">
+                <div class="pp"><span>直播信息：</span><span>{{showName}}</span></div>
+              	<div class="pp"><span>直播状态：</span>
+	                <div class="btn-group">
+						<label class="btn btn-mint" [(ngModel)]="statue" btnRadio="1"
+						>有效</label>
+						<label class="btn btn-mint" [(ngModel)]="statue" btnRadio="2"
+						>隐藏</label>
+					</div>
+				</div>
+               
+                <div class="btnstyle">
+                    <button type="button" class="btn btn-default btnhoverlan" (click)="changeStu.hide()">取消</button>
+                    <button type="button" class="btn btn-primary btnhoverju" (click)="changeStatue(changeStu)">提交</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 查看 -->
+<div bsModal #look="bs-modal" class="modal fade modelPon" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content" style="height: 230px">
+            <div class="modal-header">
+                <button type="button" class="close" aria-label="Close" (click)="look.hide()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">查看统计</h4>
+            </div>
+            <div class="modal-body contentxinxi">
+                <div class="pp"><span>直播标题：</span><span style="font-weight: 600">{{looked.title}}</span></div>
+                <div class="pp"><span>观看人次：</span><span style="font-weight: 600">{{looked.view_num}}</span></div>
+                <div class="pp"><span>提问次数：</span><span style="font-weight: 600">{{looked.ask_num}}</span></div>
+                <div class="pp"><span>自由发言数：</span><span style="font-weight: 600">{{looked.chat_num}}</span></div>
+            </div>
+        </div>
+    </div>
+</div>

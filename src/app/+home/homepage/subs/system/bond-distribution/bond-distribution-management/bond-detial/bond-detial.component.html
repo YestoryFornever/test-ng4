@@ -1,0 +1,174 @@
+<main class="bond-detail">
+	<switch-btns class="switch-btns" [cptType]="'bond'"></switch-btns>
+	<div class="row info-cards">
+		<div class="col-md-7" style="padding-left:0;">
+			<div class="card info-base">
+				<div class="card-header">
+					基本资料
+				</div>
+				<div class="card-block">
+					<div class="col-md-12">
+						<p>债券全称:{{bondInfo.bondNm}}</p>
+					</div>
+					<div>
+						<div class="col-md-6">
+							<p>债券类型:{{bondInfo.bondTp|bondTp}}</p>
+							<p>债券期限:{{bondInfo.trm}}D</p>
+							<p>含权类型:{{bondInfo.wrghtTp|wrghtTp}}</p>
+							<p>利率方式:{{bondInfo.intrtTp|intrtTp}}</p>
+							<p>基础利率名:{{bondInfo.baseIntrtNm}}</p>
+							<p>发行收益:--</p><!-- {{bondInfo.}} -->
+							<p>付息频率:{{bondInfo.intpymtFrq|intpymtFrq}}</p>
+						</div>
+						<div class="col-md-6">
+							<p>是否城投:--</p><!-- {{bondInfo.}} -->
+							<p>发行量(亿):{{bondInfo.issuNum}}</p>
+							<p>还本方式:{{bondInfo.repypnpMod}}</p>
+							<p>票面利率:{{bondInfo.faceintrate}}</p>
+							<p>基础利率:{{bondInfo.baseIntrt}}</p>
+							<p>发行价格:{{bondInfo.issuPrc}}</p>
+							<p>计息频率:{{bondInfo.intpymtFrq}}</p>
+						</div>
+					</div>
+					<div class="col-md-12">
+						<button id="Syndicate" class="btn btn-primary pull-right" (click)="buyers.show()">承销团</button>
+						<p>主承商:</p>
+					</div>
+					<div style="clear:both;"></div>
+				</div>
+			</div>
+			<div class="card info-seller" style="margin-top:10px;">
+				<div class="card-header">
+					发行人资料
+				</div>
+				<div class="card-block">
+					<div class="col-md-12">
+						<p>发行主体:{{issuerInfo.issuSbj}}</p>
+					</div>
+					<div>
+						<div class="col-md-6">
+							<p>主体类型:{{issuerInfo.sbjTp|sbjTp}}</p>
+							<p>一级行业:{{issuerInfo.fstIdy}}</p>
+							<p>地区(省):{{issuerInfo.prvc}}</p>
+							<p>控股股东:{{issuerInfo.hldgShrh}}</p>
+							<p>控股比例:{{issuerInfo.hldgPct|hldgPct}}</p>
+							<p>实际控股人:{{issuerInfo.actCntlr}}</p>
+						</div>
+						<div class="col-md-6">
+							<p>组织形式:{{issuerInfo.orgForm}}</p>
+							<p>二级行业:{{issuerInfo.secIdy}}</p>
+							<p>地区(市):{{issuerInfo.cityZon}}</p>
+							<p>{{issuerInfo.hldgShrhTp}}</p>
+							<p>注册资本:{{issuerInfo.rgstCptl}}</p>
+							<p>{{issuerInfo.actCntlrTp}}</p>
+						</div>
+					</div>
+					<div class="col-md-12">
+						<p>经营范围:</p>
+					</div>
+					<div style="clear:both;"></div>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-5" style="padding-right:0;">
+			<div class="card info-buyer">
+				<div class="card-header">
+					我要申购
+				</div>
+				<div class="card-block">
+					<span class="card-title">这些好友在分销此债券</span>
+					<ul id="friendList">
+						<!-- <li class="friend">
+							<div class="icon">
+							</div>
+							<div class="detail">
+								<div class="people">
+									范伟伟
+									<span class="label label-important" style="background:red;">
+										实名认证
+									</span>
+									<span class="label label-important" style="background:blue;">
+										在团
+									</span>
+								</div>
+								<div class="position">事业部</div>
+							</div>
+						</li> -->
+						<li class="friend" *ngFor="let item of friendsList">
+							<div class="icon">
+								<img [src]="item.userUrl" alt="">
+							</div>
+							<div class="detail">
+								<div class="people">
+									{{item.userNm}}
+									<span class="label label-important" style="background:red;">
+										{{item.realNmCtfnEStatus|realNmStatus}}
+									</span>
+									<span class="label label-important" style="background:blue;">
+										{{item.roleId|roleId}}
+									</span>
+								</div>
+								<div class="position">{{item.instNm}}{{item.teamNm}}</div>
+							</div>
+						</li>
+					</ul>
+				</div>
+			</div>
+			<div class="card info-cal" style="margin-top:10px;">
+				<div class="card-header">
+					债券日历
+				</div>
+				<div class="card-block">
+					<table>
+						<tr>
+							<td>发行开始日</td>
+							<td [style.color]="dateColor(bondCdr.issuDt)">{{bondCdr.issuDt}}</td>
+							<td>--</td>
+							<!-- <td>距今日{{bondCdr.issuDtCrndayDys}}D</td> -->
+						</tr>
+						<tr>
+							<td>招标建档日</td>
+							<td>--</td>
+							<td>--</td>
+						</tr>
+						<tr>
+							<td>起息日</td>
+							<td [style.color]="dateColor(bondCdr.valDt)">{{bondCdr.valDt}}</td>
+							<td>距今日{{bondCdr.valDtCrndayDys}}D</td>
+						</tr>
+						<tr>
+							<td>缴款日</td>
+							<td [style.color]="dateColor(bondCdr.pyDt)">{{bondCdr.pyDt}}</td>
+							<td>距今日{{bondCdr.pyDtCrndayDys}}D</td>
+						</tr>
+						<tr>
+							<td>上市日</td>
+							<td [style.color]="dateColor(bondCdr.lstDt)">{{bondCdr.lstDt}}</td>
+							<td>距今日{{bondCdr.lstDtCrndayDys}}D</td>
+						</tr>
+					</table>
+					<div style="clear:both;"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+</main>
+<div bsModal #buyers="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-sm">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" (click)="buyers.hide()" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<h4 class="modal-title">承销团</h4>
+			</div>
+			<div class="modal-body">
+				<ul>
+					<li *ngFor="let x of buyersList">
+						{{x.uwrtFullNm}}
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>

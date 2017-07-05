@@ -1,0 +1,68 @@
+<div class="header box">
+	<span class="head icon">|</span>
+	<span class="head">岗位设置</span>
+	<div class="btnHeader head">
+		<button class="btn btn-primary" (click)="editShow(add)">添加岗位</button>
+	</div>
+</div>
+
+<main>
+<!-- lists -->
+<div class="tableList box">
+    <table class="table table-bordered table-hover ">
+        <thead>
+            <tr>
+                <td class="table-hover middle-list">操作</td>
+                <td class="table-hover middle-list">岗位名称</td>
+                <td class="table-hover">岗位说明</td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let position of positionList">      
+                <td>
+	                <i *ngIf="!(position.positionName=='副总经理'||position.positionName=='市场总监')" class="fa fa-pencil-square-o" (click)="editShow(add,position)"></i>
+	                <bSwitch *ngIf="!(position.positionName=='副总经理'||position.positionName=='市场总监')" [(ngModel)]="position.state" style='background-color: #fff' switch-size="mini" (onChangeState)="onChange($event,position)"
+	                 switch-on-color="success"
+         			 switch-off-color="offColor"> 
+				     </bSwitch>
+				</td>
+                <td>{{position.positionName}}</td>
+                <td>{{position.remark}}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+    <!-- 分页 -->
+    <!-- <page [(pageObj)]="pageParams" (fnParent)="getDetailList()"></page> -->
+</main>
+    <!-- 编辑岗位-->
+<div bsModal #add="bs-modal" class="modal fade modelPon" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content clearfix" >
+            <div class="modal-header">
+                <button type="button" class="close" aria-label="Close" (click)="add.hide()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">编辑岗位</h4>
+            </div>
+            <div class="modal-body contentxinxi">
+               <div class="condition">
+                    <label for="fullname" class="text-right"><b class="red">*</b>岗位名称</label>
+                    <div class="condition-input">
+                        <input type="text" name="" [(ngModel)]="positionCon.positionName" style="width: 300px"  class="form-control">
+                    </div>
+                </div>
+                 <div class="condition" style="height: 100px">
+                    <label for="fullname" class="text-right" style="vertical-align: top;">岗位说明</label>
+                    <div class="condition-input">
+                        <textarea [(ngModel)]="positionCon.remark" type="text" name=""  style="width: 300px;resize: none"  class="form-control"></textarea>
+                    </div>
+                </div>
+            </div>
+             <div class="right-fluid">
+                <button  type="button" class="btn btn-primary" (click)="editPosition(add)">确定</button>
+                <button  type="button" class="btn btn-default" (click)="add.hide()">取消</button>
+            </div>
+        </div>
+    </div>
+</div>

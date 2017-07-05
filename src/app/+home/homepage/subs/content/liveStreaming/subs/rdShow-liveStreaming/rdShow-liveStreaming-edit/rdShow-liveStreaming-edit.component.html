@@ -1,0 +1,156 @@
+<div class="header clearfix">
+	<span class="head icon">|</span><span class="head" >修改/添加直播管理</span>
+	<div class="btnHeader head">
+		<button class="btn btn-primary" [disabled]="saving" (click)="addShow()">保存</button>
+		<button class="btn btn-primary" (click)="turnTo()">放弃编辑</button>
+	</div>
+</div>
+
+<div class="content">
+	<div class="newsTxt">
+		<div class="newsHeader">直播信息</div>
+		<div class="newsSurvey clearfix">
+			<div style="margin: 10px;padding: 10px;border: 1px solid #aaa;width: 700px;height: 260px;float:left; " class="clearfix ">
+				<div class="K-V">
+					<span class="newsKey"><b style="color: red">*</b>展示互动直播编号:</span>
+					<input [(ngModel)]="sendMsg.live_no" type="" name="" style="width: 200px;height: 32px;border-radius: 5px;border:1px #bbb solid">
+				</div>
+				<div class="K-V">
+					<span class="newsKey"><b style="color: red">*</b>加入ID（展示互动）:</span>
+					<input [(ngModel)]="sendMsg.live_id_zs" type="" name="" style="width: 350px;height: 32px;border-radius: 5px;border:1px #bbb solid">
+				</div>
+				<div class="K-V">
+					<span class="newsKey" style="width:120px">历史视频ID:</span>
+					<input  [(ngModel)]="sendMsg.his_id"  type="" name="" style="width: 150px;height: 32px;border-radius: 5px;border:1px #bbb solid">
+				</div>
+				<div class="K-V" *ngIf="id">
+					<span class="newsKey"  style="width:120px">历史视频时长:</span>
+					<!-- <input  [(ngModel)]="sendMsg.his_times"  type="" name="" style="width: 150px;height: 32px;border-radius: 5px;border:1px #bbb solid"> -->
+				<select [(ngModel)]="hours" style="width:50px;height:32px">
+					<option value="01">1</option>
+					<option value="02">2</option>
+					<option value="03">3</option>
+					<option value="04">4</option>
+					<option value="05">5</option>
+					<option value="06">6</option>
+					<option value="07">7</option>
+					<option value="08">8</option>
+					<option value="09">9</option>
+					<option value="10">10</option>
+					<option value="11">11</option>
+					<option value="12">12</option>
+				</select>小时
+				<input style="width:50px;height:32px" [(ngModel)]="min" (keyup)="vTime()" type="number" max="59" min="0" name="">分
+				<input style="width:50px;height:32px" [(ngModel)]="sec" (keyup)="vTime()" type="number" max="59" min="0" name="">秒
+				</div>
+				<div class="K-V">
+					<span class="newsKey">历史视频URL:</span>
+					<input [(ngModel)]="sendMsg.his_url" type="" name="" style="width: 400px;height: 32px;border-radius: 5px;border:1px #bbb solid">
+					<div style="font-size: 14px;color:#aaa;margin-left: 100px;margin-top: 10px">小提示：具体字段请查询“展示互动”后台界面
+					</div>
+				</div>
+			</div>
+			<div class="K-V" style="padding-left:25px;height: 260px;float:left">
+				<label [hidden]="imghead" for="exampleInputFile"><b style="color: red">*</b>选择图片</label> 
+				<input type="file" class="form-control-file filescss" id="file_input" #file_ipt (change)="fileChange(file_ipt,$event)" />
+				<div style="width:304px;height: 208px"  class="file-upload-thumbnail" #umbnail>
+					<img style="width:304px;height: 208px" *ngIf="img.src" [src]="img.src" name="newsImg"/>
+				</div> 
+			</div>
+			<div class="clearfix boxed" style="width:600px;margin: 10px" >
+			<div class="K-V" style="width: 90%">
+				<span class="newsKey">注册手机号:</span>
+				<input  [(ngModel)]="sendMsg.phone" type="number" name="" style="width: 200px;height: 32px;border-radius: 5px;border:1px #bbb solid"><button class="btn-primary" style="height: 32px;width:80px" (click)="queryUserList(name)">{{content}}</button>
+			</div>	
+			<div class="K-V">
+				<span class="newsKey">路演嘉宾:</span>
+				<input #name [(ngModel)]="sendMsg.name" type="" name="" style="width: 200px;height: 32px;border-radius: 5px;border:1px #bbb solid">
+			</div>	
+			<div class="K-V">
+					<span class="newsKey"><b style="color: red">*</b>直播地点:</span>
+					<input [(ngModel)]="sendMsg.locale" type="" name="" style="width: 200px;height: 32px;border-radius: 5px;border:1px #bbb solid">
+			</div>
+			<!-- <div class="K-V"  >
+					<span class="newsKey" style="display:inline-block;width: 200px;height: 32px;">调试时间：</span><p-calendar [(ngModel)]="dataPicker"   [locale]="en" [showTime]="false"></p-calendar><p-calendar [(ngModel)]="timePicker" [locale]="en" [timeOnly]="true"></p-calendar>
+			</div> -->
+			<div class="K-V">
+					<span class="newsKey" style="display:inline-block;width: 110px;height: 32px;"><b style="color: red">*</b>直播时间：</span><p-calendar [(ngModel)]="dataPicker" [disabled]="state==1" [locale]="en" [showTime]="true"></p-calendar><!-- <p-calendar [disabled]="state==1" [(ngModel)]="timePicker" [locale]="en"   [timeOnly]="true"></p-calendar> -->
+					<!-- <div>{{sendMsg.begin_time}}</div> -->
+			</div>
+			
+			<div class="K-V">
+				<span class="newsKey"><b style="color: red">*</b>直播标题:</span>
+				<input  [(ngModel)]="sendMsg.title " type="" name="" style="width: 400px;height: 32px;border-radius: 5px;border:1px #bbb solid">
+			</div>
+			<div class="K-V">
+					<span class="newsKey"><b style="color: red">*</b>分享至平台:</span>
+					<input  [(ngModel)]="sendMsg.share_note " type="" name="" style="width: 400px;height: 32px;border-radius: 5px;border:1px #bbb solid">
+			</div>
+			</div>
+			<div class=" boxed" style="width:500px;float:left;margin: 10px" >
+				<div class="K-V" >
+					<span class="newsKey"><b style="color: red">*</b>观众授权:</span>
+					<div class="tableList " style="max-width: 500px" >		
+						<table class="table table-bordered table-hover " style="max-width: 550px">
+							<thead >
+								<tr>
+									<td class="info " style="width:80px">优先级</td>
+									<td class="info ">身份</td>
+									<td class="info " style="width:80px">授权</td>
+								</tr>
+							</thead>
+							<tbody >
+								<tr>
+									<td>1</td>
+									<td>实名认证用户</td>
+									<td><!-- <select [(ngModel)]="v_user"><option value="0">允许</select> -->允许</td>
+								</tr>
+								<tr>
+									<td>2</td>
+									<td>注册用户（含微信、QQ授权）</td>
+									<td><select [(ngModel)]="l_user"><option value="0">允许</option><option value="1">禁止</option></select></td>
+								</tr>
+								<tr>
+									<td>3</td>
+									<td>游客</td>
+									<td><select [(ngModel)]="c_user"><option value="0">允许</option><option value="1">禁止</option></select></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+				<div class="K-V">
+				<span class="newsKey"><b style="color: red">*</b>最高并发数:</span>
+				<input  [(ngModel)]="sendMsg.user_limit" type="number" name="" style="width: 200px;height: 32px;border-radius: 5px;border:1px #bbb solid">
+				</div>
+				<div class="K-V">
+				<span class="newsKey"><b style="color: red">*</b>隐藏观众列表:</span>
+				<div class="btn-group btnborder">
+                <label style="margin: 0" class="btn btn-mint" btnRadio="1"  [(ngModel)]="sendMsg.ulist_hide">隐藏</label>
+                <label style="margin: 0" class="btn btn-mint"  btnRadio="0" [(ngModel)]="sendMsg.ulist_hide" >显示</label>
+	        </div>
+				</div>		
+			</div>
+				<div class="K-V" style="width:90%">
+					<span class="newsKey">大纲概要:</span>
+					<div style="width:100%;min-height:320px"><div style="border:1px solid #ddd;margin-top:40px" name="zw" [froalaEditor]="option" [(froalaModel)]="sendMsg.note"></div></div>
+				</div>
+
+				
+				<!-- <div class="clearfix quill">
+					    <p-editor [(ngModel)]="sendMsg.note" [style]="{'height':'320px'}">
+						        <span class="ql-format-group">
+						            <span title="Bold" class="ql-format-button ql-bold"></span>
+						            <span class="ql-format-separator"></span>
+						            <span title="Italic" class="ql-format-button ql-italic"></span>
+						            <span class="ql-format-separator"></span>
+						            <span title="Underline" class="ql-format-button ql-underline"></span>
+						            <span class="ql-format-separator"></span>
+						            <span title="Strikethrough" class="ql-format-button ql-strike"></span>
+						        </span>
+					    </p-editor>
+				<div>{{content4}}</div> -->
+
+		</div>
+	</div>
+</div>

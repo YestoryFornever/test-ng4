@@ -1,0 +1,101 @@
+<div class="header clearfix">
+<div>
+	<span class="head icon">|</span><span class="head" >报价词典维护</span>
+	<div class="condition container-fluid" style="margin-top: 15px">
+			<button type="button" class="btn btn-primary" (click)="detialTo()">返回</button>
+	</div>
+	<div class="bondBox">
+		<div class="condition container-fluid">
+			<span><b style="color:red">*</b>词典分类</span>
+			
+			<select class="selection" [(ngModel)]="addKeyWord.keyWordType">
+				<option [value]="item.name" *ngFor="let item of dicType">{{item.name}}</option>
+			</select>
+		</div>
+		<div class="condition container-fluid" *ngIf="!reg.test(addKeyWord.keyWordType)">
+			<span><b style="color:red">*</b>关键词分类</span>
+			<select [(ngModel)]="addKeyWord.analysisType" class="selection">
+				<option [value]="item.name" *ngFor="let item of keywordType">{{item.name}}</option>
+			</select>
+		</div>
+		<div class="condition container-fluid">
+			<span><b style="color:red">*</b>关键词名称</span>
+			<input type="" [(ngModel)]="addKeyWord.keyWord" name="" class="selection">
+		</div>
+		<div class="condition container-fluid" *ngIf="reg.test(addKeyWord.keyWordType)">
+			<span><b style="color:red">*</b>权重</span>
+			<input [(ngModel)]="addKeyWord.weight" type="" name="" class="selection">
+		</div>
+		<div class="condition container-fluid" style="float: right;margin-top: 15px">
+			<button type="button" class="btn btn-primary" (click)="addAnalysisKeyWord()" >保存</button>
+		</div>
+		<div class="condition container-fluid" style="float: right;margin-top: 15px">
+			<button type="button" class="btn btn-primary"  (click)="cleanAnalysisKeyWord()">重置</button>
+		</div>
+	</div>
+	</div>
+</div>
+<div class="screen .clearfix" >
+		<div style="margin:10px;width: 90%" class="condition container-fluid">
+			<span><b style="color:red">*</b>词典分类</span>
+			<label style="margin:0" class="btn btn-mint" btnRadio='0'  [(ngModel)]="dic_all" (click)="clickAll_dic()">全部</label><label style="margin:0" class="btn btn-mint" btnCheckbox *ngFor="let item of dicType,let i=index"  [(ngModel)]="dicTypeMod[i].check" (click)="clickOther_dic()">{{item.name}}</label>
+			<!-- <select class="selection" [(ngModel)]="serchKeyWord.keyWordType">
+				<option [value]="item.name" *ngFor="let item of dicType">{{item.name}}</option>
+			</select> -->
+		</div>
+		<div style="margin:10px" class="condition container-fluid">
+			<span><b style="color:red">*</b>关键词分类</span>
+			<select [(ngModel)]="serchKeyWord.analysisType" class="selection">
+				<option value="">全部</option>
+				<option [value]="item.name" *ngFor="let item of keywordType">{{item.name}}</option>
+			</select>
+		</div>
+		<div style="margin:10px" class="condition container-fluid">
+			<span><b style="color:red">*</b>关键词名称</span>
+			<input type="" [(ngModel)]="serchKeyWord.keyWord" name="" class="selection">
+		</div>
+		<div style="margin:10px" class="condition container-fluid" style="float: right">
+			<button type="button" class="btn btn-primary" (click)="turnFirst()">查询</button>
+		</div>
+</div>
+<div class="tableList " style="overflow-x: scroll" >		
+	<table class="table table-bordered table-hover " >
+	 <thead>
+	 	<tr>
+	 		<td  class="info" >词典分类</td>
+	 		<td  class="info" >关键词分类</td>
+	 		<td class="info" >关键词名称</td>
+	 		<td class="info" style="width: 100px">权重</td>
+	 		<td class="info" style="width: 70px">操作</td>
+	 	</tr>
+	 </thead>
+	 <tbody>
+	 	<tr *ngFor="let item of keyWprdLsit">
+	 		<td>{{item.keyWordType}}</td>
+	 		<td>{{item.analysisType}}</td>
+	 		<td>{{item.keyWord}}</td>
+	 		<td>{{item.weight}}</td>
+	 		<td><a (click)='deleteAnalysisKeyWord(item)'>删除</a></td>
+	 	</tr>
+	 </tbody>
+	</table>
+</div>
+<!-- 分页 -->
+	<div class="row pagerow" >
+		<div class="pageshowleft">每页显示
+			<select #selectPage name="" id="msgNum" (change)="sizeData(selectPage.value,userList)" value='30'>
+				<option #optionPage  *ngFor="let msgNumber of msgNumbers" [value]="msgNumber.Number">{{msgNumber.Number}}</option>
+			</select>
+			条数据
+		</div>
+		<div class="pageshowmodle">
+			<span>{{currentPage}} / {{totalPages}}</span>页
+			<span>{{totalItems}}条数据</span>
+		</div>
+
+		<div class="pagefen">
+			<pagination  [firstText]="firstText" [lastText]="lastText" [previousText]="previousText" [nextText]="nextText" [maxSize]="maxSize" [totalItems]="totalItems" [itemsPerPage]="itemsPerPage" [(ngModel)]="currentPage" [boundaryLinks]="true" (pageChanged)='pageChanged($event)' (numPages)='pageNumChange($event)' class="pagination-sm"></pagination>
+		</div>
+	</div>
+
+

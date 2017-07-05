@@ -1,0 +1,92 @@
+	<div class="header clearfix">
+		<span class="head icon">|</span><span class="head" >添加资讯</span>
+		<div class="btnHeader head">
+			<button class="btn btn-primary" (click)="infoAdd(add)" 
+			>发布资讯</button>
+			<button class="btn btn-primary" (click)="abandon.show()">放弃编辑</button>
+		</div>
+	</div>
+
+	<div class="newsMsg">
+		<div class="acont">
+			<h5><b>*</b>资讯标题</h5>
+			<input style="width:100%" type="text" name="title" [(ngModel)]="default.title">
+	    </div>
+		<div class="acont">
+			<h5><b>*</b>资讯正文</h5>
+			<textarea class="contentText all" [(ngModel)]="default.content"></textarea>
+		</div>
+		<div class="acont harf">
+			<h5><b>*</b>资讯来源正确名</h5>
+			<input #cm class="selection"  placeholder="全部"
+		                    [(ngModel)]="sourceMove.s_name" 
+		                    [typeahead]="resouce" 
+		                    (typeaheadOnSelect)="typeaheadOnCompanys($event)" 
+		                    [typeaheadOptionField]="'businName'"          
+		                    [ngModelOptions]="{standalone: true}"
+		                    (blur)="blurCompany(cm)" >
+		                    <input type="text"  name="companyId" class="hide" [(ngModel)]="default.organizationId" [ngModelOptions]="{standalone: true}">
+		</div>
+		<div class="acont harf">
+		 	<h5><b>*</b>资讯来源原始名</h5>
+			<input type="text" name="title"  [(ngModel)]="default.source">
+	 	</div>
+		<div class="acont harf">
+		 	<h5><b>*</b>资讯来源链接</h5>
+			<input type="text" name="title"  [(ngModel)]="default.source_path">
+	 	</div>
+	    
+		<!-- <div class="acont harf">
+			<h5><b>*</b>资讯分类</h5>
+			<select style="width: 150px" value='请选择' class="selection"><option>全部</option><option>负面</option></select>
+		</div> -->
+		<div class="acont harf">
+			<h5><b>*</b>资讯作者</h5>
+			<input type="text" name="title" [(ngModel)]="default.auth">
+		</div>
+		<div class="acont harf">
+			<h5><b>*</b>资讯源时间</h5>
+			<input class="selection" type="datetime-local" name="title" [(ngModel)]="default.source_time">
+		</div>
+	</div>
+
+
+	<!--发布资讯-->
+<div bsModal #add="bs-modal" class="modal fade modelPon" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content noproblem">
+            <div class="modal-header ">
+                <button type="button" class="close" aria-label="Close" (click)="add.hide()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">发布资讯</h4>
+            </div>
+            <div class="modal-body contentxinxi">
+                <div class="pp clearfix">提交成功，请等待审核</div>
+                <div class="btnstyle">
+                    <button type="button" class="btn btn-default btnhoverlan" (click)="add.hide()" routerLink='../sns-news-list'  routerLinkActive="active">确定</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 放弃 -->
+<div bsModal #abandon="bs-modal" class="modal fade modelPon" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content noproblem">
+            <div class="modal-header ">
+                <button type="button" class="close" aria-label="Close" (click)="abandon.hide()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">放弃修改</h4>
+            </div>
+            <div class="modal-body contentxinxi">
+                <div class="pp clearfix">是否放弃修改？</div>
+                <div class="btnstyle">
+                    <button type="button" class="btn btn-default btnhoverlan" routerLink='../sns-news-list'  routerLinkActive="active">放弃</button>
+                     <button type="button" class="btn btn-primary btnhoverju" (click)="abandon.hide()">取消</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,158 @@
+<div class="header">
+	<!--<span class="head icon">|</span>-->
+	<span class="head">{{detail.teamNm}}</span>
+	<!-- <button class="form-control" (click)="calcActivedMember()">test</button> -->
+</div>
+<main>
+	<form #editTeamForm="ngForm" class="form-horizontal db-col" role="form" (ngSubmit)="editTeam()">
+		<div class="row">
+			<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+				<div class="form-group">
+					<label for="teamNm" class="col-lg-3 col-md-3 col-sm-3 col-xs-3 control-label required-item-label">团队名称</label>
+					<div class="col-lg-9 col-md-9 col-sm-9 col-xs-9">
+						<input #teamNm type="text" class="form-control" id="teamNm" name="teamNm" [(ngModel)]="detail.teamNm" required>
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="teamState" class="col-lg-3 col-md-3 col-sm-3 col-xs-3 control-label required-item-label">团队状态</label>
+					<div class="col-lg-9 col-md-9 col-sm-9 col-xs-9">
+						<select class="form-control" id="teamState" name="teamState" [(ngModel)]="detail.teamEstatus" required>
+							<option value="1">有效</option>
+							<option value="0">无效</option>
+						</select>
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="createTime" class="col-lg-3 col-md-3 col-sm-3 col-xs-3 control-label required-item-label">创建时间</label>
+					<div class="col-lg-9 col-md-9 col-sm-9 col-xs-9">
+						<input #createTime type="text" class="form-control" id="createTime" name="createTime" [(ngModel)]="detail.createTime" readonly>
+						<!-- <p-calendar name="createTime" [(ngModel)]="detail.createTime" [locale]="calenderLocale"  readonly></p-calendar> -->
+					</div>
+				</div>
+			</div>
+			<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+				<div class="form-group">
+					<label for="bndgqqGroup" class="col-lg-3 col-md-3 col-sm-3 col-xs-3 control-label required-item-label">绑定QQ群</label>
+					<div class="col-lg-9 col-md-9 col-sm-9 col-xs-9">
+						<input #bndgqqGroup type="text" class="form-control" id="bndgqqGroup" name="bndgqqGroup" [(ngModel)]="detail.bndgqqGroup" required>
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="crtPsn" class="col-lg-3 col-md-3 col-sm-3 col-xs-3 control-label required-item-label">创建管理员</label>
+					<div class="col-lg-9 col-md-9 col-sm-9 col-xs-9">
+						<input #crtPsn type="text" class="form-control" id="crtPsn" name="crtPsn" [(ngModel)]="detail.crtPsn" readonly>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="block-btns">
+			<button type="submit" class="btn btn-primary" [disabled]="!editTeamForm.form.valid">确定</button>
+			<button type="button" class="btn btn-default" (click)="cancel()">取消</button>
+		</div>
+	</form>
+	<form #qqForm="ngForm" class="form-horizontal db-col" role="form" (ngSubmit)="refOutQQGrp()">
+		<div>关联外部QQ群</div>
+		<div class="row">
+			<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6" *ngFor="let xxx of detail.outQQList;let i = index;">
+				<div class="form-group">
+					<label for="qqGroupNum" class="col-lg-2 col-md-2 col-sm-2 col-xs-2 control-label required-item-label">QQ群</label>
+					<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+						<input #qqGroupNum type="text" class="form-control" id="qqGroupNum" name="qqGroupNum{{i}}" [(ngModel)]="xxx.qqGroupNum" required>
+					</div>
+					<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+						<div class="btn-group">
+							<label class="btn btn-mint" name="radioModel{{i}}" [(ngModel)]="xxx.qqGroupStatus" btnRadio="1"
+								 uncheckable>有效</label>
+							<label class="btn btn-mint" name="radioModel{{i}}" [(ngModel)]="xxx.qqGroupStatus" btnRadio="0"
+								 uncheckable>无效</label>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="block-btns">
+			<button type="submit" class="btn btn-primary" [disabled]="!qqForm.form.valid">确定</button>
+			<button type="button" class="btn btn-primary" (click)="addQQGroupItem()">添加</button>
+		</div>
+	</form>
+	<form #teamMemberForm="ngForm" class="form-horizontal db-col" role="form">
+		<div>团队成员( {{activedMembers}}/{{detail.tmList.length}} )</div>
+		<div class="table-list">
+			<table class="table table-bordered table-hover" style="width:1800px;">
+				<thead>
+					<tr>
+						<th>管理</th>
+						<th>状态</th>
+						<th>注册手机号</th>
+						<th>机构</th>
+						<th>姓名</th>
+						<th>QQ号</th>
+						<th>QQ昵称</th>
+						<th>中债权限</th>
+						<th>报价账户</th>
+						<th>管理员</th>
+						<th>修改时间</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr *ngFor="let xxx of detail.tmList;let i = index" >
+						<td class="table-hover">
+							<button *ngIf="xxx.teamDtlid==0" 
+								(click)="saveMember(xxx)"
+								[disabled]="xxx.rgstmblphNo==''||xxx.qqNo==''||xxx.qqName==''">保存</button>
+							<button *ngIf="xxx.teamDtlid!=0" 
+								(click)="editMember(xxx)"
+								[disabled]="xxx.rgstmblphNo==''||xxx.qqNo==''||xxx.qqName==''">编辑</button>
+							<button *ngIf="xxx.teamDtlid!=0" 
+								(click)="delMember(xxx)">删除</button>
+						</td>
+						<td class="table-hover">
+							<select name="astaffEstatus{{i}}" class="form-control" required
+							[(ngModel)]="xxx.astaffEstatus" 
+							(ngModelChange)="changeAstaffEstatus()">
+								<option value="1">生效</option>
+								<option value="0">无效</option>
+							</select>
+						</td>
+						<td class="table-hover">
+							<input type="text" name="rgstmblphNo{{i}}" 
+								[(ngModel)]="xxx.rgstmblphNo"
+								(ngModelChange)="getUserInfo($event,xxx)" class="form-control" required>
+						</td>
+						<td class="table-hover">
+							{{xxx.instNm}}
+						</td>
+						<td class="table-hover">
+							{{xxx.userName}}
+						</td>
+						<td class="table-hover">
+							<input type="text" name="qqNo{{i}}" [(ngModel)]="xxx.qqNo" class="form-control" required />
+						</td>
+						<td class="table-hover">
+							<input type="text" name="qqName{{i}}" [(ngModel)]="xxx.qqName" class="form-control" required/>
+						</td>
+						<td class="table-hover">
+							<select name="chnbondAhr{{i}}" [(ngModel)]="xxx.chnbondAhr" class="form-control" disabled>
+								<option value="1">有</option>
+								<option value="0">无</option>
+							</select>
+						</td>
+						<td class="table-hover">
+							<input type="text" name="ofrAcc{{i}}" [(ngModel)]="xxx.ofrAcc" class="form-control" />
+						</td>
+						<td class="table-hover">
+							{{xxx.mnpltUsr}}
+						</td>
+						<td class="table-hover">
+							{{xxx.modTm}}
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="block-btns">
+			<!-- disabled="true" -->
+			<button type="button" class="btn btn-primary" (click)="addMember()">添加成员</button>
+		</div>
+	</form>
+</main>

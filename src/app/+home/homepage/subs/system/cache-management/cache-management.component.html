@@ -1,0 +1,314 @@
+<!-- 顶部 -->
+    <div class="header clearfix">
+        <span class="head icon">|</span><span class="head" >缓存管理</span>   
+    </div>
+<!-- 内容 -->
+    <div class="tableList">
+        <table class="table table-hover table-bordered ">
+            <thead>
+                <tr >
+                    <td class="info middleTxt">缓存类型</td>
+                    <td class="info middleTxt">操作按钮</td>
+                </tr>
+            </thead>
+            <tbody id="list">
+                <tr>
+                    <td class="info1">用户基本信息</td>
+                    <td class="info2"><button class="condition btn btn-primary" (click)="changeinfo1(tan1)">重载</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="info1">用户登录session</td>
+                    <td class="info2"><button class="condition btn btn-primary" (click)="changeinfo2(tan2)">重载</button>
+                    </td>   
+                </tr>
+                <tr>
+                    <td class="info1">用户隐私设置</td>
+                    <td class="info2"><button class="condition btn btn-primary" (click)="changeinfo3(tan3)">重载</button>
+                    </td> 
+                </tr>
+                <tr>
+                    <td class="info1">用户认证</td>
+                    <td class="info2"><button class="condition btn btn-primary" (click)="changeinfo4(tan4)">重载</button>
+                    </td>  
+                </tr>
+                <tr>
+                    <td class="info1">机构基本信息</td>
+                    <td class="info2"><button class="condition btn btn-primary" (click)="changeinfo5(tan5)">重载</button>
+                    </td>  
+                </tr>
+                <tr>
+                    <td class="info1">机构分类</td>
+                    <td class="info2"><button class="condition btn btn-primary" (click)="changeinfo6(tan6)">重载</button>
+                    </td>  
+                </tr>
+                <tr>
+                    <td class="info1">好友关系</td>
+                    <td class="info2"><button class="condition btn btn-primary" (click)="changeinfo7(tan7)">重载</button>
+                    </td> 
+                </tr>
+                <tr>
+                    <td class="info1">关注关系</td>
+                    <td class="info2"><button class="condition btn btn-primary" (click)="changeinfo8(tan8)">重载</button>
+                    </td> 
+                </tr>
+                <tr>
+                    <td class="info1">黑名单关系</td>
+                    <td class="info2"><button class="condition btn btn-primary" (click)="changeinfo9(tan9)">重载</button>
+                    </td> 
+                </tr>
+                <tr>
+                    <td class="info1">角色基本信息</td>
+                    <td class="info2"><button class="condition btn btn-primary" (click)="changeinfo10(tan10)">重载</button>
+                    </td>  
+                </tr>
+                <tr>
+                    <td class="info1">管理员用户与角色关系</td>
+                    <td class="info2"><button class="condition btn btn-primary" (click)="changeinfo11(tan11)">重载</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+<!--用户基本信息弹窗-->
+<div bsModal #tan1="bs-modal" class="modal fade modelPon" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm ">
+        <div class="modal-content ">
+            <div class="modal-header ">
+                <button type="button" class="close" aria-label="Close" (click)="tan1.hide()">
+                    <span aria-hidden="true" class="c1">&times;</span>
+                </button>
+                <h4 class="modal-title">缓存管理</h4>
+            </div>
+            <div class="modal-body  ">
+                <div class="cont ">
+                    是否重载用户基本信息 ???
+                </div>
+                <div class="btnstyle">
+                    <button type="button" class="btn btn-default btnhoverlan" (click)="tan1.hide()">取消</button>
+                    <button type="button" class="btn btn-primary btnhoverju" (click)="change1()" (click)="tan1.hide()">确认</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--用户登录弹窗-->
+<div bsModal #tan2="bs-modal" class="modal fade modelPon" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm ">
+        <div class="modal-content ">
+            <div class="modal-header ">
+                <button type="button" class="close" aria-label="Close" (click)="tan2.hide()">
+                    <span aria-hidden="true" class="c1">&times;</span>
+                </button>
+                <h4 class="modal-title">缓存管理</h4>
+            </div>
+            <div class="modal-body  ">
+                <div class="cont ">
+                    是否重载用户登录 ???
+                </div>
+                <div class="btnstyle">
+                    <button type="button" class="btn btn-default btnhoverlan" (click)="tan2.hide()">取消</button>
+                    <button type="button" class="btn btn-primary btnhoverju" (click)="change2()" (click)="tan2.hide()">确认</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--用户隐私设置弹窗-->
+<div bsModal #tan3="bs-modal" class="modal fade modelPon" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm ">
+        <div class="modal-content ">
+            <div class="modal-header ">
+                <button type="button" class="close" aria-label="Close" (click)="tan3.hide()">
+                    <span aria-hidden="true" class="c1">&times;</span>
+                </button>
+                <h4 class="modal-title">缓存管理</h4>
+            </div>
+            <div class="modal-body  ">
+                <div class="cont ">
+                    是否重载用户隐私设置 ???
+                </div>
+                <div class="btnstyle">
+                    <button type="button" class="btn btn-default btnhoverlan" (click)="tan3.hide()">取消</button>
+                    <button type="button" class="btn btn-primary btnhoverju" (click)="change3()" (click)="tan3.hide()">确认</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--用户认证弹窗-->
+<div bsModal #tan4="bs-modal" class="modal fade modelPon" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm ">
+        <div class="modal-content ">
+            <div class="modal-header ">
+                <button type="button" class="close" aria-label="Close" (click)="tan4.hide()">
+                    <span aria-hidden="true" class="c1">&times;</span>
+                </button>
+                <h4 class="modal-title">缓存管理</h4>
+            </div>
+            <div class="modal-body  ">
+                <div class="cont ">
+                    是否重载用户认证 ???
+                </div>
+                <div class="btnstyle">
+                    <button type="button" class="btn btn-default btnhoverlan" (click)="tan4.hide()">取消</button>
+                    <button type="button" class="btn btn-primary btnhoverju" (click)="change4()" (click)="tan4.hide()">确认</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--机构基本信息弹窗-->
+<div bsModal #tan5="bs-modal" class="modal fade modelPon" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm ">
+        <div class="modal-content ">
+            <div class="modal-header ">
+                <button type="button" class="close" aria-label="Close" (click)="tan5.hide()">
+                    <span aria-hidden="true" class="c1">&times;</span>
+                </button>
+                <h4 class="modal-title">缓存管理</h4>
+            </div>
+            <div class="modal-body  ">
+                <div class="cont ">
+                    是否重载机构基本信息 ???
+                </div>
+                <div class="btnstyle">
+                    <button type="button" class="btn btn-default btnhoverlan" (click)="tan5.hide()">取消</button>
+                    <button type="button" class="btn btn-primary btnhoverju" (click)="change5()" (click)="tan5.hide()">确认</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--机构分类弹窗-->
+<div bsModal #tan6="bs-modal" class="modal fade modelPon" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm ">
+        <div class="modal-content ">
+            <div class="modal-header ">
+                <button type="button" class="close" aria-label="Close" (click)="tan6.hide()">
+                    <span aria-hidden="true" class="c1">&times;</span>
+                </button>
+                <h4 class="modal-title">缓存管理</h4>
+            </div>
+            <div class="modal-body  ">
+                <div class="cont ">
+                    是否重载机构分类 ???
+                </div>
+                <div class="btnstyle">
+                    <button type="button" class="btn btn-default btnhoverlan" (click)="tan6.hide()">取消</button>
+                    <button type="button" class="btn btn-primary btnhoverju" (click)="change6()" (click)="tan6.hide()">确认</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--好友关系弹窗-->
+<div bsModal #tan7="bs-modal" class="modal fade modelPon" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm ">
+        <div class="modal-content ">
+            <div class="modal-header ">
+                <button type="button" class="close" aria-label="Close" (click)="tan7.hide()">
+                    <span aria-hidden="true" class="c1">&times;</span>
+                </button>
+                <h4 class="modal-title">缓存管理</h4>
+            </div>
+            <div class="modal-body  ">
+                <div class="cont ">
+                    是否重载好友关系 ???
+                </div>
+                <div class="btnstyle">
+                    <button type="button" class="btn btn-default btnhoverlan" (click)="tan7.hide()">取消</button>
+                    <button type="button" class="btn btn-primary btnhoverju" (click)="change7()" (click)="tan7.hide()">确认</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--关注关系弹窗-->
+<div bsModal #tan8="bs-modal" class="modal fade modelPon" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm ">
+        <div class="modal-content ">
+            <div class="modal-header ">
+                <button type="button" class="close" aria-label="Close" (click)="tan8.hide()">
+                    <span aria-hidden="true" class="c1">&times;</span>
+                </button>
+                <h4 class="modal-title">缓存管理</h4>
+            </div>
+            <div class="modal-body  ">
+                <div class="cont ">
+                    是否重载关注关系 ???
+                </div>
+                <div class="btnstyle">
+                    <button type="button" class="btn btn-default btnhoverlan" (click)="tan8.hide()">取消</button>
+                    <button type="button" class="btn btn-primary btnhoverju" (click)="change8()" (click)="tan8.hide()">确认</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--黑名单关系弹窗-->
+<div bsModal #tan9="bs-modal" class="modal fade modelPon" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm ">
+        <div class="modal-content ">
+            <div class="modal-header ">
+                <button type="button" class="close" aria-label="Close" (click)="tan9.hide()">
+                    <span aria-hidden="true" class="c1">&times;</span>
+                </button>
+                <h4 class="modal-title">缓存管理</h4>
+            </div>
+            <div class="modal-body  ">
+                <div class="cont ">
+                    是否重载黑名单关系 ???
+                </div>
+                <div class="btnstyle">
+                    <button type="button" class="btn btn-default btnhoverlan" (click)="tan9.hide()">取消</button>
+                    <button type="button" class="btn btn-primary btnhoverju" (click)="change9()" (click)="tan9.hide()">确认</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--角色基本信息弹窗-->
+<div bsModal #tan10="bs-modal" class="modal fade modelPon" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm ">
+        <div class="modal-content ">
+            <div class="modal-header ">
+                <button type="button" class="close" aria-label="Close" (click)="tan10.hide()">
+                    <span aria-hidden="true" class="c1">&times;</span>
+                </button>
+                <h4 class="modal-title">缓存管理</h4>
+            </div>
+            <div class="modal-body  ">
+                <div class="cont ">
+                    是否重载角色基本信息 ???
+                </div>
+                <div class="btnstyle">
+                    <button type="button" class="btn btn-default btnhoverlan" (click)="tan10.hide()">取消</button>
+                    <button type="button" class="btn btn-primary btnhoverju" (click)="change10()" (click)="tan10.hide()">确认</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--管理员用户与角色信关系弹窗-->
+<div bsModal #tan11="bs-modal" class="modal fade modelPon" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm ">
+        <div class="modal-content ">
+            <div class="modal-header ">
+                <button type="button" class="close" aria-label="Close" (click)="tan11.hide()">
+                    <span aria-hidden="true" class="c1">&times;</span>
+                </button>
+                <h4 class="modal-title">缓存管理</h4>
+            </div>
+            <div class="modal-body  ">
+                <div class="cont ">
+                    是否重载管理员用户与角色关系 ???
+                </div>
+                <div class="btnstyle">
+                    <button type="button" class="btn btn-default btnhoverlan" (click)="tan11.hide()">取消</button>
+                    <button type="button" class="btn btn-primary btnhoverju" (click)="change11()" (click)="tan11.hide()">确认</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

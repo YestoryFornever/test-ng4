@@ -1,0 +1,174 @@
+<div class="header clearfix">
+		<span class="head icon">|</span><span class="head" >资讯列表</span>
+		<div class="btnHeader head">
+			<button class="btn btn-primary" routerLink='../sns-news-add'  routerLinkActive="active">添加资讯</button>
+			<button class="btn btn-primary"  (click)="typingInfo(1)">添加至日报</button>
+			<button class="btn btn-primary"  (click)="typingInfo(2)">添加至要闻</button>
+			<button class="btn btn-primary" (click)="typingInfo(3)">添加至扫雷</button>
+		</div>
+	</div>
+
+
+	<div class="screen .clearfix">
+		<div class="condition container-fluid">
+			<span>资讯分类</span><select [(ngModel)]="default.category"  class="selection"><option value="0" selected = "selected">全部</option><option  value="1">负面</option>
+			<option  value="4">自媒体</option>
+			<option  value="5">公告</option>
+			<!-- <option  value="2">负面</option>
+			<option  value="3">负面</option>
+			<option  value="4">负面</option> -->
+			</select>
+		</div>
+		<div class="condition container-fluid">
+			<span>发布时间</span><input [(ngModel)]="default.time_begin" class="selection"  type="date">&nbsp;到&nbsp;<input class="selection" [(ngModel)]="default.time_end" type="date">
+		</div>
+		<div class="condition container-fluid">
+			<span>资讯正确名</span><input #cm class="selection"  placeholder="全部"
+		                    [(ngModel)]="sourceMove.s_name" 
+		                    [typeahead]="companylist" 
+		                    (typeaheadOnSelect)="typeaheadOnCompanys($event)" 
+		                    [typeaheadOptionField]="'s_name'"          
+		                    [ngModelOptions]="{standalone: true}"
+		                    (blur)="blurCompany(cm)" >
+		                    <input type="text"  name="companyId" class="hide" [(ngModel)]="default.organizationId" [ngModelOptions]="{standalone: true}">
+		</div>
+		<div class="condition container-fluid">
+			<span>资讯标题</span><input  class="selection"  placeholder="全部" [(ngModel)]="default.title">                  
+		</div>
+		<div class="condition container-fluid">
+			<span>是否被举报</span><select  [(ngModel)]="tip"  class="selection">
+			<option value='2'>全部</option><option value='1'>是</option><option value='0'>否</option></select>
+		</div>
+		<div class="condition container-fluid">
+			<span>是否被删除</span><select  [(ngModel)]="del" value='请选择' class="selection"><option value='2'>全部</option><option value='1'>是</option><option value='0'>否</option></select>
+		</div>
+		<div class="condition container-fluid" *ngIf="0">
+			<span style="color: #9c9c9c">聚合标签</span ><input disabled="disabled" style="cursor: not-allowed " req [(ngModel)]="tagName" [typeahead]="tag"  placeholder="全部" class="form-control" (typeaheadOnSelect)="typeaheadOnSelect($event)">
+		</div>
+		<div class="condition container-fluid" *ngIf="0">
+			<span>所属日期</span><input [(ngModel)]="default.clust_date" class="selection" type="date">
+		</div>
+		<div class="condition container-fluid">
+			<span>排序方式</span><select [(ngModel)]="default.orderby"  class="selection"><option value="release_time desc" selected = "selected">发布时间倒序</option>
+			<option  value="view_cnt desc">浏览量倒序</option>
+			<option  value="comment_cnt desc">评论量倒序</option>
+			<option  value="like_cnt desc">点赞量倒序</option>
+			<option  value="repost_cnt desc">分享量倒序</option>
+			<!-- <option  value="2">负面</option>
+			<option  value="3">负面</option>
+			<option  value="4">负面</option> -->
+			</select>
+		</div>
+		<div class="condition container-fluid" *ngIf="0">
+			<span style="color: #9c9c9c">所属时间段</span><select value='0' class="selection" disabled="disabled" style="cursor: not-allowed " [(ngModel)]="clust_time"><option value='0'>全部</option><option value='5'>整天</option><option value='1'>00：00-07：00</option><option value='2'>07：00-12：00</option><option value='3'>12：00-18：00</option><option value='4'>18：00-24：00</option></select>
+		</div>
+		<!-- <div class="condition container-fluid">
+			<span>部&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;门：</span><select value='请选择' class="selection"><option></option><option>部门1</option><option>部门2</option></select>
+		</div> -->
+		<button class="condition btn btn-primary sub" (click)="turnFirst()">查询</button>
+	</div>
+
+	<div class="tableList "  >
+		<div class = "loading" [ngClass]="setLoadClasses()" [ngStyle]="{'height': height }">
+			<div class="loader">
+				<div class="loader-inner">
+					<div class="loader-line-wrap">
+						<div class="loader-line"></div>
+					</div>
+					<div class="loader-line-wrap">
+						<div class="loader-line"></div>
+					</div>
+					<div class="loader-line-wrap">
+						<div class="loader-line"></div>
+					</div>
+					<div class="loader-line-wrap">
+						<div class="loader-line"></div>
+					</div>
+					<div class="loader-line-wrap">
+						<div class="loader-line"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div *ngIf="noData" style="text-align:center;font:600 20px '楷体'">暂无数据</div>
+		<table class="table table-bordered table-hover " [ngClass]="setListClasses()"  *ngIf="!noData">
+			<thead >
+				<tr>
+				<td class="info " style="width: 50px"><input *ngIf="0" #allcheck type="checkbox" name="allCheck"  (change)="checkAll(allcheck)"></td>
+					<td class="info middleTxt" style="text-align: center">操作</td>
+					<td class="info ">资讯标题</td>
+					<td class="info ">分类</td>
+					<td class="info middleTxt">发布时间</td>
+					<td class="info ">资讯正确名</td>
+					<td class="info shortTxt">浏览量</td>
+					<td class="info shortTxt">评论量</td>
+					<td class="info shortTxt">点赞量</td>
+					<td class="info shortTxt">分享量</td>
+					<td class="info shortTxt">被举报</td>
+					<td class="info shortTxt">已删除</td>
+				</tr>
+			</thead>
+			<tbody #XXX id="list" *ngFor="let new of infoList">
+				<tr #userList  class="Userlist">
+					<td class="info "><input  type="checkbox" #listState name="user" ></td>
+					<td class="table-hover" style="text-align: center"><a  (click)="toDetial(new.iid)" > 查看 </a>&nbsp;&nbsp;&nbsp;
+					<a (click)="toChange(new.iid)"> 修改 </a>&nbsp;&nbsp;
+					<a (click)="deleteNews(deleted,new)" *ngIf="!new.is_del">删除</a>
+					<!-- <button class="btn btn-primary" (click)="toChange()">修改</button> -->
+					</td>
+					<td class="table-hover" ><div class="td" [tooltip]="new.title">{{new.title}}</div></td>
+					<td class="table-hover"><div class="td" [tooltip]="new.category">{{new.category}}</div></td>
+					<!-- <td class="table-hover longTxt">{{new.title}}</td> -->
+					<td class="table-hover">{{new.create_time}}</td>
+					<td class="table-hover">{{new.source_ok}}</td>
+					<td class="table-hover">{{new.view_cnt}}</td>
+					<td class="table-hover">{{new.comment_cnt}}</td>
+					<td class="table-hover">{{new.like_cnt}}</td>
+					<td class="table-hover">{{new.repost_cnt}}</td>
+					<td class="table-hover"><span *ngIf="new.is_tip==1">√</span></td>
+					<td class="table-hover"><span *ngIf="new.is_del==1">√</span></td>
+				</tr>
+				<!-- *ngIf="isEmpty(newName)" -->
+				
+			</tbody>
+		</table>
+	</div>
+
+	<!-- 分页 -->
+	<div class="row pagerow" [ngClass]="setListClasses()">
+		<div class="pageshowleft">每页显示
+			<select #selectPage [(ngModel)]="itemsPerPage" name="" id="msgNum" (change)="sizeData(selectPage.value,userList)">
+				<option #optionPage  *ngFor="let msgNumber of msgNumbers" value={{msgNumber.Number}}>{{msgNumber.Number}}</option>
+			</select>
+			条数据
+		</div>
+		<div class="pageshowmodle">
+			<span>{{currentPage}} / {{totalPages}}</span>页
+			<span>{{totalItems}}条数据</span>
+		</div>
+
+		<div class="pagefen">
+			<pagination  [firstText]="firstText" [lastText]="lastText" [previousText]="previousText" [nextText]="nextText" [maxSize]="maxSize" [totalItems]="totalItems" [itemsPerPage]="itemsPerPage" [(ngModel)]="currentPage" [boundaryLinks]="true" (pageChanged)='pageChanged($event)' (numPages)='pageNumChange($event)' class="pagination-sm"></pagination>
+		</div>
+	</div>
+	<!--删除弹窗-->
+<div bsModal #deleted="bs-modal" class="modal fade modelPon" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-sm">
+		<div class="modal-content delete">
+			<div class="modal-header ">
+				<button type="button" class="close" aria-label="Close" (click)="deleted.hide()">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<h4 class="modal-title">删除资讯</h4>
+			</div>
+			<div class="modal-body contentxinxi">
+				<div class="pp clearfix"><div class="win_head">处理理由</div><span>{{istip}}</span></div>
+				<div class="pp clearfix"><div class="win_head" >备注</div><textarea class="visState" [(ngModel)]="del_note"></textarea></div>
+				<div class="btnstyle">
+					<button type="button" class="btn btn-default btnhoverlan" (click)="deleted.hide()">取消</button>
+					<button type="button" class="btn btn-primary btnhoverju" (click)="deletedInfo(deleted)">提交</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

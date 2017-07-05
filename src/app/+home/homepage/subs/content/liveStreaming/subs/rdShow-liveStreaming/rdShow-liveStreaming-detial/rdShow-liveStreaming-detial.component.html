@@ -1,0 +1,87 @@
+<div class="header clearfix">
+	<span class="head icon">|</span><span class="head" >路演直播详情</span>
+	<div class="btnHeader head">
+		<button class="btn btn-primary" (click)="turnTo()">返回</button>
+	</div>
+</div>
+<div>
+	<div class="banner">
+		<div class="contit">直播信息</div>
+		<div class="contion">
+			<div class="title">直播名称：【{{sendMsg.title}}】</div>
+			<div class="KV">
+				<span class='key'>主播</span><span class="val">{{sendMsg.name}}</span>
+			</div>
+			<div class="KV">
+				<span class='key'>直播状态</span><span class="val">{{sendMsg.state | showType}}</span>
+			</div>
+			<div class="KV">
+				<span class='key'>观看总人数</span><span class="val">{{sendMsg.user_num}}</span>
+			</div>
+			<div class="KV">
+				<span class='key'>点赞数</span><span class="val">{{sendMsg.like_cnt}}</span>
+			</div>
+			<div class="KV">
+				<span class='key'>开始时间</span><span class="val">{{sendMsg.rbegin_time|times:time:true}}</span>
+			</div>
+			<div class="KV">
+				<span class='key'>结束时间</span><span class="val">{{sendMsg.rend_time|times:time:true}}</span>
+			</div>
+			<div class="KV">
+				<span class='key'>观看总人次</span><span class="val">{{sendMsg.enter_num}}</span>
+			</div>
+			<div class="KV">
+				<span class='key'>发言数量</span><span class="val">{{sendMsg.chat_num}}</span>
+			</div>
+		</div>
+		<div class="btnHeader head banner clearfix">
+			<button class="flash btn btn-primary" (click)="turnFirst()">刷新列表</button>
+		</div>
+	</div>
+	<div class="banner">
+		<div class="contit">观看清单</div>
+		<div class="tableBox">
+			<table class="table table-bordered table-hover " >
+				<thead>
+					<tr>
+						<td class="info">观众姓名<div class="order"><button (click)="Order('asc','u_name')" class="fa fa-chevron-up" aria-hidden="true"></button><button (click)="Order('desc','u_name')" class="fa fa-chevron-down"  aria-hidden="true"></button></div></td>
+						<td class="info">机构全称<div class="order"><button (click)="Order('asc','u_org')" class="fa fa-chevron-up" aria-hidden="true"></button><button (click)="Order('desc','u_org')" class="fa fa-chevron-down"  aria-hidden="true"></button></div></td>
+						<td class="info">部门名称<div class="order"><button (click)="Order('asc','u_dept')" class="fa fa-chevron-up" aria-hidden="true"></button><button (click)="Order('desc','u_dept')" class="fa fa-chevron-down"  aria-hidden="true"></button></div></td>
+						<td class="info">职称<div class="order"><button (click)="Order('asc','u_title')" class="fa fa-chevron-up" aria-hidden="true"></button><button (click)="Order('desc','u_title')" class="fa fa-chevron-down"  aria-hidden="true"></button></div></td>
+						<td class="info">进入时间</td>
+						<td class="info">观看时长<div class="order"><button (click)="Order('asc','times')" class="fa fa-chevron-up" aria-hidden="true"></button><button (click)="Order('desc','times')" class="fa fa-chevron-down"  aria-hidden="true"></button></div></td>
+						<td class="info">备注</td>
+					</tr>
+				</thead>
+				<tbody>
+					<tr *ngFor="let item of showList">
+						<td >{{item.u_name}}</td>
+						<td ><div class="isUnimp" [tooltip]="item.u_org">{{item.u_org}}</div></td>
+						<td >{{item.u_dept}}</td>
+						<td >{{item.u_title}}</td>
+						<td >{{item.create_time|times:time:true}}</td>
+						<td >{{item.times}}</td>
+						<td ></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+<!-- 分页 -->
+	<div class="row pagerow" >
+		<div class="pageshowleft">每页显示
+			<select #selectPage name="" id="msgNum" (change)="sizeData(selectPage.value,userList)" value='30'>
+				<option #optionPage  *ngFor="let msgNumber of msgNumbers" [value]="msgNumber.Number">{{msgNumber.Number}}</option>
+			</select>
+			条数据
+		</div>
+		<div class="pageshowmodle">
+			<span>{{currentPage}} / {{totalPages}}</span>页
+			<span>{{totalItems}}条数据</span>
+		</div>
+
+		<div class="pagefen">
+			<pagination  [firstText]="firstText" [lastText]="lastText" [previousText]="previousText" [nextText]="nextText" [maxSize]="maxSize" [totalItems]="totalItems" [itemsPerPage]="itemsPerPage" [(ngModel)]="currentPage" [boundaryLinks]="true" (pageChanged)='pageChanged($event)' (numPages)='pageNumChange($event)' class="pagination-sm"></pagination>
+		</div>
+	</div>

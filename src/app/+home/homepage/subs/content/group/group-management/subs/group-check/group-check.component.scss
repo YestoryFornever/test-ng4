@@ -1,0 +1,80 @@
+/*查看群*/
+.btnhoverju:hover{background-color:#fb6300;border-color:#fb6300;}
+.btnhoverlan:hover{background-color:#377dc2;color:#fff;border-color:#377dc2;}
+.btn1{border-radius:0;float:left;margin-right:20px;margin-top:5px;}
+.rowtop{border-bottom:1px #dadada solid;padding:10px 15px}
+.rowtop div{font-weight:bold;display: inline;float:left;line-height: 35px;}
+.rowtop button{border-radius: 0;margin:5px 30px;float:left;display: inline;}
+.rowtop a{border-radius: 0;}
+.before .icon{
+   font-size: 16px;
+    color:#f44336;
+    margin-right:10px;
+}
+.qunCon{width:85%;height:auto;border: 1px #f6f6f6 solid;margin-top:20px;padding:10px;overflow: hidden}
+.qunCon dl{float:left;width:200px;height:70px;margin:15px 10px;display: block;}
+.qunCon dl.fistdl{margin-left:20px;width:320px;}
+.qunCon dl.fistdl dt{
+    float:left;width:80px;height:80px;margin:0 auto;border-radius: 80px;
+    border: 1px #f6f6f6 solid;line-height: 80px;text-align: center;
+    overflow:hidden;
+}
+.qunCon dl.fistdl dt img{
+    width:80px;height:80px;
+}
+.qunCon dl dd{margin-top:15px;}
+.qunCon dl.fistdl dd{float:left;margin-left:20px;}
+.border{margin:20px 20px 0 0;height:auto;overflow-x: auto}
+ table td{height:30px;border: 1px #ccc solid;}
+.tablestyle{width:100%;text-align:center;border: 1px #ccc solid;}
+.tablestyle thead tr{background-color:#d9edf7;}
+.tablestyle thead tr td{text-align:center;background-color:#d9edf7;height:30px;border:none;font-weight:none;border:1px #ccc solid;}
+.tablestyle tbody tr{height:30px;line-height:30px;}
+.tablestyle tbody tr td:nth-child(3){width:150px;}
+.tablestyle tbody tr td{height:30px;}
+.pagerow{height:auto;background:#f5f7fb;border:1px #dadada solid;margin:0px 16px 30px 0px;
+    overflow: hidden;
+    display:-webkit-box;
+    display:-moz-box;
+    display:-ms-box;
+    display:-o-box;
+}
+.pageshowleft{height:66px;line-height:66px;margin-left:10px;}
+.pageshowleft select{width:50px;height:34px;line-height:34px;background:#fff;}
+.pageshowmodle{-webkit-box-flex:1;line-height:66px;text-align: center;}
+.pagefen{height:66px;line-height:66px;margin-right:16px;}
+.sortTable{width:85%;height:60px;}
+.sortTable td:nth-child(1){width:140px;}
+.sortTable td span{float:right;margin-right:50px;line-height:45px;}
+.peoplenum{
+    width:140px;
+    height:35px;
+    color:#fff;
+    text-align:center;
+    line-height:35px;
+    background:#377dc2;
+    position:relative;
+    margin-top:5px;
+}
+.bottomArrow{
+    border-top:8px solid #333;
+    border-left:8px solid transparent;
+    border-right:8px solid transparent;
+    width:0;
+    height:0;
+    position:absolute;
+    right:-16px;
+    bottom:7px;
+    cursor:pointer;
+}
+.topArrow{
+    border-bottom:8px solid #333;
+    border-left:8px solid transparent;
+    border-right:8px solid transparent;
+    width:0;
+    height:0;
+    position:absolute;
+    right:-16px;
+    top:7px;
+    cursor:pointer;
+}

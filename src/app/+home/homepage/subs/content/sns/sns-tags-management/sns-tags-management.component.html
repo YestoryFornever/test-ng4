@@ -1,0 +1,99 @@
+	<div class="header clearfix">
+		<span class="head icon">|</span><span class="head" >聚合标签列表</span>
+		<div class="btnHeader head">
+			<button class="btn btn-primary"  (click)="change.show()">修改</button>
+		</div>
+	</div>
+
+	<div class="screen .clearfix">
+		<div class="condition container-fluid">
+			<span>所属日期</span><input class="selection" type="date">
+		</div>
+
+		<div class="condition container-fluid">
+			<span>所属时间段</span><select value='请选择' class="selection"><option>全部</option><option>整天</option><option>00：00-07：00</option><option>07：00-12：00</option><option>12：00-18：00</option><option>18：00-24：00</option></select>
+		</div>
+		<button class="condition btn btn-primary sub">查询</button>
+	</div>
+
+
+	<!-- list -->
+	<div class="tableList "   [ngStyle]="{'height': height }">
+		<table class="table table-bordered table-hover ">
+			<thead >
+				<tr>
+					<td class="info"><input #allcheck type="checkbox" name="allCheck" (change)="checkAll(allcheck)"> 聚合标签名称</td>
+					<td class="info middleTxt">所属日期</td>
+					<td class="info middleTxt">所属时段</td>
+					<td class="info middleTxt">所含咨询数</td>
+					<td class="info middleTxt">操作</td>
+				</tr>
+			</thead>
+			<tbody #XXX id="list" *ngFor="let userMsg of userMsge">
+				<tr #userList   [ngStyle]="{'background-color': color }" class="Userlist">
+					<td class="table-hover" ><input  type="checkbox" #listState name="user" (change)="changeState(listState,userList)" >{{userMsg.name}}</td>
+					<td class="table-hover middleTxt" #userMsgName>{{userMsg.company}}</td>
+					<td class="table-hover">{{userMsg.section}}</td>
+					<td class="table-hover">{{userMsg.phone}}</td>
+					<td class="table-hover">{{userMsg.number}}</td>
+					<td class="table-hover">{{userMsg.sendDate}}</td>
+					<td class="table-hover">{{userMsg.recDate}}</td>
+					<td class="table-hover longTxt" >{{userMsg.approveMsg}}</td>
+					<td class="table-hover"><span  class="verify" (click)="realNameVer.show()">{{pub.approve}}</span></td>
+				</tr>
+				<!-- *ngIf="isEmpty(userMsgName)" -->
+				<!-- <tr class="table-hover">
+					<td class="table-hover"><input type="checkbox" name=""> Cyursy</td>
+					<td class="table-hover">亚联</td>
+					<td class="table-hover">亚联之星</td>
+					<td class="table-hover">13399882983</td>
+					<td class="table-hover">010-2092387</td>
+					<td class="table-hover">2016-9-25</td>
+					<td class="table-hover">2016-9-26</td>
+					<td class="table-hover">注册新用户</td>
+					<td class="table-hover"><span class="verify" (click)="realNameVer.show()">审核</span>/<span class="revisit" (click)="reVisSinge.show()">回访</span></td>
+				</tr>	 -->
+			</tbody>
+		</table>
+	</div>
+
+<!-- 分页 -->
+	<div class="row pagerow">
+		<div class="pageshowleft">每页显示
+			<select #selectPage name="" id="msgNum" (change)="sizeData(selectPage.value,userList)">
+				<option #optionPage  *ngFor="let msgNumber of msgNumbers" value={{msgNumber.Number}}>{{msgNumber.Number}}</option>
+			</select>
+			条数据
+		</div>
+		<div class="pageshowmodle">
+			<span>{{currentPage}} / {{totalPages}}</span>页
+			<span>{{totalItems}}条数据</span>
+		</div>
+
+		<div class="pagefen">
+			<pagination  [firstText]="firstText" [lastText]="lastText" [previousText]="previousText" [nextText]="nextText" [maxSize]="maxSize" [totalItems]="totalItems" [itemsPerPage]="itemsPerPage" [(ngModel)]="currentPage" [boundaryLinks]="true" (pageChanged)='pageChanged($event,allcheck)' (numPages)='pageNumChange($event)' class="pagination-sm"></pagination>
+		</div>
+	</div>
+
+
+	<!--修改标签-->
+<div bsModal #change="bs-modal" class="modal fade modelPon" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-sm">
+		<div class="modal-content delete">
+			<div class="modal-header ">
+				<button type="button" class="close" aria-label="Close" (click)="change.hide()">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<h4 class="modal-title">修改标签</h4>
+			</div>
+			<div class="modal-body contentxinxi">
+				<div class="pp clearfix"><div class="win_head">原标签名</div><span>xxxxxxxxxxxxxxxx</span></div>
+				<div class="pp clearfix"><div class="win_head">新标签名</div><input type="text" name=""></div>
+				<div class="btnstyle">
+					<button type="button" class="btn btn-default btnhoverlan" (click)="change.hide()">取消</button>
+					<button type="button" class="btn btn-primary btnhoverju">提交</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

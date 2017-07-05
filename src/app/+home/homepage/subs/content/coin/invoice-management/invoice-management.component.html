@@ -1,0 +1,102 @@
+<div class="header clearfix">
+    <span class="head icon">|</span><span class="head">发票列表</span>
+</div>
+<div class="row  rowtop2">
+        <div class="myCont">
+            <label for="" class="text-right">审核详情</label>
+            <div class="myCont">
+                <div class="btn-group">
+                    <label class="btn btn-mint" [(ngModel)]="default.invoiceStatus" btnRadio="">全部</label>
+                    <label class="btn btn-mint" [(ngModel)]="default.invoiceStatus" btnRadio="100">等待审核</label>
+                    <label class="btn btn-mint" [(ngModel)]="default.invoiceStatus" btnRadio="101">等待发货</label>
+                    <label class="btn btn-mint" [(ngModel)]="default.invoiceStatus" btnRadio="102">拒绝申请</label>
+                    <label class="btn btn-mint" [(ngModel)]="default.invoiceStatus" btnRadio="103">已发货</label>
+                    <label class="btn btn-mint" [(ngModel)]="default.invoiceStatus" btnRadio="104">已完成</label>
+                </div>
+            </div>
+        </div>
+        <div class="myCont">
+            <label  class="text-right">申请时间</label>
+            <div class="myCont">
+                <p-calendar [monthNavigator]="true" [yearNavigator]="true" [locale]= 'mon'  [(ngModel)]='myStartTime' yearRange="2000:2050" placeholder="请选择时间"></p-calendar>&nbsp;到&nbsp;
+                <p-calendar [monthNavigator]="true" [yearNavigator]="true" [locale]= 'mon'  [(ngModel)]='myEndTime' yearRange="2000:2050" placeholder="请选择时间"></p-calendar>
+            </div>
+        </div>
+        <div class="myCont">
+            <label for="invoiceOrderNo" class="text-right">订单号</label>
+            <div class="myCont">
+                <input type="text" name="" placeholder="订单号" req  [(ngModel)]="default.invoiceOrderNo"  class="form-control" />
+            </div>
+        </div>
+        <div class="myCont">
+            <label for="phone" class="text-right">注册手机号</label>
+            <div class="myCont">
+                <input req type="text" name="" placeholder="手机号"  [(ngModel)]="default.phone" class="form-control">
+            </div>
+        </div>
+        <div class="myCont">
+            <button class="btn btn-primary sub" (click)="turnFirst()">查询</button>
+        </div>
+</div>
+<div class="">
+    <div class="border" id="tableList">
+        <table class="table table-bordered table-hover ">
+            <thead>
+                <tr>
+                    <th class="info">操作</th>
+                    <th class="info">订单号</th>
+                    <th class="info">注册手机号</th>
+                    <th class="info">收件人</th>
+                    <th class="info">机构简称</th>
+                    <th class="info">发票额度（元）</th>
+                    <th class="info">申请时间</th>
+                    <th class="info">状态</th>
+                </tr>
+            </thead>
+            <tbody id="list" *ngFor="let list of invoiceList">
+                <tr class="Userlist">
+                    <td class="table-hover tableexe">
+                        <a href="javascript:void(0)" class="list-exe" (click)= 'getInvoiceDetail(list.invoiceId)'>审核详情</a>
+                    </td>
+                    <td class="table-hover">{{list.invoiceOrderNo}}</td>
+                    <td class="table-hover">{{list.phone }}</td>
+                     <td class="Card" id="card" (mouseenter)="getUserInfo(list.userId)" placement="right"><div [tooltip]="popTemplate" placement="right" style="width: 100%;height: 100%">{{list.receiptName}}</div></td>
+                    <td class="table-hover">{{list.organizationName}}</td>
+                    <td class="table-hover">{{list.invoiceFee}}</td>
+                    <td class="table-hover">{{list.requestTime }}</td>
+                    <td class="table-hover">{{list.invoiceStatus}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<!-- 分页 -->
+<div class="row pagerow" >
+        <div class="pageshowleft">每页显示
+            <select #selectPage name="" id="msgNum" (change)="sizeData(selectPage.value)">
+                <option #optionPage  *ngFor="let msgNumber of msgNumbers" value={{msgNumber.Number}}>{{msgNumber.Number}}</option>
+            </select>
+            条数据
+        </div>
+        <div class="pageshowmodle">
+            <span>{{currentPage}} / {{totalPages}}</span>页
+            <span>{{totalItems}}条数据</span>
+        </div>
+
+        <div class="pagefen">
+            <pagination  [firstText]="firstText" [lastText]="lastText" [previousText]="previousText" [nextText]="nextText" [maxSize]="maxSize" [totalItems]="totalItems" [itemsPerPage]="itemsPerPage" [(ngModel)]="currentPage" [boundaryLinks]="true" (pageChanged)='pageChanged($event)' (numPages)='pageNumChange($event)' class="pagination-sm"></pagination>
+        </div>
+    </div>
+<ng-template #popTemplate>
+     <div class='cardBox'>
+        <div class="card"><img class="imgCard" [src]="userInfod.businessCardUrl"></div>
+        <div>
+            <div class="userTitle">{{userInfod.userName}} {{userInfod.loginName}}</div>
+            <div>
+                <div class="userInfo">机构： {{userInfod.organizationFullName}}</div>
+                <div class="userInfo">部门： {{userInfod.department}}</div>
+                <div class="userInfo">职位： {{userInfod.position}}</div>
+            </div>
+        </div>
+    </div>
+</ng-template>

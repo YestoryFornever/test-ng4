@@ -1,0 +1,102 @@
+<div class="header clearfix">
+    <span class="head icon">|</span><span class="head">问答管理列表</span>
+    <button [disabled]="operateUserId == -1" (click)="showDialog()" class="btn btn-primary btn1"
+            style="margin-top: 13px; margin-left: 30px;">问答提问
+    </button>
+</div>
+<div class="bar">
+    <div class="barContent">
+        <span>提问日期：</span>
+        <input class="selection" type="date" [(ngModel)]="searchParams.time_begin" vlaue="searchParams.time_begin"/> 至
+        <input class="selection" type="date" [(ngModel)]="searchParams.time_end"/>
+
+        <span>提问人：</span>
+        <input [(ngModel)]="searchParams.user_name" [typeahead]="states" class="selection" placeholder="全部">
+        <!--<select class="selection" [(ngModel)]="searchParams.user_name">-->
+            <!--<option *ngFor="let item of states" value="{{item}}">{{item == "" ? "全部" : item}}</option>-->
+        <!--</select>-->
+
+        <span>问答标题：</span>
+        <input type="text" name="title" class="selection" [(ngModel)]="searchParams.title" placeholder="问答标题关键词"/>
+
+        <button class="btn btn-primary" (click)="searchInfo(searchParams)">查询</button>
+
+        <label>
+            <input type="checkbox" name="onlyShow" [(ngModel)]="check" (change)="ckChange(searchParams)"/>只看被举报
+        </label>
+    </div>
+</div>
+
+<div class="tableList">
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <td class="info" style="text-align: center; width: 50px;">操作</td>
+            <td class="info">问答标题</td>
+            <td class="info">问答描述</td>
+            <td class="info">来源</td>
+            <td class="info ">提问人</td>
+            <td class="info">提问日期</td>
+            <td class="info">更新日期</td>
+            <td class="info">回答数</td>
+            <td class="info">关注数</td>
+            <td class="info">累计赞</td>
+        </tr>
+        </thead>
+        <tbody>
+        <tr class="Userlist" *ngFor="let item of listData; let i = index" [ngClass]="{clickTr: clickTr==i}"
+            (click)="trClick(i)">
+            <td>
+                <a (click)="questionDelete(item.quest_id)"><i class="fa fa-trash"></i></a>
+                <a [routerLink]="['../sns-question-answer-detial/' + item.quest_id]"><i class="fa fa-edit"></i></a>
+            </td>
+            <td class="table-hover">
+                <span class="ell">{{item.title}}</span>
+            </td>
+            <td class="table-hover .ell">
+                <span class="ell">{{item.content_str}}</span>
+            </td>
+            <td class="table-hover">{{item.source}}</td>
+            <td class="table-hover">{{item.user_name}}</td>
+            <td class="table-hover">{{item.create_time}}</td>
+            <td class="table-hover">{{item.update_time}}</td>
+            <td class="table-hover">{{item.answer_cnt}}</td>
+            <td class="table-hover">{{item.focus_cnt}}</td>
+            <td class="table-hover">{{item.likes}}</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<!--编辑框-->
+<p-dialog header='问答： 提问' [(visible)]="display" width="800" (ngSubmit)="onSubmit()">
+    <content>
+        <form name="questionForm" #questionForm="ngForm">
+            <div class="ui-g">
+                <div class="ui-g-2">
+                    问题标题：
+                </div>
+                <div class="ui-g-10">
+                    <input type="text" class="form-control" [(ngModel)]="aTitle" name="title" width="100%" required/>
+                </div>
+            </div>
+            <div class="ui-g">
+                <div class="ui-g-2">
+                    问题描述：
+                </div>
+                <div class="ui-g-10">
+                    <div [froalaEditor]="option" [(froalaModel)]="aContent" style="height: 250px; overflow: auto"></div>
+                </div>
+            </div>
+            <p></p>
+            <p class="text-right">
+                <button class="btn btn-primary" (click)="hideDialog()">取消</button>
+                <button type="submit" class="btn btn-primary" (click)="newAnswer()"
+                        [disabled]="!questionForm.form.valid || !btnDis">确定
+                </button>
+            </p>
+        </form>
+    </content>
+</p-dialog>
+
+<p-paginator rows="{{searchParams.show_count}}" totalRecords="{{totalResult}}" [rowsPerPageOptions]="[10, 20,50,100]"
+             (onPageChange)="pageChangeFun($event)"></p-paginator>

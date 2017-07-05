@@ -1,0 +1,99 @@
+<main class="subscribe-detail">
+	<switch-btns class="switch-btns" [cptType]="'subscribe'"></switch-btns>
+	<bond-info class="bond-info" [issuId]="routeParams.issuId" [offering]="'true'" [enqrTp]="routeParams.enqrTp"></bond-info>
+	<first-bid-info class="first-bid-info" [issuId]="routeParams.issuId" [dstrBondId]="routeParams.dstrBondId"></first-bid-info>
+	<!-- section   1	 -->
+	<div class="clearfix">
+		<div class="condition container-fluid">
+			<span>分销机构</span>
+			<input type="tel"
+				[(ngModel)]="conditions.rcptyInst"
+				req class="form-control"/>
+		</div>
+		<div class="condition container-fluid">
+			<span>分销人</span>
+			<input type="tel"
+				[(ngModel)]="conditions.rcptyUser"
+				req class="form-control"/>
+		</div>
+		<div class="condition container-fluid">
+			<span>申购机构</span>
+			<input type="tel"
+				[(ngModel)]="conditions.sndrInst"
+				req class="form-control"/>
+		</div>
+		<div class="condition container-fluid">
+			<span>申购人</span>
+			<input type="tel"
+				[(ngModel)]="conditions.sndrUser"
+				req class="form-control"/>
+		</div>
+	</div>
+	<div class="clearfix">
+		<div class="condition container-fluid" >
+			<span>申购渠道</span>
+			<btns [(btnsModel)]="conditions.sbrbChnl" [btnsPattern]="conditions.sbrbChnlPattern"></btns>
+		</div>
+		<div class="condition container-fluid">
+			<span>申购状态</span>
+			<btns [(btnsModel)]="conditions.sbrbEStatus" [btnsPattern]="conditions.sbrbEStatusPattern"></btns>
+		</div>
+		<button class="btn btn-primary pull-right" (click)="getSbrbInfList()">搜索</button>
+	</div>
+	<div class="clearfix subscribe">
+		<span class="tit">申购详情</span>
+		<span >客户申购总量：{{sbrbSmy.custSbrbTnum}} 亿</span>
+		<span >客户申购利率区间：{{sbrbSmy.sbrbIntrtLwrLmt}}-{{sbrbSmy.sbrbIntrtUpLm}}</span>
+		<a [href]="downloadDstrDetail"><button class="btn btn-primary pull-right">导出为excel</button></a>
+	</div>
+	<div class="tableList">
+		<table class="table table-bordered table-hover ">
+			<thead >
+				<tr>
+					<th class="info" style="width:200px;">分销机构</th>
+					<th class="info">分销人</th>
+					<th class="info">分销角色</th>
+					<th class="info">申购机构</th><!-- 发送 -->
+					<th class="info">申购人</th>
+					<th class="info">申购角色</th>
+					<th class="info">利率（%）</th>
+					<th class="info">认购量（亿）</th>
+					<th class="info">申购状态</th>
+					<th class="info">申购渠道</th>
+					<th class="info">申购时间</th>
+					<th class="info">备注</th>
+					<th class="info">中标状态</th>
+					<th class="info">中标量（亿）</th>
+					<th class="info">票面利率（%）</th>
+				</tr>
+			</thead>
+			<tbody *ngFor="let item of list">
+				<tr>
+					<td>
+						<div container="body" [tooltip]="item.rcptyInstNm" placement="right" tooltipClass="customClass">
+							{{item.rcptyInstNm}}
+						</div>
+					</td>
+					<td (click)="userSubDetail(item,'rcpty')" class="user-name">{{item.rcptyUserNm}}</td>
+					<td>{{item.rcptyUserRl}}</td>
+					<td>{{item.sndrInstNm}}</td>
+					<td (click)="userSubDetail(item,'sndr')" class="user-name">{{item.sndrUserNm}}</td>
+					<td>{{item.sndrUserRl}}</td>
+					<td>{{item.sbrbIntrt}}</td>
+					<td>{{item.sbrbNum}}</td>
+					<td>{{item.sbrbEStatus}}</td>
+					<td>{{item.sbrbChnl}}</td>
+					<td>{{item.createTime}}</td>
+					<td>{{item.rmrk}}</td>
+					<td>--</td>
+					<td>--</td>
+					<td>--</td>
+					<!-- <td>{{item.winbidEStatus}}</td>
+					<td>{{item.winbidNum}}</td>
+					<td>{{item.winbidIntrt}}</td> -->
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<page [(pageObj)]="pageParams" (fnParent)="getSbrbInfList()"></page>
+</main>

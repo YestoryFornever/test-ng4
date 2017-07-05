@@ -1,0 +1,125 @@
+<div class="header">
+	<span class="head icon">|</span>
+	<span class="head">金币发放授权</span>
+	<div class="btnHeader head">
+		<button class="btn btn-primary" (click)="showEdit(edAd)">新增授权</button>
+	</div>
+</div>
+<main>
+<!-- lists -->
+	<div class="tableList box">
+	    <table class="table table-bordered table-hover ">
+	        <thead>
+	            <tr>
+	                
+	                <td class="table-hover">操作</td>
+	                <td class="table-hover">管理员姓名</td>
+	                <td class="table-hover">授权上限 <div class="order"><button (click)="Order('ASC','authCoinNumber')" class="fa fa-chevron-up" aria-hidden="true"></button><button (click)="Order('DESC','authCoinNumber')" class="fa fa-chevron-down"  aria-hidden="true"></button></div></td>
+	                <td class="table-hover">已发放数量 <div class="order"><button (click)="Order('ASC','coinUsedNumber')" class="fa fa-chevron-up" aria-hidden="true"></button><button (click)="Order('DESC','coinUsedNumber')" class="fa fa-chevron-down"  aria-hidden="true"></button></div></td>
+	                <td class="table-hover">可用数量 <div class="order"><button (click)="Order('ASC','availableCoinNumber')" class="fa fa-chevron-up" aria-hidden="true"></button><button (click)="Order('DESC','availableCoinNumber')" class="fa fa-chevron-down"  aria-hidden="true"></button></div></td>
+	                <td class="table-hover" style="min-width:125px">授权说明                    
+	                   
+	                </td>
+	                <td class="table-hover">授权人</td>
+	                <td class="table-hovet">更新时间
+	                    <div class="order"><button (click)="Order('ASC','updateTime')" class="fa fa-chevron-up" aria-hidden="true"></button><button (click)="Order('DESC','updateTime')" class="fa fa-chevron-down"  aria-hidden="true"></button></div>
+	                </td>
+	                <!-- <td class="info longTxt">通知标题</td> -->
+	               
+	            </tr>
+	        </thead>
+	        <tbody >
+	         <!-- <tbody > -->
+	            <tr *ngFor="let list of userList">      
+	                <td>
+	                	<i class="fa fa-trash opt" *ngIf="list.coinUsedNumber==0" aria-hidden="true" (click)="delWin(del,list.coinManualSendAuthId)"></i>
+	                	<i class="fa fa-pencil-square-o opt" aria-hidden="true" (click)="showEdit(edAd,list)"></i>
+	                </td>
+	            	<td>{{list.userName}}</td>
+	            	<td>{{list.authCoinNumber}}</td>
+	            	<td>{{list.coinUsedNumber}}</td>
+	            	<td>{{list.availableCoinNumber}}</td>
+	            	<td>{{list.description}}</td>
+	            	<td>{{list.updateUserName}}</td>
+	            	<td>{{list.updateTime}}</td>
+	            </tr>
+	        </tbody>
+	    </table>
+	</div>
+    <!-- 分页 -->
+    <page [(pageObj)]="pageParams" (fnParent)="sendauthList()"></page>
+</main>
+
+<!--授权弹窗-->
+<div bsModal #edAd="bs-modal" class="modal fade modelPon" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content clearfix" style="width: 535px">
+            <div class="modal-header">
+                <button type="button" class="close" aria-label="Close" (click)="edAd.hide()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">编辑授权发放数量</h4>
+            </div>
+            <div class="modal-body contentxinxi">
+            	<div class="condition">
+            		<i style="color:red">*</i>
+                	<label for="fullname" class="text-right">管理员姓名</label>
+                	<div class="condition-input">
+                    	 <select class="form-control" [ngStyle]="{color:changeManager ? '#999' : '#333'}" [disabled]="changeManager" [(ngModel)]="perEdit.managerId">
+                        <option value="">全部</option>
+                        <option *ngIf="add==''" [value]='thisId'>{{addName}}</option>
+                        <option   [value]="item.managerId" *ngFor="let item of managerList">{{item.managerName}}</option>
+                    </select>
+                	</div>
+                </div>
+                <div class="condition">
+            		<i style="color:red">*</i>
+                	<label for="fullname" class="text-right">授权发送上限</label>
+                	<div class="condition-input" >
+                    	<input style="width: 320px" type="number" class="form-control" [(ngModel)]="perEdit.authCoinNumber" (ngModelChange)="changeCan()" (change)="ControlMin()" [min]="having" max='9999999'>
+                	</div>
+                </div>
+                <div class="condition">
+            		<i style="color:red">&nbsp;</i>
+                	<label for="fullname" class="text-right">可发放数量</label>
+                	<div class="condition-input">
+                    	<input style="width: 320px" type="text" class="form-control" disabled="1" [(ngModel)]="can" >
+                	</div>
+                </div>
+                <div class="condition">
+            		<i style="color:red">&nbsp;</i>
+                	<label for="fullname" class="text-right">授权说明</label>
+                	<div class="condition-input">
+                    	<textarea style="width: 320px;margin-top: 4px" [(ngModel)]="perEdit.description">
+                    	</textarea>
+                	</div>
+                </div> 
+            </div>
+             <div class="condition container-fluid" style="padding-left: 400px">
+				<button  type="button" class="btn btn-primary" (click)="save(edAd)">确定</button>
+				<button  type="button" class="btn btn-default" (click)="edAd.hide()">取消</button>
+			</div>
+        </div>
+    </div>
+</div>  
+
+	<!-- 删除授权-->
+<div bsModal #del="bs-modal" class="modal fade modelPon" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content clearfix" >
+            <div class="modal-header">
+                <button type="button" class="close" aria-label="Close" (click)="del.hide()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">删除</h4>
+            </div>
+            <div class="modal-body contentxinxi">
+            	你确定删除吗？
+            </div>
+             <div class="condition container-fluid" style="padding-left: 400px">
+				<button  type="button" class="btn btn-primary" (click)="this.sendauthDelete(del)">确认删除</button>
+				<button  type="button" class="btn btn-primary" (click)="del.hide()">取消</button>
+			</div>
+        </div>
+    </div>
+</div>

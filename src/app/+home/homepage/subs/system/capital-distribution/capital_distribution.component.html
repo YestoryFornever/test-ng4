@@ -1,0 +1,379 @@
+<div class="header clearfix">
+	<span class="head icon">|</span><span class="head" >资金报价</span>
+</div>
+<div (click)="$event.preventDefault()">
+	<tabset [justified]="false">
+		<tab (select)="get($event)" heading="线上报价">
+		<!-- section 	1 -->
+			<div class="clearfix">
+				<div class="condition container-fluid" style="width: 90%">
+					<span>机构类型</span><div class="btn-group btnborder">
+					<label class="btn btn-mint" btnRadio='0'  [(ngModel)]="all_orgTp" (click)="clickAll_orgTp()">全部</label>
+					<label class="btn btn-mint" btnCheckbox *ngFor="let item of instTp,let i=index"  [(ngModel)]="instTpMod[i].check" (click)="clickOther_orgTp()">{{item.name}}</label></div>
+				</div>
+				<div class="condition container-fluid" style="position: relative;overflow:visible">
+					<span>机构名称</span><input type="tel" [(ngModel)]="default.instNm"   req placeholder="机构名称" class="form-control" (keyup)="searchOrg()"> <i *ngIf="orgListShow" (click)="closeOrg()" style="cursor:pointer"><img src='../../../../../../public/images/btn_close.png'></i>
+					<ul  class="moh" *ngIf="orgListShow" style="position:absolute">
+						<li *ngFor="let item of orgList" (click)="OrgSerch(item.organizationShortName)"><div [tooltip]="item.organizationShortName">{{item.organizationShortName}}</div></li>
+					</ul>
+				</div>
+				<div class="condition container-fluid" style="position: relative">
+					<span>用户姓名</span><input type="tel" [(ngModel)]="default.userNm"   req placeholder="用户姓名" class="form-control" (keyup)="searchUser()"> <i *ngIf="userListShow" (click)="closeUser()" style="cursor:pointer"><img src='../../../../../../public/images/btn_close.png'></i><ul  class="moh" *ngIf="userListShow" style="position:absolute">
+						<li *ngFor="let item of userList" (click)="UserSerch(item)"><div [tooltip]="item">{{item}}</div></li>
+					</ul>
+				</div>
+				<div class="condition container-fluid" style="position: relative">
+					<span>注册手机号</span><input type="tel" [(ngModel)]="default.rgstMblPh"   req placeholder="注册手机号" class="form-control" (keyup)="searchPho()"> <i (click)="closePho()" *ngIf="phoListShow" style="cursor:pointer"><img src='../../../../../../public/images/btn_close.png'></i><ul  class="moh" *ngIf="phoListShow" style="position:absolute">
+						<li *ngFor="let item of phoList" (click)="phoSerch(item)"><div [tooltip]="item">{{item}}</div></li>
+					</ul>
+				</div>
+			</div>
+			<hr>
+			<!-- section   2	 -->
+			<div class="clearfix">
+				<div class="condition container-fluid">
+					<span>方向</span><div class="btn-group btnborder">
+					<label class="btn btn-mint" btnRadio='0'  [(ngModel)]="all_drc">全部</label>
+					<label class="btn btn-mint" btnRadio='1'  [(ngModel)]="all_drc">融入</label>
+					<label class="btn btn-mint" btnRadio='2'  [(ngModel)]="all_drc">融出</label>
+
+					</div>
+				</div>
+				<div class="condition container-fluid">
+					<span>模式</span><div class="btn-group btnborder">
+					<label class="btn btn-mint" btnRadio='0'  [(ngModel)]="all_mode" (click)="clickAll_mode()">全部</label>
+					<label class="btn btn-mint" btnCheckbox *ngFor="let item of mode,let i=index"  [(ngModel)]="modeMod[i].check" (click)="clickOther_mode()">{{item.name}}</label>
+					</div>
+				</div>
+				<div class="condition container-fluid">
+					<span>金额</span>
+					<div class="btn-group btnborder">
+					<input [(ngModel)]="amtStrtVal" type="number" name="" min=0 max=1000000  (blur)="regGMin()" style="height: 32px;width:70px">
+					——
+					<input [(ngModel)]="amtEndVal" type="number" name="" min=0 max=1000000  (blur)="regGMax()" style="height: 32px;width:70px">
+					<select [(ngModel)]="amt">
+						<option value=10000>万</option>
+						<option value=100000000>亿</option>
+					</select>
+					</div>
+				</div>
+				<div class="condition container-fluid" style="width: 90%">
+					<span>期限</span><div class="btn-group btnborder">
+					<label class="btn btn-mint" btnRadio='0'  [(ngModel)]="all_trmTp" (click)="clickAll_trmTp()">全部</label>
+					<label class="btn btn-mint" btnCheckbox *ngFor="let item of trmTp,let i=index"  [(ngModel)]="trmTpMod[i].check" (click)="clickOther_trmTp()">{{item.name}}</label><label class="btn btn-mint" btnRadio='0'  [(ngModel)]="custom_trmTp" (click)="clickCustom_trmTp()">自定义</label>
+						<div class="btn-group btnborder" *ngIf="custom_trmTp==0" style="margin-left: 10px">
+						<input [(ngModel)]="trmLwrLmtVal" type="number" name="" min=0 style="height: 32px; width:70px">
+						<select [(ngModel)]="trmLwrLmtUnit">
+							<option value='1'>D</option>
+							<option value='2'>M</option>
+							<option value='3'>Y</option>
+						</select> —— 
+						<input  [(ngModel)]="trmUpLmVal" type="number" min=0 name="" style="height: 32px;width:70px">
+						<select [(ngModel)]="trmUpLmUnit">
+							<option value='1'>D</option>
+							<option value='2'>M</option>
+							<option value='3'>Y</option>
+						</select>
+						</div>
+					</div>
+				</div>
+				<div class="condition container-fluid" style="width: 90%">
+					<span>交易限制</span><div class="btn-group btnborder">
+					<label class="btn btn-mint" btnRadio='0'  [(ngModel)]="all_txnRst" (click)="clickAll_txnRst()">全部</label>
+					<label class="btn btn-mint" btnCheckbox *ngFor="let item of txnRst,let i=index"  [(ngModel)]="txnRstMod[i].check" (click)="clickOther_txnRst()">{{item.name}}</label></div>
+				</div>
+				<div class="condition container-fluid">
+					<span>利率</span><div class="btn-group btnborder">
+					<label class="btn btn-mint" btnRadio='0'  [(ngModel)]="all_intrtTp">全部</label>
+					<label class="btn btn-mint" btnRadio='1'  [(ngModel)]="all_intrtTp">加权</label>
+					<label class="btn btn-mint" btnRadio='2'  [(ngModel)]="all_intrtTp">加点</label>
+					<label class="btn btn-mint" btnRadio='3'  [(ngModel)]="all_intrtTp">减点</label>
+					<label class="btn btn-mint" btnRadio='4'  [(ngModel)]="all_intrtTp">自定义</label></div>
+					<div class="btn-group btnborder" *ngIf="all_intrtTp!=0&&all_intrtTp!=1" style="margin-left: 10px">
+						<input [(ngModel)]="intRtStrtVal"  placeholder="最多四位小数" [disabled]="all_intrtTp==1" type="number" name="" min=0 style="height: 32px; width:100px"  (blur)="regInMin()">
+						—— 
+						<input [(ngModel)]="intRtEndVal"  placeholder="最多四位小数" [disabled]="all_intrtTp==1" type="number" min=0 name="" style="height: 32px;width:100px" (blur)="regInMax()"><span *ngIf="all_intrtTp==2||all_intrtTp==3">bp</span><span *ngIf="all_intrtTp==4">%</span>
+						</div>
+				</div>
+				<div class="condition container-fluid">
+					<span>QQ</span>
+					<input [(ngModel)]="onContion.qqNo" type="text" name="" style="height: 32px;width:200px">
+				</div>
+				<div class="condition container-fluid">
+					<span>报价来源</span>
+					<!-- <input [(ngModel)]="onContion.cptlSource" type="text" name="" style="height: 32px;width:200px"> -->
+					<div class="btn-group btnborder">
+						<label class="btn btn-mint" btnRadio=''  [(ngModel)]="onContion.cptlSource">全部</label>
+						<label class="btn btn-mint" btnRadio='1'  [(ngModel)]="onContion.cptlSource">债金所</label>
+						<label class="btn btn-mint" btnRadio='2'  [(ngModel)]="onContion.cptlSource">QQ</label>
+						<label class="btn btn-mint" btnRadio='3'  [(ngModel)]="onContion.cptlSource">其它</label>
+					</div>
+				</div>
+			</div>
+			<hr>
+				<!-- section   3 -->
+			<div >
+				<div class="condition container-fluid">
+					<span>报价状态</span><div class="btn-group btnborder">
+					<label class="btn btn-mint" btnRadio='0'  [(ngModel)]="all_eStatusStr" (click)="clickAll_eStatusStr()">全部</label>
+					<label class="btn btn-mint" btnCheckbox *ngFor="let item of eStatusStr,let i=index"  [(ngModel)]="eStatusStrMod[i].check" (click)="clickOther_eStatusStr()">{{item.name}}</label></div>
+				</div>
+				<div class="condition container-fluid">
+					<span>报价日期</span><p-calendar [(ngModel)]="startDate" [maxDate]="endDate"    [locale]="en" [showTime]="false"></p-calendar>
+					&nbsp;到&nbsp;
+					<p-calendar [(ngModel)]="endDate"  [minDate]="startDate"  [locale]="en" [showTime]="false"></p-calendar>
+				</div>
+				<div class="condition container-fluid">
+					<button type="button" class="btn btn-primary" (click)="turnFirst()" >查询</button>
+				</div>
+				
+			</div>
+		<div class="clearfix" style="margin: 5px 16px;background: #edf;">
+			<div style="line-height: 31px;float:left">当前筛选下，共计报价{{totalResult}}笔，金额{{totalNum}}</div><button class="btn btn-primary" style="float: right" (click)="exportOfrHall()">导出为excel</button>
+		</div>
+		<div class="tableList " style="overflow-x:scroll">		
+			<table class="table table-bordered table-hover " style="min-width: 1600px">
+				<thead >
+					<tr>
+						<td class="info" >操作</td>		
+						<td class="info ">用户姓名</td>
+						<td class="info">注册手机</td>
+						<td class="info ">机构名称</td>
+						<td class="info ">QQ</td>
+						<td class="info ">报价来源</td>
+						<td class="info" style="width:60px">方向</td>
+						<td class="info" >期限</td>
+						<td class="info" >金额</td>		
+						<td class="info" >模式</td>	
+						<td class="info" >利率</td>	
+						<td class="info" >交易限制</td>	
+						<td class="info middleTxt" >备注信息</td>	
+						<td class="info" style="width:80px">报价状态</td>	
+						<td class="info middleTxt" >报价时间</td>
+						
+					</tr>
+				</thead>
+				<tbody  id="list" *ngFor="let item of onList">
+					<tr>
+						<td ><a *ngIf="item.eStatus==1" (click)="updateOfrEStatus(item.ofrid)">撤销</a><span style="color: #aaa" *ngIf="item.eStatus!=1">撤销</span></td>
+						<td >{{item.userNm}}</td>
+						<td>{{item.ctcTel}}</td>
+						<td>{{item.instNm}}</td>
+						<td>{{item.qqNo}}</td>
+						<td><span *ngIf="!item.cptlSource">--</span><span *ngIf="item.cptlSource==1">债金所</span><span *ngIf="item.cptlSource==2">QQ</span><span *ngIf="item.cptlSource==3">其它</span></td>
+						<td ><span  *ngIf="item.drc==1">融入</span><span *ngIf="item.drc==2">融出</span></td>
+						<td >{{item.trmTpNm}}</td>
+						<td  ><span *ngIf="item.amt">{{item.amt*1}}{{item.amtUnitNm}}</span></td>		
+						<td ><div [tooltip]="item.modeNm">{{item.modeNm}}</div></td>	
+						<td >
+							<span *ngIf="item.intrtTp==1">{{item.intrtTpNm}}</span>
+							<span *ngIf="item.intrtTp==2">{{item.intrtTpNm}}<span *ngIf="item.intrtVal">{{item.intrtVal}}bp</span></span>
+							<span *ngIf="item.intrtTp==3">{{item.intrtTpNm}}<span *ngIf="item.intrtVal">{{item.intrtVal}}bp</span></span>
+							<span *ngIf="item.intrtTp==4">{{item.intrtVal}}%</span>
+						</td>	
+						<td ><div [tooltip]="item.txnRstNm">{{item.txnRstNm}}</div></td>	
+						<td >{{item.rmrk}}</td>	
+						<td >{{item.eStatusNm}}</td>	
+						<td >{{item.ofrDt}}</td>
+						
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		</tab>
+		<tab (select)="get($event)" heading="线下报价">
+			<!-- section 	1 -->
+			<div class="clearfix">
+				<div class="condition container-fluid" style="width: 90%">
+					<span>机构类型</span><div class="btn-group btnborder">
+					<label class="btn btn-mint" btnRadio='0'  [(ngModel)]="all_orgTp" (click)="clickAll_orgTp()">全部</label>
+					<label class="btn btn-mint" btnCheckbox *ngFor="let item of instTp,let i=index"  [(ngModel)]="instTpMod[i].check" (click)="clickOther_orgTp()">{{item.name}}</label></div>
+				</div>
+				<div class="condition container-fluid" style="position: relative;overflow:visible">
+					<span>机构名称</span><input type="tel" [(ngModel)]="default.instNm"   req placeholder="机构名称" class="form-control" (keyup)="searchOrg()"> <i *ngIf="orgListShow" (click)="closeOrg()" style="cursor:pointer"><img src='../../../../../../public/images/btn_close.png'></i>
+					<ul  class="moh" *ngIf="orgListShow" style="position:absolute">
+						<li *ngFor="let item of orgList" (click)="OrgSerch(item.organizationShortName)"><div [tooltip]="item.organizationShortName">{{item.organizationShortName}}</div></li>
+					</ul>
+				</div>
+				<div class="condition container-fluid" style="position: relative">
+					<span>用户姓名</span><input type="tel" [(ngModel)]="default.userNm"   req placeholder="用户姓名" class="form-control" (keyup)="searchUser()"> <i *ngIf="userListShow" (click)="closeUser()" style="cursor:pointer"><img src='../../../../../../public/images/btn_close.png'></i><ul  class="moh" *ngIf="userListShow" style="position:absolute">
+						<li *ngFor="let item of userList" (click)="UserSerch(item)"><div [tooltip]="item">{{item}}</div></li>
+					</ul>
+				</div>
+				<div class="condition container-fluid" style="position: relative">
+					<span>注册手机号</span><input type="tel" [(ngModel)]="default.rgstMblPh"   req placeholder="注册手机号" class="form-control" (keyup)="searchPho()"> <i (click)="closePho()" *ngIf="phoListShow" style="cursor:pointer"><img src='../../../../../../public/images/btn_close.png'></i><ul  class="moh" *ngIf="phoListShow" style="position:absolute">
+						<li *ngFor="let item of phoList" (click)="phoSerch(item)"><div [tooltip]="item">{{item}}</div></li>
+					</ul>
+				</div>
+			</div>
+			<hr>
+			<!-- section   2	 -->
+			<div class="clearfix">
+				<div class="condition container-fluid">
+					<span>方向</span><div class="btn-group btnborder">
+					<label class="btn btn-mint" btnRadio='0'  [(ngModel)]="all_drc">全部</label>
+					<label class="btn btn-mint" btnRadio='1'  [(ngModel)]="all_drc">融入</label>
+					<label class="btn btn-mint" btnRadio='2'  [(ngModel)]="all_drc">融出</label>
+
+					</div>
+				</div>
+				<div class="condition container-fluid">
+					<span>种类</span><div class="btn-group btnborder">
+					<label class="btn btn-mint" btnRadio='0'  [(ngModel)]="all_ctlg" (click)="clickAll_ctlg()">全部</label>
+					<label class="btn btn-mint" btnCheckbox *ngFor="let item of ctlg,let i=index"  [(ngModel)]="ctlgMod[i].check" (click)="clickOther_ctlg()">{{item.name}}</label></div>
+				</div>
+				<div class="condition container-fluid" style="width: 90%">
+					<span>期限</span><div class="btn-group btnborder">
+					<label class="btn btn-mint" btnRadio='0'  [(ngModel)]="all_trmTp" (click)="clickAll_trmTp()">全部</label>
+					<label class="btn btn-mint" btnCheckbox *ngFor="let item of trmTp,let i=index"  [(ngModel)]="trmTpMod[i].check" (click)="clickOther_trmTp()">{{item.name}}</label><label class="btn btn-mint" btnRadio='0'  [(ngModel)]="custom_trmTp" (click)="clickCustom_trmTp()">自定义</label>
+						<div class="btn-group btnborder" *ngIf="custom_trmTp==0" style="margin-left: 10px">
+						<input [(ngModel)]="trmLwrLmtVal" type="number" name="" min=0 style="height: 32px; width:70px">
+						<select [(ngModel)]="trmLwrLmtUnit">
+							<option value='1'>D</option>
+							<option value='2'>M</option>
+							<option value='3'>Y</option>
+						</select> —— 
+						<input  [(ngModel)]="trmUpLmVal" type="number" min=0 name="" style="height: 32px;width:70px">
+						<select [(ngModel)]="trmUpLmUnit">
+							<option value='1'>D</option>
+							<option value='2'>M</option>
+							<option value='3'>Y</option>
+						</select>
+						</div>
+					</div>
+				</div>
+				<div class="condition container-fluid">
+					<span>利率</span><div class="btn-group btnborder">
+					<label class="btn btn-mint" btnRadio='0'  [(ngModel)]="all_intrtTp">全部</label>
+					<!-- <label class="btn btn-mint" btnRadio='1'  [(ngModel)]="all_intrtTp">加权</label>
+					<label class="btn btn-mint" btnRadio='2'  [(ngModel)]="all_intrtTp">加点</label>
+					<label class="btn btn-mint" btnRadio='3'  [(ngModel)]="all_intrtTp">减点</label> -->
+					<label class="btn btn-mint" btnRadio='4'  [(ngModel)]="all_intrtTp">自定义</label></div>
+					<div class="btn-group btnborder" *ngIf="all_intrtTp!=0&&all_intrtTp!=1" style="margin-left: 10px">
+						<input [(ngModel)]="intRtStrtVal"  placeholder="最多四位小数" [disabled]="all_intrtTp==1" type="number" name="" min=0 style="height: 32px; width:100px"  (blur)="regInMin()">
+						—— 
+						<input [(ngModel)]="intRtEndVal"  placeholder="最多四位小数" [disabled]="all_intrtTp==1" type="number" min=0 name="" style="height: 32px;width:100px" (blur)="regInMax()"><span *ngIf="all_intrtTp==2||all_intrtTp==3">bp</span><span *ngIf="all_intrtTp==4">%</span>
+						</div>
+				</div>
+				<div class="condition container-fluid">
+					<span>QQ</span>
+					<input [(ngModel)]="unContion.qqNo" type="text" name="" style="height: 32px;width:200px">
+				</div>
+				<div class="condition container-fluid">
+					<span>报价来源</span>
+					<!-- <input [(ngModel)]="onContion.cptlSource" type="text" name="" style="height: 32px;width:200px"> -->
+					<div class="btn-group btnborder">
+						<label class="btn btn-mint" btnRadio=''  [(ngModel)]="unContion.cptlSource">全部</label>
+						<label class="btn btn-mint" btnRadio='1'  [(ngModel)]="unContion.cptlSource">债金所</label>
+						<label class="btn btn-mint" btnRadio='2'  [(ngModel)]="unContion.cptlSource">QQ</label>
+						<label class="btn btn-mint" btnRadio='3'  [(ngModel)]="unContion.cptlSource">其它</label>
+					</div>
+				</div>
+			</div>
+			<hr>
+				<!-- section   3 -->
+			<div >
+				<div class="condition container-fluid">
+					<span>报价状态</span><div class="btn-group btnborder">
+					<label class="btn btn-mint" btnRadio='0'  [(ngModel)]="all_eStatusStr" (click)="clickAll_eStatusStr()">全部</label>
+					<label class="btn btn-mint" btnCheckbox *ngFor="let item of eStatusStr,let i=index"  [(ngModel)]="eStatusStrMod[i].check" (click)="clickOther_eStatusStr()">{{item.name}}</label></div>
+				</div>
+				<div class="condition container-fluid">
+					<span>报价日期</span><p-calendar [(ngModel)]="startDate2" [maxDate]="endDate2"    [locale]="en" [showTime]="false"></p-calendar>
+					&nbsp;到&nbsp;
+					<p-calendar [(ngModel)]="endDate2"  [minDate]="startDate2"  [locale]="en" [showTime]="false"></p-calendar>
+				</div>
+				<div class="condition container-fluid">
+					<button type="button" class="btn btn-primary" (click)="turnFirst()" >查询</button>
+				</div>
+				
+			</div>
+		<div class="clearfix" style="margin: 5px 16px;background: #edf;">
+			<div style="line-height: 31px;float:left">当前筛选下，共计报价{{totalResult}}笔</div><button class="btn btn-primary" style="float: right" (click)="exportOfrHallOff()">导出为excel</button>
+		</div>
+			<div class="tableList " style="overflow-x:scroll">		
+			<table class="table table-bordered table-hover " style="min-width: 2100px">
+				<thead >
+					<tr>
+						<td class="info" >操作</td>		
+						<td class="info ">用户姓名</td>
+						<td class="info">注册手机</td>
+						<td class="info ">机构名称</td>
+						<td class="info ">QQ</td>
+						<td class="info ">报价来源</td>
+						<td class="info" style="width:60px">方向</td>
+						<!-- <td class="info" >期限</td> -->
+						<td class="info" >种类</td>	
+
+						<td class="info thr" >隔夜</td>
+						<td class="info thr" >7天</td>
+						<td class="info thr" >14天</td>		
+						<td class="info thr" >21天</td>
+						<td class="info thr" >1个月</td>
+						<td class="info thr" >2个月</td>
+						<td class="info thr" >3个月</td>
+						<td class="info thr" >6个月</td>
+						<td class="info thr" >9个月</td>
+						<td class="info thr" >一年</td>
+						<td class="info thr" >自定义</td>
+
+						<td class="info middleTxt" >备注信息</td>	
+						<td class="info" style="width:80px">报价状态</td>	
+						<td class="info middleTxt" >报价时间</td>
+						
+					</tr>
+				</thead>
+				<tbody  id="list" *ngFor="let item of unList">
+					<tr>
+						<td ><a *ngIf="item.eStatus==1" (click)="updateOfrEStatus(item.ofrid)">撤销</a><span style="color: #aaa" *ngIf="item.eStatus!=1">撤销</span></td>		
+						<td >{{item.userNm}}</td>
+						<td>{{item.ctcTel}}</td>
+						<td>{{item.instNm}}</td>
+						<td>{{item.qqNo}}</td>
+						<td><span *ngIf="!item.cptlSource">--</span><span *ngIf="item.cptlSource==1">债金所</span><span *ngIf="item.cptlSource==2">QQ</span><span *ngIf="item.cptlSource==3">其它</span></td>
+						<td ><span  *ngIf="item.drc==1">融入</span><span *ngIf="item.drc==2">融出</span></td>
+						<!-- <td >{{item.trmTpInterval}}</td> -->
+						<td ><span *ngIf="item.ctlg==1">资金</span><span *ngIf="item.ctlg==2">结构性存款</span><span *ngIf="item.ctlg==3">银行同存</span><span *ngIf="item.ctlg==4">非银同存</span><span *ngIf="item.ctlg==5">协议存款</span></td>
+						
+						<td>{{item.dy1IntRtVal}}</td>
+						<td>{{item.dy7IntRtVal}}</td>
+						<td>{{item.dy14IntRtVal}}</td>
+						<td>{{item.dy21IntRtVal}}</td>
+						<td>{{item.mo1IntRtVal}}</td>
+						<td>{{item.mo2IntRtVal}}</td>
+						<td>{{item.mo3IntRtVal}}</td>
+						<td>{{item.mo6IntRtVal}}</td>
+						<td>{{item.mo9IntRtVal}}</td>
+						<td>{{item.yr1IntRtVal}}</td>
+						<td ><div class="ss" [tooltip]="item.insTus">{{item.insTus}}</div></td>
+						<!-- <td>{{item.yr1IntRtVal}}</td> -->
+
+						<td >{{item.rmrk}}</td>	
+						<td >{{item.eStatusNm}}</td>	
+						<td >{{item.ofrDt}}</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+
+
+		</tab>
+	</tabset>
+</div>
+<!-- 分页 -->
+<div class="row pagerow" >
+	<div class="pageshowleft">每页显示
+		<select #selectPage name="" id="msgNum" (change)="sizeData(selectPage.value,userList)">
+			<option #optionPage  *ngFor="let msgNumber of msgNumbers" value={{msgNumber.Number}}>{{msgNumber.Number}}</option>
+		</select>
+		条数据
+	</div>
+	<div class="pageshowmodle">
+		<span>{{currentPage}} / {{totalPages}}</span>页
+		<span>{{totalItems}}条数据</span>
+	</div>
+
+	<div class="pagefen">
+		<pagination  [firstText]="firstText" [lastText]="lastText" [previousText]="previousText" [nextText]="nextText" [maxSize]="maxSize" [totalItems]="totalItems" [itemsPerPage]="itemsPerPage" [(ngModel)]="currentPage" [boundaryLinks]="true" (pageChanged)='pageChanged($event)' (numPages)='pageNumChange($event)' class="pagination-sm"></pagination>
+	</div>
+</div>

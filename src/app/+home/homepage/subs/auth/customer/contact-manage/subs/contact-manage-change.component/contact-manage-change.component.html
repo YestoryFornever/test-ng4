@@ -1,0 +1,101 @@
+<div class="mian ">
+	<div class="header clearfix box">
+		<span class="head icon">|</span><span class="head" >联系人信息</span>
+	<div class="btnHeader head">
+			<button class="btn btn-primary" (click)="saveCon(save)">保存联系人</button>
+			<button class="btn btn-primary" (click)="delete.show()">放弃编辑</button>
+	</div>
+	</div>
+	
+</div>
+	<div class="newsMsg box">
+			<div class="newsHeader">联系人信息</div><br>
+			<div class="newsSurvey clearfix">
+				<div class="K-V clearfix"><span class="newsKey"><b class="red">*</b>姓名</span><input [(ngModel)]="contactDetial.contactName" class="newsVal"></div>
+				<div class="K-V clearfix"><span class="newsKey"><b class="red">*</b>机构全称</span><input #cm req placeholder="全部" class="newsVal" 
+                    [(ngModel)]="contactDetial.orgName" 
+                    [typeahead]="companylist" 
+                    (typeaheadOnSelect)="typeaheadOnCompanys($event)" 
+                    [typeaheadOptionField]="'organizationFullName'"          
+                    [ngModelOptions]="{standalone: true}"
+                    (blur)="blurCompanyOrg(cm)" 
+                      >
+                    <input type="text"  name="companyId" class="hide" [(ngModel)]="contactDetial.organizationId" [ngModelOptions]="{standalone: true}"></div>
+				<div class="K-V clearfix"><span class="newsKey"><b class="red">*</b>部门</span><input #dpt req  placeholder="全部" class="newsVal"  
+                    [(ngModel)]="contactDetial.deptName" 
+                    [typeahead]="partlist"  
+                    (typeaheadOnSelect)="typeaheadOnDepartments($event)" 
+                    [typeaheadOptionField]="'departmentName'"
+                    [ngModelOptions]="{standalone: true}"
+                     (blur)="blurCompanyDpt(dpt)">
+                    <input type="text"  name="departmentId" class="hide" [(ngModel)]="contactDetial.departmentId" [ngModelOptions]="{standalone: true}"></div>
+				<div class="K-V clearfix"><span class="newsKey">职位</span><input [(ngModel)]="contactDetial.position" class="newsVal"></div>
+				<div class="K-V clearfix"><span class="newsKey"><b class="red">*</b>联系电话</span><input [(ngModel)]="contactDetial.contactPhone" class="newsVal"></div>
+				<div class="K-V clearfix"><span class="newsKey"><b class="red"></b>工作电话1</span><input [(ngModel)]="contactDetial.workPhone" class="newsVal"></div>
+				<div class="K-V clearfix"><span class="newsKey"><b class="red"></b>工作电话2</span><input [(ngModel)]="contactDetial.workPhone2" class="newsVal"></div>
+				<div class="K-V clearfix"><span class="newsKey"><b class="red"></b>公司邮箱</span><input [(ngModel)]="contactDetial.companyMail" class="newsVal"></div>
+				<!-- <div class="K-V clearfix"><span class="newsKey"><b class="red">*</b>工作地址</span><input [(ngModel)]="contactDetial.workAddress" class="newsVal"></div> -->
+				<div class="K-V clearfix"><span class="newsKey">CRM用户备注</span><textarea class="form-control newsKeyTxt" [(ngModel)]="contactDetial.comments" placeholder="少于500字" maxlength="500"></textarea></div>
+			</div>
+	</div>
+
+<!-- 放弃 -->
+	<div bsModal #del="bs-modal" class="modal fade modelPon" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+	    <div class="modal-dialog modal-sm">
+	        <div class="modal-content noproblem">
+	            <div class="modal-header ">
+	                <button type="button" class="close" aria-label="Close" (click)="del.hide()">
+	                    <span aria-hidden="true">&times;</span>
+	                </button>
+	                <h4 class="modal-title">放弃编辑</h4>
+	            </div>
+	            <div class="modal-body contentxinxi">
+	                <div class="pp clearfix">是否放弃编辑？</div>
+	                <div class="btnstyle">
+	                    <button type="button" class="btn btn-default btnhoverlan" (click)="delCont(del)">删除</button>
+	                     <button type="button" class="btn btn-primary btnhoverju" (click)="del.hide()">取消</button>
+	                </div>
+	            </div>
+	        </div>
+	    </div>
+	</div>
+<!-- 保存 -->
+	<div bsModal #save="bs-modal" class="modal fade modelPon" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+	    <div class="modal-dialog modal-sm">
+	        <div class="modal-content noproblem">
+	            <div class="modal-header ">
+	                <button type="button" class="close" aria-label="Close" (click)="save.hide()">
+	                    <span aria-hidden="true">&times;</span>
+	                </button>
+	                <h4 class="modal-title">保存修改</h4>
+	            </div>
+	            <div class="modal-body contentxinxi">
+	                <div class="pp ">是否保存修改？</div>
+	                <div class="btnstyle">
+	                    <button type="button" class="btn btn-default btnhoverlan" (click)="saveContant(save)">保存</button>
+	                     <button type="button" class="btn btn-primary btnhoverju" (click)="save.hide()">取消</button>
+	                </div>
+	            </div>
+	        </div>
+	    </div>
+	</div>
+<!-- 删除 -->
+	<div bsModal #delete="bs-modal" class="modal fade modelPon" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+	    <div class="modal-dialog modal-sm">
+	        <div class="modal-content noproblem">
+	            <div class="modal-header ">
+	                <button type="button" class="close" aria-label="Close" (click)="delete.hide()">
+	                    <span aria-hidden="true">&times;</span>
+	                </button>
+	                <h4 class="modal-title">放弃修改</h4>
+	            </div>
+	            <div class="modal-body contentxinxi">
+	                <div class="pp ">是否放弃修改？</div>
+	                <div class="btnstyle">
+	                    <button type="button" class="btn btn-default btnhoverlan" (click)="toChange()">确定</button>
+	                     <button type="button" class="btn btn-primary btnhoverju" (click)="delete.hide()">取消</button>
+	                </div>
+	            </div>
+	        </div>
+	    </div>
+	</div>

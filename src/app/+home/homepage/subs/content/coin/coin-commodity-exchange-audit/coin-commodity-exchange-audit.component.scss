@@ -1,0 +1,134 @@
+*,
+*:focus {
+    outline: none;
+}
+
+.btn {
+    border-radius: 0;
+    padding: 5px 16px;
+}
+
+.btn-primary:hover {
+    background-color: #fb6300;
+    color: #fff;
+    border-color: #fb6300;
+}
+
+.btn-default:hover {
+    background-color: #337ab7;
+    color: #fff;
+    border-color: #2e6da4;
+}
+
+.btn-space {
+    margin-right: 5px;
+}
+
+div.coat {
+    overflow: auto;
+}
+
+.form-control {
+    display: inline;
+    width: auto!important;
+}
+
+.text-right {
+    float: left;
+    font-weight: bold;
+}
+
+.myCont {
+    display: inline-block;
+    margin-bottom: 10px;
+}
+
+.myCont label {
+    padding: 5px 10px;
+    margin: 0px;
+    /*font-weight: bold;*/
+}
+
+.sub {
+    margin-left: 20px;
+    margin-bottom: 10px;
+}
+
+#tableList {
+    margin: 14px 14px 0px!important;
+}
+
+.tableList {
+    padding: 0px!important;
+}
+
+.wrap {
+    overflow: visible;
+}
+
+.btnhoverju:hover {
+    background-color: #fb6300;
+    border-color: #fb6300;
+}
+
+.btnhoverlan:hover {
+    background-color: #377dc2;
+    color: #fff;
+    border-color: #377dc2;
+}
+
+.rowtop {
+    border-bottom: 1px #dadada solid;
+    padding: 15px 32px
+}
+
+.rowtop div {
+    font-weight: bold;
+    display: inline;
+}
+
+.rowtop button {
+    border-radius: 0;
+}
+
+.rowtop a {
+    border-radius: 0;
+}
+
+.rowtop2 {
+    border: 1px #dadada solid;
+    height: auto;
+    padding: 16px 0px 0 0px;
+    margin: 16px 16px 0 16px;
+}
+
+.rowtop2 input {
+    display: inline;
+    width: 140px;
+    margin-right: 16px;
+    margin-left: 5px;
+}
+.ng-valid[req], .ng-valid.req {
+  border-left: 5px solid #42A948; /* green */
+}
+
+
+/*��Ƭ*/
+
+:host >>> .tooltip-inner {
+    max-width: 260px;
+    width: 255px ;
+    height: 280px ;
+    padding-top: 10px;
+    background-color: #fff;
+    color: #333;
+    font-weight: 600;
+    text-align: left;
+    box-shadow: 0 0 20px rgba(0,0,0, 0.75);
+}
+:host >>> .tooltip .tooltip-arrow {
+  border-top-color: #009688;
+}
+:host >>>  .tooltip.in{
+    opacity: 1;
+}

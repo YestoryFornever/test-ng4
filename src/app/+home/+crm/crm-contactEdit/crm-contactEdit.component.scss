@@ -1,0 +1,36 @@
+.divbd{
+	height: 32px;
+    margin: 3px;
+    border-radius: 5px;
+    border: 1px #ddd solid;
+}
+.bsud span{
+	display: block;
+	width: 100%
+}
+.bsud select{
+	width: 115px;
+	display: inline-block;
+}
+.red{
+	color:red
+}
+main{
+	min-width:800px;
+}
+.left_box,.right_box{
+	min-width:400px;
+	max-width:550px;
+	width:50%;
+	float:left;
+}
+.btnInline{
+	height: 34px;
+    margin-bottom: 4px;
+}
+.condition label{
+	line-height: 24px;
+}
+main{
+	// overflow-x:auto
+}

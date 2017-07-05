@@ -1,0 +1,111 @@
+	<div class="header clearfix">
+		<span class="head icon">|</span><span class="head" >快讯列表</span>
+		<div class="btnHeader head">
+			<!-- <button class="btn btn-primary" routerLink='../sns-news-flash-change'  routerLinkActive="active">修改</button> -->
+			<!-- <button class="btn btn-primary">删除</button> -->
+		</div>
+	</div>
+
+	<div class="screen .clearfix">
+		<div class="condition container-fluid">
+			<span>发布时间</span><input [(ngModel)]="default.time_begin" class="selection"  type="date">&nbsp;到&nbsp;<input class="selection" [(ngModel)]="default.time_end" type="date">
+		</div>
+		<div class="condition container-fluid">
+			<span>快讯来源</span><input #cm req placeholder="全部" class="form-control kuan" 
+                    [(ngModel)]="source" 
+                    [typeahead]="resouce" 
+                    (typeaheadOnSelect)="typeaheadOnSelect($event)" 
+                    [typeaheadOptionField]="'businName'"          
+                    [ngModelOptions]="{standalone: true}" >
+		
+		</div>
+		<div class="condition container-fluid">
+			<span>是否被删除</span><select  [(ngModel)]="del" value='2' class="selection"><option value='2'>全部</option><option value='1'>是</option><option value='0'>否</option></select>
+		</div>
+		<button class="condition btn btn-primary sub" (click)="turnFirst()">查询</button>
+	</div>
+<!-- list -->
+	<div class="tableList " >
+		<div class = "loading" [ngClass]="setLoadClasses()" [ngStyle]="{'height': height }">
+			<div class="loader">
+				<div class="loader-inner">
+					<div class="loader-line-wrap">
+						<div class="loader-line"></div>
+					</div>
+					<div class="loader-line-wrap">
+						<div class="loader-line"></div>
+					</div>
+					<div class="loader-line-wrap">
+						<div class="loader-line"></div>
+					</div>
+					<div class="loader-line-wrap">
+						<div class="loader-line"></div>
+					</div>
+					<div class="loader-line-wrap">
+						<div class="loader-line"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<table class="table table-bordered table-hover " [ngClass]="setListClasses()">
+			<thead >
+				<tr>
+					<td class="info shortTxt" style="text-align: center">操作</td>
+					<td class="info ">快讯正文</td>
+					<td class="info middleTxt">发布时间</td>
+					<td class="info middleTxt">快讯来源</td>
+					<td class="info" style="width: 70px;text-align:center">已删除</td>
+					
+				</tr>
+			</thead>
+			<tbody  id="list" *ngFor="let new of infoList">
+			<tr>
+				<td class="table-hover" style="text-align:center"><a (click)="toChange(new.iid)"> 修改 </a>&nbsp;&nbsp;<a (click)="deleteNews(deleted,new)" *ngIf="!new.is_del">删除</a></td>
+				<td class="table-hover" >{{new.note}}</td>
+				<td class="table-hover">{{new.create_time}}</td>
+				<td class="table-hover">{{new.source}}</td>
+				<td class="table-hover" style="text-align: center"><span *ngIf="new.is_del==1">√</span></td></tr>
+			</tbody>
+		</table>
+	</div>
+
+<!-- 分页 -->
+	<div class="row pagerow" [ngClass]="setListClasses()">
+		<div class="pageshowleft">每页显示
+			<select #selectPage name="" id="msgNum" (change)="sizeData(selectPage.value,userList)">
+				<option #optionPage  *ngFor="let msgNumber of msgNumbers" value={{msgNumber.Number}}>{{msgNumber.Number}}</option>
+			</select>
+			条数据
+		</div>
+		<div class="pageshowmodle">
+			<span>{{currentPage}} / {{totalPages}}</span>页
+			<span>{{totalItems}}条数据</span>
+		</div>
+
+		<div class="pagefen">
+			<pagination  [firstText]="firstText" [lastText]="lastText" [previousText]="previousText" [nextText]="nextText" [maxSize]="maxSize" [totalItems]="totalItems" [itemsPerPage]="itemsPerPage" [(ngModel)]="currentPage" [boundaryLinks]="true" (pageChanged)='pageChanged($event)' (numPages)='pageNumChange($event)' class="pagination-sm"></pagination>
+		</div>
+	</div>
+
+
+<!-- 删除弹窗 -->
+	<div bsModal #deleted="bs-modal" class="modal fade modelPon" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-sm">
+			<div class="modal-content delete">
+				<div class="modal-header ">
+					<button type="button" class="close" aria-label="Close" (click)="deleted.hide()">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="modal-title">删除资讯</h4>
+				</div>
+				<div class="modal-body contentxinxi">
+					<div class="pp clearfix"><div class="win_head">处理理由</div><span>{{istip}}</span></div>
+					<div class="pp clearfix"><div class="win_head">备注</div><textarea class="visState" ></textarea></div>
+					<div class="btnstyle">
+						<button type="button" class="btn btn-default btnhoverlan" (click)="deleted.hide()">取消</button>
+						<button type="button" class="btn btn-primary btnhoverju" (click)="deletedInfo(deleted)">提交</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>

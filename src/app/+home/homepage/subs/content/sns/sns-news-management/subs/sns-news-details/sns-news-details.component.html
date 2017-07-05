@@ -1,0 +1,297 @@
+	<div class="header clearfix">
+		<span class="head icon">|</span><span class="head" >资讯详情</span>
+		<div class="btnHeader head">
+			<button class="btn btn-primary" (click)='toChange()'>修改</button>
+			<button class="btn btn-primary" #del (click)="deleteNews(deleted,new)"
+			 *ngIf="detial.is_del!=1">删除</button>
+			 <button  class="btn btn-primary" disabled="disabled" *ngIf="detial.is_del==1">已删除</button>
+			<button class="btn btn-primary" *ngIf="detial.is_tip==1" #del (click)="noProb(noProblem)" >判定无问题</button>
+			<button class="btn btn-primary" (click)="toList()">返回</button>
+			<!-- <button class="btn btn-primary" (click)="getInfoDetails()">刷新</button> -->
+		</div>
+	</div>
+
+	<div class="content row">
+		<div class=" col-md-8">
+		<div class="box oy">
+			<div class="newsHeader reportState">资讯正文 <span class="tip" *ngIf="detial.is_tip==1">被举报</span>
+				<!-- <ul *ngFor="let is_ of is herf" class="is_">
+					<li>item</li>
+				</ul> -->
+			</div>
+			<div class="inner">
+			
+			<h5  *ngIf="detial.bond_tags" class="clearfix" ><div style="font-weight:600;margin: 5px">个债标签：</div><div *ngFor="let item of bondName" >	<span style="float: left">{{item.bname}},</span></div></h5>
+				<h5 class="newsTitle">{{detial.title}}</h5>
+				<div #newsText>　
+				{{detial.content}} 
+				</div>
+			</div>
+		</div>
+		</div>
+		<div class=" col-md-4 ">
+		<div class="box oy">
+			<div class="newsHeader">基本信息</div><br>
+			<div class="newsSurvey clearfix" style="overflow-x: auto">
+				<div class="K-V"><span class="newsKey">发布时间</span><span class="newsVal">{{detial.create_time}} </span></div>
+				<!-- {{detial.category}} -->
+				<div class="K-V"><span class="newsKey">类别</span>
+					<span class="newsVal" >{{categoryResult}}</span>
+					<!-- <span class="newsVal"></span>
+					<span class="newsVal"></span> -->
+				</div>
+				<div class="K-V" *ngIf="0"><span class="newsKey" >整天聚合标签</span><span class="newsVal">无</span></div>
+				<div class="K-V" *ngIf="0"><span class="newsKey">时段聚合标签</span><span class="newsVal">无</span></div><br>
+				<div class="K-V"><span class="newsKey">来源</span><span class="newsVal">{{detial.source}} </span></div>
+				<div class="K-V"><span class="newsKey">来源正确名</span><span class="newsVal">{{detial.source_ok}} </span></div>
+				<div class="K-V"><span class="newsKey">来源链接</span><span class="newsVal"><a [href]=detial.source_path target="_Blank">{{detial.source_path}}</a></span></div>
+				<div class="K-V"><span class="newsKey">作者</span><span class="newsVal">{{detial.auth}}</span></div>
+				<div class="K-V"><span class="newsKey">源时间</span><span class="newsVal">{{detial.source_time}}</span></div>
+			</div>
+		</div>
+			
+		</div>
+		
+	</div>
+
+
+
+<div class="newsMsgOther col-md-12">
+	<div (click)="$event.preventDefault()">
+		<tabset [justified]="true">
+			<tab (select)="get($event)" heading="评论">
+				<div class="tableList "   [ngStyle]="{'height': height }">
+					<table style="width: 1400px" class="table table-bordered table-hover ">
+						<thead >
+							<tr>
+								<td class="info middleTxt" style="text-align: center">操作</td>
+								<td class="info longTxt">评论正文</td>
+								<td class="info middleTxt">评论时间</td>
+								<td class="info middleTxt">注册手机号</td>
+								<td class="info shortTxt">姓名</td>
+								<td class="info shortTxt">点赞量</td>
+								<td class="info shortTxt">被举报</td>
+								<td class="info shortTxt">有敏感词</td>
+								<td class="info shortTxt">已删除</td>
+							</tr>
+						</thead>
+						<tbody   *ngFor="let userMsg of Comment">
+							<tr  class="Userlist">
+								<td class="table-hover" style="text-align: center"><span  class="verify" *ngIf="userMsg.is_del!=1" (click)="deletedCom(deletedC,userMsg)" >删除</span>&nbsp;&nbsp;<span class="verify" *ngIf="userMsg.is_tip==1"
+								(click)="noprob(noProblem,userMsg)" 
+								>无问题</span></td>
+								<td class="table-hover shareContent" ></td>
+								<td class="table-hover middleTxt" #userMsgName>{{userMsg.time}}</td>
+								<td class="table-hover">{{userMsg.user_phone}}</td>
+								<td class="table-hover">{{userMsg.user_name}}</td>
+								<td class="table-hover">{{userMsg.like_cnt}}</td>
+								<td class="table-hover"><span *ngIf="userMsg.is_tip==1">√</span></td>
+								<td class="table-hover"><span *ngIf="userMsg.special_word!=''">√</span></td>
+								<td class="table-hover" ><span *ngIf="userMsg.is_del==1">√</span></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</tab>
+			<tab (select)="get($event)" heading="浏览">
+				<div class="tableList "   [ngStyle]="{'height': height }">
+					<table class="table table-bordered table-hover ">
+						<thead >
+							<tr>
+								<td class="info">浏览用户姓名</td>
+								<td class="info ">浏览时间</td>						
+							</tr>
+						</thead>
+						<tbody *ngFor="let userMsg of ListView">
+							<tr class="Userlist">
+								<td class="table-hover">{{userMsg.user_name}}</td>
+								<td class="table-hover">{{userMsg.view_time}}</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</tab>
+			<tab (select)="get($event)" heading="点赞">
+				<div class="tableList "   [ngStyle]="{'height': height }">
+					<table class="table table-bordered table-hover ">
+						<thead >
+							<tr>
+								<td class="info ">点赞用户姓名</td>
+								<td class="info ">点赞时间</td>						
+							</tr>
+						</thead>
+						<tbody   *ngFor="let userMsg of ListLike">
+							<tr class="Userlist">
+								<td class="table-hover">{{userMsg.user_name}}</td>
+								<td class="table-hover">{{userMsg.like_time}}</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</tab>
+			<tab (select)="get($event)" heading="站内分享">
+				<div class="tableList "   [ngStyle]="{'height': height }">
+					<table class="table table-bordered table-hover ">
+						<thead >
+							<tr>
+								<td class="info ">分享用户姓名</td>
+								<td class="info ">分享时间</td>				
+							</tr>
+						</thead>
+						<tbody   *ngFor="let userMsg of ListRepost">
+							<tr class="Userlist">
+								<td class="table-hover" >{{userMsg.user_name}}</td>
+								<td class="table-hover middleTxt">{{userMsg.repost_time}}</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</tab>
+			<tab (select)="get($event)" heading="站外分享">
+				<div class="tableList "   [ngStyle]="{'height': height }">
+					<table class="table table-bordered table-hover ">
+						<thead >
+							<tr>
+								<td class="info ">分享用户姓名</td>
+								<td class="info ">分享时间</td>				
+							</tr>
+						</thead>
+						<tbody   *ngFor="let userMsg of ListRepostOut">
+							<tr class="Userlist">
+								<td class="table-hover" >{{userMsg.user_name}}</td>
+								<td class="table-hover middleTxt">{{userMsg.repost_time}}</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</tab>
+			<tab (select)="get($event)" heading="举报">
+				<div class="tableList "   [ngStyle]="{'height': height }">
+					<table class="table table-bordered table-hover ">
+						<thead >
+							<tr>
+								<td class="info ">举报用户姓名</td>
+								<td class="info middleTxt">举报时间</td>	
+								<td class="info middleTxt">举报原因</td>	
+								<td class="info middleTxt">举报原因补充说明</td>					
+							</tr>
+						</thead>
+						<tbody   *ngFor="let userMsg of ListTip">
+							<tr class="Userlist">
+								<td class="table-hover" >{{userMsg.user_name}}</td>
+								<td class="table-hover">{{userMsg.tip_time}}</td>
+								<td class="table-hover" >{{userMsg.tip_cause}}</td>
+								<td class="table-hover" >{{userMsg.tip_content}}</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</tab>
+			<tab (select)="get($event)" heading="管理员处理">
+				<div class="tableList "   [ngStyle]="{'height': height }">
+					<table class="table table-bordered table-hover ">
+						<thead >
+							<tr>
+								<td class="info">处理用户</td>
+								<td class="info middleTxt">处理时间</td>	
+								<td class="info">处理方式</td>
+								<td class="info">处理理由</td>
+								<td class="info">备注</td>					
+							</tr>
+						</thead>
+						<tbody   *ngFor="let userMsg of ListManage">
+							<tr class="Userlist">
+								<td class="table-hover" >{{userMsg.user_name}}</td>
+								<td class="table-hover" >{{userMsg.manage_time}}</td>
+								<td class="table-hover" ><span *ngIf="userMsg.opt_type==1">删除</span><span *ngIf="userMsg.opt_type==2">修改</span><span *ngIf="userMsg.opt_type==3">判定无问题</span></td>
+								<td class="table-hover" >{{userMsg.opt_cause}}</td>
+								<td class="table-hover middleTxt" >{{userMsg.note}}</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</tab>
+		</tabset>
+	</div>
+</div>
+
+
+<!-- 分页 -->
+	<div class="row pagerow">
+		<div class="pageshowleft">每页显示
+			<select #selectPage name="" id="msgNum" (change)="sizeData(selectPage.value,userList)">
+				<option #optionPage  *ngFor="let msgNumber of msgNumbers" value={{msgNumber.Number}}>{{msgNumber.Number}}</option>
+			</select>
+			条数据
+		</div>
+		<div class="pageshowmodle">
+			<span>{{currentPage}} / {{totalPages}}</span>页
+			<span>{{totalItems}}条数据</span>
+		</div>
+
+		<div class="pagefen">
+			<pagination  [firstText]="firstText" [lastText]="lastText" [previousText]="previousText" [nextText]="nextText" [maxSize]="maxSize" [totalItems]="totalItems" [itemsPerPage]="itemsPerPage" [(ngModel)]="currentPage" [boundaryLinks]="true" (pageChanged)='pageChanged($event,allcheck)' (numPages)='pageNumChange($event)' class="pagination-sm"></pagination>
+		</div>
+	</div>
+<!--删除弹窗-->
+<div bsModal #deleted="bs-modal" class="modal fade modelPon" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-sm">
+		<div class="modal-content delete">
+			<div class="modal-header ">
+				<button type="button" class="close" aria-label="Close" (click)="deleted.hide()">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<h4 class="modal-title">删除资讯</h4>
+			</div>
+			<div class="modal-body contentxinxi">
+				<div class="pp clearfix"><div class="win_head">处理理由</div><span>{{istip}}</span></div>
+				<div class="pp clearfix"><div class="win_head" >备注</div><textarea class="visState" [(ngModel)]="del_note"></textarea></div>
+				<div class="btnstyle">
+					<button type="button" class="btn btn-default btnhoverlan" (click)="deleted.hide()">取消</button>
+					<button type="button" class="btn btn-primary btnhoverju" (click)="deletedInfo(deleted)">提交</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!--删除评论弹窗-->
+<div bsModal #deletedC="bs-modal" class="modal fade modelPon" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-sm">
+		<div class="modal-content delete">
+			<div class="modal-header ">
+				<button type="button" class="close" aria-label="Close" (click)="deletedC.hide()">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<h4 class="modal-title">删除评论</h4>
+			</div>
+			<div class="modal-body contentxinxi">
+				<div class="pp clearfix"><div class="win_head">处理理由</div><span>{{istip}}</span></div>
+				<div class="pp clearfix"><div class="win_head" >备注</div><textarea class="visState" [(ngModel)]="del_noteCom"></textarea></div>
+				<div class="btnstyle">
+					<button type="button" class="btn btn-default btnhoverlan" (click)="deletedC.hide()">取消</button>
+					<button type="button" class="btn btn-primary btnhoverju" (click)="deletedComment(deletedC)">提交</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- 无问题 -->
+<div bsModal #noProblem="bs-modal" class="modal fade modelPon" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content noproblem">
+            <div class="modal-header ">
+                <button type="button" class="close" aria-label="Close" (click)="noProblem.hide()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">资讯判定为无问题</h4>
+            </div>
+            <div class="modal-body contentxinxi" style="height:200px">
+                <div class="pp clearfix"><div class="win_head" style="width:40px">备注</div><textarea [(ngModel)]="note" class="visState" ></textarea></div>
+                <div class="btnstyle">
+                    <button type="button" class="btn btn-default btnhoverlan" (click)="noProblem.hide()">取消</button>
+                    <button type="button" class="btn btn-primary btnhoverju" (click)="setTip(noProblem)">提交</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

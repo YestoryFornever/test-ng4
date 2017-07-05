@@ -1,0 +1,357 @@
+<div class="header clearfix" >
+<div>
+	<span class="head icon">|</span><span class="head" >报价解析分析</span>
+	<div class="condition container-fluid" style="margin-top: 15px">
+			<button type="button" class="btn btn-primary" (click)="detialTo()">维护关键词</button>
+	</div>
+	<div class="bondBox">
+		<div class="condition container-fluid">
+			<span><b style="color:red">*</b>词典分类</span>
+			<select class="selection" [(ngModel)]="addKeyWord.keyWordType">
+				<option [value]="item.name" *ngFor="let item of dicType">{{item.name}}</option>
+			</select>
+		</div>
+		<div class="condition container-fluid" *ngIf="!reg.test(addKeyWord.keyWordType)">
+			<span><b style="color:red">*</b>关键词分类</span>
+			<select [(ngModel)]="addKeyWord.analysisType" class="selection">
+				<option [value]="item.name" *ngFor="let item of keywordType">{{item.name}}</option>
+			</select>
+		</div>
+		<div class="condition container-fluid">
+			<span><b style="color:red">*</b>关键词名称</span>
+			<input type="" [(ngModel)]="addKeyWord.keyWord" name="" class="selection">
+		</div>
+		<div class="condition container-fluid" *ngIf="reg.test(addKeyWord.keyWordType)">
+			<span><b style="color:red">*</b>权重</span>
+			<input [(ngModel)]="addKeyWord.weight" type="" name="" class="selection">
+		</div>
+		<div class="condition container-fluid" style="float: right;margin-top: 15px">
+			<button type="button" class="btn btn-primary" (click)="addAnalysisKeyWord()" >保存</button>
+		</div>
+		<div class="condition container-fluid" style="float: right;margin-top: 15px">
+			<button type="button" class="btn btn-primary"  (click)="cleanAnalysisKeyWord()">重置</button>
+		</div>
+</div>	
+</div>
+	
+</div>
+
+<div class="screen clearfix" >
+		<div class="condition container-fluid" >
+			<span><b style="color:red">*</b>数据分类</span>
+			<select [(ngModel)]="default.analysisType" class="selection">
+				<option value="">全部</option>
+				<option value="线上资金">线上资金</option><option value="线下资金">线下资金</option><option value="资金">资金</option><option value="债一级">债一级</option><option value="债二级">债二级</option><option value="同业存单">同业存单</option><option value="其它">其它</option>
+			</select>
+		</div>
+		<div class="condition container-fluid">
+		<span>数据日期</span>
+			<p-calendar [(ngModel)]="startDate" [maxDate]="endDate"    [locale]="en" [showTime]="true"></p-calendar>
+			<!-- <input class="selection"  type="date" [(ngModel)]="startDate"> -->
+			&nbsp;到&nbsp;
+			<p-calendar [(ngModel)]="endDate"  [minDate]="startDate"  [locale]="en" [showTime]="true"></p-calendar>
+		</div>
+		<div class="condition container-fluid" style="float: right">
+			<button type="button" class="btn btn-primary" (click)="turnFirst()">查询</button>
+		</div>
+</div>
+<div class="tableList " style="overflow-x: scroll"  style="min-width: 1260px">		
+	<table class="table table-bordered table-hover " >
+	 <thead>
+	 	<tr>
+	 		<td  class="info" style="width: 60px">操作</td>
+	 		<td  class="info" style="width: 160px">数据分类</td>
+	 		<td class="info" >报价内容</td>
+	 		<td class="info" >解析结果</td>
+	 	</tr>
+	 </thead>
+	 <tbody>
+	 	<tr *ngFor="let item of QuoteInfList">
+	 		<td><a (click)="showEdit(bondEdit,item.quoteInfId,item.speakerQq)"><img src='../../../../../../../../../public/images/icon_leftbar_02_over.png'></a ></td>
+	 		<td><select #select (change)="updateQuoteInfType(item.quoteInfId,select)" [(ngModel)]="item.analysisType" style="border: none;width: 140px;height: 34px;font-size: 16px"><option value="线上资金">线上资金</option><option value="线下资金">线下资金</option><option value="资金">资金</option><option value="债一级">债一级</option><option value="债二级">债二级</option><option value="同业存单">同业存单</option><option value="其它">其它</option></select></td>
+	 		<td><div class="conMsg" style="height: 34px" [tooltip]="item.message">{{item.message}}</div></td>
+	 		<td><div class="conMsg" style="height: 34px" [tooltip]="item.analysisResult">{{item.analysisResult}}</div></td>
+	 	</tr>
+	 </tbody>
+	</table>
+</div>
+<!-- 分页 -->
+	<div class="row pagerow" >
+		<div class="pageshowleft">每页显示
+			<select #selectPage name="" id="msgNum" (change)="sizeData(selectPage.value,userList)" value='30'>
+				<option #optionPage  *ngFor="let msgNumber of msgNumbers" [value]="msgNumber.Number">{{msgNumber.Number}}</option>
+			</select>
+			条数据
+		</div>
+		<div class="pageshowmodle">
+			<span>{{currentPage}} / {{totalPages}}</span>页
+			<span>{{totalItems}}条数据</span>
+		</div>
+
+		<div class="pagefen">
+			<pagination  [firstText]="firstText" [lastText]="lastText" [previousText]="previousText" [nextText]="nextText" [maxSize]="maxSize" [totalItems]="totalItems" [itemsPerPage]="itemsPerPage" [(ngModel)]="currentPage" [boundaryLinks]="true" (pageChanged)='pageChanged($event)' (numPages)='pageNumChange($event)' class="pagination-sm"></pagination>
+		</div>
+	</div>
+
+
+	<!-- 编辑债券报价 -->
+<div bsModal #bondEdit="bs-modal" class="modal fade modelPon" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content clearfix" >
+            <div class="modal-header">
+                <button type="button" class="close" aria-label="Close" (click)="bondEdit.hide()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">编辑债券报价</h4>
+            </div>
+            <div class="modal-body contentxinxi">
+	            <div class="condition container-fluid">
+					<textarea style="width:750px;height: 43px" [(ngModel)]="bondInfo.message"></textarea>
+					<button style="margin-top:-40px" type="button" class="btn btn-primary" (click)="analysisQuoteInf()">解析</button>
+				</div>
+
+				<div class="condition container-fluid" style="margin: 15px">
+						<button type="button" class="btn btn-primary" (click)="addDicIcon()"><span *ngIf="!addDic">添加字典</span><span *ngIf="addDic">取消添加</span></button>
+				</div>
+				<div style="float:right">
+					<div class="condition container-fluid" style="margin: 15px">
+						<button type="button" class="btn btn-primary"  (click)="bondEdit.hide()">取消</button>
+					</div>
+					<div class="condition container-fluid" style="margin: 15px">
+							<button type="button" class="btn btn-primary" (click)="addQuoteInf()">提交</button>
+					</div>
+				</div>
+				<div *ngIf="addDic">
+					<div class="bondBox" style="border-top: 1px solid #aaa;padding-top: 10px">
+						<div class="condition container-fluid">
+							<span><b style="color:red">*</b>词典分类</span>
+							<select class="selection" [(ngModel)]="addKeyWord.keyWordType">
+								<!-- <option value="">全部</option> -->
+								<option [value]="item.name" *ngFor="let item of dicType">{{item.name}}</option>
+							</select>
+						</div>
+						<div class="condition container-fluid" *ngIf="!reg.test(addKeyWord.keyWordType)">
+							<span><b style="color:red">*</b>关键词分类</span>
+							<select [(ngModel)]="addKeyWord.analysisType" class="selection">
+								<!-- <option value="">全部</option> -->
+								<option [value]="item.name" *ngFor="let item of keywordType">{{item.name}}</option>
+							</select>
+						</div>
+						<div class="condition container-fluid">
+							<span><b style="color:red">*</b>关键词名称</span>
+							<input [(ngModel)]="addKeyWord.keyWord" type="" name="" class="selection">
+						</div>
+						<div class="condition container-fluid" *ngIf="reg.test(addKeyWord.keyWordType) ">
+							<span><b style="color:red">*</b>权重</span>
+							<input [(ngModel)]="addKeyWord.weight" type="" name="" class="selection">
+						</div>
+						<div class="condition container-fluid" style="float: right;margin: 15px 0">
+							<button type="button" class="btn btn-primary"  (click)="addAnalysisKeyWord()">保存</button>
+						</div>
+						<div class="condition container-fluid" style="float: right;margin: 15px 0">
+							<button type="button" class="btn btn-primary"  (click)="cleanAnalysisKeyWord()">重置</button>
+						</div>
+					</div>
+				</div>
+
+				<div class="tableList " style="min-width: 700px;max-height: 400px;overflow-y: scroll ">
+				<!-- bondRes:any=[] -->
+	<!-- upRes:any=[] -->
+	<!-- downRes:any=[] -->
+				<div>-----------------债券报价-----------------</div>
+					<table class="table table-bordered table-hover " >
+					 <thead>
+					 	<tr>
+					 		<td class="info" >QQ号</td>
+					 		<td class="info" >方向</td>
+					 		<td class="info" >债券代码</td>
+					 		<td class="info" >债券简称</td>
+					 		<td class="info" >交易数量</td>
+					 		<td class="info" >收益率</td>
+					 		<td class="info" >备注</td>
+					 	</tr>
+					 </thead>
+					 <tbody>
+					 	<tr *ngFor="let item of bondRes">
+					 		<td>{{qq}}</td>
+					 		<td><input [(ngModel)]="item.drc" class="edi" type="" name="" ></td>
+					 		<td><input [(ngModel)]="item.bondCd" class="edi" type="" name=""></td>
+					 		<td><input [(ngModel)]="item.bondShrtnm" class="edi" type="" name=""></td>
+					 		<td><input [(ngModel)]="item.num" class="edi" type="" name=""></td>
+					 		<td><input [(ngModel)]="item.intrt" class="edi" type="" name=""></td>
+					 		<td><input [(ngModel)]="item.rmrk" class="edi" type="" name=""></td>
+					 	</tr>
+					 </tbody>
+					</table>
+				</div>
+				
+				<div class="tableList "  style="min-width: 700px;max-height: 400px;overflow-y: scroll ">
+				<div>-----------------线上资金报价-----------------</div>
+					<table class="table table-bordered table-hover " >
+					 <thead>
+					 	<tr >
+					 		<td class="info" >QQ号</td>
+					 		<td class="info" >方向</td>
+					 		<td class="info" >交易金额</td>
+					 		<td class="info" >期限</td>
+					 		<td class="info" >利率</td>
+					 		<td class="info" >模式</td>
+					 		<td class="info" >限制</td>
+					 		<td class="info" >备注</td>
+					 	</tr>
+					 </thead>
+					 <tbody>
+					 	<tr *ngFor="let item of upRes">
+					 		<td>{{qq}}</td>
+					 		<td><input [(ngModel)]="item.drc"  class="edi" type="" name=""></td>
+					 		<td><input [(ngModel)]="item.num"  class="edi" type="" name=""></td>
+					 		<td><input [(ngModel)]="item.trm"  class="edi" type="" name=""></td>
+					 		<td><input [(ngModel)]="item.intrt"  class="edi" type="" name=""></td>
+					 		<td><input [(ngModel)]="item.mode"  class="edi" type="" name=""></td>
+					 		<td><input [(ngModel)]="item.txnRst"  class="edi" type="" name=""></td>
+					 		<td><input [(ngModel)]="item.rmrk"  class="edi" type="" name=""></td>
+					 	</tr>
+					 </tbody>
+					</table>
+				</div>
+
+				<div class="tableList "  style="min-width: 700px;max-height: 400px;overflow-y: scroll ">
+				<div>-----------------线下资金报价-----------------</div>
+					<table class="table table-bordered table-hover " >
+					 <thead>
+					 	<tr >
+					 		<td class="info" >QQ号</td>
+					 		<td class="info" >方向</td>
+					 		<td class="info" >期限</td>
+					 		<td class="info" >利率</td>
+					 		<td class="info" >种类</td>
+					 		<td class="info" >备注</td>
+					 	</tr>
+					 </thead>
+					 <tbody>
+					 	<tr *ngFor="let item of downRes">
+					 		<td>{{qq}}</td>
+					 		<td><input [(ngModel)]="item.drc" class="edi" type="" name=""></td>
+					 		<td><input [(ngModel)]="item.trm" class="edi" type="" name=""></td>
+					 		<td><input [(ngModel)]="item.intrt" class="edi" type="" name=""></td>
+					 		<td><input [(ngModel)]="item.ctlg" class="edi" type="" name=""></td>
+					 		<td><input [(ngModel)]="item.rmrk" class="edi" type="" name=""></td>
+					 	</tr>
+					 </tbody>
+					</table>
+				</div>
+				
+            </div>
+        </div>
+    </div>
+</div>
+
+	<!-- 编辑线上报价 -->
+<!-- <div bsModal #bondUpEdit="bs-modal" class="modal fade modelPon" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content clearfix" >
+            <div class="modal-header">
+                <button type="button" class="close" aria-label="Close" (click)="bondUpEdit.hide()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">编辑线上资金报价</h4>
+            </div>
+            <div class="modal-body contentxinxi">
+	            <div class="condition container-fluid">
+					<textarea style="width:750px;height: 43px"></textarea>
+					<button style="margin-top:-40px" type="button" class="btn btn-primary" (click)="detialTo()">解析</button>
+				</div>
+
+				
+
+				<div class="tableList " style="overflow-x: scroll"  style="min-width: 700px">
+				<div>线上资金报价</div>
+					<table class="table table-bordered table-hover " >
+					 <thead>
+					 	<tr>
+					 		<td class="info" >QQ号</td>
+					 		<td class="info" >方向</td>
+					 		<td class="info" >交易金额</td>
+					 		<td class="info" >利率</td>
+					 		<td class="info" >模式</td>
+					 		<td class="info" >限制</td>
+					 		<td class="info" >备注</td>
+					 	</tr>
+					 </thead>
+					 <tbody>
+					 	<tr>
+					 		<td>502394665</td>
+					 		<td><input class="edi" type="" name=""></td>
+					 		<td><input class="edi" type="" name=""></td>
+					 		<td><input class="edi" type="" name=""></td>
+					 		<td><input class="edi" type="" name=""></td>
+					 		<td><input class="edi" type="" name=""></td>
+					 		<td><input class="edi" type="" name=""></td>
+					 	</tr>
+					 </tbody>
+					</table>
+				</div>
+				<div class="condition container-fluid" style="margin: 15px">
+						<button type="button" class="btn btn-primary" (click)="addDicIcon()"><span *ngIf="!addDic">添加字典</span><span *ngIf="addDic">取消添加</span></button>
+				</div>
+				<div style="float:right">
+					<div class="condition container-fluid" style="margin: 15px">
+						<button type="button" class="btn btn-primary">取消</button>
+					</div>
+					<div class="condition container-fluid" style="margin: 15px">
+							<button type="button" class="btn btn-primary">提交</button>
+					</div>
+				</div>
+				<div *ngIf="addDic">
+					<div class="bondBox" style="border-top: 1px solid #aaa;padding-top: 10px">
+						<div class="condition container-fluid">
+							<span><b style="color:red">*</b>词典分类</span>
+							<select class="selection" [(ngModel)]="bond">
+								<option value="">全部</option>
+								<option [value]="item.id" *ngFor="let item of BondAtype">{{item.name}}</option>
+							</select>
+						</div>
+						<div class="condition container-fluid" *ngIf="bond==1">
+							<span><b style="color:red">*</b>关键词分类</span>
+							<select [(ngModel)]="keyWord" class="selection">
+								<option value="">全部</option>
+								<option [value]="item.id" *ngFor="let item of keywordType">{{item.name}}</option>
+							</select>
+						</div>
+						<div class="condition container-fluid">
+							<span><b style="color:red">*</b>关键词名称</span>
+							<input type="" name="" class="selection">
+						</div>
+						<div class="condition container-fluid" *ngIf="bond==2">
+							<span><b style="color:red">*</b>权重</span>
+							<input type="" name="" class="selection">
+						</div>
+						<div class="condition container-fluid" style="float: right;margin: 15px 0">
+							<button type="button" class="btn btn-primary" >保存</button>
+						</div>
+						<div class="condition container-fluid" style="float: right;margin: 15px 0">
+							<button type="button" class="btn btn-primary">重置</button>
+						</div>
+					</div>
+				</div>
+            </div>
+        </div>
+    </div>
+</div> -->
+
+	<!-- 编辑债券报价 -->
+<!-- <div bsModal #bondDownEdit="bs-modal" class="modal fade modelPon" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content clearfix" >
+            <div class="modal-header">
+                <button type="button" class="close" aria-label="Close" (click)="bondDownEdit.hide()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">编辑线下资金报价</h4>
+            </div>
+            <div class="modal-body contentxinxi">
+	           
+            </div>
+        </div>
+    </div>
+</div> -->

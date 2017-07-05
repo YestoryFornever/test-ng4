@@ -1,0 +1,43 @@
+<div class="header clearfix">
+	<span class="head icon">|</span><span class="head" >用户日历</span>
+	<div class="btnHeader head">
+        <button class="btn btn-primary" (click)="returnTo()">返回</button>
+    </div>
+</div>
+
+<div class="tableList " >
+	<div>当前用户：<span style="font-weight: 500">{{Name}}</span></div>		
+	<table class="table table-bordered table-hover " >
+		<thead >
+			<tr>
+				<td class="info longTxt">时间</td>
+				<td class="info ">内容</td>
+			</tr>
+		</thead>
+		<tbody  id="list" *ngFor="let user of userLists">
+			<tr #userList class="Userlist" >
+				<td>{{user.dateTime}}</td>
+				<td>{{user.content}}</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+
+<!-- pagination -->
+<div class="row pagerow">
+	<div class="pageshowleft">每页显示
+		<select #selectPage name="" id="msgNum" (change)="sizeData(selectPage.value,userList)" [(ngModel)]="itemsPerPage">
+			<option #optionPage  *ngFor="let msgNumber of msgNumbers" value={{msgNumber.Number}}>{{msgNumber.Number}}</option>
+		</select>
+		条数据
+	</div>
+	<div class="pageshowmodle">
+		<span>{{currentPage}} / {{totalPages}}</span>页
+		<span>{{totalItems}}条数据</span>
+	</div>
+
+	<div class="pagefen">
+		<pagination  [firstText]="firstText" [lastText]="lastText" [previousText]="previousText" [nextText]="nextText" [maxSize]="maxSize" [totalItems]="totalItems" [itemsPerPage]="itemsPerPage" [(ngModel)]="currentPage" [boundaryLinks]="true" (pageChanged)='pageChanged($event)' (numPages)='pageNumChange($event)' class="pagination-sm"></pagination>
+	</div>
+</div>
+

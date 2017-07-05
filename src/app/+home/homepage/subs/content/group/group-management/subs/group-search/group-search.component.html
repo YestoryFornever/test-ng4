@@ -1,0 +1,97 @@
+<!--search page-->
+<div class="row col-xs-12 col-md-12" style="padding-left:35px;">
+   <div class="searchsection"> 
+       
+        <div style="margin:24px 0">
+            <input type="text" placeholder="请输入群名或群主对群进行搜索" class="searchtext" [(ngModel)]="default.groupGrpNm"/>
+            <input type="submit" value="搜索" class="btn btn-primary btn1 btnhoverju" (click)="onSubmit(ofg)"/>
+            <input type="button" class="btn btn-primary btn1 btnhoverju" value="新建群" routerLink='../group-built' routerLinkActive="active"/>
+        </div>
+      
+       <div class="col-xs-12 col-md-12" style="clear:both;border:1px #ccc solid;margin-top:30px;">
+            <div class="row" style="padding:5px 0;">
+                <div class="col-xs-2"> 
+                    <input type="button" class="btn btn-primary btn1 btnhoverju" value="默认排序" (click)="defaultSort(ofg,fro,dis)"/>
+                </div>
+                <div class="col-xs-3">
+                    <div class="peoplenum">根据建群时间排序
+                       <div class="topArrow" (click)="defaultTimeAsc(ofg,fro,dis)"></div>
+                       <div class="bottomArrow" (click)="defaultTimeDesc(ofg,fro,dis)"></div> 
+                    </div>   
+                </div>
+                <div class="col-xs-2" >
+                    <div class="peoplenum"> 据群人数排序
+                       <div class="topArrow" (click)="defaultAsc(ofg,fro,dis)"></div>
+                       <div class="bottomArrow" (click)="defaultDesc(ofg,fro,dis)"></div> 
+                    </div>      
+                </div>
+            </div>
+            <div class="row" style="padding:10px 0;border-top:1px #ccc solid;">
+                <div class="col-xs-2"> 
+                    <input type="checkbox" name="radio" checked="checked" #ofg (change)="officialGroup(ofg)"/>官方群
+                </div> 
+                <!--<div class="col-xs-2">
+                    <input type="checkbox" [(ngModel)]="groupInformItem.OfficialManagement"/>官方管理
+                </div>-->
+                <div class="col-xs-2">
+                    <input type="checkbox" name="radio" #fro (change)="frozenUser(fro,ofg,dis)"/>冻结的群
+                </div>
+                <div class="col-xs-2"> 
+                    <input type="checkbox"  name="radio" #dis (change)="dissolve(dis,fro,ofg)"/>解散的群
+                </div>
+                <div>
+                   <input type="text" class="form-control input1" [(ngModel)]="default.groupaStaffTotNum">~~
+                   <input type="text" class="form-control input1" [(ngModel)]="default.groupaStaffUplm">人
+                   <input type="button" class="btn btn-primary btnhoverju btn2" value="搜索" (click)="peopleNum()"/>
+                </div>
+            </div>      
+        </div>
+        <div class="row">
+        </div>
+       <div class="border">
+           <table class="table table-hover tablestyle table-border">
+               <thead >
+                   <tr class="active">
+                       <td>是否官方群</td>
+                       <!--<td>是否官方管理</td> !-->
+                       <td>群名</td>
+                       <td>群成员数量</td>
+                       <td>群主注册手机号</td>
+                       <td>群主姓名</td>
+                       <td>创建时间</td> 
+                   </tr>
+               </thead>
+               <tbody  #XXX id="list" >
+                   <tr #userList  [ngStyle]="{'background-color': color }" class="Userlist"  *ngFor="let list of grouplist">
+                       <td class="table-hover">{{list.groupTpName}}</td>
+                       <!--<td class="table-hover">{{groupSearchL.OfficialManagement}}</td>-->
+                       <td class="table-hover" (click)="checkgroup(list.groupGrpid)"><a>{{list.groupGrpNm}}</a></td>
+                       <td class="table-hover">{{list.groupaStaffTotNum}}</td>
+                       <td class="table-hover">{{list.loginName}}</td>
+                       <td class="table-hover" (click)="checkGroupMain(list.userId)"><a>{{list.usrNm}}</a></td>
+                       <td class="table-hover">{{list.createTime}}</td>                       
+                   </tr> 
+
+               </tbody> 
+           </table> 
+       </div>
+        <div class="row pagerow">
+            <div class="pageshowleft">每页显示
+                <select #selectPage name="" id="msgNum" (change)="sizeData(selectPage.value,userList)" [(ngModel)]="itemsPerPage">
+                    <option #optionPage  *ngFor="let msgNumber of msgNumbers" value={{msgNumber.Number}}>{{msgNumber.Number}}</option>
+                </select>
+                条数据
+            </div>
+            <div class="pageshowmodle">
+                <span>{{currentPage}} / {{totalPages}}</span>页
+                <span>{{totals}}条数据</span>
+            </div>
+
+            <div class="pagefen">
+                <pagination  [firstText]="firstText" [lastText]="lastText" [previousText]="previousText" [nextText]="nextText" [maxSize]="maxSize" [totalItems]="totals" [itemsPerPage]="itemsPerPage" [(ngModel)]="currentPage" [boundaryLinks]="true" (pageChanged)='pageChanged($event)' (numPages)='pageNumChange($event)' class="pagination-sm"></pagination>
+            </div>
+        </div>
+
+   </div>
+    
+</div>

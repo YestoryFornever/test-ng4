@@ -1,0 +1,174 @@
+<div class="header clearfix">
+    <span class="head icon">|</span><span class="head">用户反馈详情
+			
+			<!-- <i style="color :red; font-style:normal;" *ngIf="detailList.feedbackState=='已忽略'">已忽略</i>
+			<i style="color :red; font-style:normal;" *ngIf="detailList.feedbackState=='已采纳'">已采纳</i> -->
+		</span>
+    <div class="btnHeader head">
+        <!-- <button class="btn btn-primary">修改</button> -->
+<!--         <button class="btn btn-primary" *ngIf="detailList.feedbackState=='待处理'" (click)="handlerUserBack('3')">采纳</button>
+        <button class="btn btn-primary" *ngIf="detailList.feedbackState=='待处理'" (click)="handlerUserBack('2')">忽略</button> -->
+    </div>
+</div>
+<div class="content">
+    <div class="col-xs-4 pull-right ">
+        <div class="newsMsg ">
+            <div class="newsHeader">用户信息</div>
+            <div class="newsSurvey box"> 
+                <div class="col-xs-12 marB10">
+                    <span class="col-xs-3 padding0">注册手机</span><span class="col-xs-8">{{userInfo.loginName}}</span>
+                </div>
+                <div class="col-xs-12 marB10">
+                    <span class="col-xs-3 padding0">姓名</span>
+                    <span class="col-xs-8">{{userInfo.userName}}</span>
+                </div>
+                <div class="col-xs-12 marB10">
+                    <span class="col-xs-3 padding0">机构简称</span>
+                    <span class="col-xs-8">{{userInfo.organizationFullName}}</span>
+                </div>
+                <div class="col-xs-12 marB10">
+                    <span class="col-xs-3 padding0">部门</span>
+                    <span class="col-xs-8">{{userInfo.department}}</span>
+                </div>
+                <div class="col-xs-12 marB10">
+                    <span class="col-xs-3 padding0">职位</span>
+                    <span class="col-xs-8">{{userInfo.position}}</span>
+                </div>
+                <div class="col-xs-12 marB10">
+                    <span class="col-xs-3 padding0">联系电话</span>
+                    <span class="col-xs-8">{{userInfo.contactPhone}}</span>
+                </div>
+                <div class="col-xs-12 marB10">
+                    <span class="col-xs-3 padding0">工作电话</span>
+                    <span class="col-xs-8">{{userInfo.workPhone}}</span>
+                </div>
+                <div class="col-xs-12 marB10">
+                    <span class="col-xs-3 padding0">公司邮箱</span>
+                    <span class="col-xs-8">{{userInfo.companyMail}}</span>
+                </div>
+                <div class="col-xs-12 marB10">
+                    <span class="col-xs-3 padding0">工作地址</span>
+                    <span class="col-xs-8">{{userInfo.workAddress}}</span>
+                </div>
+               <!--  <div class="col-xs-12 marB10">
+                    <span class="col-xs-3 padding0">处理时间</span>
+                    <span class="col-xs-8">{{userInfo.updateTime}}</span>
+                </div>
+                <div class="col-xs-12 marB10">
+                    <span class="col-xs-3 padding0">处理用户</span>
+                    <span class="col-xs-8">{{userInfo.processUserName}}</span>
+                </div> -->
+                <!-- <div class="col-xs-12 marB10"> -->
+                <!-- <span class="col-xs-4 padding0">反馈状态:</span> -->
+                <!-- <span  class="col-xs-8">{{detailList.feedbackState}}</span> -->
+                <!-- <select [(ngModel)]="handlerInfo.feedbackState"   value='请选择' class="newsKey" >
+									<option >全部</option>
+									<option >未处理</option>
+									<option >未采纳</option>
+									<option >被采纳</option>
+								</select> -->
+                <!-- </div> -->
+                <div style="clear: both;"></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-8 pull-left ">
+        <div class="newsTxt">
+            <div class="newsHeader reportState">反馈详情<b style="color :red; font-size:14px;float:right;padding-right: 10px">{{detailList.feedbackState}}</b></div>
+            <div class="inner box" #inner >
+                <div class="col-xs-2 marTB">
+                    反馈正文
+                </div>
+                <div class="col-xs-10 marTB">
+                    &nbsp;{{detailList.feedbackContent}}
+                </div>
+                <div style="clear: both;"></div>
+                <!-- </div> -->
+                <!-- <div class="inner" #inner> -->
+                <div class="col-xs-2 marTB">
+                    反馈图片
+                </div>
+                <div class="col-xs-10 marTB">
+                    <div class=" col-xs-2 " (click)="myAlert(picAlert,list)" *ngFor="let list of picArr; let i = index ; ">
+                        <img [src]="list" alt="{{i}}" *ngIf="list!=null" style="margin:auto;width:100%;" #image>
+                        <!-- <img src='../../../../../../public/images/coin-turnover-statistic.png' alt=""> -->
+                    </div>
+                    <!-- <div class=" col-xs-2 ">
+							<img src='../../../../../../public/images/coin-turnover-statistic.png' alt="" style="margin:auto;width:100%;min-height: 100px;">
+						</div> -->
+                    <!-- <div style="clear: both;"></div> -->
+                </div>
+                 <div class="col-xs-12 marB20">
+                    <span class="col-xs-2 padding0">反馈时间</span><span class="col-xs-4">{{userInfo.createTime}}</span>
+                     <span class="col-xs-2 padding0">处理时间</span><span class="col-xs-4">{{userInfo.createTime}}</span>
+                </div>
+                <div class="col-xs-12 marTB">
+                    <!-- <button class="btn btn-primary">修改</button> -->
+                    <button class="btn btn-primary" style="float: right;" *ngIf="detailList.feedbackState=='待处理'" (click)="handlerUserBack('2')">忽略</button>
+                    <button class="btn btn-primary" style="float: right;" *ngIf="detailList.feedbackState=='待处理'" (click)="handlerUserBack('3')">采纳</button>
+               
+                </div>
+                <div style="clear: both;"></div>
+            </div>
+        </div>
+        <!-- <div class="picMsg">
+				<div class="newsHeader">截图展示</div>
+				<div class="clearfix ">
+					<div class="bor " (click)="myAlert(picAlert,list)" *ngFor="let list of picArr; let i = index ; ">
+						<img [src]="list" alt="{{i}}" *ngIf="list!=null" style="margin:auto;width:100%;height:160px" >
+					</div>
+				</div>
+	 		</div> -->
+        <div class="picMsg">
+            <div class="newsHeader">管理员处理</div>
+            <div class="col-xs-12 box">
+                <div class="col-xs-2 marTB">
+                    发放金币
+                </div>
+                <div class="col-xs-10 marTB" style="color: #ccc">
+                    仅采纳时有效
+                </div>
+                <div class="col-xs-10 col-xs-offset-2 btn-group btnborder">
+                    <button [attr.disabled]=" (detailList.feedbackState=='已忽略' || detailList.feedbackState=='已采纳') ? true :null " class="btn btn-mint " [(ngModel)]="detailList.coinNum" btnRadio="0">0</button>
+                    <button [attr.disabled]=" (detailList.feedbackState=='已忽略' || detailList.feedbackState=='已采纳') ? true :null " class="btn btn-mint" [(ngModel)]="detailList.coinNum" btnRadio="10">10</button>
+                    <button [attr.disabled]=" (detailList.feedbackState=='已忽略' || detailList.feedbackState=='已采纳') ? true :null " class="btn btn-mint" [(ngModel)]="detailList.coinNum" btnRadio="20">20</button>
+                    <button [attr.disabled]=" (detailList.feedbackState=='已忽略' || detailList.feedbackState=='已采纳') ? true :null " class="btn btn-mint" [(ngModel)]="detailList.coinNum" btnRadio="50">50</button>
+                    <button [attr.disabled]=" (detailList.feedbackState=='已忽略' || detailList.feedbackState=='已采纳') ? true :null " class="btn btn-mint" [(ngModel)]="detailList.coinNum" btnRadio="100">100</button>
+                </div>
+                <div class="col-xs-2 marTB">
+                    消息信息
+                </div>
+                <div class="col-xs-10 marTB" style="color: #ccc">
+                    必填，采纳时该消息信息会以“系统消息”的形式向用户发送。
+                </div>
+                <textarea *ngIf="detailList.feedbackState=='待处理'" [disabled]="( detailList.feedbackState=='已忽略'|| detailList.feedbackState=='已采纳')" style="min-height: 50px" [(ngModel)]="detailList.handlingSuggestion" class="col-xs-7 col-xs-offset-2 toDoAdvice  "  req placeholder="请在此输入处理意见"></textarea>
+                <div class="col-xs-7 col-xs-offset-2 toDoAdvice  " style="border: 1px solid #ccc;padding:5px ;color:#ccc" *ngIf="( detailList.feedbackState=='已采纳' || detailList.feedbackState=='已忽略')">{{detailList.handlingSuggestion}}</div>
+                <div class="col-xs-3 ">
+                    <span *ngIf=" detailList.coinNum != '0' ">
+						系统已奖励您{{detailList.coinNum}}金币
+						</span>
+                </div>
+            </div>
+            <div style="clear: both;"></div>
+        </div>
+    </div>
+</div>
+<div style="clear: both;"></div>
+<!--弹框 显示大图-->
+<div bsModal #picAlert="bs-modal" class="modal fade modelPon" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content" style="height:450px;">
+            <div class="modal-header">
+                <button type="button" class="close" (click)="picAlert.hide()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">大图显示</h4>
+            </div>
+            <div class="modal-body">
+                <div class="picBox">
+                    <img [src]="picUrl" style="margin:auto;width:100%;height:360px">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

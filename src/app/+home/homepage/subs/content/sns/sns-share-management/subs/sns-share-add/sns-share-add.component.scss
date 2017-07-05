@@ -1,0 +1,100 @@
+.clearfix {
+	clear:both;
+	overflow: auto;
+	zoom: 1;
+}
+.btn{
+	border-radius: 0;
+	padding:5px 16px;
+}
+.all{
+	width: 100%
+}
+b{
+	color: red
+}
+h5{
+	font-size: 16px
+}
+.btn-primary:hover{
+	background-color: #fb6300;
+	color: #fff;
+	border-color:#fb6300;
+}
+.btn-default:hover{
+	background-color: #337ab7;
+	color:#fff;
+	border-color:#2e6da4;
+}
+.header{
+	overflow: hidden;
+	height: 60px;
+	border-bottom:solid 1px #e1e7eb;
+	padding-left: 6px; 
+}
+.header span{
+	font:600 14px "微软雅黑";
+	color: #333;
+	line-height: 60px;
+	margin-left: 10px;
+}
+.header .icon{
+	font-size: 16px;
+	color:#f44336;
+}
+.header .head{
+	float: left;
+}
+.header .btnHeader{
+	height: 32px;
+	margin-left: 50px;
+	margin-top: 14px;
+}
+.header .btnHeader .btn{
+	margin-right: 10px;
+}
+.acont{
+	padding: 10px;
+}
+.harf{
+	width: 300px;
+	float: left;
+}
+.acont input,select{
+	width: 280px;
+	height: 35px;
+	border: solid 1px #ccc;
+	border-radius: 5px;
+}
+.contentText{
+	height: 150px;
+	overflow-y: scroll;
+}
+.selection{
+	width: 150px;
+	padding: 5.2px 0;
+	border: solid 1px #ccc;
+	border-radius: 5px;
+}
+
+/*弹窗*/
+.pp{
+	text-align: center;
+	font: 20px "微软雅黑";
+	line-height: 40px;
+}
+.btnstyle{
+	margin: 20px 0;
+	position: absolute;
+	right: 10px;
+}
+.delete{
+	width: 350px;
+	height: 300px
+
+}
+.noproblem{
+	width: 350px;
+	height: 180px
+
+}

@@ -1,0 +1,100 @@
+<div class="header box">
+	<span class="head icon">|</span>
+	<span class="head">客户经理列表</span>
+</div>
+<main>
+<!-- lists -->
+<div class="tableList box">
+    <table class="table table-bordered table-hover ">
+        <thead>
+            <tr>
+                <td class="table-hover">操作</td>
+                <td class="table-hover">姓名</td>
+                <td class="table-hover">岗位名称</td>
+                <!-- <td class="table-hover">管辖区域</td> -->
+                <td class="table-hover">机构数量
+                    <div class="order"><button (click)="Order('ASC','coinSendType')" class="fa fa-chevron-up" aria-hidden="true"></button><button (click)="Order('DESC','coinSendType')" class="fa fa-chevron-down"  aria-hidden="true"></button></div>
+                </td>
+                <td class="table-hover" style="min-width:125px">联系人数量                    
+                    <div class="order"><button (click)="Order('ASC','coinNumber')" class="fa fa-chevron-up" aria-hidden="true"></button><button (click)="Order('DESC','coinNumber')" class="fa fa-chevron-down"  aria-hidden="true"></button></div>
+                </td>
+                <td class="table-hover">行动数量</td>
+                <td class="table-hover">状态</td>
+                <td class="table-hovet">最近行动时间
+                    <div class="order"><button (click)="Order('ASC','createTime')" class="fa fa-chevron-up" aria-hidden="true"></button><button (click)="Order('DESC','createTime')" class="fa fa-chevron-down"  aria-hidden="true"></button></div>
+                </td>
+                <!-- <td class="info longTxt">通知标题</td> -->
+               
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let customer of customerList">   
+                <td><i class="fa fa-pencil-square-o" (click)="editShow(del,customer)"></i><i class="fa fa-users" (click)="turnToDetial(customer.userId,customer.userName)"></i></td>
+                <td>{{customer.userName}}</td>
+                <td>{{customer.postName}}</td>
+                <!-- <td>{{customer.regions}}</td> -->
+                <td>{{customer.orgNumber }}</td>
+                <td>{{customer.contactNumber }}</td>
+                <td>{{customer.userName}}</td>
+                <td>{{customer.userName}}</td>
+                <td><span *ngIf="!customer.visitTime" style="text-align: center">--</span><span *ngIf="customer.visitTime">{{customer.visitTime }}</span></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+    <!-- 分页 -->
+    <!-- <page [(pageObj)]="pageParams" (fnParent)="getDetailList()"></page> -->
+</main>
+
+
+    <!-- 编辑 -->
+<div bsModal #del="bs-modal" class="modal fade modelPon" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content clearfix" >
+            <div class="modal-header">
+                <button type="button" class="close" aria-label="Close" (click)="del.hide()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">编辑客户经理</h4>
+            </div>
+            <div class="modal-body contentxinxi">
+                <div class="condition">
+                    <label for="fullname" class="text-right"><b class="red">*</b>客户经理</label>
+                    <div class="condition-input">
+                        <input type="text" name="" [(ngModel)]="CustomName" disabled="1"  style="width: 300px"  class="form-control">
+                    </div>
+                </div>
+                 <div class="condition">
+                    <label for="fullname" class="text-right"><b class="red">*</b>直属领导</label>
+                    <div class="condition-input">
+                        <select name="" [(ngModel)]="thisParent"  style="width: 300px"  class="form-control" (change)="xxx($event)" (ngModelChange)="xxx()">
+                            <option *ngFor="let item of parentUseList"  [ngValue]="item">{{item.parentId}}</option>
+                        </select>                      
+                    </div>
+                </div>
+                 <div class="condition">
+                    <label for="fullname" class="text-right"><b class="red">*</b>岗位名称</label>
+                    <div class="condition-input">
+                        <select name=""  style="width: 300px" [(ngModel)]="editCustomCon.positionId"  class="form-control">
+                            <option *ngFor="let item of positionList" [value]="item.positionId" >{{item.positionName}}</option>
+                        </select>
+                    </div>
+                </div>
+                 <div class="condition" style="color:#9d9d9d">
+                    <label for="fullname" class="text-right"><b class="red">*</b>管辖区域</label>
+                    <div class="condition-input">
+                        <select name=""  style="width: 300px"  class="form-control" disabled="1">
+                            <option *ngFor="let item of positionList" [value]="item.positionId">暂无</option>
+                        </select>                    
+                    </div>
+                </div>
+            </div>
+             <div class="right-fluid">
+                <button  type="button" class="btn btn-primary" (click)="editUser(del)">确定</button>
+                <button  type="button" class="btn btn-default
+                " (click)="del.hide()">取消</button>
+            </div>
+        </div>
+    </div>
+</div>
+

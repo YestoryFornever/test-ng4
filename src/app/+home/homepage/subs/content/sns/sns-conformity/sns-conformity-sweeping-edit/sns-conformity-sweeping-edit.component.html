@@ -1,0 +1,119 @@
+<div class="header clearfix">
+	<span class="head icon">|</span><span class="head" >编辑“扫雷”资讯</span>
+	<div class="condition container-fluid">
+		<button type="button" class="btn btn-primary" [disabled]="sweepDetial.release_state=='已发送'" (click)="sweepEdit(1)">保存并发送</button>
+	</div>
+	<div class="condition container-fluid">
+		<button type="button" class="btn btn-primary" (click)="sweepEdit()">保存</button>
+	</div>
+
+	<div class="condition container-fluid">
+		<button type="button" class="btn btn-primary" (click)="giveUp.show()">放弃编辑</button>
+	</div>
+	<div style="height: 60px;line-height: 60px">
+		重点关注：<input #imp [(ngModel)]="isimportant" id="import"  type="checkbox" name="import" (click)="isImport(imp )">
+		<div>{{isimportant}}</div>
+	</div>
+	
+</div>
+<div class="contents">
+	
+
+<div class="K-V" *ngIf="!import">
+	<span class="newsKey"><b style="color: red">*</b>资讯标题:</span>
+	<input maxlength="100" [(ngModel)]="sweepDetial.e_title" type="" name="" style="width: 95%;height: 32px;border-radius: 5px;border:1px #bbb solid">
+</div>	
+<div class="K-V" *ngIf="!import">
+	<span class="newsKey"><b style="color: red">*</b>资讯摘要:</span>
+	<textarea maxlength="1000" [(ngModel)]="sweepDetial.e_note"  style="width: 95%;height: 200px;border-radius: 5px;border:1px #bbb solid"></textarea>
+</div>	
+<div class="K-V">
+	<span class="newsKey"><b style="color: red">*</b>扫雷评级:</span><div style='display: inline-block;margin-bottom: -4px'>
+		<p-rating  [(ngModel)]="sweepDetial.bad_point" stars="5" [cancel]="false" ></p-rating>
+	</div>
+<div class="K-V">
+	<span class="newsKey"><b style="color: red">*</b>关联的发债机构及个债信息:</span>
+	<div type="" name="" style="width: 95%;border:1px solid #ddd ;margin-bottom:5px" class="clearfix">
+		<div style="width:40%;float: left;margin: 10px;position:relative">
+			发债机构：<input  [tooltip]="OrgName.keyword" type="" name="" style="height: 32px;border-radius: 5px;border:1px #bbb solid;width: 250px" [(ngModel)]="OrgName.keyword" (blur)="searchOrg()">
+			<i *ngIf="orgListShow" (click)="closeOrg()" style="cursor:pointer"><img src='../../../../../../../../public/images/btn_close.png'></i>
+			<ul  class="moh" *ngIf="orgListShow" style="position:absolute;max-height: 400px;overflow-y: scroll;margin-left: -42px;width: 250px">
+				<li *ngFor="let item of orgList" (click)="OrgSerch(item.insShtNm,item.insId)"><div>{{item.insShtNm}}</div></li>
+			</ul>
+		</div>
+		<div style="width:40%;float: left;margin: 10px;position:relative">
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;个债：<input  disabled="disabled" type="" name="" style="height: 32px;border-radius: 5px;border:1px #bbb solid;width: 250px" [tooltip]="matchBondName" [(ngModel)]="matchBondName" (blur)="searchOrg()">
+			<i *ngIf="matchBond" (click)="closematchBond()" style="cursor:pointer"><img src='../../../../../../../../public/images/btn_close.png'></i>
+			<ul  class="moh" *ngIf="matchBond" style="position:absolute;max-height: 400px;overflow-y: scroll;margin-left: -42px;width: 250px">
+				<li *ngFor="let item of bondListForInfoId" (click)="matchBondSerch(item.shrtnm,item.bondId)"><div>{{item.shrtnm}}</div></li>
+			</ul>
+		</div>
+	</div>
+	<div type="" name="" style="width: 95%;border:1px solid #ddd ;margin-bottom:5px" class="clearfix">
+		<div style="width:40%;float: left;margin: 10px;position:relative">
+			个债：<input [(ngModel)]="bondName" [tooltip]="bondName" type="" name="" style="height: 32px;border-radius: 5px;border:1px #bbb solid;width: 250px" (blur)="fuzzyMatchingForBond()">
+			<i *ngIf="bondListShow" (click)="closeBond()" style="cursor:pointer"><img src='../../../../../../../../public/images/btn_close.png'></i>
+				<ul  class="moh" *ngIf="bondListShow" style="position:absolute;max-height: 400px;overflow-y: scroll;margin-left: -71px;width: 250px">
+					<li *ngFor="let item of bondList" (click)="BondSerch(item.bondShrtnm,item.bondid)"><div>{{item.bondShrtnm}}</div></li>
+				</ul>
+		</div>
+		<div style="width:40%;float: left;margin: 10px;position:relative">
+			发债机构：<input disabled="disabled"  type="" name="" style="height: 32px;border-radius: 5px;border:1px #bbb solid;width: 250px"  [(ngModel)]="matchOrgName">
+			<i *ngIf="matchOrg" (click)="closematchOrg()" style="cursor:pointer"><img src='../../../../../../../../public/images/btn_close.png'></i>
+						<ul  class="moh" *ngIf="matchOrg" style="position:absolute;max-height: 400px;overflow-y: scroll;margin-left: -42px;width: 250px">
+							<li *ngFor="let item of bondInsByIdList" (click)="matchOrgSerch(item.insShtNm,item.insId)"><div >{{item.insShtNm}}</div></li>
+						</ul>
+		</div>
+	</div>
+	<div class="bondTip" style="min-height: 500px">
+		<ul class="aOrg clearfix" >
+			<li class='clearfix' style="padding: 10px" *ngFor="let item of sweepDetial.bond_tags; let i = index "><div style="float:left;width: 25%" ><button  class="btn btn-primary">{{item.oname}}</button><button  pButton type="button" class="btn"  style="height: 31.6px" icon="fa-close" (click)="disPlayOrg(i)"></button></div>
+				<ul class="aBond" style="float:right;width: 70%" >
+					<li style="float:left;margin:5px" *ngFor="let item2 of item.bonds;let j = index "><button class="btn btn-primary">{{item2.bname}}</button><button  pButton type="button"  icon="fa-close" class="btn btn-primary" style="height: 31.6px"  (click)="disPlayBond(i,j)"></button></li>
+				</ul>
+			</li>
+		</ul>
+	</div>
+<!-- 放弃编辑-->
+<div bsModal #giveUp="bs-modal" class="modal fade modelPon" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content clearfix" >
+            <div class="modal-header">
+                <button type="button" class="close" aria-label="Close" (click)="giveUp.hide()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">放弃编辑</h4>
+            </div>
+            <div class="modal-body contentxinxi">
+            	你确定放弃编辑吗？
+            </div>
+             <div class="condition container-fluid" style="padding-left: 400px">
+				<button style="margin-top:-40px" type="button" class="btn btn-primary" (click)="ListTo()">确认</button>
+				<button style="margin-top:-40px" type="button" class="btn btn-primary" (click)="giveUp.hide()">取消</button>
+			</div>
+        </div>
+    </div>
+</div>
+	<!-- <div *ngIf="0" class="K-V clearfix" style="border:1px solid #aaa;margin:16px">
+		<span style="display:inline-block;width: 100%">匹配结果：</span>
+		<div *ngIf="serchBond">
+			<div  *ngFor="let item of bondListForInfoId,let i = index" class="bondListForInfoId" >
+				<input [id]="i+''" type="checkbox" name=""><label name='bond'>{{item.shrtnm}}</label>
+			</div>
+		</div>
+		<div  *ngIf="serchOrg">
+			<div *ngFor="let item of bondInsByIdList" class="bondListForInfoId" >
+				<input type="radio" name="org">{{item.insShtNm}}
+			</div>
+		</div>
+		
+	</div>
+</div>	 -->
+</div>	
+	<!-- <div class="tip" name='tip' #tip *ngFor="let item of list"><span class="tipCon">标签{{item}}</span><button  pButton type="button"  icon="fa-close" (click)="disPlay(tip)"></button></div> -->
+	<!-- <p-rating [(ngModel)]="val" stars="5" [cancel]="false" > -->
+</div>
+
+
+
+

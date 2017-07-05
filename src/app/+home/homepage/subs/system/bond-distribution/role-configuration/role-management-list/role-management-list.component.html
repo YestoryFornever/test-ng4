@@ -1,0 +1,54 @@
+<div class="header clearfix">
+	<span class="head icon">|</span><span class="head" >角色管理</span>
+</div>
+<div class="condition container-fluid" style="position: relative;overflow:visible">
+		<input style="width: 250px" [(ngModel)]="con.value"  req placeholder="请输入机构全称和简称" class="form-control" > 
+</div>
+<div class="condition container-fluid">
+		<button type="button" class="btn btn-primary" (click)="turnFirst()" >查询</button>
+		<!-- <button type="button" class="btn btn-primary">跳转</button> -->
+</div>
+<div class="tableList " >		
+	<table class="table table-bordered table-hover " >
+		<thead >
+			<tr>
+				<td class="info" >操作</td>	
+				<td class="info middleTxt">机构全称</td>
+				<td class="info">机构简称</td>
+				<td class="info ">静态角色</td>
+				<td class="info">团队数量</td>
+				<td class="info">机构分类1</td>
+				<td class="info">机构分类2</td>
+				<td class="info middleTxt">修改时间</td>
+			</tr>
+		</thead>
+		<tbody  id="list" *ngFor="let item of infoList">
+			<tr>
+				<td><a  (click)="turnTo(item.organizationId,item.organizationFullName)" >修改</a></td><td><div [tooltip]="item.organizationFullName">{{item.organizationFullName}}</div></td>	
+				<td><div [tooltip]="item.organizationShortName">{{item.organizationShortName}}</div></td>	
+				<td><span *ngIf="item.instQualf==1">主承</span><span *ngIf="item.instQualf==2">联承</span><span *ngIf="item.instQualf==3">在团</span><span *ngIf="item.instQualf==4">不在团</span><span *ngIf="item.instQualf==5">投资</span></td>
+				<td>{{item.teamNum}}</td>		
+				<td>{{item.categoryName1}}</td>	
+				<td>{{item.categoryName2}}</td>	
+				<td><span *ngIf="item.updateTime==NaN">--</span><span *ngIf="item.updateTime!=NaN">{{item.updateTime}}</span></td>	
+			</tr>
+		</tbody>
+	</table>
+</div>
+<!-- 分页 -->
+	<div class="row pagerow" >
+		<div class="pageshowleft">每页显示
+			<select #selectPage name="" id="msgNum" (change)="sizeData(selectPage.value,userList)">
+				<option #optionPage  *ngFor="let msgNumber of msgNumbers" value={{msgNumber.Number}}>{{msgNumber.Number}}</option>
+			</select>
+			条数据
+		</div>
+		<div class="pageshowmodle">
+			<span>{{currentPage}} / {{totalPages}}</span>页
+			<span>{{totalItems}}条数据</span>
+		</div>
+
+		<div class="pagefen">
+			<pagination  [firstText]="firstText" [lastText]="lastText" [previousText]="previousText" [nextText]="nextText" [maxSize]="maxSize" [totalItems]="totalItems" [itemsPerPage]="itemsPerPage" [(ngModel)]="currentPage" [boundaryLinks]="true" (pageChanged)='pageChanged($event)' (numPages)='pageNumChange($event)' class="pagination-sm"></pagination>
+		</div>
+	</div>

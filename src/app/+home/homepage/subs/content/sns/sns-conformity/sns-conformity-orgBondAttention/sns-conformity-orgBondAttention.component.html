@@ -1,0 +1,219 @@
+<div class="header clearfix">
+    <span class="head icon">|</span><span class="head">机构个债关注池</span>
+    <div class="btnHeader head">
+        <button class="btn btn-primary" (click)='showModal(staticModal)'>添加关注</button>
+    </div>
+</div>
+<div class="screen clearfix width_100">
+    <div class="condition container-fluid">
+        <span>机构名称：</span>
+        <input type="text"
+        	class="form-control"
+        	name="fullnameEP" required
+			[(ngModel)]="organization.insFulNm" 
+			[typeahead]="fullnameTypeAhead.source" 
+			[typeaheadOptionsLimit]="fullnameTypeAhead.limit"
+			(typeaheadOnSelect)="org_idSelect($event)"
+			(typeaheadLoading)="fullnameTypeAhead.loading($event)"
+			[typeaheadItemTemplate]="customItemTemplate"
+			(blur)='defaultSearch.org_id = null'
+			(typeaheadNoResults)="fullnameTypeAhead.noresult($event)"/>
+		<div *ngIf="fullnameTypeAhead.isloading===true">
+			<i class="glyphicon glyphicon-refresh ng-hide" style=""></i>
+		</div>
+		<div *ngIf="fullnameTypeAhead.hasNoResult===true" class="" style="">
+			<i class="glyphicon glyphicon-remove"></i> 无结果
+		</div>
+		<!-- <input type="text" *ngIf="0" [(ngModel)]="defaultSearch.org_id"> -->
+    </div>
+    <div class="condition container-fluid">
+        <span>个债名称</span>
+        <input type="text"
+        	class="form-control"
+        	name="fullnameEP" required
+			[(ngModel)]="organization.bondNm" 
+			[typeahead]="bond_idTypeAhead.source" 
+			[typeaheadOptionsLimit]="bond_idTypeAhead.limit"
+			(typeaheadOnSelect)="bond_idSelect($event)"
+			(typeaheadLoading)="bond_idTypeAhead.loading($event)"
+			[typeaheadItemTemplate]="customItemTemplate"
+			(blur)='defaultSearch.bond_id = null'
+			(typeaheadNoResults)="bond_idTypeAhead.noresult($event)"/>
+		<div *ngIf="bond_idTypeAhead.isloading===true">
+			<i class="glyphicon glyphicon-refresh ng-hide" style=""></i>
+		</div>
+		<div *ngIf="bond_idTypeAhead.hasNoResult===true" class="" style="">
+			<i class="glyphicon glyphicon-remove"></i> 无结果
+		</div>
+		<!-- <input type="text" *ngIf="0" [(ngModel)]="defaultSearch.bond_id"> -->
+    </div>
+    <div class="condition container-fluid">
+        <span>关注时间：</span>
+        <p-calendar
+        	[monthNavigator]="true"
+        	[yearNavigator]="true"
+        	[locale]='mon'
+        	dateFormat="yy-mm-dd"
+        	[(ngModel)]='myStartTime'
+        	yearRange="2000:2050"
+        	placeholder="时间">
+        </p-calendar>&nbsp;到&nbsp;
+        <p-calendar
+            [monthNavigator]="true"
+	        [yearNavigator]="true"
+	        [locale]='mon'
+	        dateFormat="yy-mm-dd"
+	        [(ngModel)]='myEndTime'
+	        yearRange="2000:2050"
+	        placeholder="时间">
+        </p-calendar>
+    </div>
+    <button class="condition btn btn-primary sub" (click)="turnFirst()">查询</button>
+</div>
+<div class="tableList ">
+    <table class="table table-bordered table-hover ">
+        <thead>
+            <tr>
+                <td class="info shortTxt">操作</td>
+                <td class="info longTxt">发债主体全称 </td>
+                <td class="info longTxt">发债主体简称</td>
+                <td class="info">关联个债</td>
+                <td class="info middleTxt">关注时间</td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor='let item of bondList'>
+                <td>
+                    <button *ngIf="item.org_id!=0" class="btn_icon pull-left" pButton icon='fa-pencil-square-o' (click)='showModal(staticModal,item);is_change=true'></button>
+                    <button class="btn_icon pull-right" pButton icon='fa-minus-circle' (click)='alert_show(item , alert)'></button>
+                </td>
+                <td>{{item.org_fullname}}</td>
+                <td>{{item.org_name}}</td>
+                <td>
+                    <span [tooltip]="item.bname_str">{{item.bname_str}}</span>
+                </td>
+                <td>{{item.create_time}}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<!-- 分页 -->
+<div class="row pagerow">
+    <div class="pageshowleft">每页显示
+        <select #selectPage name="" id="msgNum" (change)="sizeData(selectPage.value)" [(ngModel)]="itemsPerPage">
+            <option #optionPage *ngFor=" let msgNumber of msgNumbers" value={{msgNumber.Number}}>{{msgNumber.Number}}</option>
+        </select>
+        条数据
+    </div>
+    <div class="pageshowmodle">
+        <span>{{currentPage}} / {{totalPages}}</span>页
+        <span>{{totalItems}}条数据</span>
+    </div>
+    <div class="pagefen">
+        <pagination [firstText]="firstText" [lastText]="lastText" [previousText]="previousText" [nextText]="nextText" [maxSize]="maxSize" [totalItems]="totalItems" [itemsPerPage]="itemsPerPage" [(ngModel)]="currentPage" [boundaryLinks]="true" (pageChanged)='pageChanged($event)' (numPages)='pageNumChange($event)' class="pagination-sm"></pagination>
+    </div>
+</div>
+<!-- 弹窗 -->
+<div class="modal fade" bsModal #staticModal="bs-modal"  role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title pull-left">编辑机构个债关注</h4>
+                <button type="button" class="close pull-right" aria-label="Close" (click)="staticModal.hide()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+            	<div class="row">
+            		<div class="col-xs-2 " style="line-height: 34px;">
+	            		主体/个债
+	            	</div>
+	                <div class="col-xs-6">
+	                	<input type="text"
+				        	class="form-control"
+				        	name="fullnameEP" required
+							[(ngModel)]="modal_data.org_fullname" 
+							[typeahead]="modal_fullname_TypeHead.source" 
+							[typeaheadOptionsLimit]="modal_fullname_TypeHead.limit"
+							(typeaheadOnSelect)="modal_org_idSelect($event)"
+							(typeaheadLoading)="modal_fullname_TypeHead.loading($event)"
+							[typeaheadItemTemplate]="customItemTemplate"
+							(blur)='modal_data.org_id = ""'
+							(typeaheadNoResults)="modal_fullname_TypeHead.noresult($event)"
+                            [disabled]='is_change'/>
+						<div *ngIf="modal_fullname_TypeHead.isloading===true">
+							<i class="glyphicon glyphicon-refresh ng-hide" style=""></i>
+						</div>
+						<div *ngIf="modal_fullname_TypeHead.hasNoResult===true" class="" style="">
+							<i class="glyphicon glyphicon-remove"></i> 无结果
+						</div>
+	                </div>
+	                <div class="col-xs-4" >
+	                	<select class="form-control" required [(ngModel)]='modal_data.bid'>
+                            <option value= ''>请选择</option>
+                            <option *ngFor="let list of modal_data.modal_bond_list" [ngValue]= "list.bondId" >
+                                {{list.shrtnm}} 
+                            </option>
+                        </select>
+	                </div>
+            	</div>
+            	<div class="row btn_three">
+        			<button class="btn btn-primary" (click)='only_org()'>仅添加发债主体</button>
+        			<button class="btn btn-primary" (click)='only_bond()'>仅添加个债</button>
+        			<button class="btn btn-primary pull-right"  (click)='all_add()'>添加</button>
+            	</div>
+            	<div class="row">
+            		<div class="tableList table_max_hei">
+                        <table class="table table-bordered table-hover ">
+                            <thead>
+                                <tr>
+                                    <td class="info">发债主体全称 </td>
+                                    <td class="info">个债</td>
+                                    <td class="info shortText">操作</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let item of modal_data.modal_table_list;let i =index;">
+                                    <td><span>{{item.org_fullname}}</span></td>
+                                    <td><span>{{item.bname}}</span></td>
+                                    <td>
+                                        <button class="btn_icon" pButton icon='fa-times' (click)='modal_del(i)'></button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+            	</div>
+                <div style="clear: both;"></div>
+            </div>
+            <div class="modal-footer">
+            	<button class="btn btn-default" (click)='staticModal.hide()'>取消</button>
+            	<button class="btn btn-primary" [disabled]='modal_data.modal_table_list.length==0' (click)='saveBondFocus(staticModal)'>保存</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" bsModal #alert="bs-modal"  role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title pull-left">是否删除</h4>
+                <button type="button" class="close pull-right" aria-label="Close" (click)="alert.hide()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+            </div>
+            <div class="modal-footer" style="border:none;text-align: center;">
+                <button class="btn btn-default" (click)='alert.hide()'>取消</button>
+                <button class="btn btn-primary" (click)='alert_del(alert)'>确定删除</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 机构匹配模板 -->
+<template #customItemTemplate let-model="item" let-index="index">
+  <!-- <h5>This is: {{model | json}} Index: {{ index }}</h5> -->
+  <h5 *ngIf="model.insFulNm">{{model.insFulNm}}</h5>
+  <h5 *ngIf="model.bondShrtnm">{{model.bondShrtnm}}</h5>
+</template>
